@@ -1,0 +1,64 @@
+[
+  {
+    "case": "success",
+    "process_exit": 99,
+    "expected_exit": 0,
+    "memcheck_errors": 5,
+    "passed": false,
+    "report": {
+      "admission_released": true,
+      "connections": 1,
+      "kem": {
+        "executed_jobs": 2,
+        "live_keys": 0,
+        "rejected_jobs": 0
+      },
+      "role": "server",
+      "sessions": [
+        {
+          "authenticated_close": true,
+          "binding_hash": "889c1d5ee7fc6570cfa4fc2c6719fefb64c4cdbab1cb9dafa62e6915f1cc196d",
+          "messages": 1,
+          "session_id": "42dcfcf988c0525a9e0fed4fa5512192",
+          "transcript_hash": "e451f111bf36e78f8562ccbd3a1087362b7d1e052dca69191feb98fce6cd997b"
+        }
+      ],
+      "status": "passed"
+    },
+    "stderr": ""
+  },
+  {
+    "case": "finished-failure",
+    "process_exit": 1,
+    "expected_exit": 1,
+    "memcheck_errors": 0,
+    "passed": true,
+    "report": {
+      "kem": {
+        "executed_jobs": 2,
+        "live_keys": 0,
+        "rejected_jobs": 0
+      },
+      "status": "failed"
+    },
+    "stderr": "Error: Authentication\n"
+  },
+  {
+    "case": "tls-only-default",
+    "process_exit": 99,
+    "expected_exit": 0,
+    "memcheck_errors": 3,
+    "passed": false,
+    "report": null,
+    "stderr": ""
+  },
+  {
+    "case": "tls-only-chacha",
+    "process_exit": 0,
+    "expected_exit": 0,
+    "memcheck_errors": 0,
+    "passed": true,
+    "report": null,
+    "stderr": ""
+  }
+]

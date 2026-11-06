@@ -1,0 +1,41 @@
+{
+  "note": "Only trailing whitespace and empty lines at EOF removed; diagnostic lines, stack traces and error counts retained. package_smoke.log begins after successful dependency installation as stated in its first line.",
+  "files": {
+    "test.log": {
+      "original_sha256": "1fc51770b94707abadb94225e9cabe791d360f3d9beb7aa25e6e09b91fb1a1b1",
+      "published_sha256": "0f8230facf6429b08c50dabcb71dfb37e9fde2f056d1360c100300e3d0430a89"
+    },
+    "memcheck_328/tls-only-default.log": {
+      "original_sha256": "2953bd0c214df403b17f3992277b042ebf937223801ca79410c1922babf14990",
+      "published_sha256": "3151e825a74474bc9e32aec6c8b8fe65b2f0e176f57c968796e542ff57d3bb72"
+    },
+    "memcheck_328/tls-only-chacha.log": {
+      "original_sha256": "4bbb9c839a8fd1de87d2ec6fddf6cda3bd47ffeaf4f4427fcfb0a84342dc46ac",
+      "published_sha256": "0664e536ee5669714def056eedf51d4ec45e3db38b4f829545892a20775f212d"
+    },
+    "memcheck_328/finished-failure.log": {
+      "original_sha256": "4d67982444c21e3c500a7f8623a4a9978448a6616e613a116838524c871d42c4",
+      "published_sha256": "7a44ca82527fbfb4cfa4c57d71241494d50a2533ae6fb7a994c4a8939b19f8d7"
+    },
+    "memcheck_328/success.log": {
+      "original_sha256": "3bd9e1a008ddb54b409a247e95746ac02d190e28be01d32f4d2c7946227ee58b",
+      "published_sha256": "8d5dcc43e76938add480634975170fdeebe3fdd652c4a7c77d43017e2ea38d17"
+    },
+    "memcheck_322/tls-only-default.log": {
+      "original_sha256": "ef3566e2793b0a682581c4ded77846f0f0f638fd7e031eb0955b825bea496d35",
+      "published_sha256": "d329dc8a95432a34e5bbd3685d579d8f374aab99f09f0aa26802ece01365dbec"
+    },
+    "memcheck_322/tls-only-chacha.log": {
+      "original_sha256": "8dbef3708e7b0c855624ecbbbba668f4479e5be7a33c0320687c0edbe152afd8",
+      "published_sha256": "1f4c9c4b94ffb532da179e56f7533cddb24b77a421f46663174428ba9f48ca96"
+    },
+    "memcheck_322/finished-failure.log": {
+      "original_sha256": "dc5babc99e4a5968b9e7696b83f13e3800389eaaffed21eb7c09c943ab38d444",
+      "published_sha256": "8488c28d7c5aa7906152066811bf66dc0ef692169324cf041f64c21b7a2fe225"
+    },
+    "memcheck_322/success.log": {
+      "original_sha256": "aa2d2765a6b1525409a9d16220afb6322bf1fe6e8b0843ce455d6541f76775f5",
+      "published_sha256": "c286b0beaa577ab1c0349e5fabf16c536f9fc35a8be2fe6c4742f424eebe39c8"
+    }
+  }
+}
