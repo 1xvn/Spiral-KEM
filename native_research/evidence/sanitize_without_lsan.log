@@ -1,0 +1,5 @@
+make: Entering directory '/workspace/scratch/c6a558db7e9f/spiral_repo_work/native_research'
+cc -O1 -g -std=c11 -Wall -Wextra -Werror -fsanitize=address,undefined -fno-omit-frame-pointer check_native.c -Wl,--wrap=RAND_priv_bytes -Wl,--wrap=EVP_MD_CTX_new -lcrypto -o build/check_sanitize
+ASAN_OPTIONS=detect_leaks=0 ./build/check_sanitize
+native failure injection and 20000 public-input corpus cases passed
+make: Leaving directory '/workspace/scratch/c6a558db7e9f/spiral_repo_work/native_research'

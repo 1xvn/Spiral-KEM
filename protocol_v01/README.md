@@ -71,3 +71,8 @@ Final validation includes 88 checks by the attached verifier, 59 integrated regr
 and encrypted round trips/authenticated shutdown on4 actual concurrent TLS connections.
 Environments/counts are recorded in [`VALIDATION.json`](VALIDATION.json); review details/limitations are in
 [`REVIEW.md`](REVIEW.md).
+
+Additional work on 2026-11-06 expanded adversarial-input checks and passed 69 regression checks.
+Comparison results and secret-management scope for the separate C KEM research implementation are recorded in
+[`native_research/README.md`](../native_research/README.md).
+The current communication path continues to use the existing Python KEM.
