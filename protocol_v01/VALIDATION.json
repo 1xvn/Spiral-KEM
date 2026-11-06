@@ -1,0 +1,29 @@
+{
+  "tested_at_utc": "2026-11-06T00:25:51.776669+00:00",
+  "python": "3.12.14",
+  "cryptography": "50.0.2",
+  "pyOpenSSL": "26.4.0",
+  "uploaded_verifier": {
+    "checks": 88,
+    "passed": true,
+    "full_vector_dictionary_matches": true,
+    "input_files_unchanged": true
+  },
+  "integration_tests": {
+    "run": 59,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0
+  },
+  "real_tls_demo": {
+    "status": "passed",
+    "connections": 4,
+    "tls": "TLSv1.3",
+    "real_exporter_matches": true,
+    "unique_sessions_and_transcripts": true,
+    "decapsulations_per_server_key": 1,
+    "authenticated_echo_and_close": true,
+    "client_identity_authenticated": false
+  },
+  "scope": "Single Python implementation, local loopback and synthetic negative/state tests; no independent implementation interop, security proof, or production deployment."
+}
