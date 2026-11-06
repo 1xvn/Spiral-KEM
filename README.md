@@ -30,6 +30,14 @@ py compare_spiral_opt2_mlkem.py
 
 Python 3.10 or later is required. After regression checks, the comparison script runs 30 warmups and 300 measurements by default and saves the result JSON in the script directory. See the [opt2 guide](code/opt2/README.md), [wire format specification](code/opt2/COMPACT_WIRE_SPEC.md), and [experimental results](code/opt2/RESULTS.md) for details.
 
+## Research Communication Protocol v0.1
+
+[`protocol_v01/`](protocol_v01/README.md) contains a local experimental implementation integrating OPT2 with real TLS 1.3 connections.
+It includes server pin authentication, TLS exporter binding,
+Finished verification, directional AEAD keys and sequence numbers, 1 decapsulation per key, and shutdown handling.
+See its guide for instructions and validation scope. Security validation for production services and
+interoperability validation between independent implementations have not been completed.
+
 ## Archive Status
 
 `results/results.zip` is a previously uploaded result bundle and does not imply that all measurement results are included. Only some fragments of the large original design files are retained, so they cannot be reconstructed from this repository alone. See the [temporary upload guide](imports/README.md).

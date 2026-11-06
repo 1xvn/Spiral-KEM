@@ -1,0 +1,5 @@
+cryptography==50.0.2
+pyOpenSSL==26.4.0
+cffi==2.1.1
+pycparser==3.12
+typing_extensions==4.16.0
