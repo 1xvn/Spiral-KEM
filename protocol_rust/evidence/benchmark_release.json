@@ -1,0 +1,3537 @@
+{
+  "schema": "spiral-rust-c-loopback-benchmark/v1",
+  "date_utc": "2026-11-06",
+  "platform": "Linux-6.18.57-x86_64-with-glibc2.39",
+  "cpu_affinity_count": 9,
+  "scope": "Fresh server/client processes per trial, four loopback sessions, TLS1.3 plus inner Spiral AEAD, 32 echoed records per session, eight send producers, two warmup trials per profile. Wall time includes client startup and authenticated close. Small sample; no production capacity or language comparison.",
+  "profiles": [
+    {
+      "workers_per_endpoint": 1,
+      "payload": 64,
+      "trials": 5,
+      "connection_samples": 20,
+      "summary_ms": {
+        "handshake_ms": {
+          "median": 13.0138545,
+          "p95": 21.955199,
+          "p99": 22.868399
+        },
+        "tcp_ms": {
+          "median": 0.3051375,
+          "p95": 0.76673,
+          "p99": 1.106241
+        },
+        "tls_ms": {
+          "median": 1.2083504999999999,
+          "p95": 2.339135,
+          "p99": 2.547775
+        },
+        "spiral_ms": {
+          "median": 11.060797,
+          "p95": 20.328165,
+          "p99": 20.960441
+        },
+        "app_ms": {
+          "median": 2.5865905,
+          "p95": 6.099596,
+          "p99": 7.859390000000001
+        }
+      },
+      "whole_run_echo_payload_MiB_per_second": {
+        "median": 0.46699084549260317,
+        "p95": 0.6176149800429228,
+        "p99": 0.6176149800429228
+      },
+      "rss_kib": {
+        "client_peak_rss_kib": {
+          "median": 6172,
+          "p95": 6236,
+          "p99": 6236
+        },
+        "server_peak_rss_kib": {
+          "median": 5760,
+          "p95": 5788,
+          "p99": 5788
+        }
+      },
+      "raw": [
+        {
+          "wall_seconds": 0.039480387000367045,
+          "sessions": [
+            {
+              "app_ms": 2.441942,
+              "authenticated_close": true,
+              "binding_hash": "37d07ca42e5ca594ef1860f9ec33a9e802c8b88d81c475b1e250cbb07ca2e559",
+              "handshake_ms": 22.868399,
+              "messages": 32,
+              "payload_bytes": 64,
+              "session_id": "32f2cd46a5eb2f815f146709a77671f1",
+              "spiral_ms": 20.204848000000002,
+              "tcp_ms": 0.323393,
+              "tls_ms": 2.339135,
+              "total_ms": 25.762173999999998,
+              "transcript_hash": "33a9484091c413d1dcdc1ae87af7135690e9144c0775309778620117d61629e6"
+            },
+            {
+              "app_ms": 3.613522,
+              "authenticated_close": true,
+              "binding_hash": "c9573b7fa4d0c923d9eee7f68d61b80a16fa37e2c0f91c5edab2f9d191f156bc",
+              "handshake_ms": 21.955199,
+              "messages": 32,
+              "payload_bytes": 64,
+              "session_id": "7e54334e00975b6b614c8866681c74e0",
+              "spiral_ms": 20.960441,
+              "tcp_ms": 0.19295400000000001,
+              "tls_ms": 0.776424,
+              "total_ms": 25.687219000000002,
+              "transcript_hash": "dbf5642be29a1c440889c1e1de8b8a3aee192e7bfe16b42ff446468024db742a"
+            },
+            {
+              "app_ms": 4.6321319999999995,
+              "authenticated_close": true,
+              "binding_hash": "7c073d44133782709bedd8e8a0d877c2e923c03463fd7021f7de95b47a8c8ac4",
+              "handshake_ms": 21.230301,
+              "messages": 32,
+              "payload_bytes": 64,
+              "session_id": "bfef9cd8e9124470e60973a730462139",
+              "spiral_ms": 19.993774,
+              "tcp_ms": 0.02409,
+              "tls_ms": 1.211619,
+              "total_ms": 25.932997999999998,
+              "transcript_hash": "aee7c665629ce799974c0f1e346de8648d899b6542005e73ef5c9a3cd715b8af"
+            },
+            {
+              "app_ms": 4.309695,
+              "authenticated_close": true,
+              "binding_hash": "b8969a88cd42c9ef9cc6d483c8a0414b8bcdbdc4eccfe7036379ff902919e090",
+              "handshake_ms": 21.80411,
+              "messages": 32,
+              "payload_bytes": 64,
+              "session_id": "943c37afae66953521591d3dd0b966e9",
+              "spiral_ms": 20.328165,
+              "tcp_ms": 0.343751,
+              "tls_ms": 1.131203,
+              "total_ms": 26.198371,
+              "transcript_hash": "0691b292a7c73aa017db6ddc687617f51b9a0f6b9297fded2b14d62a13c15f2e"
+            }
+          ],
+          "server_kem": {
+            "executed_jobs": 8,
+            "live_keys": 0,
+            "rejected_jobs": 0
+          },
+          "client_peak_rss_kib": 6176,
+          "server_peak_rss_kib": 5724
+        },
+        {
+          "wall_seconds": 0.025298933000158286,
+          "sessions": [
+            {
+              "app_ms": 1.885975,
+              "authenticated_close": true,
+              "binding_hash": "ab1f54c7f94000d2ff3c08d2baed368a95426f559d8a35d2e2031e624cb2e89b",
+              "handshake_ms": 7.243844,
+              "messages": 32,
+              "payload_bytes": 64,
+              "session_id": "d34ec890909082fe3673a240573ecd9b",
+              "spiral_ms": 6.188617000000001,
+              "tcp_ms": 0.286882,
+              "tls_ms": 0.767466,
+              "total_ms": 9.276658,
+              "transcript_hash": "4019a3baeff3b9af6eee246dcdf951f9486b64c01a5157e192e6dbe9de6a1eb5"
+            },
+            {
+              "app_ms": 2.300401,
+              "authenticated_close": true,
+              "binding_hash": "f1ea05f2b6217c8065d2864a73f5bf387a0e3a8f1981f1388518d487af121a0f",
+              "handshake_ms": 8.068407,
+              "messages": 32,
+              "payload_bytes": 64,
+              "session_id": "11606f9921bca61bbd40e7eab1dbfc59",
+              "spiral_ms": 7.043018,
+              "tcp_ms": 0.427212,
+              "tls_ms": 0.5760379999999999,
+              "total_ms": 10.486028,
+              "transcript_hash": "9c29c51ac8aaeda2c091424b5713a196bb1ffadb444f5eeda3913807f0b41ddb"
+            },
+            {
+              "app_ms": 1.5969039999999999,
+              "authenticated_close": true,
+              "binding_hash": "b46d832eed921baa8e89e3e45cdfbf8f6eca2c975ab5a1f9e1e5d539bddfc362",
+              "handshake_ms": 8.707453000000001,
+              "messages": 32,
+              "payload_bytes": 64,
+              "session_id": "54a23ce4239fa1b3d5b29d86612bcfa2",
+              "spiral_ms": 7.706148000000001,
+              "tcp_ms": 0.053059999999999996,
+              "tls_ms": 0.9472149999999999,
+              "total_ms": 10.824235,
+              "transcript_hash": "346f09e12230e1d550886969545d55c73ef8790b45b5bc2f7c20314c89d0d21e"
+            },
+            {
+              "app_ms": 1.215509,
+              "authenticated_close": true,
+              "binding_hash": "e4c8f7af051e8ca109737350bf08624f78089162e5b40cf5c1536b01a1a48516",
+              "handshake_ms": 9.897065,
+              "messages": 32,
+              "payload_bytes": 64,
+              "session_id": "773b9bf23fda97177ce4286dac260b74",
+              "spiral_ms": 8.734993999999999,
+              "tcp_ms": 0.236625,
+              "tls_ms": 0.924911,
+              "total_ms": 11.173084,
+              "transcript_hash": "499037b5aa00dda5aacfb116357e63c35895a2ed460cfcec8dd652219cdc635c"
+            }
+          ],
+          "server_kem": {
+            "executed_jobs": 8,
+            "live_keys": 0,
+            "rejected_jobs": 0
+          },
+          "client_peak_rss_kib": 6172,
+          "server_peak_rss_kib": 5752
+        },
+        {
+          "wall_seconds": 0.03743095099889615,
+          "sessions": [
+            {
+              "app_ms": 5.793421,
+              "authenticated_close": true,
+              "binding_hash": "05c79c526097adc978768ae0a4cb50a1ee147eab635b7aba3c6781a69b017823",
+              "handshake_ms": 15.794358,
+              "messages": 32,
+              "payload_bytes": 64,
+              "session_id": "efeea307aa74af237b7d38ca69d92449",
+              "spiral_ms": 15.047565,
+              "tcp_ms": 0.029049,
+              "tls_ms": 0.695461,
+              "total_ms": 22.182421,
+              "transcript_hash": "2bbe7d67f8b8cde0c124045f1c4fa320fc743a3d5973c1ee5b0813acf0019b40"
+            },
+            {
+              "app_ms": 4.330431,
+              "authenticated_close": true,
+              "binding_hash": "e7698a7c0c6b63d7f35f181377884acb5872c75cd26c2e042c6f868028608b31",
+              "handshake_ms": 17.747551,
+              "messages": 32,
+              "payload_bytes": 64,
+              "session_id": "08d51ce9c18047378a1ef2dd6d1063b1",
+              "spiral_ms": 16.519495,
+              "tcp_ms": 0.03369,
+              "tls_ms": 1.193301,
+              "total_ms": 23.516536000000002,
+              "transcript_hash": "b269cc7c3bc61fed17f7c348284ae3c7def6f552ddc25b54b01f95514bd536d3"
+            },
+            {
+              "app_ms": 6.099596,
+              "authenticated_close": true,
+              "binding_hash": "27a3e6122a69cf6b48ac944721ea7b12184338dd7c937feff6c73f63eb42c0fc",
+              "handshake_ms": 16.145068,
+              "messages": 32,
+              "payload_bytes": 64,
+              "session_id": "d035b44194356fabeb267f4600de44ab",
+              "spiral_ms": 14.516695,
+              "tcp_ms": 0.329694,
+              "tls_ms": 1.2978429999999999,
+              "total_ms": 23.825427,
+              "transcript_hash": "8635099419a8e0bcc7f10dd4b2c15d2e4ea2678dcc6fae644056596242ef9c60"
+            },
+            {
+              "app_ms": 7.859390000000001,
+              "authenticated_close": true,
+              "binding_hash": "fec13a1b70adf4f55ff7db6288ae09811d5846bb4bf771395a3ff3e449f4cf9d",
+              "handshake_ms": 16.233072,
+              "messages": 32,
+              "payload_bytes": 64,
+              "session_id": "2a872a4eb7cb9545ac299a63282d6dc4",
+              "spiral_ms": 15.077490000000001,
+              "tcp_ms": 0.338439,
+              "tls_ms": 0.816454,
+              "total_ms": 24.158036,
+              "transcript_hash": "ce434984d9d6f728e10da942c5f49d70e87aa5748508ff79a8afc8e4f2c5f40b"
+            }
+          ],
+          "server_kem": {
+            "executed_jobs": 8,
+            "live_keys": 0,
+            "rejected_jobs": 0
+          },
+          "client_peak_rss_kib": 6112,
+          "server_peak_rss_kib": 5788
+        },
+        {
+          "wall_seconds": 0.030847664000248187,
+          "sessions": [
+            {
+              "app_ms": 1.4228470000000002,
+              "authenticated_close": true,
+              "binding_hash": "8f1cfed5ea55d217810065cfe76807fe6e12b733171f207452ba283bd9d51e32",
+              "handshake_ms": 12.424444999999999,
+              "messages": 32,
+              "payload_bytes": 64,
+              "session_id": "f421f41ac33ee92a9c1b45f41dc9c378",
+              "spiral_ms": 10.609393,
+              "tcp_ms": 0.587764,
+              "tls_ms": 1.205082,
+              "total_ms": 13.959879999999998,
+              "transcript_hash": "e78b83515bf2852fe8c3db7ed2b0d0d55384a06a72941eb0abd900124ef05f80"
+            },
+            {
+              "app_ms": 2.076994,
+              "authenticated_close": true,
+              "binding_hash": "8b7355db615ab85df86999ce1021074e885e51945a70c5fb10a1f60c495aa0dd",
+              "handshake_ms": 11.136986,
+              "messages": 32,
+              "payload_bytes": 64,
+              "session_id": "048a9dd4fabd10430345969b3616c7c5",
+              "spiral_ms": 9.292138,
+              "tcp_ms": 0.193138,
+              "tls_ms": 1.650674,
+              "total_ms": 13.706099,
+              "transcript_hash": "2cb99caf36de88a3ecc87941b34b1d792b89df8c74d2d03d6dae3fb3d4c4b556"
+            },
+            {
+              "app_ms": 1.993983,
+              "authenticated_close": true,
+              "binding_hash": "07704cfe55396fc633924f713dfb79ca61976696121f01406e990901c18dfc51",
+              "handshake_ms": 13.494361999999999,
+              "messages": 32,
+              "payload_bytes": 64,
+              "session_id": "89a1c48d392be7271bcf373b94f91e2d",
+              "spiral_ms": 11.364844000000002,
+              "tcp_ms": 0.349547,
+              "tls_ms": 1.7791700000000001,
+              "total_ms": 15.554437,
+              "transcript_hash": "822b311d05d8495e586c8c639bd83e1b70342f59f84f2fb40418ca48dfa9daf2"
+            },
+            {
+              "app_ms": 2.731239,
+              "authenticated_close": true,
+              "binding_hash": "3237cf1bbf327799077deb94c15c2f6ace752dff183b74f1ee6b65de7096461b",
+              "handshake_ms": 12.533347000000001,
+              "messages": 32,
+              "payload_bytes": 64,
+              "session_id": "24d1ac1c31560c89d9c3fac237939c6a",
+              "spiral_ms": 10.75675,
+              "tcp_ms": 0.16173500000000002,
+              "tls_ms": 1.613483,
+              "total_ms": 15.383045999999998,
+              "transcript_hash": "3ac5137170734a19d5fdd15d5676bbb3271b92d2511bc6c755927c140b9d7f38"
+            }
+          ],
+          "server_kem": {
+            "executed_jobs": 8,
+            "live_keys": 0,
+            "rejected_jobs": 0
+          },
+          "client_peak_rss_kib": 6236,
+          "server_peak_rss_kib": 5760
+        },
+        {
+          "wall_seconds": 0.03345889999945939,
+          "sessions": [
+            {
+              "app_ms": 3.249386,
+              "authenticated_close": true,
+              "binding_hash": "1c81c4ba2df537f650afe34abce2d0dcff79bc9214e07e06cb1f39971e8bf801",
+              "handshake_ms": 12.009253,
+              "messages": 32,
+              "payload_bytes": 64,
+              "session_id": "0b242eeedf971bd101eb65a9f657b64d",
+              "spiral_ms": 9.009599,
+              "tcp_ms": 1.106241,
+              "tls_ms": 1.892272,
+              "total_ms": 15.453546000000001,
+              "transcript_hash": "e07bd53f542111964ce7fe5739c1b6b2bca743b3fcf1706bc61ccfa166d4f230"
+            },
+            {
+              "app_ms": 2.169248,
+              "authenticated_close": true,
+              "binding_hash": "80eb3bc872259c68e9a5024868c8609492666707bd75763b55ea5c148f4fe631",
+              "handshake_ms": 12.374269,
+              "messages": 32,
+              "payload_bytes": 64,
+              "session_id": "2b60d3f4948207a3b3bd17de186f756d",
+              "spiral_ms": 9.905194000000002,
+              "tcp_ms": 0.345057,
+              "tls_ms": 2.1231240000000002,
+              "total_ms": 14.670187,
+              "transcript_hash": "a2677cdd3c63fe347ca4c0a4dc058e97f8e35579801c9ec8cce14948b55bd0a2"
+            },
+            {
+              "app_ms": 2.961951,
+              "authenticated_close": true,
+              "binding_hash": "643d3f2c1c1cbdd2ab412f1ea818c4944223a7b4ee37cae5aaee5805e01e85e2",
+              "handshake_ms": 11.889517,
+              "messages": 32,
+              "payload_bytes": 64,
+              "session_id": "9e7ef7d2583d52d26d7ae309e4a9bea7",
+              "spiral_ms": 9.276829000000001,
+              "tcp_ms": 0.06424400000000001,
+              "tls_ms": 2.547775,
+              "total_ms": 14.929912,
+              "transcript_hash": "9855c0584784993212deeb1eeca7c5be643bfdd0efed6a4803c7971dc11e3ff0"
+            },
+            {
+              "app_ms": 2.426502,
+              "authenticated_close": true,
+              "binding_hash": "afba94d371f42c203793ccb6fbbd764c4e8f0263541da220c537c60f08fb7fa7",
+              "handshake_ms": 14.235736000000001,
+              "messages": 32,
+              "payload_bytes": 64,
+              "session_id": "e8d25499f53105924ef7014452ee0cf3",
+              "spiral_ms": 11.605661999999999,
+              "tcp_ms": 0.76673,
+              "tls_ms": 1.835155,
+              "total_ms": 16.735225999999997,
+              "transcript_hash": "af81c34db9f5acecb1a9182366e810b3d8a86302e74b8b2991fd5d2a57ed4fec"
+            }
+          ],
+          "server_kem": {
+            "executed_jobs": 8,
+            "live_keys": 0,
+            "rejected_jobs": 0
+          },
+          "client_peak_rss_kib": 6164,
+          "server_peak_rss_kib": 5788
+        }
+      ]
+    },
+    {
+      "workers_per_endpoint": 1,
+      "payload": 1024,
+      "trials": 5,
+      "connection_samples": 20,
+      "summary_ms": {
+        "handshake_ms": {
+          "median": 10.309879,
+          "p95": 17.715364,
+          "p99": 17.859343
+        },
+        "tcp_ms": {
+          "median": 0.268457,
+          "p95": 0.367842,
+          "p99": 0.522948
+        },
+        "tls_ms": {
+          "median": 1.1536205000000002,
+          "p95": 1.879119,
+          "p99": 2.560851
+        },
+        "spiral_ms": {
+          "median": 8.6869335,
+          "p95": 15.474234,
+          "p99": 15.804687000000001
+        },
+        "app_ms": {
+          "median": 3.9424855,
+          "p95": 10.144153,
+          "p99": 13.465278000000001
+        }
+      },
+      "whole_run_echo_payload_MiB_per_second": {
+        "median": 7.121367500773055,
+        "p95": 9.297999546515438,
+        "p99": 9.297999546515438
+      },
+      "rss_kib": {
+        "client_peak_rss_kib": {
+          "median": 6172,
+          "p95": 6488,
+          "p99": 6488
+        },
+        "server_peak_rss_kib": {
+          "median": 5596,
+          "p95": 5892,
+          "p99": 5892
+        }
+      },
+      "raw": [
+        {
+          "wall_seconds": 0.03510561700022663,
+          "sessions": [
+            {
+              "app_ms": 5.699698,
+              "authenticated_close": true,
+              "binding_hash": "b5c40b9054b4b6ee92e23322d8d41dbaa14a8d3650d23ee345fda30bf53f1337",
+              "handshake_ms": 8.080891,
+              "messages": 32,
+              "payload_bytes": 1024,
+              "session_id": "71226415a26407af2b111d1110c10709",
+              "spiral_ms": 7.272077,
+              "tcp_ms": 0.029887,
+              "tls_ms": 0.758017,
+              "total_ms": 14.733104,
+              "transcript_hash": "20f5f967789e5b2f0f2f7f9edeb107bb2f8ba66a926d46196b30ffb79c7f6332"
+            },
+            {
+              "app_ms": 5.616439,
+              "authenticated_close": true,
+              "binding_hash": "b73e9784040e203a99b686e148bad57fca5004ccc12614f24bafc2be17847126",
+              "handshake_ms": 9.10617,
+              "messages": 32,
+              "payload_bytes": 1024,
+              "session_id": "cde200426d055a82cfcf6947c8ac440b",
+              "spiral_ms": 8.126584,
+              "tcp_ms": 0.095958,
+              "tls_ms": 0.882988,
+              "total_ms": 14.913293,
+              "transcript_hash": "31be37a30e67ce8fd1b8dd1da86dbb7f73b555ae4aaa9796671603941afe7323"
+            },
+            {
+              "app_ms": 7.250265,
+              "authenticated_close": true,
+              "binding_hash": "05f95bebb214acbd19213b970701a726ab175ee85481953d5eccace5922c58e2",
+              "handshake_ms": 9.579542,
+              "messages": 32,
+              "payload_bytes": 1024,
+              "session_id": "1412f75b9aefe0c15e24d18727f40652",
+              "spiral_ms": 8.122262,
+              "tcp_ms": 0.32233700000000004,
+              "tls_ms": 1.134366,
+              "total_ms": 17.142024,
+              "transcript_hash": "fe28d9e41f45dd214feb1f14079aee3eafa1c38add1d5ea829d6641ffc4246b5"
+            },
+            {
+              "app_ms": 9.642591000000001,
+              "authenticated_close": true,
+              "binding_hash": "0678c42ae55e7111227199ed08c278b4b61a34afd2f9922647444eb2054bfa02",
+              "handshake_ms": 10.099121,
+              "messages": 32,
+              "payload_bytes": 1024,
+              "session_id": "c1c5ef7a118add7ba9067da90b920f43",
+              "spiral_ms": 8.479761,
+              "tcp_ms": 0.30833699999999997,
+              "tls_ms": 1.309412,
+              "total_ms": 19.904826,
+              "transcript_hash": "ba36e931f398dd9fcfe7628cf0a4f01c579be5308e25b57fc6bfca2018f9c9fe"
+            }
+          ],
+          "server_kem": {
+            "executed_jobs": 8,
+            "live_keys": 0,
+            "rejected_jobs": 0
+          },
+          "client_peak_rss_kib": 6308,
+          "server_peak_rss_kib": 5592
+        },
+        {
+          "wall_seconds": 0.03134698699977889,
+          "sessions": [
+            {
+              "app_ms": 2.294471,
+              "authenticated_close": true,
+              "binding_hash": "6e156fc4b63a10d981e8148320e9d02f254cb6a950c2360ea619ab6ced6b12a0",
+              "handshake_ms": 8.867383,
+              "messages": 32,
+              "payload_bytes": 1024,
+              "session_id": "a47d5a227e77a73736bda8dfc851f114",
+              "spiral_ms": 7.453556,
+              "tcp_ms": 0.022759,
+              "tls_ms": 1.3689609999999999,
+              "total_ms": 11.249702000000001,
+              "transcript_hash": "77af6f580e87cd2ad7f5850794fc93275ccd9862792b0cfb9bf25339f63b185b"
+            },
+            {
+              "app_ms": 2.184415,
+              "authenticated_close": true,
+              "binding_hash": "35061eadd63004f2aac8048c48381469a7ad056f555363f9d0b480a179cec2a5",
+              "handshake_ms": 9.815526,
+              "messages": 32,
+              "payload_bytes": 1024,
+              "session_id": "43b562f24479aa1ab9c1ff094dc53cc7",
+              "spiral_ms": 8.071686999999999,
+              "tcp_ms": 0.364543,
+              "tls_ms": 1.378675,
+              "total_ms": 12.768979999999999,
+              "transcript_hash": "906a32678a545bf5ff90d4c6e6897185464c4c4e18b4deab1b290fd68eee759a"
+            },
+            {
+              "app_ms": 1.731678,
+              "authenticated_close": true,
+              "binding_hash": "e02499fea8950ddc96442bfe8d57571be5f79782cf5616cbcad44a2de2d0e3ff",
+              "handshake_ms": 11.472352,
+              "messages": 32,
+              "payload_bytes": 1024,
+              "session_id": "d9ac34cbc0a3c18cdb9eb5c60a72806c",
+              "spiral_ms": 8.632047,
+              "tcp_ms": 0.278594,
+              "tls_ms": 2.560851,
+              "total_ms": 14.11728,
+              "transcript_hash": "123db18ac2e3450ead8170060cd4087d802307f8789983bf44b8b63a90930117"
+            },
+            {
+              "app_ms": 3.291162,
+              "authenticated_close": true,
+              "binding_hash": "1437e60a706fb7da0d3fe29db9b1903190f70a64276184450e5c87f3242aefe5",
+              "handshake_ms": 10.52016,
+              "messages": 32,
+              "payload_bytes": 1024,
+              "session_id": "a8418bfe84ddd79ba9f81637d6c0db74",
+              "spiral_ms": 8.74182,
+              "tcp_ms": 0.25832,
+              "tls_ms": 1.519302,
+              "total_ms": 13.930085,
+              "transcript_hash": "fd222fef20bb5bac3c7793688920ffd1bcbbf17048fc914cda7292dd06c5f757"
+            }
+          ],
+          "server_kem": {
+            "executed_jobs": 8,
+            "live_keys": 0,
+            "rejected_jobs": 0
+          },
+          "client_peak_rss_kib": 6124,
+          "server_peak_rss_kib": 5596
+        },
+        {
+          "wall_seconds": 0.02688750400011486,
+          "sessions": [
+            {
+              "app_ms": 2.392648,
+              "authenticated_close": true,
+              "binding_hash": "88680a5e0b27cfc476f5ca15d093b5b74ab3d8b44e15be61af7371f97483721b",
+              "handshake_ms": 8.451452,
+              "messages": 32,
+              "payload_bytes": 1024,
+              "session_id": "907340b0758fe37be029ad247e177188",
+              "spiral_ms": 7.697313,
+              "tcp_ms": 0.019939,
+              "tls_ms": 0.710815,
+              "total_ms": 11.158628,
+              "transcript_hash": "6e62343ceae61fceae7dd2dd0be7a6a71faaf7dc7da7d9a36643cb9d9b0a8bfb"
+            },
+            {
+              "app_ms": 1.8045010000000001,
+              "authenticated_close": true,
+              "binding_hash": "ceef26428e3c929a1de1e8a5d3df9a0916084fd4bd5c9ebc849435e3aff84ce2",
+              "handshake_ms": 8.668735999999999,
+              "messages": 32,
+              "payload_bytes": 1024,
+              "session_id": "f3e69c90997c918b1325959844081706",
+              "spiral_ms": 7.427962,
+              "tcp_ms": 0.19975400000000001,
+              "tls_ms": 1.040433,
+              "total_ms": 11.203005000000001,
+              "transcript_hash": "f3553187b007f6dd8c92dd3c79939a478e4b377cc5fb123d71c89fa98fa07679"
+            },
+            {
+              "app_ms": 4.288243,
+              "authenticated_close": true,
+              "binding_hash": "c9c76896b33ebd58c0ea3d25da710cfdd6b2083a4ed4352f9c4ba5e59e46c614",
+              "handshake_ms": 11.49108,
+              "messages": 32,
+              "payload_bytes": 1024,
+              "session_id": "1aa861ad1c59d39957e316c89d5a8834",
+              "spiral_ms": 9.990328,
+              "tcp_ms": 0.326663,
+              "tls_ms": 1.1728750000000001,
+              "total_ms": 15.928642,
+              "transcript_hash": "137d2f418ed548a79731df0d5b46a60d296c6cee891e614cc399d4e58f905b5e"
+            },
+            {
+              "app_ms": 4.262967000000001,
+              "authenticated_close": true,
+              "binding_hash": "2ede42e16ba1b99059e2acfb8577e02ef0a580c4f6d947fc8f5c6e93d389bd9d",
+              "handshake_ms": 12.284289000000001,
+              "messages": 32,
+              "payload_bytes": 1024,
+              "session_id": "27a0e18f36c8f2768ed7fe33bd52f47f",
+              "spiral_ms": 11.084060999999998,
+              "tcp_ms": 0.306124,
+              "tls_ms": 0.8930020000000001,
+              "total_ms": 16.865063,
+              "transcript_hash": "f0a8d83b23b1ef0627db9d331e3c2b0089fd2d6aa73e66a21dd771ca970158f6"
+            }
+          ],
+          "server_kem": {
+            "executed_jobs": 8,
+            "live_keys": 0,
+            "rejected_jobs": 0
+          },
+          "client_peak_rss_kib": 5916,
+          "server_peak_rss_kib": 5596
+        },
+        {
+          "wall_seconds": 0.03687843800071278,
+          "sessions": [
+            {
+              "app_ms": 3.567297,
+              "authenticated_close": true,
+              "binding_hash": "5d65d5cd2caae2e901187ff38f9d98a62265ff692cee9e4e576e9a62d5826792",
+              "handshake_ms": 16.873113,
+              "messages": 32,
+              "payload_bytes": 1024,
+              "session_id": "316aa95985dccaaf31a330765d3eb791",
+              "spiral_ms": 15.474234,
+              "tcp_ms": 0.028073,
+              "tls_ms": 1.3428419999999999,
+              "total_ms": 20.546301999999997,
+              "transcript_hash": "65a40d114d80472fae3ac7b05a394127cab9a793886a804310b949c72761ceba"
+            },
+            {
+              "app_ms": 2.89348,
+              "authenticated_close": true,
+              "binding_hash": "959ab34b56c109de806c6aa5429ca48b82773de27bcf6db6aac34251485282ff",
+              "handshake_ms": 17.859343,
+              "messages": 32,
+              "payload_bytes": 1024,
+              "session_id": "22cc4ca57f2cc56475fa75a0fd8e1773",
+              "spiral_ms": 15.804687000000001,
+              "tcp_ms": 0.176525,
+              "tls_ms": 1.877124,
+              "total_ms": 20.823393,
+              "transcript_hash": "d04fbaee19ddbdde17087cea921c35f7bd82a5ee5e751c686c56483e4d6dbbaa"
+            },
+            {
+              "app_ms": 3.622004,
+              "authenticated_close": true,
+              "binding_hash": "bd3ee10f282dc40e350f31714ea1aa12f9a1155502329a766e5c74ea46e73547",
+              "handshake_ms": 17.715364,
+              "messages": 32,
+              "payload_bytes": 1024,
+              "session_id": "96e489e08d63e0cc2ff463e43bddef80",
+              "spiral_ms": 15.312448,
+              "tcp_ms": 0.522948,
+              "tls_ms": 1.879119,
+              "total_ms": 21.397244999999998,
+              "transcript_hash": "5f564995ae3e3e563ad95b1d31441bdf1f1394368dcb4578e0e75691ed17ad7f"
+            },
+            {
+              "app_ms": 4.331773,
+              "authenticated_close": true,
+              "binding_hash": "f31883e44006931e18e34d7bf4c6902460a11451259a3a617de5197211ee0ec8",
+              "handshake_ms": 16.991209,
+              "messages": 32,
+              "payload_bytes": 1024,
+              "session_id": "c21e05f29ac91a2cc0157b635dff686f",
+              "spiral_ms": 15.253779999999999,
+              "tcp_ms": 0.367842,
+              "tls_ms": 1.344762,
+              "total_ms": 21.679425,
+              "transcript_hash": "969b9462c1ef69bc5ce1f53f4709a3a9db3b68167e36f5c16c9798ab19d9d2b6"
+            }
+          ],
+          "server_kem": {
+            "executed_jobs": 8,
+            "live_keys": 0,
+            "rejected_jobs": 0
+          },
+          "client_peak_rss_kib": 6172,
+          "server_peak_rss_kib": 5892
+        },
+        {
+          "wall_seconds": 0.03860017599981802,
+          "sessions": [
+            {
+              "app_ms": 1.789912,
+              "authenticated_close": true,
+              "binding_hash": "51d16b28d77d1eb9ccb901adbf5d181e53f7d2beee538e0a2d0121077847be7b",
+              "handshake_ms": 9.284857,
+              "messages": 32,
+              "payload_bytes": 1024,
+              "session_id": "a9455e9bc7f7a4a038cc45339821bbb5",
+              "spiral_ms": 8.542798000000001,
+              "tcp_ms": 0.042233,
+              "tls_ms": 0.6790649999999999,
+              "total_ms": 11.288075,
+              "transcript_hash": "ffeae15ae2f9b502ebe6c9b765b05a66284ccee2f94ec875ff16fd067c117155"
+            },
+            {
+              "app_ms": 4.474426,
+              "authenticated_close": true,
+              "binding_hash": "7f27a583f55d68409ff2b21ae7f313e52933126e42edb6d03ccb712092091d95",
+              "handshake_ms": 11.665728999999999,
+              "messages": 32,
+              "payload_bytes": 1024,
+              "session_id": "de0865c0895a86a1f663a6f55b9a4b40",
+              "spiral_ms": 10.266773,
+              "tcp_ms": 0.35630599999999996,
+              "tls_ms": 1.041905,
+              "total_ms": 16.213064,
+              "transcript_hash": "113f2c4df2bdedc691598c0ccc8e39163bada54fa559a6786f5de17c952489eb"
+            },
+            {
+              "app_ms": 10.144153,
+              "authenticated_close": true,
+              "binding_hash": "e062c506cfd2da74b98037f1c27bbe5760f0e7dbf5eeb13a69daaa63cb0398a4",
+              "handshake_ms": 10.099598,
+              "messages": 32,
+              "payload_bytes": 1024,
+              "session_id": "9a42b351cdc244649ec3dd55045777c7",
+              "spiral_ms": 8.986321,
+              "tcp_ms": 0.29759399999999997,
+              "tls_ms": 0.814365,
+              "total_ms": 20.373638,
+              "transcript_hash": "75ccf6a111354c4962c56a864eb47f4af2bd1c80c89533ee3e68cd82af1bc203"
+            },
+            {
+              "app_ms": 13.465278000000001,
+              "authenticated_close": true,
+              "binding_hash": "b151d914ba719eb7a892455d7f16ccfed0b3a5292f288811ff3798e3ccfb9d8b",
+              "handshake_ms": 10.537115,
+              "messages": 32,
+              "payload_bytes": 1024,
+              "session_id": "afc7602629f7f35edc61c6cf0dc0dc50",
+              "spiral_ms": 9.551513,
+              "tcp_ms": 0.167935,
+              "tls_ms": 0.816806,
+              "total_ms": 24.12773,
+              "transcript_hash": "6422876c5f1b855d4f4da55510810998fd81ade31c663c48f2390906fb7c5215"
+            }
+          ],
+          "server_kem": {
+            "executed_jobs": 8,
+            "live_keys": 0,
+            "rejected_jobs": 0
+          },
+          "client_peak_rss_kib": 6488,
+          "server_peak_rss_kib": 5768
+        }
+      ]
+    },
+    {
+      "workers_per_endpoint": 1,
+      "payload": 16384,
+      "trials": 5,
+      "connection_samples": 20,
+      "summary_ms": {
+        "handshake_ms": {
+          "median": 10.983234,
+          "p95": 15.989361,
+          "p99": 16.520726
+        },
+        "tcp_ms": {
+          "median": 0.328875,
+          "p95": 0.775842,
+          "p99": 1.1614749999999998
+        },
+        "tls_ms": {
+          "median": 1.518944,
+          "p95": 3.9093519999999997,
+          "p99": 4.110336
+        },
+        "spiral_ms": {
+          "median": 9.362672,
+          "p95": 12.286981,
+          "p99": 12.471286
+        },
+        "app_ms": {
+          "median": 8.853129,
+          "p95": 12.17098,
+          "p99": 12.909672
+        }
+      },
+      "whole_run_echo_payload_MiB_per_second": {
+        "median": 108.05535665180618,
+        "p95": 146.72921684014395,
+        "p99": 146.72921684014395
+      },
+      "rss_kib": {
+        "client_peak_rss_kib": {
+          "median": 9180,
+          "p95": 9628,
+          "p99": 9628
+        },
+        "server_peak_rss_kib": {
+          "median": 5916,
+          "p95": 6040,
+          "p99": 6040
+        }
+      },
+      "raw": [
+        {
+          "wall_seconds": 0.04805117599971709,
+          "sessions": [
+            {
+              "app_ms": 8.875148,
+              "authenticated_close": true,
+              "binding_hash": "f619e46e2e229126ad9cd31cf8585b5924106c9b85a70b5f36a3067ce7e4db79",
+              "handshake_ms": 16.520726,
+              "messages": 32,
+              "payload_bytes": 16384,
+              "session_id": "5768258fe13abb2cec2f0b7eb904ca9e",
+              "spiral_ms": 12.471286,
+              "tcp_ms": 0.13888,
+              "tls_ms": 3.9093519999999997,
+              "total_ms": 26.262878999999998,
+              "transcript_hash": "79cf89b57d61052ce8e4abf802700adfb20e7dc0f8621a3fd20e920a66607a4a"
+            },
+            {
+              "app_ms": 10.573803999999999,
+              "authenticated_close": true,
+              "binding_hash": "7cd8ac4328fd7e70aed011ecabb1797552c70536714e98149c0bc050f9423844",
+              "handshake_ms": 14.589092999999998,
+              "messages": 32,
+              "payload_bytes": 16384,
+              "session_id": "8c566aa5d9f8371934ccb130f5c2a792",
+              "spiral_ms": 12.286981,
+              "tcp_ms": 1.1614749999999998,
+              "tls_ms": 1.112263,
+              "total_ms": 28.17848,
+              "transcript_hash": "8854c1cebd71b178660d9a6e999581db2d47fe0b1e15204e41695a969112f891"
+            },
+            {
+              "app_ms": 12.909672,
+              "authenticated_close": true,
+              "binding_hash": "3fa1ec3f8db28480376665e89adc20c7a82479536c887c7938f172d74d92e339",
+              "handshake_ms": 15.238827,
+              "messages": 32,
+              "payload_bytes": 16384,
+              "session_id": "d61ea81881df298e59e31f772295ddaf",
+              "spiral_ms": 11.359997,
+              "tcp_ms": 0.286941,
+              "tls_ms": 3.5907449999999996,
+              "total_ms": 28.399738,
+              "transcript_hash": "0d48147803ba74785f0b8ee7f7b069bdcea870302d3f3773ce531c709147c44b"
+            },
+            {
+              "app_ms": 12.17098,
+              "authenticated_close": true,
+              "binding_hash": "0c6b6ab1a15a3db9c39fbf2de06d0f0899dc5b2f72662ccb12743859d24c803f",
+              "handshake_ms": 15.989361,
+              "messages": 32,
+              "payload_bytes": 16384,
+              "session_id": "48b645a5eef20fa5bbae1841730fd9f5",
+              "spiral_ms": 11.797143,
+              "tcp_ms": 0.08117200000000001,
+              "tls_ms": 4.110336,
+              "total_ms": 28.529226,
+              "transcript_hash": "ffab5bd0029bc2dfbe0775d8342a7af20590f4731bb4144fb0b77aa0983a8c0b"
+            }
+          ],
+          "server_kem": {
+            "executed_jobs": 8,
+            "live_keys": 0,
+            "rejected_jobs": 0
+          },
+          "client_peak_rss_kib": 9180,
+          "server_peak_rss_kib": 6040
+        },
+        {
+          "wall_seconds": 0.039560004999657394,
+          "sessions": [
+            {
+              "app_ms": 9.898654,
+              "authenticated_close": true,
+              "binding_hash": "1a1148cc7b7cd6fd7665361c2ad6d2e8f06cb86a527cac49af77880021f8ccb2",
+              "handshake_ms": 10.628539,
+              "messages": 32,
+              "payload_bytes": 16384,
+              "session_id": "66472ad68a0ce1ecbf078dd35da8d1c9",
+              "spiral_ms": 9.317403,
+              "tcp_ms": 0.775842,
+              "tls_ms": 0.508748,
+              "total_ms": 21.587774,
+              "transcript_hash": "ae701c76c117994b8fdfb6b250daacbaa7cea92d00a1a42d65be7e233a7bc988"
+            },
+            {
+              "app_ms": 8.622889,
+              "authenticated_close": true,
+              "binding_hash": "554b3f725287591d705f52b3570f324557f33b278ae0e74eaac3553a8c1c7c67",
+              "handshake_ms": 11.738721,
+              "messages": 32,
+              "payload_bytes": 16384,
+              "session_id": "031c6bb89a0db6cfe6df255ca203077d",
+              "spiral_ms": 10.377046,
+              "tcp_ms": 0.091351,
+              "tls_ms": 1.269074,
+              "total_ms": 21.068361,
+              "transcript_hash": "bba9050986994703c99d7e2eb3496b581ddadf5881965cbf478baaacb72df9ef"
+            },
+            {
+              "app_ms": 9.457894,
+              "authenticated_close": true,
+              "binding_hash": "3165db88f3f44c57282acff6eb31214797b891c4287356afb408eb30b875e4e5",
+              "handshake_ms": 12.439201,
+              "messages": 32,
+              "payload_bytes": 16384,
+              "session_id": "7af9787b44fdeb4ff76f9ea145c24015",
+              "spiral_ms": 9.842295,
+              "tcp_ms": 0.569485,
+              "tls_ms": 2.026296,
+              "total_ms": 22.206976,
+              "transcript_hash": "768a489244151330148eec10be370d1202543baa2a4b48a1f767130f2cca8b3a"
+            },
+            {
+              "app_ms": 11.286090999999999,
+              "authenticated_close": true,
+              "binding_hash": "bde630c79926379deea64894d4816825e66d8150f411d7c2d59ac29eb7d89659",
+              "handshake_ms": 9.607444,
+              "messages": 32,
+              "payload_bytes": 16384,
+              "session_id": "e32e03f3e8a27ae13320c50111090fa4",
+              "spiral_ms": 7.637815,
+              "tcp_ms": 0.080052,
+              "tls_ms": 1.8885569999999998,
+              "total_ms": 21.825979,
+              "transcript_hash": "8e32d6474de02146feba9247ca0c7f86192bb4c1c118344a64eed5eeef52810a"
+            }
+          ],
+          "server_kem": {
+            "executed_jobs": 8,
+            "live_keys": 0,
+            "rejected_jobs": 0
+          },
+          "client_peak_rss_kib": 9628,
+          "server_peak_rss_kib": 5596
+        },
+        {
+          "wall_seconds": 0.02726110100047663,
+          "sessions": [
+            {
+              "app_ms": 5.037314,
+              "authenticated_close": true,
+              "binding_hash": "dd636508d1a3b02ff57992823f3838232dcbf8c7e696c77ccf6a866c27d8a527",
+              "handshake_ms": 10.624345,
+              "messages": 32,
+              "payload_bytes": 16384,
+              "session_id": "78bcfbc7494ecd1204e6035973951c33",
+              "spiral_ms": 8.569994,
+              "tcp_ms": 0.365482,
+              "tls_ms": 1.68813,
+              "total_ms": 16.406471999999997,
+              "transcript_hash": "7ed584dd999a1992b13b2bc4c880a84b05b73726a809fb3fff1b2c9c479eb914"
+            },
+            {
+              "app_ms": 6.19575,
+              "authenticated_close": true,
+              "binding_hash": "c4273757002cfcafe4ccd320b50ac40084ee8995e9b0a04f73937c341e796b35",
+              "handshake_ms": 11.337929,
+              "messages": 32,
+              "payload_bytes": 16384,
+              "session_id": "72e558b9a461efa5a945a2aee63becd8",
+              "spiral_ms": 9.407941,
+              "tcp_ms": 0.292085,
+              "tls_ms": 1.636762,
+              "total_ms": 18.327261,
+              "transcript_hash": "1d690c6f0b31538eaf2e498c608a1e76d1e692ee388fa925f093e621265148a0"
+            },
+            {
+              "app_ms": 5.528266,
+              "authenticated_close": true,
+              "binding_hash": "ac057cb4436e68b3b98463e44609c6989f5604e65bb56e9bbd7834e95f217cd1",
+              "handshake_ms": 13.05106,
+              "messages": 32,
+              "payload_bytes": 16384,
+              "session_id": "bb2c57fa10bdd6778bc4abf37495c08c",
+              "spiral_ms": 11.432426000000001,
+              "tcp_ms": 0.026471,
+              "tls_ms": 1.5913950000000001,
+              "total_ms": 18.687572,
+              "transcript_hash": "bce66c22bb7955e86b23029b3a73a7311c5ae6e6f8bb40b7e0be67cf5aefa3b5"
+            },
+            {
+              "app_ms": 6.830000999999999,
+              "authenticated_close": true,
+              "binding_hash": "19c9a977b01d2c8469c5ab2e712d92a2a849704e4c2de052d65101fd0ad95350",
+              "handshake_ms": 12.907039000000001,
+              "messages": 32,
+              "payload_bytes": 16384,
+              "session_id": "a30a33443ce700ef0043f69be6cb79ae",
+              "spiral_ms": 11.068474,
+              "tcp_ms": 0.5862740000000001,
+              "tls_ms": 1.229228,
+              "total_ms": 20.196686,
+              "transcript_hash": "173657d2395b647aaf385360778125029e7bad8294afb1f7f473996b35046205"
+            }
+          ],
+          "server_kem": {
+            "executed_jobs": 8,
+            "live_keys": 0,
+            "rejected_jobs": 0
+          },
+          "client_peak_rss_kib": 8348,
+          "server_peak_rss_kib": 5976
+        },
+        {
+          "wall_seconds": 0.03701806299977761,
+          "sessions": [
+            {
+              "app_ms": 8.882278000000001,
+              "authenticated_close": true,
+              "binding_hash": "7a6c0941f83df8c7eb82bd9c02f0a40191eb4a56c101041165d0af1552e4ead0",
+              "handshake_ms": 8.151701000000001,
+              "messages": 32,
+              "payload_bytes": 16384,
+              "session_id": "73f05d6bee2650007b72662090c5409e",
+              "spiral_ms": 5.869087,
+              "tcp_ms": 0.518377,
+              "tls_ms": 1.7635610000000002,
+              "total_ms": 18.099912,
+              "transcript_hash": "cc0df08ca4e41f256a544ef6d72b93c23714b2608818c85e646d20d2a6f4f19b"
+            },
+            {
+              "app_ms": 9.000902,
+              "authenticated_close": true,
+              "binding_hash": "992ffa650549d40e762909575410c78bf21e8330c7bfe79eaf53b5a4b665f6bb",
+              "handshake_ms": 7.552854,
+              "messages": 32,
+              "payload_bytes": 16384,
+              "session_id": "686710e0567fe541c34b826c3a66a4ee",
+              "spiral_ms": 6.6267130000000005,
+              "tcp_ms": 0.03938,
+              "tls_ms": 0.834341,
+              "total_ms": 18.071648,
+              "transcript_hash": "511bc22304015e1ff62c25d5fe4d78b4ee126a7f2a61fffc0ca63ac0f643a90d"
+            },
+            {
+              "app_ms": 8.831109999999999,
+              "authenticated_close": true,
+              "binding_hash": "87f68fca52e38450feac53125ae4ce7f6779104315213eb010cec3229191184a",
+              "handshake_ms": 10.263237,
+              "messages": 32,
+              "payload_bytes": 16384,
+              "session_id": "09a99f3c730983e77b43796461b98cdc",
+              "spiral_ms": 8.111998999999999,
+              "tcp_ms": 0.703605,
+              "tls_ms": 1.446493,
+              "total_ms": 19.456723,
+              "transcript_hash": "678d06806cbf33081c3af9ef02182f9654942b82d2e4902fd674f494ca2cc7df"
+            },
+            {
+              "app_ms": 9.177582,
+              "authenticated_close": true,
+              "binding_hash": "a8bc8b7c2aa213d474649c7e53d581f113180cb0b551199b64b1c053da583be4",
+              "handshake_ms": 10.008589,
+              "messages": 32,
+              "payload_bytes": 16384,
+              "session_id": "eefc7a28c41fdc55a261baf803db72ea",
+              "spiral_ms": 6.411323,
+              "tcp_ms": 0.469163,
+              "tls_ms": 3.1272119999999997,
+              "total_ms": 19.363571999999998,
+              "transcript_hash": "6a0bf044e8b16f5323f7c0b5fd6a92293182d5244985ea0e507c30d48ae29af7"
+            }
+          ],
+          "server_kem": {
+            "executed_jobs": 8,
+            "live_keys": 0,
+            "rejected_jobs": 0
+          },
+          "client_peak_rss_kib": 9372,
+          "server_peak_rss_kib": 5916
+        },
+        {
+          "wall_seconds": 0.02981547700073861,
+          "sessions": [
+            {
+              "app_ms": 6.502390999999999,
+              "authenticated_close": true,
+              "binding_hash": "90914b88a2eb25f5b91fedfc6d82ed2b6fa2e68f808d67445df8a02662d4da23",
+              "handshake_ms": 9.156602999999999,
+              "messages": 32,
+              "payload_bytes": 16384,
+              "session_id": "f1c44302a3e21b44a14c466002119b68",
+              "spiral_ms": 8.154585,
+              "tcp_ms": 0.070324,
+              "tls_ms": 0.930844,
+              "total_ms": 16.451978,
+              "transcript_hash": "bc02c30639488d57fb5aed610130ad3cb2682c18daa1c1582c0b9f1826c28915"
+            },
+            {
+              "app_ms": 6.898282,
+              "authenticated_close": true,
+              "binding_hash": "96612c4fd5474056fd42c43d98123e812bc862d1b16e96405512a40199cd741f",
+              "handshake_ms": 9.851814000000001,
+              "messages": 32,
+              "payload_bytes": 16384,
+              "session_id": "74a29e002f191d29f682c7e4b3a083fd",
+              "spiral_ms": 8.79928,
+              "tcp_ms": 0.396691,
+              "tls_ms": 0.633036,
+              "total_ms": 17.111502,
+              "transcript_hash": "bbf19a592787f6bb8462cb712718bc81b59f2929c74f386f432f4615de4caef8"
+            },
+            {
+              "app_ms": 6.420554,
+              "authenticated_close": true,
+              "binding_hash": "a5a70fd714ee3aa90f146b93a6b53606a7b4d2b18bb840252c2085a3560d0443",
+              "handshake_ms": 10.587477,
+              "messages": 32,
+              "payload_bytes": 16384,
+              "session_id": "773de37f4bf366efad6d156fa7bfdf5d",
+              "spiral_ms": 9.247745,
+              "tcp_ms": 0.292268,
+              "tls_ms": 1.0467339999999998,
+              "total_ms": 17.184838,
+              "transcript_hash": "013c440201cde84bc54f0934b19ef6ef55e740ca9b5ca19a747ffa4edb47863b"
+            },
+            {
+              "app_ms": 5.3359890000000005,
+              "authenticated_close": true,
+              "binding_hash": "308e62201a923b97657e91a8d6ae706cc3a9951f90e13c4b377d9ad28786b340",
+              "handshake_ms": 11.973162,
+              "messages": 32,
+              "payload_bytes": 16384,
+              "session_id": "b466cee9e0a37d6e54fa7f2198ac6671",
+              "spiral_ms": 9.988511,
+              "tcp_ms": 0.5982500000000001,
+              "tls_ms": 1.385302,
+              "total_ms": 17.420193,
+              "transcript_hash": "180fcbdf4954faca40953293addadd3287d943c79460d828c22c2f3d97d5d852"
+            }
+          ],
+          "server_kem": {
+            "executed_jobs": 8,
+            "live_keys": 0,
+            "rejected_jobs": 0
+          },
+          "client_peak_rss_kib": 8604,
+          "server_peak_rss_kib": 5856
+        }
+      ]
+    },
+    {
+      "workers_per_endpoint": 2,
+      "payload": 64,
+      "trials": 5,
+      "connection_samples": 20,
+      "summary_ms": {
+        "handshake_ms": {
+          "median": 11.560975,
+          "p95": 15.821287,
+          "p99": 16.026042
+        },
+        "tcp_ms": {
+          "median": 0.2633305,
+          "p95": 0.609001,
+          "p99": 0.746088
+        },
+        "tls_ms": {
+          "median": 1.471581,
+          "p95": 2.427294,
+          "p99": 2.47182
+        },
+        "spiral_ms": {
+          "median": 10.1264355,
+          "p95": 13.647547,
+          "p99": 13.845146
+        },
+        "app_ms": {
+          "median": 2.8026455,
+          "p95": 6.00632,
+          "p99": 6.754268
+        }
+      },
+      "whole_run_echo_payload_MiB_per_second": {
+        "median": 0.5552176870984366,
+        "p95": 0.5947571915541059,
+        "p99": 0.5947571915541059
+      },
+      "rss_kib": {
+        "client_peak_rss_kib": {
+          "median": 5988,
+          "p95": 6356,
+          "p99": 6356
+        },
+        "server_peak_rss_kib": {
+          "median": 5940,
+          "p95": 6040,
+          "p99": 6040
+        }
+      },
+      "raw": [
+        {
+          "wall_seconds": 0.02627122500052792,
+          "sessions": [
+            {
+              "app_ms": 5.68362,
+              "authenticated_close": true,
+              "binding_hash": "83d60406b42f4eab7ffc9b39ef8153590906236151ab240cc0431ed4e31bca7a",
+              "handshake_ms": 11.017460999999999,
+              "messages": 32,
+              "payload_bytes": 64,
+              "session_id": "350ae43f717de87e289f05627596919b",
+              "spiral_ms": 9.794537,
+              "tcp_ms": 0.037661,
+              "tls_ms": 1.184664,
+              "total_ms": 16.762344,
+              "transcript_hash": "81a383b031e7d435a3bc733f2cde1f7a6d24610b2e5b66c0d92051a2b60cdf06"
+            },
+            {
+              "app_ms": 6.00632,
+              "authenticated_close": true,
+              "binding_hash": "c2f54cc044b392b1246d029df960d935b92ae0b7ddea3c278fcbedf9809fed1a",
+              "handshake_ms": 11.158700000000001,
+              "messages": 32,
+              "payload_bytes": 64,
+              "session_id": "0a12893ee125f8cbbed219c0883f82e6",
+              "spiral_ms": 9.983469,
+              "tcp_ms": 0.284242,
+              "tls_ms": 0.8686740000000001,
+              "total_ms": 17.271736,
+              "transcript_hash": "ad70d32687d01789efb4d6f33dda96b02115221f52a353bf49025795ac08cc8d"
+            },
+            {
+              "app_ms": 2.7284420000000003,
+              "authenticated_close": true,
+              "binding_hash": "25153302d300d8328104d038bc6af778ce841b62528ce78bf94b1ce32cb000a2",
+              "handshake_ms": 14.258326,
+              "messages": 32,
+              "payload_bytes": 64,
+              "session_id": "a5db321adb3a4010fc8aead37044d127",
+              "spiral_ms": 12.669245,
+              "tcp_ms": 0.103855,
+              "tls_ms": 1.484353,
+              "total_ms": 17.051627,
+              "transcript_hash": "2821d6089fe79cbb7b6569da284435044ee46fcf96146df4961762ce49c38ac1"
+            },
+            {
+              "app_ms": 5.687946,
+              "authenticated_close": true,
+              "binding_hash": "6aa8800471a6999d532e181c64b285b5848fee5ec7df910e91308279c6e72865",
+              "handshake_ms": 11.634915,
+              "messages": 32,
+              "payload_bytes": 64,
+              "session_id": "55f925cf3f4781576d950738bcd56a3b",
+              "spiral_ms": 10.099113,
+              "tcp_ms": 0.231092,
+              "tls_ms": 1.304043,
+              "total_ms": 17.47598,
+              "transcript_hash": "72195350e4077d93c906add7fb910ba5f16bbb366ca4a455c2b43122e18e1a7a"
+            }
+          ],
+          "server_kem": {
+            "executed_jobs": 8,
+            "live_keys": 0,
+            "rejected_jobs": 0
+          },
+          "client_peak_rss_kib": 6148,
+          "server_peak_rss_kib": 5784
+        },
+        {
+          "wall_seconds": 0.031267788999684853,
+          "sessions": [
+            {
+              "app_ms": 1.919569,
+              "authenticated_close": true,
+              "binding_hash": "1d38f696588e4b6c08ea0cb777c7ca84d8c93504e0108ffc690dc0900455a560",
+              "handshake_ms": 12.673314,
+              "messages": 32,
+              "payload_bytes": 64,
+              "session_id": "ed8b7ec25853cf06896f09e9079fa98e",
+              "spiral_ms": 10.353912999999999,
+              "tcp_ms": 0.424396,
+              "tls_ms": 1.872867,
+              "total_ms": 14.691034,
+              "transcript_hash": "46bffa6b4ff87565443d02537718c7418060399ea7ed9a2d01dc149c35d16ed2"
+            },
+            {
+              "app_ms": 1.1993880000000001,
+              "authenticated_close": true,
+              "binding_hash": "e8ba9f65eaf26bde9af443d4426277b635ebb1616f86b962640b346df04e2c60",
+              "handshake_ms": 14.203344,
+              "messages": 32,
+              "payload_bytes": 64,
+              "session_id": "c663de9d100ca793e9afe3eb6443d7b4",
+              "spiral_ms": 11.467101,
+              "tcp_ms": 0.373266,
+              "tls_ms": 2.362108,
+              "total_ms": 15.51046,
+              "transcript_hash": "27b51c8f6a7be89e37aa82d5ff55865d304569099c4a975f8defbca3d18ef0f8"
+            },
+            {
+              "app_ms": 1.95097,
+              "authenticated_close": true,
+              "binding_hash": "1239d02312c5979ecc7751b218e002bec4b4dd638ab9f4fa84c09583b439b271",
+              "handshake_ms": 14.671854999999999,
+              "messages": 32,
+              "payload_bytes": 64,
+              "session_id": "e6842ef742934bd541c7748ff31ce13f",
+              "spiral_ms": 12.018925999999999,
+              "tcp_ms": 0.180504,
+              "tls_ms": 2.47182,
+              "total_ms": 16.706086,
+              "transcript_hash": "db259343b3df6a533067018eac5182796cc8328c562a5cc54691263267e09962"
+            },
+            {
+              "app_ms": 1.502878,
+              "authenticated_close": true,
+              "binding_hash": "7fbfed3135dd0edcf27d491265390a5a1e6c1e6525234906a6db0017baaa1d99",
+              "handshake_ms": 16.026042,
+              "messages": 32,
+              "payload_bytes": 64,
+              "session_id": "2ea7901f15e3b19916c702d865731c6d",
+              "spiral_ms": 13.647547,
+              "tcp_ms": 0.092087,
+              "tls_ms": 2.285477,
+              "total_ms": 17.593212,
+              "transcript_hash": "1c32833ac6ba4f81f452eaaae8c8937ef203ae79dc1973f506c3463b8a526aa5"
+            }
+          ],
+          "server_kem": {
+            "executed_jobs": 8,
+            "live_keys": 0,
+            "rejected_jobs": 0
+          },
+          "client_peak_rss_kib": 5788,
+          "server_peak_rss_kib": 5728
+        },
+        {
+          "wall_seconds": 0.028142114999354817,
+          "sessions": [
+            {
+              "app_ms": 1.6447429999999998,
+              "authenticated_close": true,
+              "binding_hash": "2b3812d1bcbb2969afc240cd2feadfd61a195a2b17eb4413397c3d4e07b65842",
+              "handshake_ms": 9.894514000000001,
+              "messages": 32,
+              "payload_bytes": 64,
+              "session_id": "08c5d9a03bf009aba3e3dcdbb4a82302",
+              "spiral_ms": 8.623441000000001,
+              "tcp_ms": 0.746088,
+              "tls_ms": 0.502154,
+              "total_ms": 11.604061,
+              "transcript_hash": "5e4e16a5a214d3f52b449bce5681f043b247bb2ca670463d0aeeab29169536c8"
+            },
+            {
+              "app_ms": 1.951265,
+              "authenticated_close": true,
+              "binding_hash": "ab3c4bf64b023a95dd63e2d7e897d1e4efc76618fb3c2d0524f3b7ccfc66743a",
+              "handshake_ms": 9.320817,
+              "messages": 32,
+              "payload_bytes": 64,
+              "session_id": "737cac1131d2b2f80f7527692decd880",
+              "spiral_ms": 7.819995,
+              "tcp_ms": 0.5907990000000001,
+              "tls_ms": 0.909134,
+              "total_ms": 11.433584999999999,
+              "transcript_hash": "72ddc1efab23b643990390352236f5db724e5b73d5ffd4d031501a169d5bbd8c"
+            },
+            {
+              "app_ms": 2.437651,
+              "authenticated_close": true,
+              "binding_hash": "673cfd8c045945ada0d5eebbd88b56e7f9ac7ff74188876150f02b33a862ba0e",
+              "handshake_ms": 8.081457,
+              "messages": 32,
+              "payload_bytes": 64,
+              "session_id": "4c6d42395c1b71f1be02edd8f5db8488",
+              "spiral_ms": 7.07813,
+              "tcp_ms": 0.43878199999999995,
+              "tls_ms": 0.5638690000000001,
+              "total_ms": 10.665087,
+              "transcript_hash": "89290f0ebe5164ddf023f4790dee7d9f1471f373747758bd70d1140f08134ab2"
+            },
+            {
+              "app_ms": 3.5758550000000002,
+              "authenticated_close": true,
+              "binding_hash": "1b0a0536c8b18aa5d6dc6ae7e14543f374d2c0c449b65ea30d2ec34fddd97940",
+              "handshake_ms": 11.109836999999999,
+              "messages": 32,
+              "payload_bytes": 64,
+              "session_id": "11d8ce57aa767d93d15065c0d294d41a",
+              "spiral_ms": 8.963609000000002,
+              "tcp_ms": 0.24241900000000002,
+              "tls_ms": 1.9026189999999998,
+              "total_ms": 14.760649,
+              "transcript_hash": "e86bab7f5342113fbeb69841f83dd41be537444a9e635aae35a0ae1264585d3d"
+            }
+          ],
+          "server_kem": {
+            "executed_jobs": 8,
+            "live_keys": 0,
+            "rejected_jobs": 0
+          },
+          "client_peak_rss_kib": 5972,
+          "server_peak_rss_kib": 5940
+        },
+        {
+          "wall_seconds": 0.0269050970000535,
+          "sessions": [
+            {
+              "app_ms": 3.481176,
+              "authenticated_close": true,
+              "binding_hash": "a631491065c38a96fb282fd31eada6b7a346bdbbe860da06cc26be15077764ec",
+              "handshake_ms": 10.854936,
+              "messages": 32,
+              "payload_bytes": 64,
+              "session_id": "8b7a2a97eb923cf45189481daea0cb27",
+              "spiral_ms": 9.252303999999999,
+              "tcp_ms": 0.14335199999999998,
+              "tls_ms": 1.458809,
+              "total_ms": 14.523444,
+              "transcript_hash": "05b66f3f1eb02d47f3dd22a137c841ceab172f6f9a4245f2e76821888f3656a6"
+            },
+            {
+              "app_ms": 3.3741019999999997,
+              "authenticated_close": true,
+              "binding_hash": "5d996ead8e594daafee5d0cc4f9c47f3388bf4dc8cdcef79e01fe1f6a5d0d1fa",
+              "handshake_ms": 11.269972,
+              "messages": 32,
+              "payload_bytes": 64,
+              "session_id": "fcc5e7bbea281e78f829428dff75d937",
+              "spiral_ms": 10.153758,
+              "tcp_ms": 0.020127,
+              "tls_ms": 1.074576,
+              "total_ms": 14.734507,
+              "transcript_hash": "c4c98f34b4cfee795e66e11e853892b1137c89a8e70230c6f12fc699b3e50869"
+            },
+            {
+              "app_ms": 3.393372,
+              "authenticated_close": true,
+              "binding_hash": "bb9851e6d073fca8b10e2719bc923a6266d30f888bf8739c849466cf04374fe2",
+              "handshake_ms": 11.487034999999999,
+              "messages": 32,
+              "payload_bytes": 64,
+              "session_id": "1aa6dd36f674804467f14dc8887ebab9",
+              "spiral_ms": 8.828931,
+              "tcp_ms": 0.22916599999999998,
+              "tls_ms": 2.427294,
+              "total_ms": 14.931701,
+              "transcript_hash": "cd0f23a3bb7dbc033c5ce2dc656380723735d3b9577f573ebe40bc9cd0089ad6"
+            },
+            {
+              "app_ms": 6.754268,
+              "authenticated_close": true,
+              "binding_hash": "3177f8e5f24da07112ffb069f6dc9d6f03b915bf5f849a91f58fd556bc46220e",
+              "handshake_ms": 9.782966,
+              "messages": 32,
+              "payload_bytes": 64,
+              "session_id": "c49161c98ac56e002315192dba80e3cc",
+              "spiral_ms": 8.169153999999999,
+              "tcp_ms": 0.364487,
+              "tls_ms": 1.24883,
+              "total_ms": 16.646792,
+              "transcript_hash": "6016b862bbe2d7579f1bb5d0b8ae29a8c732c9207761dd7ea5922eb55c8f2c6d"
+            }
+          ],
+          "server_kem": {
+            "executed_jobs": 8,
+            "live_keys": 0,
+            "rejected_jobs": 0
+          },
+          "client_peak_rss_kib": 5988,
+          "server_peak_rss_kib": 6040
+        },
+        {
+          "wall_seconds": 0.03408367799966072,
+          "sessions": [
+            {
+              "app_ms": 2.876849,
+              "authenticated_close": true,
+              "binding_hash": "e76edcca0b8973861eb44f58098a851d9d4636b46a6af13d34892aab495b7e83",
+              "handshake_ms": 14.726896,
+              "messages": 32,
+              "payload_bytes": 64,
+              "session_id": "41b61a05e777dcc32e86e6dc595f003a",
+              "spiral_ms": 12.871251,
+              "tcp_ms": 0.609001,
+              "tls_ms": 1.2245069999999998,
+              "total_ms": 17.708191000000003,
+              "transcript_hash": "e73c121a48aa6b58d5aac76685f78faa4b425ebaeecfb59645ad9b43541bc541"
+            },
+            {
+              "app_ms": 2.627399,
+              "authenticated_close": true,
+              "binding_hash": "954aeba50d7725998cadf973ee8e51dee8d704a15fe7b01305d82a231b1cf8a0",
+              "handshake_ms": 14.345034,
+              "messages": 32,
+              "payload_bytes": 64,
+              "session_id": "7f20dd1f09b2dbb9623dcb9976c9aab0",
+              "spiral_ms": 12.215896,
+              "tcp_ms": 0.5809749999999999,
+              "tls_ms": 1.546981,
+              "total_ms": 17.07392,
+              "transcript_hash": "1d4c95bddf1778d48f4595ac33d0767026488ecf732b012152a06923763194c1"
+            },
+            {
+              "app_ms": 1.846777,
+              "authenticated_close": true,
+              "binding_hash": "7ed754ee92ef9585df7d5442d3f386be972103534fba8fe71e7781b3b27c7f59",
+              "handshake_ms": 15.821287,
+              "messages": 32,
+              "payload_bytes": 64,
+              "session_id": "2de2a4f9fe1c52b93af04315b3d34c46",
+              "spiral_ms": 13.845146,
+              "tcp_ms": 0.082015,
+              "tls_ms": 1.893083,
+              "total_ms": 17.711865,
+              "transcript_hash": "14fc39432324984b380dac24452ba1eb54147e483c04cc64d1b506b252aa8158"
+            },
+            {
+              "app_ms": 3.44628,
+              "authenticated_close": true,
+              "binding_hash": "96a16de06bb02a13e87228c63c253721daced1bd419fa1516bb1155358e1d85c",
+              "handshake_ms": 15.149558,
+              "messages": 32,
+              "payload_bytes": 64,
+              "session_id": "35ec95461101f3bd9ffc7a563689425e",
+              "spiral_ms": 13.199963,
+              "tcp_ms": 0.388912,
+              "tls_ms": 1.5596830000000002,
+              "total_ms": 18.653163,
+              "transcript_hash": "1b4630ac3eb54704ece2e706c1be11eccff641556bb2bd83ea06ab5424d38b45"
+            }
+          ],
+          "server_kem": {
+            "executed_jobs": 8,
+            "live_keys": 0,
+            "rejected_jobs": 0
+          },
+          "client_peak_rss_kib": 6356,
+          "server_peak_rss_kib": 5956
+        }
+      ]
+    },
+    {
+      "workers_per_endpoint": 2,
+      "payload": 1024,
+      "trials": 5,
+      "connection_samples": 20,
+      "summary_ms": {
+        "handshake_ms": {
+          "median": 14.74544,
+          "p95": 18.91225,
+          "p99": 19.141849999999998
+        },
+        "tcp_ms": {
+          "median": 0.346232,
+          "p95": 1.896684,
+          "p99": 2.585366
+        },
+        "tls_ms": {
+          "median": 1.6111745000000002,
+          "p95": 6.802842,
+          "p99": 8.389598999999999
+        },
+        "spiral_ms": {
+          "median": 11.08726,
+          "p95": 17.635416,
+          "p99": 17.654432
+        },
+        "app_ms": {
+          "median": 3.0838270000000003,
+          "p95": 7.1058520000000005,
+          "p99": 7.154807
+        }
+      },
+      "whole_run_echo_payload_MiB_per_second": {
+        "median": 7.746040185482436,
+        "p95": 8.330277232357165,
+        "p99": 8.330277232357165
+      },
+      "rss_kib": {
+        "client_peak_rss_kib": {
+          "median": 6120,
+          "p95": 6616,
+          "p99": 6616
+        },
+        "server_peak_rss_kib": {
+          "median": 5788,
+          "p95": 6076,
+          "p99": 6076
+        }
+      },
+      "raw": [
+        {
+          "wall_seconds": 0.030011005999767804,
+          "sessions": [
+            {
+              "app_ms": 2.791757,
+              "authenticated_close": true,
+              "binding_hash": "4b7b26a04ced17ccf999c91a72b4cbfb427975787c81188894ea4d570e343eac",
+              "handshake_ms": 11.494967,
+              "messages": 32,
+              "payload_bytes": 1024,
+              "session_id": "5b554ed21a8185f3bdc8fad3d7f706d1",
+              "spiral_ms": 9.862859,
+              "tcp_ms": 0.039226,
+              "tls_ms": 1.5921830000000001,
+              "total_ms": 14.386356,
+              "transcript_hash": "b2360d1842d7bca819709c4a78c3bfc6d6d3d9420f98d2cf38948d672f914b5c"
+            },
+            {
+              "app_ms": 4.045774000000001,
+              "authenticated_close": true,
+              "binding_hash": "af05f3ec2ee8984b3f09ad742fd98f965bdcf8784980422dea826ab675411cd7",
+              "handshake_ms": 12.525364000000001,
+              "messages": 32,
+              "payload_bytes": 1024,
+              "session_id": "83377d8073816a294894500a925e0373",
+              "spiral_ms": 8.308796000000001,
+              "tcp_ms": 2.585366,
+              "tls_ms": 1.630166,
+              "total_ms": 16.637431,
+              "transcript_hash": "ec7b10396148604147ee9a64dd83673a7ddb99f96caa9f108fd6860b8ce877d9"
+            },
+            {
+              "app_ms": 3.229552,
+              "authenticated_close": true,
+              "binding_hash": "5d55f2f02ac7a34442f45ef5562ddd6aed8248ba805e296584cb1ba7e5494d35",
+              "handshake_ms": 12.179481000000001,
+              "messages": 32,
+              "payload_bytes": 1024,
+              "session_id": "f7eb1b9e824a059aa94dcef62f720c87",
+              "spiral_ms": 9.959848000000001,
+              "tcp_ms": 1.091124,
+              "tls_ms": 1.1279569999999999,
+              "total_ms": 15.461313,
+              "transcript_hash": "6020191dc80f61cb5bd956113cd3ec747625954862907e7994d819d36af10ad1"
+            },
+            {
+              "app_ms": 3.050736,
+              "authenticated_close": true,
+              "binding_hash": "cee041bff6fb52da665edd3a6a306b4b9f2aadb365aed23ca5fd648b98e5d33e",
+              "handshake_ms": 14.329962,
+              "messages": 32,
+              "payload_bytes": 1024,
+              "session_id": "a378fbb4148cb81df46748c7b99d854d",
+              "spiral_ms": 11.729183,
+              "tcp_ms": 1.896684,
+              "tls_ms": 0.6804899999999999,
+              "total_ms": 17.433882,
+              "transcript_hash": "345471248c2dccb4f3c8793b5375fec43b8f441237dd2a89c2b859e83936de26"
+            }
+          ],
+          "server_kem": {
+            "executed_jobs": 8,
+            "live_keys": 0,
+            "rejected_jobs": 0
+          },
+          "client_peak_rss_kib": 6112,
+          "server_peak_rss_kib": 5788
+        },
+        {
+          "wall_seconds": 0.03499900800125033,
+          "sessions": [
+            {
+              "app_ms": 2.513676,
+              "authenticated_close": true,
+              "binding_hash": "daebb41fa2c82fdca8ad958e5280cfb6de498c4a5f9adce772f2783a5ded3fb5",
+              "handshake_ms": 18.91225,
+              "messages": 32,
+              "payload_bytes": 1024,
+              "session_id": "4898c7f56ceec2890f836ce350fd2d58",
+              "spiral_ms": 17.573753,
+              "tcp_ms": 0.209765,
+              "tls_ms": 1.127299,
+              "total_ms": 21.531342,
+              "transcript_hash": "2b598cf8c2498b295b86d54c775bb53a15a6773d8245df17aa2c9335a2d4e590"
+            },
+            {
+              "app_ms": 3.157301,
+              "authenticated_close": true,
+              "binding_hash": "27bf20a020872c30ebc0888ca10b198a92e0c47e82bd0465e0ba1df9332aceb4",
+              "handshake_ms": 18.634501,
+              "messages": 32,
+              "payload_bytes": 1024,
+              "session_id": "a21bbc1d293602f0f1284cc48a02bd10",
+              "spiral_ms": 17.654432,
+              "tcp_ms": 0.103384,
+              "tls_ms": 0.875959,
+              "total_ms": 22.933503,
+              "transcript_hash": "6b26e97badbe8d1d802a61e849c54a27cf7fdc7fa1452d4dd46dcc5a1836bed5"
+            },
+            {
+              "app_ms": 4.219867000000001,
+              "authenticated_close": true,
+              "binding_hash": "126abdeb65deb9b9fd97ec2005255893ee3c74928fec925eafc93cc2ff344294",
+              "handshake_ms": 19.141849999999998,
+              "messages": 32,
+              "payload_bytes": 1024,
+              "session_id": "eac3b4b4623e93e5dded0289ee38f71c",
+              "spiral_ms": 17.635416,
+              "tcp_ms": 0.370213,
+              "tls_ms": 1.1356300000000001,
+              "total_ms": 23.461505,
+              "transcript_hash": "c9b2e057c4c7a083995e99b2008306953badd11226ad703c270ea9912ca29bb7"
+            },
+            {
+              "app_ms": 5.438536,
+              "authenticated_close": true,
+              "binding_hash": "f44faafe3122852a8b44eed55695d1af989104f6efcbbb6ab2311649405c3f7c",
+              "handshake_ms": 18.03086,
+              "messages": 32,
+              "payload_bytes": 1024,
+              "session_id": "a35071cd78aaf2d16f8ae96c55d0ed53",
+              "spiral_ms": 16.918397000000002,
+              "tcp_ms": 0.334438,
+              "tls_ms": 0.7560250000000001,
+              "total_ms": 23.622975,
+              "transcript_hash": "2a9580cddd7418b862db26093dc1b181d5cdd64218207d39d929a159464e4b87"
+            }
+          ],
+          "server_kem": {
+            "executed_jobs": 8,
+            "live_keys": 0,
+            "rejected_jobs": 0
+          },
+          "client_peak_rss_kib": 6244,
+          "server_peak_rss_kib": 6076
+        },
+        {
+          "wall_seconds": 0.0322745550001855,
+          "sessions": [
+            {
+              "app_ms": 2.005617,
+              "authenticated_close": true,
+              "binding_hash": "50436212caf0cc2ab30b785a864a847099220c04c662c0d010b2e64f311e65b4",
+              "handshake_ms": 12.203496,
+              "messages": 32,
+              "payload_bytes": 1024,
+              "session_id": "8bd255651455b7fa19a322d600f6bb3e",
+              "spiral_ms": 10.453594,
+              "tcp_ms": 0.034792000000000003,
+              "tls_ms": 1.691794,
+              "total_ms": 14.320103000000001,
+              "transcript_hash": "2da1dc9a1928d814e7fbec102eddbd21e98099f8df93e11da6a2cde224d374e6"
+            },
+            {
+              "app_ms": 2.295286,
+              "authenticated_close": true,
+              "binding_hash": "5bcd3e694b897622603b766adfc27ef9a55fc3a2d6071c8435b47e81a1923fc1",
+              "handshake_ms": 13.640467999999998,
+              "messages": 32,
+              "payload_bytes": 1024,
+              "session_id": "c8367beedcba13b317cd6e6f7725f4a6",
+              "spiral_ms": 11.446774,
+              "tcp_ms": 0.353361,
+              "tls_ms": 1.8396219999999999,
+              "total_ms": 16.025333,
+              "transcript_hash": "2685e46e41c5242ef9c49935bfbacf6fd8315976a2818908f58822a00ddecb0e"
+            },
+            {
+              "app_ms": 3.2444840000000004,
+              "authenticated_close": true,
+              "binding_hash": "4923282765cd9aec5a827d88f38d8cdaf1ca2369b7709a1ec9a6b08af6c52662",
+              "handshake_ms": 13.057473,
+              "messages": 32,
+              "payload_bytes": 1024,
+              "session_id": "cc74813b28d93e96c2fac3e28ba7c1cb",
+              "spiral_ms": 10.614145,
+              "tcp_ms": 0.40392,
+              "tls_ms": 2.038379,
+              "total_ms": 16.554631999999998,
+              "transcript_hash": "8be617c4080d04f139736325daec0b1504485b6d350a3583cedadc24d0712d0e"
+            },
+            {
+              "app_ms": 2.888197,
+              "authenticated_close": true,
+              "binding_hash": "4a93cc088f924c445b00b2a1629f225358a0c82db8d3fe4798d65b55467f5662",
+              "handshake_ms": 15.239073000000001,
+              "messages": 32,
+              "payload_bytes": 1024,
+              "session_id": "c56e70c67ceb461c24b77fd5ec55f1ff",
+              "spiral_ms": 12.545422,
+              "tcp_ms": 0.543149,
+              "tls_ms": 2.149985,
+              "total_ms": 18.252112,
+              "transcript_hash": "1b0332525e9deec72691a225f51a85b4c0abfb224af1bb67767f415fbda1ce2e"
+            }
+          ],
+          "server_kem": {
+            "executed_jobs": 8,
+            "live_keys": 0,
+            "rejected_jobs": 0
+          },
+          "client_peak_rss_kib": 6104,
+          "server_peak_rss_kib": 5752
+        },
+        {
+          "wall_seconds": 0.035599554001237266,
+          "sessions": [
+            {
+              "app_ms": 3.116918,
+              "authenticated_close": true,
+              "binding_hash": "63bd1a4a9aa9ad83058623ff90032f2277554e1118b7f230ceb414a076d70f1c",
+              "handshake_ms": 17.148137000000002,
+              "messages": 32,
+              "payload_bytes": 1024,
+              "session_id": "22a1f70fab4004793ed69b3b054c0a90",
+              "spiral_ms": 10.727746,
+              "tcp_ms": 0.081441,
+              "tls_ms": 6.307152,
+              "total_ms": 20.689385,
+              "transcript_hash": "622c6a6b57a8e3eb730e7f216d1c5741a870556b20cfe3053ae57a79c1e6888c"
+            },
+            {
+              "app_ms": 2.843613,
+              "authenticated_close": true,
+              "binding_hash": "f99a5a2420b645eb563498c944b25389508ca2e82f27e3f7796e4e98eaac8686",
+              "handshake_ms": 17.628728,
+              "messages": 32,
+              "payload_bytes": 1024,
+              "session_id": "207eb7778f4a41a260142fa47e4ef61b",
+              "spiral_ms": 10.604091,
+              "tcp_ms": 0.22090200000000002,
+              "tls_ms": 6.802842,
+              "total_ms": 20.599589,
+              "transcript_hash": "394da016853633b6f7cead377080e7835326b6e1b13433aa1f7813e723493566"
+            },
+            {
+              "app_ms": 3.042757,
+              "authenticated_close": true,
+              "binding_hash": "0ec0010eb2bbd4c3a78db9f85ecacc9ad3259e006462521e178f7a485b8ad340",
+              "handshake_ms": 17.441232,
+              "messages": 32,
+              "payload_bytes": 1024,
+              "session_id": "6439ef1f9311e8dde634fb4f98785d04",
+              "spiral_ms": 10.550596,
+              "tcp_ms": 0.339103,
+              "tls_ms": 6.5505889999999996,
+              "total_ms": 20.847411,
+              "transcript_hash": "267f9e9fc411d19524317d71883522536a103c55e596782cdc7c791ccb9e8c1a"
+            },
+            {
+              "app_ms": 2.865559,
+              "authenticated_close": true,
+              "binding_hash": "33d3216d5b7658a480615a370b10aa504985c0fb47a1b9a8f09818f186a6ef39",
+              "handshake_ms": 18.249540000000003,
+              "messages": 32,
+              "payload_bytes": 1024,
+              "session_id": "5c13163f2fc1008ed94e823e63cb95a8",
+              "spiral_ms": 9.37256,
+              "tcp_ms": 0.485996,
+              "tls_ms": 8.389598999999999,
+              "total_ms": 21.183613,
+              "transcript_hash": "7333c5a4c275b3ef72af8ebd9d655c8da1114eb286185a79e0d82e82a9b4e3cd"
+            }
+          ],
+          "server_kem": {
+            "executed_jobs": 8,
+            "live_keys": 0,
+            "rejected_jobs": 0
+          },
+          "client_peak_rss_kib": 6616,
+          "server_peak_rss_kib": 5760
+        },
+        {
+          "wall_seconds": 0.03066106500045862,
+          "sessions": [
+            {
+              "app_ms": 2.066498,
+              "authenticated_close": true,
+              "binding_hash": "3a4ed77fd4484ff876e1fd9e9a7d6a0dc6e825e276aa47b3f5807366d6738b40",
+              "handshake_ms": 13.899068,
+              "messages": 32,
+              "payload_bytes": 1024,
+              "session_id": "5e61d8062f594d2fc59a88a745f85449",
+              "spiral_ms": 12.280975,
+              "tcp_ms": 0.213067,
+              "tls_ms": 1.4041620000000001,
+              "total_ms": 16.156274000000003,
+              "transcript_hash": "7515601cd1fbc529e5a482217620f8b054b53194b6306b1037df06a001a0dbf7"
+            },
+            {
+              "app_ms": 4.0152030000000005,
+              "authenticated_close": true,
+              "binding_hash": "85fbc540bdf6043420600613022d41a55731e00e8dad8d22d865a7654ce29eaf",
+              "handshake_ms": 15.160918,
+              "messages": 32,
+              "payload_bytes": 1024,
+              "session_id": "fa296585388585a9af9a87867b751ac4",
+              "spiral_ms": 13.860755000000001,
+              "tcp_ms": 0.475632,
+              "tls_ms": 0.8028420000000001,
+              "total_ms": 19.257405,
+              "transcript_hash": "2e5f07ef6ca197a94ee81ea1259976e9babb1c32ad07b3b30a557d8a60c66286"
+            },
+            {
+              "app_ms": 7.1058520000000005,
+              "authenticated_close": true,
+              "binding_hash": "c9b15f5d0fa8511dd7d5a5d43c6d6caee121c0e8b3de73031106da42aceb2096",
+              "handshake_ms": 12.686655,
+              "messages": 32,
+              "payload_bytes": 1024,
+              "session_id": "dc4aa5269b70cb00128b95a7d9a828a9",
+              "spiral_ms": 11.69129,
+              "tcp_ms": 0.029238,
+              "tls_ms": 0.9430999999999999,
+              "total_ms": 19.876818,
+              "transcript_hash": "d408e71d0e2884187ade6599c95f1eb785374498bc40ba6e92801f853ddb197a"
+            },
+            {
+              "app_ms": 7.154807,
+              "authenticated_close": true,
+              "binding_hash": "e944c1d74007a5c5e7ff108343a5cd1bdc3237691edde2969b5f0ffbbd4a0312",
+              "handshake_ms": 12.9937,
+              "messages": 32,
+              "payload_bytes": 1024,
+              "session_id": "9808270e847ee4db05b99f2b5c958a43",
+              "spiral_ms": 7.987155,
+              "tcp_ms": 0.36958,
+              "tls_ms": 4.635896,
+              "total_ms": 20.355936,
+              "transcript_hash": "deb61ba4e2d81903c5f60faefe13bcde883184fa1bfc66a9691a7f35fa7f0a1d"
+            }
+          ],
+          "server_kem": {
+            "executed_jobs": 8,
+            "live_keys": 0,
+            "rejected_jobs": 0
+          },
+          "client_peak_rss_kib": 6120,
+          "server_peak_rss_kib": 6044
+        }
+      ]
+    },
+    {
+      "workers_per_endpoint": 2,
+      "payload": 16384,
+      "trials": 5,
+      "connection_samples": 20,
+      "summary_ms": {
+        "handshake_ms": {
+          "median": 12.7584835,
+          "p95": 23.88689,
+          "p99": 24.289438999999998
+        },
+        "tcp_ms": {
+          "median": 0.211055,
+          "p95": 0.442171,
+          "p99": 0.48281399999999997
+        },
+        "tls_ms": {
+          "median": 2.23714,
+          "p95": 2.983205,
+          "p99": 3.065302
+        },
+        "spiral_ms": {
+          "median": 10.069909500000001,
+          "p95": 21.119778,
+          "p99": 21.834036
+        },
+        "app_ms": {
+          "median": 8.623191,
+          "p95": 15.437643,
+          "p99": 16.96454
+        }
+      },
+      "whole_run_echo_payload_MiB_per_second": {
+        "median": 80.49102584366133,
+        "p95": 110.31113171728683,
+        "p99": 110.31113171728683
+      },
+      "rss_kib": {
+        "client_peak_rss_kib": {
+          "median": 8992,
+          "p95": 9628,
+          "p99": 9628
+        },
+        "server_peak_rss_kib": {
+          "median": 5916,
+          "p95": 6044,
+          "p99": 6044
+        }
+      },
+      "raw": [
+        {
+          "wall_seconds": 0.050529756999821984,
+          "sessions": [
+            {
+              "app_ms": 7.484186,
+              "authenticated_close": true,
+              "binding_hash": "f1836ce4f7b98bb073334ae51a500a1212f78ed3cb509ae407d5e618cd6d91a8",
+              "handshake_ms": 10.564276,
+              "messages": 32,
+              "payload_bytes": 16384,
+              "session_id": "5dc83b1961f25f11e389c2513a7929e5",
+              "spiral_ms": 7.468799,
+              "tcp_ms": 0.029621,
+              "tls_ms": 3.065302,
+              "total_ms": 21.125998,
+              "transcript_hash": "d229e338f68bef4c3a714dc45245f695c9b08229273adcd16dc14d014491da10"
+            },
+            {
+              "app_ms": 7.5336099999999995,
+              "authenticated_close": true,
+              "binding_hash": "40b2b5a1f7c8cc196b2969b441ca1510b9c91cbfc055e9f372f86f64195da1c0",
+              "handshake_ms": 12.656383,
+              "messages": 32,
+              "payload_bytes": 16384,
+              "session_id": "7ea359e48b9834bb43b90915db8500c7",
+              "spiral_ms": 9.691044,
+              "tcp_ms": 0.439558,
+              "tls_ms": 2.503553,
+              "total_ms": 21.593133,
+              "transcript_hash": "a9edd5188c24c947b724a3311ce79b4b82bb32f32c900a0bba370981aeeba282"
+            },
+            {
+              "app_ms": 6.616741,
+              "authenticated_close": true,
+              "binding_hash": "627e9d6b92be0693072ec5189a2798654608c3820fb929c27bc9fdfb220521cd",
+              "handshake_ms": 12.484426,
+              "messages": 32,
+              "payload_bytes": 16384,
+              "session_id": "8f06f3453730a7c8de5824d8ebefffca",
+              "spiral_ms": 9.174,
+              "tcp_ms": 0.48281399999999997,
+              "tls_ms": 2.826995,
+              "total_ms": 22.099053,
+              "transcript_hash": "0226aa57a967037df981c50d6e43d7b667e405c15ed747d11eae04ae16eb72bb"
+            },
+            {
+              "app_ms": 7.584348,
+              "authenticated_close": true,
+              "binding_hash": "c801ea4ede89c780ad260a6acf8bd47226d91ed32ce94a86126a3bbdb570947c",
+              "handshake_ms": 15.408710000000001,
+              "messages": 32,
+              "payload_bytes": 16384,
+              "session_id": "4fe7a3b24d50223b17186f43158e1182",
+              "spiral_ms": 12.758818999999999,
+              "tcp_ms": 0.18340599999999999,
+              "tls_ms": 2.4440820000000003,
+              "total_ms": 23.091099,
+              "transcript_hash": "5e7140417fce4e6810c2189c576db07c0b4c62428c25969e627afab29bcb60fc"
+            }
+          ],
+          "server_kem": {
+            "executed_jobs": 8,
+            "live_keys": 0,
+            "rejected_jobs": 0
+          },
+          "client_peak_rss_kib": 9628,
+          "server_peak_rss_kib": 6044
+        },
+        {
+          "wall_seconds": 0.049694981000357075,
+          "sessions": [
+            {
+              "app_ms": 12.529190000000002,
+              "authenticated_close": true,
+              "binding_hash": "1b80a469dc279727ea2a11f7c334c0a7a6ea4d899667e848c27e276bca51c7e8",
+              "handshake_ms": 13.79048,
+              "messages": 32,
+              "payload_bytes": 16384,
+              "session_id": "82a7e3fa1983f532724c08af23096132",
+              "spiral_ms": 11.664071,
+              "tcp_ms": 0.34514399999999995,
+              "tls_ms": 1.780397,
+              "total_ms": 26.913861,
+              "transcript_hash": "9435e4ca1b055e24c76d2044171221e22eff3d7a2b645d607fc61b55ee614761"
+            },
+            {
+              "app_ms": 11.549319,
+              "authenticated_close": true,
+              "binding_hash": "f8825b5e5eab0affc4522dd3319bdd9b2666756b76e713951344f018cceb089d",
+              "handshake_ms": 15.864915,
+              "messages": 32,
+              "payload_bytes": 16384,
+              "session_id": "24aa8db2a04d1c526214b0c6e8cd6f7a",
+              "spiral_ms": 14.302491,
+              "tcp_ms": 0.15343099999999998,
+              "tls_ms": 1.407284,
+              "total_ms": 28.989808999999997,
+              "transcript_hash": "c15c5e73a9873f78b556455a7e83abbdbbfbe2d78e1950bb96f879df8fc7228b"
+            },
+            {
+              "app_ms": 16.96454,
+              "authenticated_close": true,
+              "binding_hash": "c9b8f455700428805a7b080c305acd4b014cae68902d676afa2851b57d8eba79",
+              "handshake_ms": 14.19513,
+              "messages": 32,
+              "payload_bytes": 16384,
+              "session_id": "8c684e5bacf05519fb082a733bf6f55f",
+              "spiral_ms": 12.988947000000001,
+              "tcp_ms": 0.24387899999999998,
+              "tls_ms": 0.9399919999999999,
+              "total_ms": 31.421621,
+              "transcript_hash": "65a81da4f7a82e01cdb795b0eb035769a9c6859bc92d1050a6619acfaf866f99"
+            },
+            {
+              "app_ms": 15.437643,
+              "authenticated_close": true,
+              "binding_hash": "831d900aa8f2b045ea8159ddf691d0e4d723fa4a8b3484bfc8cb36c730e305c9",
+              "handshake_ms": 15.674443,
+              "messages": 32,
+              "payload_bytes": 16384,
+              "session_id": "6722fff5c83d20eee6ab4c8044eab80d",
+              "spiral_ms": 14.276308,
+              "tcp_ms": 0.043237,
+              "tls_ms": 1.3543859999999999,
+              "total_ms": 31.339803,
+              "transcript_hash": "d50cf7dce4250566df4fb0379de87d0043b05536bffde7fc54ee0d2405fb9fab"
+            }
+          ],
+          "server_kem": {
+            "executed_jobs": 8,
+            "live_keys": 0,
+            "rejected_jobs": 0
+          },
+          "client_peak_rss_kib": 8636,
+          "server_peak_rss_kib": 5912
+        },
+        {
+          "wall_seconds": 0.03626107300078729,
+          "sessions": [
+            {
+              "app_ms": 6.2035540000000005,
+              "authenticated_close": true,
+              "binding_hash": "40b8ab4aae18ead399b60ccebf9055c13817531aa7fb560ae77f4739b912cf6c",
+              "handshake_ms": 8.705543,
+              "messages": 32,
+              "payload_bytes": 16384,
+              "session_id": "a61286db6c4ee665869d80b7e15290e8",
+              "spiral_ms": 6.762474,
+              "tcp_ms": 0.029904999999999998,
+              "tls_ms": 1.912435,
+              "total_ms": 15.469332000000001,
+              "transcript_hash": "4f6f18d814a7ce1a89c39abe5ed6dc6d3ae906abe76aec31dd4565cabb5b09dd"
+            },
+            {
+              "app_ms": 9.989802000000001,
+              "authenticated_close": true,
+              "binding_hash": "a8a64146501a372125726edd8e4f8982e50cf3877eeeaeeffe390f3464e17d18",
+              "handshake_ms": 7.957311,
+              "messages": 32,
+              "payload_bytes": 16384,
+              "session_id": "33bbd600a28ef1eedae2c3c2fbd3e38c",
+              "spiral_ms": 6.258684,
+              "tcp_ms": 0.145126,
+              "tls_ms": 1.5309869999999999,
+              "total_ms": 18.35801,
+              "transcript_hash": "00d386f74b62468d5ebdfd64aabe6476cf0294f781a3144f713671b6b40a7395"
+            },
+            {
+              "app_ms": 9.495613,
+              "authenticated_close": true,
+              "binding_hash": "977e6825547b9dcabba57d10b67bc3601d76f203d309511b074fa317aa1bfe5e",
+              "handshake_ms": 9.643447,
+              "messages": 32,
+              "payload_bytes": 16384,
+              "session_id": "75459699e8403e585aa13e2f341f5318",
+              "spiral_ms": 7.513468,
+              "tcp_ms": 0.238704,
+              "tls_ms": 1.890484,
+              "total_ms": 19.294262,
+              "transcript_hash": "25972adebf17945e73073f9a4bbd332cc42fd183be4ded7cb8099ae65ffb400d"
+            },
+            {
+              "app_ms": 11.517927,
+              "authenticated_close": true,
+              "binding_hash": "40bb6391c23868a97b804f894b4c7389ab2e3e691198d7d6863806bb8b813d79",
+              "handshake_ms": 7.884384,
+              "messages": 32,
+              "payload_bytes": 16384,
+              "session_id": "9c6780a620d8d7e6476afc2f653197d2",
+              "spiral_ms": 5.97398,
+              "tcp_ms": 0.35942999999999997,
+              "tls_ms": 1.527647,
+              "total_ms": 20.559345,
+              "transcript_hash": "17e9c7758db50c19c2dfa880eb43e4ddc765ed1636c2707438b6736e284e7369"
+            }
+          ],
+          "server_kem": {
+            "executed_jobs": 8,
+            "live_keys": 0,
+            "rejected_jobs": 0
+          },
+          "client_peak_rss_kib": 8676,
+          "server_peak_rss_kib": 5916
+        },
+        {
+          "wall_seconds": 0.04992864199994074,
+          "sessions": [
+            {
+              "app_ms": 7.542099,
+              "authenticated_close": true,
+              "binding_hash": "b01582274cc7792b058fb3bf292b6ef435d9d6464a5570eaa6c56c1b52cbf1a9",
+              "handshake_ms": 22.150461,
+              "messages": 32,
+              "payload_bytes": 16384,
+              "session_id": "6d55753ea55bef15e80eafdae897edab",
+              "spiral_ms": 19.744484,
+              "tcp_ms": 0.043927,
+              "tls_ms": 2.3612640000000003,
+              "total_ms": 30.206092,
+              "transcript_hash": "fbf7d8092a47da4435dc98a737bb967d79aba63c95d9cc548a92f4fd0e899d64"
+            },
+            {
+              "app_ms": 5.63921,
+              "authenticated_close": true,
+              "binding_hash": "b05537729a68676c811c255e9e67f65b997df5f71dc74bb0348884ccd4c19296",
+              "handshake_ms": 24.289438999999998,
+              "messages": 32,
+              "payload_bytes": 16384,
+              "session_id": "ef963fdaf7e2d481635966bf926a8386",
+              "spiral_ms": 21.834036,
+              "tcp_ms": 0.319534,
+              "tls_ms": 2.113016,
+              "total_ms": 30.705858,
+              "transcript_hash": "05c2494338e92833c90ed421d89007cfd4c5343475073d05e093f2d9c9f2374d"
+            },
+            {
+              "app_ms": 8.164563,
+              "authenticated_close": true,
+              "binding_hash": "dfda4fd522f544b6906e164143b6aab882833a0af72b086ead9850b2147e6008",
+              "handshake_ms": 22.783515,
+              "messages": 32,
+              "payload_bytes": 16384,
+              "session_id": "8576f0324684e3a3b0f4c9ee669da591",
+              "spiral_ms": 19.82087,
+              "tcp_ms": 0.308732,
+              "tls_ms": 2.652825,
+              "total_ms": 31.240324,
+              "transcript_hash": "616394b1bf9df2923e5d03f5d5962bcfdd9ac2e2645d69e4517c5652b92ac1d2"
+            },
+            {
+              "app_ms": 6.983465000000001,
+              "authenticated_close": true,
+              "binding_hash": "c0a00618c883e1277736a1411769eb52c3461c4103109fe08413040b25c4a978",
+              "handshake_ms": 23.88689,
+              "messages": 32,
+              "payload_bytes": 16384,
+              "session_id": "fd9d584f0daad11f3a28c1b615624f23",
+              "spiral_ms": 21.119778,
+              "tcp_ms": 0.065973,
+              "tls_ms": 2.700545,
+              "total_ms": 31.222451,
+              "transcript_hash": "06b53ccc2b4f3ed0612667f0a7dbc995791bfdbdcd92b1a8a166822027f8cbfa"
+            }
+          ],
+          "server_kem": {
+            "executed_jobs": 8,
+            "live_keys": 0,
+            "rejected_jobs": 0
+          },
+          "client_peak_rss_kib": 9252,
+          "server_peak_rss_kib": 5984
+        },
+        {
+          "wall_seconds": 0.03921074999925622,
+          "sessions": [
+            {
+              "app_ms": 8.651794,
+              "authenticated_close": true,
+              "binding_hash": "848988e89215f659f4fd9781f1a55d06b038de838c72ce5b6948fe4b35cffb9e",
+              "handshake_ms": 10.739564999999999,
+              "messages": 32,
+              "payload_bytes": 16384,
+              "session_id": "42bc9fafa7ea8b11b6c479ff207732ea",
+              "spiral_ms": 7.902183999999999,
+              "tcp_ms": 0.442171,
+              "tls_ms": 2.394486,
+              "total_ms": 20.427262000000002,
+              "transcript_hash": "1f2e61d97347b961e4061e7f1817152661e8d02c9d3e4f98d9ba2744580f51cc"
+            },
+            {
+              "app_ms": 8.594588,
+              "authenticated_close": true,
+              "binding_hash": "847e365c984e48b03e16708cb0e6add0afb06af9abd1d325d674e33e077a988a",
+              "handshake_ms": 12.860584,
+              "messages": 32,
+              "payload_bytes": 16384,
+              "session_id": "31e2fa0266b9e414bea9c41e6a696f25",
+              "spiral_ms": 10.448775000000001,
+              "tcp_ms": 0.314132,
+              "tls_ms": 2.07488,
+              "total_ms": 23.082424,
+              "transcript_hash": "d25c39999ae776ad794ba9604995bb78a2f976ff314dfe746917dc7c482b5c8f"
+            },
+            {
+              "app_ms": 9.291264,
+              "authenticated_close": true,
+              "binding_hash": "1788e1b81b18b1e7293153466ebf83d649ca7a1f74faaff07ac02855aa5e49f1",
+              "handshake_ms": 10.336484,
+              "messages": 32,
+              "payload_bytes": 16384,
+              "session_id": "bd01e1ce6f3e6b2d0e214dea7a53fd06",
+              "spiral_ms": 7.697497,
+              "tcp_ms": 0.166711,
+              "tls_ms": 2.4712330000000002,
+              "total_ms": 23.114176,
+              "transcript_hash": "4c70e303386c15ec3820c299189e84b0eb844c4fc9b01df26fc82f5a00f36360"
+            },
+            {
+              "app_ms": 13.05693,
+              "authenticated_close": true,
+              "binding_hash": "49244358017437607b8846ff1fd72d32d775874efc7e8b2d6bd0ca213494f070",
+              "handshake_ms": 10.844191,
+              "messages": 32,
+              "payload_bytes": 16384,
+              "session_id": "47dd7765463c4d32c4ff393675baa5da",
+              "spiral_ms": 7.812450999999999,
+              "tcp_ms": 0.047649,
+              "tls_ms": 2.983205,
+              "total_ms": 24.106025,
+              "transcript_hash": "21871cb40ef18c8548804de7cfe9c35eefd1d4a7bb5dff11441280d9175f6a0a"
+            }
+          ],
+          "server_kem": {
+            "executed_jobs": 8,
+            "live_keys": 0,
+            "rejected_jobs": 0
+          },
+          "client_peak_rss_kib": 8992,
+          "server_peak_rss_kib": 5724
+        }
+      ]
+    },
+    {
+      "workers_per_endpoint": 4,
+      "payload": 64,
+      "trials": 5,
+      "connection_samples": 20,
+      "summary_ms": {
+        "handshake_ms": {
+          "median": 9.530061499999999,
+          "p95": 19.672083,
+          "p99": 20.146415
+        },
+        "tcp_ms": {
+          "median": 0.254019,
+          "p95": 0.596442,
+          "p99": 0.8901920000000001
+        },
+        "tls_ms": {
+          "median": 1.4448095,
+          "p95": 2.088037,
+          "p99": 3.641976
+        },
+        "spiral_ms": {
+          "median": 8.028125500000002,
+          "p95": 18.04673,
+          "p99": 18.868285
+        },
+        "app_ms": {
+          "median": 2.715306,
+          "p95": 4.931287,
+          "p99": 7.077516
+        }
+      },
+      "whole_run_echo_payload_MiB_per_second": {
+        "median": 0.5692733324952214,
+        "p95": 0.6120571697619437,
+        "p99": 0.6120571697619437
+      },
+      "rss_kib": {
+        "client_peak_rss_kib": {
+          "median": 6112,
+          "p95": 6232,
+          "p99": 6232
+        },
+        "server_peak_rss_kib": {
+          "median": 5660,
+          "p95": 5764,
+          "p99": 5764
+        }
+      },
+      "raw": [
+        {
+          "wall_seconds": 0.041421083000386716,
+          "sessions": [
+            {
+              "app_ms": 3.135636,
+              "authenticated_close": true,
+              "binding_hash": "0d8dc7ba9bb391e44ab22276ba51e502eedd1985d99d05ca073a58e58abebf93",
+              "handshake_ms": 18.773875999999998,
+              "messages": 32,
+              "payload_bytes": 64,
+              "session_id": "4269adcb322598a50cc16115e451d6e5",
+              "spiral_ms": 17.432665,
+              "tcp_ms": 0.336533,
+              "tls_ms": 1.0040330000000002,
+              "total_ms": 22.160564,
+              "transcript_hash": "268362d70a0298df92c0e128a7468e9bc0949bbf9aa99e6724c2fc05caaf2aa1"
+            },
+            {
+              "app_ms": 3.647105,
+              "authenticated_close": true,
+              "binding_hash": "eaa93d0fd2df877bb920ebcd306ffe25e4306898797d0ae8b34ef70844e9ef84",
+              "handshake_ms": 18.778157,
+              "messages": 32,
+              "payload_bytes": 64,
+              "session_id": "7f1ab423332b6da462394c53e0c73e61",
+              "spiral_ms": 17.185255,
+              "tcp_ms": 0.13806300000000002,
+              "tls_ms": 1.453564,
+              "total_ms": 22.493011,
+              "transcript_hash": "252c0574d7a942ed3ebfa663af742df650a7b3ae40abfcb40a6941eb6a0dd3e5"
+            },
+            {
+              "app_ms": 2.6945419999999998,
+              "authenticated_close": true,
+              "binding_hash": "79e2c1cf270da9fce68dd2220e2caf4713fef70b713c84f1f086ee900b09fbf3",
+              "handshake_ms": 19.672083,
+              "messages": 32,
+              "payload_bytes": 64,
+              "session_id": "4ced26a76cf726b6281d7018848aca35",
+              "spiral_ms": 18.04673,
+              "tcp_ms": 0.165975,
+              "tls_ms": 1.458222,
+              "total_ms": 22.424382,
+              "transcript_hash": "ef338d7b856643e794e5db718baa89dde606e9be9f9a13302acfe69b6a45c348"
+            },
+            {
+              "app_ms": 2.8183819999999997,
+              "authenticated_close": true,
+              "binding_hash": "1252b04f822676649ce0db0b0380d24101830facf47162f74be48a6bd5b85929",
+              "handshake_ms": 20.146415,
+              "messages": 32,
+              "payload_bytes": 64,
+              "session_id": "c1fed886c6bd1c409c9e8cdd46157e7f",
+              "spiral_ms": 18.868285,
+              "tcp_ms": 0.474555,
+              "tls_ms": 0.774457,
+              "total_ms": 23.015113,
+              "transcript_hash": "1165dea438a88c7fde35ee5f351d76cf5e3f80308c1f28aeca90d99b7302e6c8"
+            }
+          ],
+          "server_kem": {
+            "executed_jobs": 8,
+            "live_keys": 0,
+            "rejected_jobs": 0
+          },
+          "client_peak_rss_kib": 6108,
+          "server_peak_rss_kib": 5764
+        },
+        {
+          "wall_seconds": 0.026069419998748344,
+          "sessions": [
+            {
+              "app_ms": 2.610957,
+              "authenticated_close": true,
+              "binding_hash": "dcbd35f9fdabf584f8dc520c4cd7deb1cb9829100612667bf0a0e6fc527a9b39",
+              "handshake_ms": 9.115203000000001,
+              "messages": 32,
+              "payload_bytes": 64,
+              "session_id": "3b9b9152867acd2106dc49f33f498b37",
+              "spiral_ms": 5.031461,
+              "tcp_ms": 0.440654,
+              "tls_ms": 3.641976,
+              "total_ms": 11.800042,
+              "transcript_hash": "96b1aa61882c08440abf041e9594f02a1c950e45fdbbc26e1699880eaf8524c2"
+            },
+            {
+              "app_ms": 3.167754,
+              "authenticated_close": true,
+              "binding_hash": "da3ad9b1d68753cef9f272076c2f2d986d7367af1434a7bb59d9426debee9f81",
+              "handshake_ms": 9.670224,
+              "messages": 32,
+              "payload_bytes": 64,
+              "session_id": "90e06aeda779af14fe6a7af781bd63db",
+              "spiral_ms": 8.081964000000001,
+              "tcp_ms": 0.026118,
+              "tls_ms": 1.539082,
+              "total_ms": 12.947773,
+              "transcript_hash": "93f943dfe551be9bee0554fce06c46f714814467614cf311a4dbc048af885ea1"
+            },
+            {
+              "app_ms": 2.7360700000000002,
+              "authenticated_close": true,
+              "binding_hash": "1ae5fba67a00b1feec09a0b33435944f8eb1fed979996528d72664759cb25fb0",
+              "handshake_ms": 9.389899,
+              "messages": 32,
+              "payload_bytes": 64,
+              "session_id": "dd64a39b53486a28a34751b4972ea072",
+              "spiral_ms": 8.129785,
+              "tcp_ms": 0.146191,
+              "tls_ms": 1.1127150000000001,
+              "total_ms": 12.142508,
+              "transcript_hash": "dd6d811b2c3fd8b84ddcbd68127a77471f97ab47fbd286148ec55d36b8101056"
+            },
+            {
+              "app_ms": 7.077516,
+              "authenticated_close": true,
+              "binding_hash": "0afd7f74f107aec672b278ee73dc23ea5c0bcaaa12709efb7b444a6188122f37",
+              "handshake_ms": 9.882768,
+              "messages": 32,
+              "payload_bytes": 64,
+              "session_id": "e39ace71c01784362ec2b5f6902d6a5d",
+              "spiral_ms": 7.974287,
+              "tcp_ms": 0.303789,
+              "tls_ms": 1.60409,
+              "total_ms": 17.065274,
+              "transcript_hash": "6ed2f3e13950180dfad13adc2e02d71ae0dd9cd835693589707add1bb7101d46"
+            }
+          ],
+          "server_kem": {
+            "executed_jobs": 8,
+            "live_keys": 0,
+            "rejected_jobs": 0
+          },
+          "client_peak_rss_kib": 6232,
+          "server_peak_rss_kib": 5600
+        },
+        {
+          "wall_seconds": 0.027447272001154488,
+          "sessions": [
+            {
+              "app_ms": 1.933398,
+              "authenticated_close": true,
+              "binding_hash": "a623a7471d32b0c1f5c1b78d58baaf6cad4767c6374abe5ef77cb7d33472de1a",
+              "handshake_ms": 10.748507,
+              "messages": 32,
+              "payload_bytes": 64,
+              "session_id": "089c3098b0e76ec18702ca035229faa6",
+              "spiral_ms": 8.802394,
+              "tcp_ms": 0.8901920000000001,
+              "tls_ms": 1.055018,
+              "total_ms": 12.860925,
+              "transcript_hash": "227680f05f13ab318c78967ff9344ea64ef1eff9522ec54412bd18a6975fbaef"
+            },
+            {
+              "app_ms": 1.9855150000000001,
+              "authenticated_close": true,
+              "binding_hash": "48b3308036cd510a7b1a06ba69d7247de093cc0447dce8a59c7a70e46d99a9c8",
+              "handshake_ms": 10.817522,
+              "messages": 32,
+              "payload_bytes": 64,
+              "session_id": "d3f9968bed5b0b06572ec3af41e329db",
+              "spiral_ms": 9.462665,
+              "tcp_ms": 0.398247,
+              "tls_ms": 0.920403,
+              "total_ms": 12.928062,
+              "transcript_hash": "bf9b3f666486d84ddcf6c5f6784a29cc54b867fbb913d19a61324b1de08d7988"
+            },
+            {
+              "app_ms": 1.8197370000000002,
+              "authenticated_close": true,
+              "binding_hash": "e0f78f8114a7ba07c98e3974aa755e0e6263b46c806fa9e07a0666f983ade27f",
+              "handshake_ms": 10.987514000000001,
+              "messages": 32,
+              "payload_bytes": 64,
+              "session_id": "7411aa0728447cc37e284dee4480c796",
+              "spiral_ms": 9.114996,
+              "tcp_ms": 0.038343,
+              "tls_ms": 1.832706,
+              "total_ms": 12.860183000000001,
+              "transcript_hash": "a8c1124e5dedee58f774f08afaf511bb5ec90e4e269c9a96c3c7c79c2e6355c1"
+            },
+            {
+              "app_ms": 1.880657,
+              "authenticated_close": true,
+              "binding_hash": "005da9c483ec52b508dfe30aa6f2cc5a14ce97e4f0ff6c4fb7c862ca3d530775",
+              "handshake_ms": 11.048836,
+              "messages": 32,
+              "payload_bytes": 64,
+              "session_id": "44df65b1177daf3f502e70a8524358c6",
+              "spiral_ms": 9.576111,
+              "tcp_ms": 0.596442,
+              "tls_ms": 0.8755320000000001,
+              "total_ms": 13.227663,
+              "transcript_hash": "76f56cb2019dc0b00af5deb25874c1735b1a1078eecb6298fe56efd0f79b7d93"
+            }
+          ],
+          "server_kem": {
+            "executed_jobs": 8,
+            "live_keys": 0,
+            "rejected_jobs": 0
+          },
+          "client_peak_rss_kib": 6104,
+          "server_peak_rss_kib": 5596
+        },
+        {
+          "wall_seconds": 0.025528661000862485,
+          "sessions": [
+            {
+              "app_ms": 3.0318989999999997,
+              "authenticated_close": true,
+              "binding_hash": "9187ad4a14479009507f9f13c48570e3ca90a1638b426efb169020add26207d3",
+              "handshake_ms": 8.599203,
+              "messages": 32,
+              "payload_bytes": 64,
+              "session_id": "e1155a87993823d3dfa582f7608780cb",
+              "spiral_ms": 6.826958,
+              "tcp_ms": 0.156805,
+              "tls_ms": 1.614421,
+              "total_ms": 12.443005999999999,
+              "transcript_hash": "dd9cd873c336f8ceeb158218775a1fb5df0dd0b08b8d4f363073ccb04652b515"
+            },
+            {
+              "app_ms": 4.846888,
+              "authenticated_close": true,
+              "binding_hash": "ca3d432b04035c25fb6b874cdbc21ba98e6da18493a7ab2b57a849a313cb7718",
+              "handshake_ms": 8.103542000000001,
+              "messages": 32,
+              "payload_bytes": 64,
+              "session_id": "b4c312bbdc14c1f4f5329c09881e1045",
+              "spiral_ms": 6.21173,
+              "tcp_ms": 0.23696399999999998,
+              "tls_ms": 1.632142,
+              "total_ms": 13.108289000000001,
+              "transcript_hash": "d99c4df98cd44247f09791c9023c574fdc8611effbf6fc63c9d711ea2d3dccfd"
+            },
+            {
+              "app_ms": 4.931287,
+              "authenticated_close": true,
+              "binding_hash": "7eb98cf1edf18ea69d6bcfdd2294bc4d3b1b05bbfd3a2db7639622341c807d95",
+              "handshake_ms": 8.344822,
+              "messages": 32,
+              "payload_bytes": 64,
+              "session_id": "7c5defd45f57c9d4c02ca1f76d22f54a",
+              "spiral_ms": 6.218292,
+              "tcp_ms": 0.06694699999999999,
+              "tls_ms": 2.058674,
+              "total_ms": 13.411912999999998,
+              "transcript_hash": "cc1507c223369c4b5ef0d2267c10fe6f4023aba18bf33bac1c3e558873525f00"
+            },
+            {
+              "app_ms": 3.745312,
+              "authenticated_close": true,
+              "binding_hash": "48586dba97e962e7802888df73246f6cc1bf07d9c4bbdc1dfa955d7d19621cb0",
+              "handshake_ms": 9.379431,
+              "messages": 32,
+              "payload_bytes": 64,
+              "session_id": "680da17fbf033bff634bf554e311068a",
+              "spiral_ms": 7.019724,
+              "tcp_ms": 0.271074,
+              "tls_ms": 2.088037,
+              "total_ms": 13.679661,
+              "transcript_hash": "f91196236774e47b88acbbcbac26f914fde29f51020cb72ae96b9bd55eed18ba"
+            }
+          ],
+          "server_kem": {
+            "executed_jobs": 8,
+            "live_keys": 0,
+            "rejected_jobs": 0
+          },
+          "client_peak_rss_kib": 6112,
+          "server_peak_rss_kib": 5688
+        },
+        {
+          "wall_seconds": 0.03407400700052676,
+          "sessions": [
+            {
+              "app_ms": 1.819476,
+              "authenticated_close": true,
+              "binding_hash": "db3d4a32bc6e1e31da21392a1f6f35b80851983e6b10a5f282380622738d1ecf",
+              "handshake_ms": 7.916996000000001,
+              "messages": 32,
+              "payload_bytes": 64,
+              "session_id": "e7d1a119b62f241caf6973525626b595",
+              "spiral_ms": 6.501417,
+              "tcp_ms": 0.339188,
+              "tls_ms": 1.075396,
+              "total_ms": 9.946543,
+              "transcript_hash": "71918c78c8a239f6f8a68239c4cfae4e9c94f0a340fe5fb0b9494c3ba47a5135"
+            },
+            {
+              "app_ms": 2.049766,
+              "authenticated_close": true,
+              "binding_hash": "1c6203702ec7b7b842baa2b6aaa4d277c70642e96e6ea3f1bd7c8f18d5ee78a1",
+              "handshake_ms": 7.940673,
+              "messages": 32,
+              "payload_bytes": 64,
+              "session_id": "390a21652b6b1927c0f7afe3964bbb0f",
+              "spiral_ms": 6.422623,
+              "tcp_ms": 0.39958000000000005,
+              "tls_ms": 1.117063,
+              "total_ms": 10.343411,
+              "transcript_hash": "f8716abf763a905a6ef6b506df0617eda12db2252818f50c0bc642993bd8312d"
+            },
+            {
+              "app_ms": 1.780036,
+              "authenticated_close": true,
+              "binding_hash": "5a0166cc6fb70f4fb6298816d8520bf70fec57daa12e84b57b7e1bcc753e23ed",
+              "handshake_ms": 8.593471000000001,
+              "messages": 32,
+              "payload_bytes": 64,
+              "session_id": "5facd734bab63bb944faa028177c246b",
+              "spiral_ms": 6.973399,
+              "tcp_ms": 0.183277,
+              "tls_ms": 1.436055,
+              "total_ms": 10.434344999999999,
+              "transcript_hash": "5c4ae87e634f9eb25edf5853e75221bb0c772528f5e6d51d17fd235b7e89d580"
+            },
+            {
+              "app_ms": 2.048743,
+              "authenticated_close": true,
+              "binding_hash": "60bbb0494d4c58c0af26b75a81cf3bddbcf6b8ef99bf61c7a60b586dae37f904",
+              "handshake_ms": 8.51689,
+              "messages": 32,
+              "payload_bytes": 64,
+              "session_id": "6146a9ec486cb0155d61384993f26dba",
+              "spiral_ms": 7.730753,
+              "tcp_ms": 0.027965,
+              "tls_ms": 0.7338089999999999,
+              "total_ms": 10.620256999999999,
+              "transcript_hash": "2c8ab94b865ccccee80c6ce5c42fc53e5e49ecf1cf97bbab09a66f13de2be20e"
+            }
+          ],
+          "server_kem": {
+            "executed_jobs": 8,
+            "live_keys": 0,
+            "rejected_jobs": 0
+          },
+          "client_peak_rss_kib": 6168,
+          "server_peak_rss_kib": 5660
+        }
+      ]
+    },
+    {
+      "workers_per_endpoint": 4,
+      "payload": 1024,
+      "trials": 5,
+      "connection_samples": 20,
+      "summary_ms": {
+        "handshake_ms": {
+          "median": 10.886463500000001,
+          "p95": 12.239984,
+          "p99": 12.965331
+        },
+        "tcp_ms": {
+          "median": 0.22534949999999998,
+          "p95": 0.6513270000000001,
+          "p99": 0.652581
+        },
+        "tls_ms": {
+          "median": 1.0982455,
+          "p95": 4.7022770000000005,
+          "p99": 6.913524
+        },
+        "spiral_ms": {
+          "median": 8.094590499999999,
+          "p95": 10.916917999999999,
+          "p99": 11.211306
+        },
+        "app_ms": {
+          "median": 3.8907505000000002,
+          "p95": 5.062930000000001,
+          "p99": 5.820619
+        }
+      },
+      "whole_run_echo_payload_MiB_per_second": {
+        "median": 8.26118728346737,
+        "p95": 9.190742951637146,
+        "p99": 9.190742951637146
+      },
+      "rss_kib": {
+        "client_peak_rss_kib": {
+          "median": 6308,
+          "p95": 6400,
+          "p99": 6400
+        },
+        "server_peak_rss_kib": {
+          "median": 5700,
+          "p95": 6044,
+          "p99": 6044
+        }
+      },
+      "raw": [
+        {
+          "wall_seconds": 0.03297027600092406,
+          "sessions": [
+            {
+              "app_ms": 3.465292,
+              "authenticated_close": true,
+              "binding_hash": "1675bfe2cde276ac23544f4a99559538add780c3da03f82e3a83ad3c912351de",
+              "handshake_ms": 9.225046,
+              "messages": 32,
+              "payload_bytes": 1024,
+              "session_id": "5c99d06879ebcaa756bd979e64a0a64e",
+              "spiral_ms": 7.984757999999999,
+              "tcp_ms": 0.21723900000000002,
+              "tls_ms": 0.9936590000000001,
+              "total_ms": 12.895653999999999,
+              "transcript_hash": "950c7d5ac946e77a31aa72f0f8d6ee7314a43fcb06fc184bcc6507a721442efd"
+            },
+            {
+              "app_ms": 3.7763850000000003,
+              "authenticated_close": true,
+              "binding_hash": "3ce2fa7a06d860e598d98c211cef004f0a9516df2f817e71ab01c42c832d7bec",
+              "handshake_ms": 9.448321,
+              "messages": 32,
+              "payload_bytes": 1024,
+              "session_id": "ee56ce615aef7e314b18e5d4b471648d",
+              "spiral_ms": 7.377616,
+              "tcp_ms": 0.6513270000000001,
+              "tls_ms": 1.418412,
+              "total_ms": 13.499231,
+              "transcript_hash": "878ebce6def1bb37271a0b5a4a4b18a39a130a7aaaf1abc47348c17d02ad3e8a"
+            },
+            {
+              "app_ms": 4.32788,
+              "authenticated_close": true,
+              "binding_hash": "99715068c115b9e65497b33555f663d5d75310f3571092f2b36f7f6b6accae07",
+              "handshake_ms": 9.361461,
+              "messages": 32,
+              "payload_bytes": 1024,
+              "session_id": "914701b68b77a83876367bd4fb7d6510",
+              "spiral_ms": 7.529737,
+              "tcp_ms": 0.286309,
+              "tls_ms": 1.5444149999999999,
+              "total_ms": 13.735284,
+              "transcript_hash": "b191116aa63d946afd14039f0316f890c313a0c0d488a47a95cdb0a191a8a960"
+            },
+            {
+              "app_ms": 4.627234,
+              "authenticated_close": true,
+              "binding_hash": "2bc057dc88f1486f3296d024d5fb11f42c9aaaa578cb1b2287cc10663dd5016b",
+              "handshake_ms": 8.989983,
+              "messages": 32,
+              "payload_bytes": 1024,
+              "session_id": "3bfb317b24e3f07beb2daf02fd09d13f",
+              "spiral_ms": 6.807783000000001,
+              "tcp_ms": 0.263971,
+              "tls_ms": 1.9171690000000001,
+              "total_ms": 13.717295,
+              "transcript_hash": "bc673c658935e76e5642a60b21dd9b6140dc87fbd04b8140a13b4fe9be18d9a1"
+            }
+          ],
+          "server_kem": {
+            "executed_jobs": 8,
+            "live_keys": 0,
+            "rejected_jobs": 0
+          },
+          "client_peak_rss_kib": 6244,
+          "server_peak_rss_kib": 5724
+        },
+        {
+          "wall_seconds": 0.030027053999219788,
+          "sessions": [
+            {
+              "app_ms": 3.7297849999999997,
+              "authenticated_close": true,
+              "binding_hash": "f8a24e4e480d148cc05457dbdd737adea8b10a6886c688dbcfed7cf9e74db7f1",
+              "handshake_ms": 11.151292,
+              "messages": 32,
+              "payload_bytes": 1024,
+              "session_id": "a0dd6b65756d85b58dec52c294bc0d3e",
+              "spiral_ms": 7.5243,
+              "tcp_ms": 0.026407,
+              "tls_ms": 3.351136,
+              "total_ms": 15.258476,
+              "transcript_hash": "996e5e147276f07307a6a4e93bf6ce4385efbae08789196c5a3d146e342a8582"
+            },
+            {
+              "app_ms": 4.989307,
+              "authenticated_close": true,
+              "binding_hash": "1917ec047fdbf879d22aa5be916da32b71c45d1d7fd71a9547f5d81055831ddd",
+              "handshake_ms": 11.284726000000001,
+              "messages": 32,
+              "payload_bytes": 1024,
+              "session_id": "550e1c746444899bcee7815a9c527c6a",
+              "spiral_ms": 7.418531,
+              "tcp_ms": 0.12095,
+              "tls_ms": 3.744231,
+              "total_ms": 16.404170999999998,
+              "transcript_hash": "deeea0ac9cdf904852bfab60979e825d5e1c813ede1b15c917ea17959f17dce8"
+            },
+            {
+              "app_ms": 5.062930000000001,
+              "authenticated_close": true,
+              "binding_hash": "e28e301d55c7a9fe4ed1d7edaa3cbad24e3e21d4b8068ed577da8dcabc26ecdb",
+              "handshake_ms": 12.085668,
+              "messages": 32,
+              "payload_bytes": 1024,
+              "session_id": "c3273d5cfbc3179ccede5e421f6fc2ad",
+              "spiral_ms": 6.7297720000000005,
+              "tcp_ms": 0.652581,
+              "tls_ms": 4.7022770000000005,
+              "total_ms": 17.275116,
+              "transcript_hash": "8d49e02e9302f33f9d8e9e10f4259bb6fab4b340d6acccf3a17420a31f04c7e8"
+            },
+            {
+              "app_ms": 5.820619,
+              "authenticated_close": true,
+              "binding_hash": "e31ee61a7950a1c80ce8ea6bc04b82adc31b266a05687971b44e61700e9019e9",
+              "handshake_ms": 12.239984,
+              "messages": 32,
+              "payload_bytes": 1024,
+              "session_id": "d2aefe1681a4b0e0a46e6e91a451810f",
+              "spiral_ms": 7.7452119999999995,
+              "tcp_ms": 0.285302,
+              "tls_ms": 4.208184,
+              "total_ms": 18.149126000000003,
+              "transcript_hash": "2e2175dd90b83b23e547eda351d28ae69002a2c0e8f3155d8b1e3b2f8c6b97c3"
+            }
+          ],
+          "server_kem": {
+            "executed_jobs": 8,
+            "live_keys": 0,
+            "rejected_jobs": 0
+          },
+          "client_peak_rss_kib": 6240,
+          "server_peak_rss_kib": 6044
+        },
+        {
+          "wall_seconds": 0.02720128299915814,
+          "sessions": [
+            {
+              "app_ms": 3.119335,
+              "authenticated_close": true,
+              "binding_hash": "965b10167b5e117384150ea938efcebe48e80f06f55999813c04acd37ff989af",
+              "handshake_ms": 10.502930000000001,
+              "messages": 32,
+              "payload_bytes": 1024,
+              "session_id": "04f432208baafb923ef110658003308e",
+              "spiral_ms": 8.909423,
+              "tcp_ms": 0.18285099999999999,
+              "tls_ms": 1.409872,
+              "total_ms": 13.742716,
+              "transcript_hash": "84c8883e683b9e4955d7b742c7c5d4cf478091260b1bf38644eb5d5f035c5897"
+            },
+            {
+              "app_ms": 4.213829,
+              "authenticated_close": true,
+              "binding_hash": "89a21b0a8630ac84eb4d9ab13cdcb1a0207cd59f027725cae49e9ada4cdd23b4",
+              "handshake_ms": 9.394718999999998,
+              "messages": 32,
+              "payload_bytes": 1024,
+              "session_id": "74c1b2f3ab21cc56c61b94f11ca3b1fe",
+              "spiral_ms": 8.204423,
+              "tcp_ms": 0.204447,
+              "tls_ms": 0.985056,
+              "total_ms": 13.695584,
+              "transcript_hash": "4ef15666e2fe56ac7993cc36e9e6eebe02c6d55b2fd76f1ff7244d1a5e32b952"
+            },
+            {
+              "app_ms": 4.913023,
+              "authenticated_close": true,
+              "binding_hash": "4b24faab28a82aa1693c5220ac58bf633f4267f39d33a98a683ca875d96637c7",
+              "handshake_ms": 9.195108000000001,
+              "messages": 32,
+              "payload_bytes": 1024,
+              "session_id": "bace62a46e1afba39966891fecfe5e16",
+              "spiral_ms": 7.961843999999999,
+              "tcp_ms": 0.49215299999999995,
+              "tls_ms": 0.740366,
+              "total_ms": 14.176941,
+              "transcript_hash": "12096fe4d3f11e665e5ad58bba74c9486a88ba2325d96afaccffdbe18c1596db"
+            },
+            {
+              "app_ms": 4.150969,
+              "authenticated_close": true,
+              "binding_hash": "c8468d92972229dbdf68c1332e5d8aa25966c5382409591e95e49f874a81ddd7",
+              "handshake_ms": 12.095763,
+              "messages": 32,
+              "payload_bytes": 1024,
+              "session_id": "bbc43275fbd1810b03b5aa6bc161900f",
+              "spiral_ms": 11.211306,
+              "tcp_ms": 0.22296,
+              "tls_ms": 0.638963,
+              "total_ms": 16.499174,
+              "transcript_hash": "df971f1025535889b1cdd3089bbbe74f0adeaab8982bb9058fd6ca1575ca1252"
+            }
+          ],
+          "server_kem": {
+            "executed_jobs": 8,
+            "live_keys": 0,
+            "rejected_jobs": 0
+          },
+          "client_peak_rss_kib": 6400,
+          "server_peak_rss_kib": 5696
+        },
+        {
+          "wall_seconds": 0.033315635000690236,
+          "sessions": [
+            {
+              "app_ms": 2.834481,
+              "authenticated_close": true,
+              "binding_hash": "70aa208ab2ea4884ca8db54e03d1413533a30641beaad2a3fb7a08af44af60cf",
+              "handshake_ms": 10.924526,
+              "messages": 32,
+              "payload_bytes": 1024,
+              "session_id": "b11e62ab629483dddb286354e5a7fcca",
+              "spiral_ms": 10.059066999999999,
+              "tcp_ms": 0.056165,
+              "tls_ms": 0.808568,
+              "total_ms": 13.808900000000001,
+              "transcript_hash": "9937dd80f251239075cb3f09a24b289b901d25977f757aaf60e12873de2b157f"
+            },
+            {
+              "app_ms": 3.066947,
+              "authenticated_close": true,
+              "binding_hash": "3fed023b1bc1b698297e9af2aafe2e81d0db97a7cfac7e11898cd5bf54c9342a",
+              "handshake_ms": 12.965331,
+              "messages": 32,
+              "payload_bytes": 1024,
+              "session_id": "e876463935d7756544501a675bc6b996",
+              "spiral_ms": 5.729222,
+              "tcp_ms": 0.321495,
+              "tls_ms": 6.913524,
+              "total_ms": 16.131206,
+              "transcript_hash": "05fd1145c668da3ffab38cadd290170aeeaeb63f6b89eb3a5731ca5a902fbbba"
+            },
+            {
+              "app_ms": 4.005116,
+              "authenticated_close": true,
+              "binding_hash": "a89928a7b440ae9bde319a7d2b448b6a0dcb78c375bbaf8e0d1e570bf8c4adce",
+              "handshake_ms": 11.837876000000001,
+              "messages": 32,
+              "payload_bytes": 1024,
+              "session_id": "a50565c4af3267a0c6c6f5f8e8006cb7",
+              "spiral_ms": 10.916917999999999,
+              "tcp_ms": 0.021863999999999998,
+              "tls_ms": 0.897949,
+              "total_ms": 16.165228,
+              "transcript_hash": "deb1ce2f704994ef87edaa649612a7faa9eb839c14fb01ae3ea93dd52f954a79"
+            },
+            {
+              "app_ms": 4.593446999999999,
+              "authenticated_close": true,
+              "binding_hash": "948b2c78c14c79b4d5d4d7c7549ec4a613488befd82930fe4193330e17b97698",
+              "handshake_ms": 11.454974,
+              "messages": 32,
+              "payload_bytes": 1024,
+              "session_id": "31fc079c3a6376d21cbedd2ee3dc966c",
+              "spiral_ms": 10.434811999999999,
+              "tcp_ms": 0.319149,
+              "tls_ms": 0.6781689999999999,
+              "total_ms": 16.539475000000003,
+              "transcript_hash": "ac406e036490045a246dfd1e66cbf54641009f7004837d5cc7cad8c207766fb6"
+            }
+          ],
+          "server_kem": {
+            "executed_jobs": 8,
+            "live_keys": 0,
+            "rejected_jobs": 0
+          },
+          "client_peak_rss_kib": 6308,
+          "server_peak_rss_kib": 5692
+        },
+        {
+          "wall_seconds": 0.03026199399937468,
+          "sessions": [
+            {
+              "app_ms": 2.967139,
+              "authenticated_close": true,
+              "binding_hash": "62ca9f0b8ae1911a03daa7ddb87e7c954a1f002c3b71482903d7a5553d764709",
+              "handshake_ms": 10.15421,
+              "messages": 32,
+              "payload_bytes": 1024,
+              "session_id": "a25cc4aa6824f22f0c240550e5456a75",
+              "spiral_ms": 9.435638999999998,
+              "tcp_ms": 0.027654,
+              "tls_ms": 0.668801,
+              "total_ms": 13.204593000000001,
+              "transcript_hash": "4e5628ea637a98eabfcc881c16ff2d5b7c6be23225e81a944b843170bda632c3"
+            },
+            {
+              "app_ms": 2.743813,
+              "authenticated_close": true,
+              "binding_hash": "43930c4a69194e2006d92311dfe89977dc5b55ab88ac2f42aa0d503051eed023",
+              "handshake_ms": 10.848401,
+              "messages": 32,
+              "payload_bytes": 1024,
+              "session_id": "5d333c1c41776fd7ecb837134f570f26",
+              "spiral_ms": 9.496215000000001,
+              "tcp_ms": 0.148159,
+              "tls_ms": 1.2028320000000001,
+              "total_ms": 13.655699,
+              "transcript_hash": "9d1cabcc33074bfd9606c8cfadd34afa40341d4470b08d035bba061a20080302"
+            },
+            {
+              "app_ms": 3.2520409999999997,
+              "authenticated_close": true,
+              "binding_hash": "4f2d9fb0505f28e6edfe4d8d911eccbb207aa2768c64130f37166f662df3cce5",
+              "handshake_ms": 10.497387,
+              "messages": 32,
+              "payload_bytes": 1024,
+              "session_id": "630c4d9fcc7884c555e636c9601982fe",
+              "spiral_ms": 9.149545,
+              "tcp_ms": 0.462959,
+              "tls_ms": 0.883878,
+              "total_ms": 13.844088,
+              "transcript_hash": "d38221da18641834120b5f550dec0e507c807df14c122bb0ed3a9451bb0e71f3"
+            },
+            {
+              "app_ms": 2.315479,
+              "authenticated_close": true,
+              "binding_hash": "8b2d52bb621cf7c7efbfca058d9eb2e0effba519b6a28343671c3d352fef5b3b",
+              "handshake_ms": 11.659915999999999,
+              "messages": 32,
+              "payload_bytes": 1024,
+              "session_id": "a3b5cc943f4ac7ef9286ae856355a1d0",
+              "spiral_ms": 10.508032,
+              "tcp_ms": 0.227739,
+              "tls_ms": 0.923426,
+              "total_ms": 14.068588,
+              "transcript_hash": "1932fc6983110addd12576ca829c3be6df4cc82e14617d84240e92f2e69d6c6b"
+            }
+          ],
+          "server_kem": {
+            "executed_jobs": 8,
+            "live_keys": 0,
+            "rejected_jobs": 0
+          },
+          "client_peak_rss_kib": 6364,
+          "server_peak_rss_kib": 5700
+        }
+      ]
+    },
+    {
+      "workers_per_endpoint": 4,
+      "payload": 16384,
+      "trials": 5,
+      "connection_samples": 20,
+      "summary_ms": {
+        "handshake_ms": {
+          "median": 11.362169999999999,
+          "p95": 14.018543,
+          "p99": 14.83113
+        },
+        "tcp_ms": {
+          "median": 0.32999,
+          "p95": 0.782769,
+          "p99": 1.009879
+        },
+        "tls_ms": {
+          "median": 1.188858,
+          "p95": 1.646769,
+          "p99": 1.839955
+        },
+        "spiral_ms": {
+          "median": 10.111011999999999,
+          "p95": 11.408348,
+          "p99": 13.493355000000001
+        },
+        "app_ms": {
+          "median": 9.943575,
+          "p95": 16.680085000000002,
+          "p99": 18.48143
+        }
+      },
+      "whole_run_echo_payload_MiB_per_second": {
+        "median": 90.05183631352898,
+        "p95": 107.31369383652589,
+        "p99": 107.31369383652589
+      },
+      "rss_kib": {
+        "client_peak_rss_kib": {
+          "median": 8612,
+          "p95": 8700,
+          "p99": 8700
+        },
+        "server_peak_rss_kib": {
+          "median": 5852,
+          "p95": 5928,
+          "p99": 5928
+        }
+      },
+      "raw": [
+        {
+          "wall_seconds": 0.04908759200043278,
+          "sessions": [
+            {
+              "app_ms": 12.561285,
+              "authenticated_close": true,
+              "binding_hash": "a6cdcfa4ecf6b1ff57023f50e6ad0a789d7a927370493c9fdfb751fb831b6f75",
+              "handshake_ms": 8.513938,
+              "messages": 32,
+              "payload_bytes": 16384,
+              "session_id": "e02e3df2351653ac80ba1c0be709dd76",
+              "spiral_ms": 6.645783,
+              "tcp_ms": 0.027408,
+              "tls_ms": 1.839955,
+              "total_ms": 23.052463,
+              "transcript_hash": "b086c4b971f450d04cd761f88d23d649ac03615c035084e53b44c70c93c0131b"
+            },
+            {
+              "app_ms": 15.261991,
+              "authenticated_close": true,
+              "binding_hash": "453b237dacc2fc2bfcee2664a78b4e598100f6a3b7ef83317d8f560e15a104ff",
+              "handshake_ms": 8.943243,
+              "messages": 32,
+              "payload_bytes": 16384,
+              "session_id": "0d08b9817f10150003b443660e01b1da",
+              "spiral_ms": 7.0976609999999996,
+              "tcp_ms": 0.377785,
+              "tls_ms": 1.4666970000000001,
+              "total_ms": 24.530455999999997,
+              "transcript_hash": "89c5a8f02090a50bd050ee078541396f75ac68ac7e4ce3be33468866b81b47a0"
+            },
+            {
+              "app_ms": 16.680085000000002,
+              "authenticated_close": true,
+              "binding_hash": "ee33f8624f319f97d78261a5b3d212a57b10e55b86b256fef6b81b894574fa3e",
+              "handshake_ms": 9.057094999999999,
+              "messages": 32,
+              "payload_bytes": 16384,
+              "session_id": "142f4a5f7f9718014fdcc2759d30a47d",
+              "spiral_ms": 7.100248,
+              "tcp_ms": 0.40493799999999996,
+              "tls_ms": 1.5510579999999998,
+              "total_ms": 25.901244000000002,
+              "transcript_hash": "61806ca1cb072dfc7642ed57ebaaf4a99453c657b3a8011bea8c221de197d700"
+            },
+            {
+              "app_ms": 18.48143,
+              "authenticated_close": true,
+              "binding_hash": "18db99b2835fd2c67831047cb074631a528f5a7a3c7b796a44978266744d2067",
+              "handshake_ms": 10.124928,
+              "messages": 32,
+              "payload_bytes": 16384,
+              "session_id": "2a73b91acb0cf37b7871ef50d4ad6ea1",
+              "spiral_ms": 8.568259999999999,
+              "tcp_ms": 0.34446299999999996,
+              "tls_ms": 1.192193,
+              "total_ms": 28.816390000000002,
+              "transcript_hash": "8a30f3282da2dd5f7b86d95242ec941204c2648eec6f074ca056de2472c3f21d"
+            }
+          ],
+          "server_kem": {
+            "executed_jobs": 8,
+            "live_keys": 0,
+            "rejected_jobs": 0
+          },
+          "client_peak_rss_kib": 8700,
+          "server_peak_rss_kib": 5852
+        },
+        {
+          "wall_seconds": 0.040288042999236495,
+          "sessions": [
+            {
+              "app_ms": 5.79953,
+              "authenticated_close": true,
+              "binding_hash": "eb921e839b00d9a15a20a34977a1fcb5fc6b655cbc02f888fc2ad8dfb53a2c81",
+              "handshake_ms": 12.131682,
+              "messages": 32,
+              "payload_bytes": 16384,
+              "session_id": "3a5daa6d405e17e63dd8b07b821c3e8e",
+              "spiral_ms": 11.129983,
+              "tcp_ms": 0.038692000000000004,
+              "tls_ms": 0.962278,
+              "total_ms": 19.076686,
+              "transcript_hash": "76483f315e9fedfa018ba2cf7710b7b79ed3863740718bafa6554bbc73fc8a99"
+            },
+            {
+              "app_ms": 7.32291,
+              "authenticated_close": true,
+              "binding_hash": "8ce067b26becbb67075b76ee4db039409c8e3716c5ad9ffc91f48de9dd09f5aa",
+              "handshake_ms": 11.481043999999999,
+              "messages": 32,
+              "payload_bytes": 16384,
+              "session_id": "9f212dd11725f192bdaff2ea03ffe2f2",
+              "spiral_ms": 10.195696,
+              "tcp_ms": 0.144579,
+              "tls_ms": 1.140024,
+              "total_ms": 19.465245999999997,
+              "transcript_hash": "86f1792945987162c795c9762826c5794efb46b15b0633d50dfa21f89db441f3"
+            },
+            {
+              "app_ms": 8.207108,
+              "authenticated_close": true,
+              "binding_hash": "9a8445cc33fed19d8068b6a01f692ecc864152dbf6ebb0763eb18aa485187a12",
+              "handshake_ms": 12.294853,
+              "messages": 32,
+              "payload_bytes": 16384,
+              "session_id": "179f7d3efbbc330504953fbc312ea248",
+              "spiral_ms": 11.265974,
+              "tcp_ms": 0.403348,
+              "tls_ms": 0.6027009999999999,
+              "total_ms": 20.760271,
+              "transcript_hash": "a091544432260c9941e34eb72088048af5d78c548067e12967b6e1b8f3446a51"
+            },
+            {
+              "app_ms": 8.547474,
+              "authenticated_close": true,
+              "binding_hash": "5ac3a061d74a69a93ef26fbd2fc03efa1eb91cf7ffbc5d02d3b42478082413c7",
+              "handshake_ms": 12.328843,
+              "messages": 32,
+              "payload_bytes": 16384,
+              "session_id": "f60fc6d5d0843a7710e89530fe0263e1",
+              "spiral_ms": 10.816241000000002,
+              "tcp_ms": 0.32606799999999997,
+              "tls_ms": 1.1855229999999999,
+              "total_ms": 21.025651,
+              "transcript_hash": "395f4331275605f3d5a5cc13460fdc6256e51a4b9207df48e11c6b0c95dfcfab"
+            }
+          ],
+          "server_kem": {
+            "executed_jobs": 8,
+            "live_keys": 0,
+            "rejected_jobs": 0
+          },
+          "client_peak_rss_kib": 8672,
+          "server_peak_rss_kib": 5628
+        },
+        {
+          "wall_seconds": 0.04575134500009881,
+          "sessions": [
+            {
+              "app_ms": 8.974946,
+              "authenticated_close": true,
+              "binding_hash": "b008425ca6d15d230821c0641f05d3f8ff71644aea1af310320ae2bd6b2c6867",
+              "handshake_ms": 12.471309999999999,
+              "messages": 32,
+              "payload_bytes": 16384,
+              "session_id": "449ae9b598f23f4d21889446aa32f609",
+              "spiral_ms": 10.333053999999999,
+              "tcp_ms": 0.49084900000000004,
+              "tls_ms": 1.646769,
+              "total_ms": 22.393848000000002,
+              "transcript_hash": "595b4f85dc1bb8a86920582a0b2c7ea374491218255c10401125f931fd732c6b"
+            },
+            {
+              "app_ms": 12.329903999999999,
+              "authenticated_close": true,
+              "binding_hash": "e137341e11f3a033e28026eaeef071b91e36d9c21628be82aa5a2d5220e1e9bd",
+              "handshake_ms": 12.691149000000001,
+              "messages": 32,
+              "payload_bytes": 16384,
+              "session_id": "b074833999262509c81fdda5f54c8aaf",
+              "spiral_ms": 10.59525,
+              "tcp_ms": 0.782769,
+              "tls_ms": 1.312509,
+              "total_ms": 25.503984,
+              "transcript_hash": "333013cb9ad19a5051853266172f83a708a21a0f990193e7d5b0dcf5dd82b23d"
+            },
+            {
+              "app_ms": 10.804675999999999,
+              "authenticated_close": true,
+              "binding_hash": "daf3ae809ebc7aef3186b61d29a6f6fc0e7814fa6b85d9cf6aa63efb2680c221",
+              "handshake_ms": 14.018543,
+              "messages": 32,
+              "payload_bytes": 16384,
+              "session_id": "a341194cc463de7448c1cd559e834877",
+              "spiral_ms": 11.408348,
+              "tcp_ms": 1.009879,
+              "tls_ms": 1.598659,
+              "total_ms": 25.857993999999998,
+              "transcript_hash": "76b77eff27dc674ae15d228cd1281fc3e150e7d7b38c343987d603b270883cde"
+            },
+            {
+              "app_ms": 14.637573,
+              "authenticated_close": true,
+              "binding_hash": "e56dc4ef94921a84e230fc1a827d8bb5bbfe9c24cd9861f005285cf155bdd40f",
+              "handshake_ms": 11.661575000000001,
+              "messages": 32,
+              "payload_bytes": 16384,
+              "session_id": "53d8d06b5295eb5d46c45f475d663f67",
+              "spiral_ms": 10.587114999999999,
+              "tcp_ms": 0.07958,
+              "tls_ms": 0.970349,
+              "total_ms": 26.59647,
+              "transcript_hash": "e4f3c5aeaf74a884c6f821fb750f9fa5abdcdc40177618a3e395308859cae9bf"
+            }
+          ],
+          "server_kem": {
+            "executed_jobs": 8,
+            "live_keys": 0,
+            "rejected_jobs": 0
+          },
+          "client_peak_rss_kib": 8512,
+          "server_peak_rss_kib": 5788
+        },
+        {
+          "wall_seconds": 0.037273900999934995,
+          "sessions": [
+            {
+              "app_ms": 7.988827000000001,
+              "authenticated_close": true,
+              "binding_hash": "dc95c0bf862cf98c7651a00f52e255495fd33c326fe727c64c252c72ef5b766b",
+              "handshake_ms": 9.379873,
+              "messages": 32,
+              "payload_bytes": 16384,
+              "session_id": "dc19d58f239ca6070ce65e93a21facee",
+              "spiral_ms": 7.854939999999999,
+              "tcp_ms": 0.324921,
+              "tls_ms": 1.19885,
+              "total_ms": 19.187055,
+              "transcript_hash": "f767d33d130cfd49e94947e4ba114b0b3965dabdbcc0b31afcf535b466776750"
+            },
+            {
+              "app_ms": 9.505479000000001,
+              "authenticated_close": true,
+              "binding_hash": "4d3648112080156a86322db57b8bdf331af74db44e716ab860d5be725a5e2d18",
+              "handshake_ms": 8.970777,
+              "messages": 32,
+              "payload_bytes": 16384,
+              "session_id": "8b28db47bf878fee553b17b819f3f2db",
+              "spiral_ms": 8.24444,
+              "tcp_ms": 0.30497,
+              "tls_ms": 0.42066800000000004,
+              "total_ms": 18.862706,
+              "transcript_hash": "03d526c572ed94a3b626693c1cc3e16b3fb4154d036b1e96c2155e62c0a6e999"
+            },
+            {
+              "app_ms": 8.75393,
+              "authenticated_close": true,
+              "binding_hash": "c4e823bdfe18a91e3daa444d78a8f31c04b0b6995764fa9858af71173df1b3dd",
+              "handshake_ms": 11.243295999999999,
+              "messages": 32,
+              "payload_bytes": 16384,
+              "session_id": "9b61e4e5a64898758e2989f5f88b5f61",
+              "spiral_ms": 10.026328,
+              "tcp_ms": 0.020787,
+              "tls_ms": 1.14829,
+              "total_ms": 20.193752999999997,
+              "transcript_hash": "169dabeba7806354a9b60eb878f9296767a4716b809662c7bd6947a925dea92a"
+            },
+            {
+              "app_ms": 10.750393,
+              "authenticated_close": true,
+              "binding_hash": "1b0b6438328a74a70114f1a44f8dab8341a948f6caaf4e38627dd7eb502c776c",
+              "handshake_ms": 9.487527,
+              "messages": 32,
+              "payload_bytes": 16384,
+              "session_id": "59e73cc75b8f31341c9db3c7f3b81799",
+              "spiral_ms": 7.678738,
+              "tcp_ms": 0.333912,
+              "tls_ms": 1.474175,
+              "total_ms": 20.78884,
+              "transcript_hash": "3d57785f4869e2e720136a820f3fe86816fd03f9f286b475f8d39b6fb0b4a6ad"
+            }
+          ],
+          "server_kem": {
+            "executed_jobs": 8,
+            "live_keys": 0,
+            "rejected_jobs": 0
+          },
+          "client_peak_rss_kib": 8412,
+          "server_peak_rss_kib": 5928
+        },
+        {
+          "wall_seconds": 0.04441886099994008,
+          "sessions": [
+            {
+              "app_ms": 9.747469,
+              "authenticated_close": true,
+              "binding_hash": "b5cb74cda07402f165f53f958b480476e7834a0a42c25902f00591f90b968552",
+              "handshake_ms": 9.775174,
+              "messages": 32,
+              "payload_bytes": 16384,
+              "session_id": "e6626a24bf0582e797ce35b9f1e7e2f2",
+              "spiral_ms": 8.410124999999999,
+              "tcp_ms": 0.040087,
+              "tls_ms": 1.323866,
+              "total_ms": 21.776263,
+              "transcript_hash": "228efe9a2aa9662894a0332a83df87c27d09efd01f31d59e6da2c47b562d50f6"
+            },
+            {
+              "app_ms": 11.831494999999999,
+              "authenticated_close": true,
+              "binding_hash": "745081ae71f8559965772620196e014239d7fb9610e98c042376a865ccf9ac47",
+              "handshake_ms": 10.58949,
+              "messages": 32,
+              "payload_bytes": 16384,
+              "session_id": "e96a3d6bcb189392389664c8a984408a",
+              "spiral_ms": 8.983599,
+              "tcp_ms": 0.589523,
+              "tls_ms": 1.015107,
+              "total_ms": 22.716796000000002,
+              "transcript_hash": "34fe74413530566c5da71c5ce73d727cc97832306cc62e9e2a88fe5b8323f343"
+            },
+            {
+              "app_ms": 8.281772,
+              "authenticated_close": true,
+              "binding_hash": "50981c9dca79f1b9e6f5ed2cf4b0227a7c5a79a766e36d215f9b9eeaa62878a7",
+              "handshake_ms": 14.83113,
+              "messages": 32,
+              "payload_bytes": 16384,
+              "session_id": "61ae1a4a58cfaf0a8e8e9f2614c7521f",
+              "spiral_ms": 13.493355000000001,
+              "tcp_ms": 0.324615,
+              "tls_ms": 0.9915709999999999,
+              "total_ms": 23.346307,
+              "transcript_hash": "3417b6d00963d8ff0b013e1ff8f76919e1cbfe69779e478e8f296b279daf4df4"
+            },
+            {
+              "app_ms": 10.139681,
+              "authenticated_close": true,
+              "binding_hash": "1421145083b06087ca752944d0681fb837afb68cc602f86923132f9ad7e1905b",
+              "handshake_ms": 12.619912000000001,
+              "messages": 32,
+              "payload_bytes": 16384,
+              "session_id": "72d84c00ae156ed5f298652032cb8758",
+              "spiral_ms": 11.058284,
+              "tcp_ms": 0.433656,
+              "tls_ms": 1.1272840000000002,
+              "total_ms": 23.95131,
+              "transcript_hash": "348162c781824d4301c0197e0b6ff145d5e3b7d400655f0b06d38728a42527d0"
+            }
+          ],
+          "server_kem": {
+            "executed_jobs": 8,
+            "live_keys": 0,
+            "rejected_jobs": 0
+          },
+          "client_peak_rss_kib": 8612,
+          "server_peak_rss_kib": 5880
+        }
+      ]
+    }
+  ]
+}

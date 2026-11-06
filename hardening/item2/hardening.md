@@ -6,6 +6,10 @@ We design the implementation boundary for item 2 using code that has completed t
 uploaded to the GitHub `spiral-opt2-protocol-v0.1` branch in commit `7c859d9`.
 This document is a **design proposal** written afterward, not results from native implementation, performance, or constant-time validation.
 
+Post-merge note: separate research implementations in `native_research/` and `protocol_rust/` have been
+added to `main`. The options, toolchain observations, and work sequence below are preserved as a proposal at the reference commit;
+consult the relevant directory READMEs and validation records together for the current implementation status.
+
 I identified two key points: OPT2 secret operations depend on Python large integers and conditionals,
 and the protocol also passes shared secrets and AEAD keys as Python `bytes`.
 Replacing KEM multiplication alone therefore does not complete the secret-management boundary we wanted.
