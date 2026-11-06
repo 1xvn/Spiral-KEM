@@ -38,6 +38,13 @@ Finished verification, directional AEAD keys and sequence numbers, 1 decapsulati
 See its guide for instructions and validation scope. Security validation for production services and
 interoperability validation between independent implementations have not been completed.
 
+## Constant-Time Implementation and Secret Management Design
+
+[Design proposal 2](hardening/item2/hardening.md) reviews Python secret-processing paths and
+key lifetimes and compares a native secret engine with process-isolation alternatives.
+The recommendation is a native engine using fixed-size arithmetic and opaque handles.
+This is currently at the design stage; neither the native implementation nor constant-time validation is complete.
+
 ## Archive Status
 
 `results/results.zip` is a previously uploaded result bundle and does not imply that all measurement results are included. Only some fragments of the large original design files are retained, so they cannot be reconstructed from this repository alone. See the [temporary upload guide](imports/README.md).
