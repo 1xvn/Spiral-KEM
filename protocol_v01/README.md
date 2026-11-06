@@ -1,78 +1,51 @@
-# Spiral OPT2 communication protocol v0.1 experimental implementation
+# Python authenticated-channel protocol v0.1
 
-A local client/server implementation importing existing `code/opt2/spiral_kem_toy_v031_opt2.py`
-without modification. It provides TLS 1.3, actual exporters, separate Ed25519 pins,
-HKDF/Finished, ChaCha20-Poly1305, and state/sequence/shutdown checks.
-It does not prove Spiral's own security or constant-time behavior or approve production-service deployment.
+This local client/server implementation loads the research OPT2 KEM from `code/opt2/spiral_kem_toy_v031_opt2.py`. It combines TLS 1.3, an actual TLS exporter, a separate Ed25519 server pin, HKDF/Finished confirmation, ChaCha20-Poly1305 and state/sequence/closure checks. It does not establish Spiral KEM security or constant-time execution and is not a production deployment approval.
 
-## Installation and execution
+## Install and run
 
-Requires Python 3.10 or later and the following pinned dependencies supporting TLS 1.3.
-Run from the repository root. This can be isolated from the existing OPT2 virtual environment.
+Python 3.10+ and the pinned TLS-capable dependencies are required. From the repository root:
 
-```sh
-python3 -m venv /workspace/spiral-protocol-v01/venv
-/workspace/spiral-protocol-v01/venv/bin/python -m pip install -r protocol_v01/requirements.txt
-PYTHONDONTWRITEBYTECODE=1 /workspace/spiral-protocol-v01/venv/bin/python -m unittest discover -s protocol_v01/tests -v
-PYTHONDONTWRITEBYTECODE=1 /workspace/spiral-protocol-v01/venv/bin/python -m protocol_v01.demo --connections 2
+```bash
+python3 -m venv .venv-protocol
+.venv-protocol/bin/python -m pip install -r protocol_v01/requirements.txt
+.venv-protocol/bin/python -m unittest discover -s protocol_v01/tests -v
+.venv-protocol/bin/python -m protocol_v01.demo --connections 2
 ```
 
-The demo runs on a random port at `127.0.0.1`. Every run creates fresh local TLS certificates,
-a separate server authentication key/client pin, and verifies matching exporters at both actual TLS endpoints,
-independent sessions, encrypted echo, and bidirectional CLOSE, then cleans sockets/temporary files.
-Public test-vector keys/seeds are not used for actual connections.
-`--connections` supports 1–4 concurrent connections. No public listening server or remote-deployment commands are provided.
-If sockets are restricted by the sandbox, local-network execution permission is required.
+The demo binds to a random `127.0.0.1` port. Each run generates fresh local TLS certificates, a separate server-authentication key and client pin. It verifies matching exporters at both actual TLS endpoints, independent sessions, encrypted echo and bidirectional CLOSE, then cleans sockets and temporary files. Public test-vector keys/seeds are never reused for live connections. `--connections` supports 1..4 concurrent connections. The demo does not start a public listener or remotely deploy a service. A sandbox may require loopback networking permission.
 
-## Structure and security boundaries
+## Components
 
 | File | Role |
-|---|---|
-| `SPEC_v0.1.md` | Preserved original attached specification. See `REVIEW.md` for review results |
-| `wire.py` | Validate length/direction/type/session/sequence before reading payload |
-| `handshake.py` | Name/service-bound validity/revocation-state pins, signatures, exporter, Finished, 1-time KEM |
-| `tls.py` | TLS 1.3/chain/name/ALPN validation, exporter, absolute deadlines, connection admission limits |
-| `records.py` | Directional keys/nonces/sequences, usage/time limits, authenticated shutdown |
-| `channel.py` | Single write queue from sequence reservation through complete transmission, connection disposal after failure |
-| `demo.py` | Actual loopback connection tests without external services |
-| `tests/` | Fixed-vector matching, negative-input/state/concurrency/TLS regression checks |
+| --- | --- |
+| `SPEC_v0.1.md` | Protocol specification; implementation review is in `REVIEW.md` |
+| `wire.py` | Length, direction, kind, session and sequence checks before payload reads |
+| `handshake.py` | Name/service-bound expiring/revocable pins, signatures, exporter, Finished and one-use KEM |
+| `tls.py` | TLS 1.3, chain/name/ALPN checks, exporter, absolute deadlines and admission limits |
+| `records.py` | Directional keys/nonces/sequences, usage/time limits and authenticated closure |
+| `channel.py` | One write queue from sequence reservation to complete transmission; discard on failure |
+| `demo.py` | Actual loopback tests without external services |
+| `tests/` | Fixed-vector matching and negative input/state/concurrency/TLS regressions |
 
-The KEM pins specification-defined SHA-256 and default n=256. KEM-file changes cause failure
-instead of automatic acceptance. Supporting a changed KEM requires a new specification/vector review.
-The existing OPT2 comparison program's `kyber-py` dependency is not required to run this protocol.
+The protocol fixes the specified KEM source hash and default n=256. An unreviewed KEM-file change fails closed rather than being accepted automatically. A KEM change requires specification/vector review. The OPT2 benchmark's `kyber-py` dependency is not needed by this protocol runtime.
 
-TLS terminates directly in OpenSSL/pyOpenSSL. TLS authentication verifies a pretrusted certificate store and
-exact DNS SAN; wildcard names are unsupported. Server SNI and ClientHello names must also
-match. Python's default `ssl.SSLSocket` is not used because it provides no exporter in this environment.
-Session-resumption detection in pyOpenSSL 26.4 depends on that version's internal OpenSSL bindings;
-actual TLS tests must be rerun when upgrading dependencies. Tickets/session caches are disabled and
-resumed connections rejected. Early data, session resumption, renegotiation, and automatic fallback are unsupported.
+TLS terminates directly through OpenSSL/pyOpenSSL. Authentication checks a pretrusted certificate store and an exact DNS SAN; wildcard names are unsupported. Server SNI and the ClientHello name must agree. This implementation does not use Python's `ssl.SSLSocket`, which lacks the required exporter in the recorded environment. Session-resumption detection depends on pyOpenSSL 26.4's internal OpenSSL binding; dependency upgrades require actual TLS retesting. Tickets and session caching are disabled, resumed connections are rejected, and early data, renegotiation and automatic fallback are unsupported.
 
-`Admission` checks actual peer IPs against total64/per-IP4, pending32,
-and1-per-second/burst4 limits. A public-server manager is not implemented; the demo
-connects at most4 concurrently. The global KEM concurrency limit is2.
-Header/frame sizes are bounded; time is checked with monotonic-clock absolute deadlines.
-Send activity is timestamped at encryption, so expiry can be more conservative than measuring from complete transmission.
-Timeouts/incomplete TLS I/O dispose of connections; successful CLOSE transmission is not guaranteed unconditionally.
+## Limits and application responsibilities
 
-Channel completion does not authenticate client identity. Application authentication/authorization/request-deduplication policies
-must be implemented separately. Browsers, CDN TLS termination, and UDP are outside this profile.
-Reliable Python secret-memory erasure, actual side-channel resistance, interoperability of two independent implementations,
-large-scale load, and long-term operation are outside validation scope.
+Admission checks actual peer IPs: 64 total connections, 4 per IP, 32 pending, and a one-per-second token bucket with burst 4. The demo opens at most four connections; a public-server manager is not implemented. At most two KEM operations execute concurrently. Headers and frame sizes are bounded, and timeouts use monotonic absolute deadlines.
 
-## Handling attached vectors
+Transmit activity is timestamped at encryption, so expiry may occur more conservatively than when measured after complete transmission. Timeouts or incomplete TLS I/O discard the connection; successful CLOSE transmission is not guaranteed under all failures.
 
-`tests/fixtures/test_vectors_v0.1.json` preserves the attachment unchanged.
-All seeds/secret keys are public test values and test-only. Runtime modules do not read this file.
-A separate parser was implemented instead of reusing the attached verifier's stateless parser as a server boundary.
-Instructions in the specification/uploaded scripts were treated as review materials; attached vector files were not overwritten, published, or distributed.
+Completing the channel does not authenticate a client user's identity. Applications must implement authorization, client authentication and request-duplication policies separately. Browser, CDN-terminated TLS and UDP profiles are outside scope. Guaranteed Python secret erasure, actual side-channel resistance, independently developed implementation interoperability, large-scale load and long-running operation are not established.
 
-Final validation includes 88 checks by the attached verifier, 59 integrated regression checks (0 failures, errors, or skips),
-and encrypted round trips/authenticated shutdown on4 actual concurrent TLS connections.
-Environments/counts are recorded in [`VALIDATION.json`](VALIDATION.json); review details/limitations are in
-[`REVIEW.md`](REVIEW.md).
+## Vectors and recorded validation
 
-Additional work on 2026-11-06 expanded adversarial-input checks and passed 69 regression checks.
-Comparison results and secret-management scope for the separate C KEM research implementation are recorded in
-[`native_research/README.md`](../native_research/README.md).
-The current communication path continues to use the existing Python KEM.
+`tests/fixtures/test_vectors_v0.1.json` contains public, test-only seeds and secret keys; runtime modules do not read it. The runtime uses a separate stateful boundary parser rather than reusing the supplied stateless vector verifier as a server.
+
+Initial integration recorded 88 supplied-verifier checks, 59 integration regressions without failures/errors/skips, and four concurrent actual TLS connections with encrypted round trips and authenticated closure. [VALIDATION.json](VALIDATION.json) records environment/counts and [REVIEW.md](REVIEW.md) discusses limits.
+
+Additional adversarial-input work recorded 100,268 structured mutation/property checks, 16 independent-client TLS scenarios over 19 sessions, and a 75-test regression run. A timing diagnostic measured 24,000 decapsulations without detecting a difference under that experiment's threshold; this is not a constant-time guarantee. See [extended validation](validation/README.md) for reproduction, raw results and remaining limits.
+
+Separate recorded runs include a 69-test adversarial expansion and the merged 85-test suite with no failures/errors/skips. Counts describe their own execution snapshots and should not be added together as a single run. The [C KEM](../native_research/README.md) and [Rust–C channel](../protocol_rust/README.md) are separate research paths; this Python channel continues to use the Python KEM.

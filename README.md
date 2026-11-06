@@ -40,6 +40,15 @@ Finished verification, directional AEAD keys and sequence numbers, 1 decapsulati
 See its guide for instructions and validation scope. Security validation for production services and
 interoperability validation between independent implementations have not been completed.
 
+## Constant-Time Implementation and Secret Management Design
+
+[Design proposal 2](hardening/item2/hardening.md) reviews Python secret-processing paths and
+key lifetimes and compares a native secret engine with process-isolation alternatives.
+The recommendation is a native engine using fixed-size arithmetic and opaque handles.
+This document is a design proposal as of `7c859d9`. For the C KEM and Rust–C communication path
+later added as separate research implementations, see the running instructions above.
+Neither the design proposal nor the research implementations indicate completed constant-time validation.
+
 ## Archive Status
 
 The Rust–C communication implementation provides [running instructions](protocol_rust/README.md) and [validation results](protocol_rust/VALIDATION.md). It passed 31 unit/compile tests and 15 real TLS interoperability tests. The Valgrind uninitialized-value warning in the TLS AES-GCM path also reproduces in TLS-only control code and remains unresolved. These results do not establish production-service security validation or Spiral's own security.

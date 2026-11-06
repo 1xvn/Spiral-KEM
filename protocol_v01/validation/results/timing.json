@@ -1,0 +1,447 @@
+{
+  "started_utc": "2026-11-06T04:02:17.396340+00:00",
+  "python": "3.12.14",
+  "platform": "Linux-6.18.57-x86_64-with-glibc2.41",
+  "clock": "perf_counter_ns elapsed time around full public decapsulate call",
+  "affinity": {
+    "requested_cpu": null,
+    "applied": true,
+    "cpu": 4
+  },
+  "seed": 20261106,
+  "gc_disabled_during_measurement": true,
+  "outliers_removed": false,
+  "pairs_per_repetition": 1000,
+  "repetitions": 3,
+  "workloads": {
+    "null_same_genuine_key_and_ciphertext": {
+      "blocks": [
+        {
+          "n_per_class": 1000,
+          "mean_ns": [
+            2542183.705,
+            2544472.317
+          ],
+          "median_ns": [
+            2448037.5,
+            2446843.5
+          ],
+          "stdev_ns": [
+            369095.21943524264,
+            489453.9925107622
+          ],
+          "welch_t": -0.11805810557945753,
+          "zero_variance": false,
+          "paired_t": -0.13439032962018477,
+          "exploratory_abs_t_over_4_5": false,
+          "paired_mean_difference_ns": -2288.612,
+          "paired_median_difference_ns": -1402.0,
+          "min_ns": [
+            2188776,
+            2182071
+          ],
+          "max_ns": [
+            6861951,
+            12271358
+          ]
+        },
+        {
+          "n_per_class": 1000,
+          "mean_ns": [
+            2592103.668,
+            2581207.235
+          ],
+          "median_ns": [
+            2469736.5,
+            2472871.0
+          ],
+          "stdev_ns": [
+            669733.7620489862,
+            527284.2527641128
+          ],
+          "welch_t": 0.4042453430957707,
+          "zero_variance": false,
+          "paired_t": 0.5203404763807746,
+          "exploratory_abs_t_over_4_5": false,
+          "paired_mean_difference_ns": 10896.433,
+          "paired_median_difference_ns": 7129.0,
+          "min_ns": [
+            2179079,
+            2193893
+          ],
+          "max_ns": [
+            15848921,
+            13677535
+          ]
+        },
+        {
+          "n_per_class": 1000,
+          "mean_ns": [
+            2554666.014,
+            2574018.618
+          ],
+          "median_ns": [
+            2473564.0,
+            2485861.0
+          ],
+          "stdev_ns": [
+            358514.6544027947,
+            527821.5382636683
+          ],
+          "welch_t": -0.9591217644926943,
+          "zero_variance": false,
+          "paired_t": -1.08739020923815,
+          "exploratory_abs_t_over_4_5": false,
+          "paired_mean_difference_ns": -19352.604,
+          "paired_median_difference_ns": -13662.5,
+          "min_ns": [
+            2203646,
+            2193480
+          ],
+          "max_ns": [
+            6471896,
+            15566019
+          ]
+        }
+      ],
+      "flagged_repetitions": 0,
+      "same_direction_in_all_repetitions": false,
+      "replicated_timing_difference": false
+    },
+    "public_valid_vs_canonical_tampered_ciphertext": {
+      "blocks": [
+        {
+          "n_per_class": 1000,
+          "mean_ns": [
+            2600649.724,
+            2584461.964
+          ],
+          "median_ns": [
+            2486796.5,
+            2484937.0
+          ],
+          "stdev_ns": [
+            602728.292535712,
+            396206.37924322434
+          ],
+          "welch_t": 0.7097022258470082,
+          "zero_variance": false,
+          "paired_t": 0.8263122174251046,
+          "exploratory_abs_t_over_4_5": false,
+          "paired_mean_difference_ns": 16187.76,
+          "paired_median_difference_ns": 3311.5,
+          "min_ns": [
+            2179040,
+            2185496
+          ],
+          "max_ns": [
+            11230468,
+            5459813
+          ]
+        },
+        {
+          "n_per_class": 1000,
+          "mean_ns": [
+            2543016.251,
+            2578845.627
+          ],
+          "median_ns": [
+            2445456.5,
+            2443847.5
+          ],
+          "stdev_ns": [
+            412928.2135123762,
+            543428.6232514413
+          ],
+          "welch_t": -1.6600766393377082,
+          "zero_variance": false,
+          "paired_t": -1.855605045549386,
+          "exploratory_abs_t_over_4_5": false,
+          "paired_mean_difference_ns": -35829.376,
+          "paired_median_difference_ns": -14882.5,
+          "min_ns": [
+            2175009,
+            2186114
+          ],
+          "max_ns": [
+            8470188,
+            9741545
+          ]
+        },
+        {
+          "n_per_class": 1000,
+          "mean_ns": [
+            3183825.217,
+            2972216.115
+          ],
+          "median_ns": [
+            2596430.0,
+            2559006.5
+          ],
+          "stdev_ns": [
+            7125376.772530128,
+            2302097.451249493
+          ],
+          "welch_t": 0.8936481510256311,
+          "zero_variance": false,
+          "paired_t": 0.9464467356023177,
+          "exploratory_abs_t_over_4_5": false,
+          "paired_mean_difference_ns": 211609.102,
+          "paired_median_difference_ns": 20223.0,
+          "min_ns": [
+            2185807,
+            2177282
+          ],
+          "max_ns": [
+            210682697,
+            59001993
+          ]
+        }
+      ],
+      "flagged_repetitions": 0,
+      "same_direction_in_all_repetitions": false,
+      "replicated_timing_difference": false
+    },
+    "keygen_consistent_fallback_secret_fixed_public_input": {
+      "blocks": [
+        {
+          "n_per_class": 1000,
+          "mean_ns": [
+            3212509.051,
+            3273859.79
+          ],
+          "median_ns": [
+            2822782.5,
+            2852170.0
+          ],
+          "stdev_ns": [
+            1064639.7596931723,
+            1161339.945158029
+          ],
+          "welch_t": -1.2314142845430516,
+          "zero_variance": false,
+          "paired_t": -1.4968308617267032,
+          "exploratory_abs_t_over_4_5": false,
+          "paired_mean_difference_ns": -61350.739,
+          "paired_median_difference_ns": -18933.0,
+          "min_ns": [
+            2195818,
+            2196286
+          ],
+          "max_ns": [
+            12615807,
+            11803418
+          ]
+        },
+        {
+          "n_per_class": 1000,
+          "mean_ns": [
+            2684651.038,
+            2684754.312
+          ],
+          "median_ns": [
+            2527757.0,
+            2519682.0
+          ],
+          "stdev_ns": [
+            613120.9536240981,
+            554599.2510060639
+          ],
+          "welch_t": -0.003950230982578916,
+          "zero_variance": false,
+          "paired_t": -0.004854824825675872,
+          "exploratory_abs_t_over_4_5": false,
+          "paired_mean_difference_ns": -103.274,
+          "paired_median_difference_ns": -3833.0,
+          "min_ns": [
+            2183837,
+            2186444
+          ],
+          "max_ns": [
+            9853212,
+            7404614
+          ]
+        },
+        {
+          "n_per_class": 1000,
+          "mean_ns": [
+            2785003.997,
+            2714522.876
+          ],
+          "median_ns": [
+            2511052.5,
+            2493228.0
+          ],
+          "stdev_ns": [
+            3029312.7295012646,
+            847452.0614162203
+          ],
+          "welch_t": 0.7085440661936905,
+          "zero_variance": false,
+          "paired_t": 0.7202982878795146,
+          "exploratory_abs_t_over_4_5": false,
+          "paired_mean_difference_ns": 70481.121,
+          "paired_median_difference_ns": 6510.0,
+          "min_ns": [
+            2189784,
+            2181954
+          ],
+          "max_ns": [
+            96052502,
+            18092927
+          ]
+        }
+      ],
+      "flagged_repetitions": 0,
+      "same_direction_in_all_repetitions": false,
+      "replicated_timing_difference": false
+    },
+    "synthetic_secret_fixed_public_input": {
+      "blocks": [
+        {
+          "n_per_class": 1000,
+          "mean_ns": [
+            2394379.013,
+            2362068.251
+          ],
+          "median_ns": [
+            2249566.0,
+            2250019.0
+          ],
+          "stdev_ns": [
+            466106.41834901716,
+            377265.6094074433
+          ],
+          "welch_t": 1.703910184207161,
+          "zero_variance": false,
+          "paired_t": 2.0652756466065014,
+          "exploratory_abs_t_over_4_5": false,
+          "paired_mean_difference_ns": 32310.762,
+          "paired_median_difference_ns": 1628.5,
+          "min_ns": [
+            1998238,
+            2010299
+          ],
+          "max_ns": [
+            6562862,
+            5022660
+          ]
+        },
+        {
+          "n_per_class": 1000,
+          "mean_ns": [
+            2385209.59,
+            2404009.273
+          ],
+          "median_ns": [
+            2237238.0,
+            2251558.0
+          ],
+          "stdev_ns": [
+            529819.4578037384,
+            588761.0741298536
+          ],
+          "welch_t": -0.7505785988496534,
+          "zero_variance": false,
+          "paired_t": -1.077529611228152,
+          "exploratory_abs_t_over_4_5": false,
+          "paired_mean_difference_ns": -18799.683,
+          "paired_median_difference_ns": -2752.0,
+          "min_ns": [
+            2012649,
+            2005209
+          ],
+          "max_ns": [
+            7057113,
+            8827546
+          ]
+        },
+        {
+          "n_per_class": 1000,
+          "mean_ns": [
+            2390905.987,
+            2376740.568
+          ],
+          "median_ns": [
+            2235861.0,
+            2243527.0
+          ],
+          "stdev_ns": [
+            740875.9824813331,
+            562011.2681210551
+          ],
+          "welch_t": 0.4817072288385071,
+          "zero_variance": false,
+          "paired_t": 0.5175492878087915,
+          "exploratory_abs_t_over_4_5": false,
+          "paired_mean_difference_ns": 14165.419,
+          "paired_median_difference_ns": 1592.5,
+          "min_ns": [
+            2007316,
+            2006995
+          ],
+          "max_ns": [
+            16854733,
+            12043953
+          ]
+        }
+      ],
+      "flagged_repetitions": 0,
+      "same_direction_in_all_repetitions": false,
+      "replicated_timing_difference": false
+    }
+  },
+  "raw_samples_file": "timing.csv",
+  "limits": [
+    "Exploratory paired-t threshold4.5 is not an adjusted significance claim or proof; Welch t is descriptive.",
+    "Pair ordering reduces drift, but samples may still be correlated; no p-values or formal leakage bounds are claimed.",
+    "Synthetic secret stress keys are not KeyGen-consistent; no genuine-key recovery attack is demonstrated.",
+    "Valid vs tampered inputs differ publicly and cannot alone establish secret leakage.",
+    "Same-key repeated local calls exceed the protocol one-shot query model.",
+    "CPU pinning does not remove virtualization, scheduling, frequency, or background-load effects.",
+    "No observed difference is not evidence of constant-time behavior."
+  ],
+  "positive_control": {
+    "n_per_class": 1000,
+    "mean_ns": [
+      120.668,
+      59585.053
+    ],
+    "median_ns": [
+      112.0,
+      50228.0
+    ],
+    "stdev_ns": [
+      53.169679242880434,
+      114428.5410764337
+    ],
+    "welch_t": -16.43321449287772,
+    "zero_variance": false,
+    "paired_t": -16.436565391197888,
+    "exploratory_abs_t_over_4_5": true,
+    "paired_mean_difference_ns": -59464.385,
+    "paired_median_difference_ns": -50118.0,
+    "min_ns": [
+      88,
+      50174
+    ],
+    "max_ns": [
+      1251,
+      3382340
+    ],
+    "artificial_delay_ns": 50000
+  },
+  "elapsed_seconds": 64.46228766100103,
+  "finished_utc": "2026-11-06T04:03:21.861570+00:00",
+  "total_decapsulation_samples": 24000,
+  "source_sha256": {
+    "protocol_v01/validation/timing_probe.py": "a83bcca6e965862f75bdeeaddc032651f487dc91f26a9bb84fce11cd546c9b0b",
+    "code/opt2/spiral_kem_toy_v031_opt2.py": "74c1ff02669d5b6eea87ccf650bc6930bc1822ffe8568fa68ce79fb29958a118"
+  },
+  "status": "measurement_completed_not_a_security_pass",
+  "artifact_language_normalization": {
+    "applied": true,
+    "historical_execution_repeated": false,
+    "integrity_values_describe_translated_artifacts": true
+  }
+}

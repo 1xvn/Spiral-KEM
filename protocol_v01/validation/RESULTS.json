@@ -1,0 +1,42 @@
+{
+  "created_utc": "2026-11-06T04:06:28.721621+00:00",
+  "base_commit": "660014afea4e8353b6e5bfbfd91c845b06a35c29",
+  "functional_tests": {
+    "mutation_property_cases": 100268,
+    "unexpected_fuzz_exceptions": 0,
+    "independent_peer_scenarios": 16,
+    "independent_peer_real_tls_sessions": 19,
+    "full_regression_tests": 75,
+    "regression_failures": 0,
+    "regression_errors": 0,
+    "regression_skipped": 0
+  },
+  "timing": {
+    "decapsulation_samples": 24000,
+    "comparisons": 4,
+    "repetitions_each": 3,
+    "flagged_blocks": 0,
+    "conclusion": "No threshold-crossing signal in this bounded exploratory experiment; not a constant-time or absence-of-leakage claim."
+  },
+  "runtime_or_kem_source_changed": false,
+  "evidence_sha256": {
+    "protocol_v01/validation/results/fuzz.json": "2c36a00f77028f5ea69c9806434235d79f6405abf5a654cf7fbc95c8b5bd1a7c",
+    "protocol_v01/validation/results/interop.json": "ac16f4cb6635acbad68bddb26f8826daa6a4402874d3524db9ad66eadbc4be4d",
+    "protocol_v01/validation/results/regression.json": "7643629465a48f94f88313c6358c2ba9a4ebebe2d71dfc13a9b2f6b2a1ca9351",
+    "protocol_v01/validation/results/regression.log": "1d62b02e2ab1b367c5397e140b0b5a09f65cb955201a49b31037e5a31268abfd",
+    "protocol_v01/validation/results/timing.csv": "f62d754653043a84c03731ad25d730e7fcfbdde43f532505e211d64136318324",
+    "protocol_v01/validation/results/timing.json": "e125708c8a34e58c1ccab9023f34a99cb9f231bb87c5a8e5f2151235a9415d3b"
+  },
+  "test_source_sha256": {
+    "protocol_v01/validation/__init__.py": "69689c07aa301aea1ed5d3d8d0a00536ca990925371d1a780ceb06e8f3ba9c0b",
+    "protocol_v01/validation/fuzz_campaign.py": "fa182906bb8c0f3c5be4b85f387ec98995ba54dcba758f77426de1bbf60e04a8",
+    "protocol_v01/validation/independent_peer.py": "7c64f31eb709b96ca09543cccf41f7aec226bcabafc8e42cca609dc7f45475bc",
+    "protocol_v01/validation/timing_probe.py": "a83bcca6e965862f75bdeeaddc032651f487dc91f26a9bb84fce11cd546c9b0b"
+  },
+  "scope_limits": [
+    "Finite deterministic mutation fuzzing, not coverage guided.",
+    "Independent protocol test client shares KEM and cryptographic libraries; no externally audited independent production peer.",
+    "Local repeated-key timing diagnostics exceed one-shot protocol model and do not prove constant-time execution.",
+    "No external expert review, physical side-channel measurement or remote/WAN/load test."
+  ]
+}

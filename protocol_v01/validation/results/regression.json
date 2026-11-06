@@ -1,0 +1,26 @@
+{
+  "tested_at_utc": "2026-11-06T04:04:26.442405+00:00",
+  "tests_run": 75,
+  "failures": 0,
+  "errors": 0,
+  "skipped": 0,
+  "elapsed_seconds": 1.6078225490000477,
+  "source_sha256": {
+    "protocol_v01/__init__.py": "17f246530726ba2afcf2d1c389b15b43d9e11ffeb96997d800a2e5a923e3e61b",
+    "protocol_v01/channel.py": "06e673bf1b7be7865a33281b26de85a9cc1ee6c35fbc0bf75e64fc128f5df07a",
+    "protocol_v01/demo.py": "7676a0308d344c5b02dbe7c66d30fc6fdf394d3d14285c28b2f2d3d3898bf74a",
+    "protocol_v01/handshake.py": "5e86ee9278db82115f953eb06cca1cf54998149c55459d3021ffa9562fd025ce",
+    "protocol_v01/records.py": "443006d2efb19da0f302a4c29677360a5b848fe39fc183bb4984831f62cfb5dd",
+    "protocol_v01/tests/test_channel.py": "c82fbc5e76fe924045a9cbd92c49246d8cdd69e968766ee830cba1ec1fbcb9b7",
+    "protocol_v01/tests/test_core.py": "50a483107954bb51420f2fcd6b8eb07e6a72e769333c279835fb87b1df05bb28",
+    "protocol_v01/tests/test_independent_peer.py": "3552dcf22cb70c65e02548659b5ab7cafa1938168a3661bdf81bbb6f47533e77",
+    "protocol_v01/tests/test_records.py": "c31d233c6739a819c208ad9a2f36af33a35ae6355ef3452cc165db8914b5d445",
+    "protocol_v01/tests/test_tls.py": "86b872d8018b521af79a1a866a193103a0ab2fcc7b0c7d22773db4a29fc01a89",
+    "protocol_v01/tls.py": "416406c5b40228a48c7a2dba81f219ff0d48432a28c52ccfb269a7fe359a4347",
+    "protocol_v01/validation/__init__.py": "69689c07aa301aea1ed5d3d8d0a00536ca990925371d1a780ceb06e8f3ba9c0b",
+    "protocol_v01/validation/fuzz_campaign.py": "fa182906bb8c0f3c5be4b85f387ec98995ba54dcba758f77426de1bbf60e04a8",
+    "protocol_v01/validation/independent_peer.py": "7c64f31eb709b96ca09543cccf41f7aec226bcabafc8e42cca609dc7f45475bc",
+    "protocol_v01/validation/timing_probe.py": "a83bcca6e965862f75bdeeaddc032651f487dc91f26a9bb84fce11cd546c9b0b",
+    "protocol_v01/wire.py": "cf915f84510857814f3722f3d1f3c3358e318a958216fbcdaac292486e40fbaf"
+  }
+}

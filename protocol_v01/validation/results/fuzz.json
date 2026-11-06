@@ -1,0 +1,154 @@
+{
+  "campaign": "Spiral OPT2 item3 bounded mutation/property fuzz",
+  "seed": 2026110603,
+  "cases_per_main_target": 20000,
+  "started_utc": "2026-11-06T04:02:22.260571+00:00",
+  "method": "Deterministic structure-aware mutation/property testing with independent acceptance/canonicality oracles; not coverage-guided fuzzing.",
+  "python": "3.12.14",
+  "cryptography": "50.0.2",
+  "targets": {
+    "kem_pk": {
+      "cases": 20000,
+      "accepted": 7178,
+      "rejected": 12822,
+      "errors": 0,
+      "categories": {
+        "generated_canonical_polynomials": 2500,
+        "payload_byte_flip": 2500,
+        "noncanonical_coefficient": 2500,
+        "header_byte_flip": 2500,
+        "truncation": 2500,
+        "extension": 2500,
+        "wrong_type": 2500,
+        "canonical_edge_coefficient": 2500
+      }
+    },
+    "kem_ct": {
+      "cases": 20000,
+      "accepted": 7182,
+      "rejected": 12818,
+      "errors": 0,
+      "categories": {
+        "generated_canonical_polynomials": 2500,
+        "payload_byte_flip": 2500,
+        "noncanonical_coefficient": 2500,
+        "header_byte_flip": 2500,
+        "truncation": 2500,
+        "extension": 2500,
+        "wrong_type": 2500,
+        "canonical_edge_coefficient": 2500
+      }
+    },
+    "frame": {
+      "cases": 20000,
+      "accepted": 5078,
+      "rejected": 14922,
+      "errors": 0,
+      "categories": {
+        "uninterpreted_payload_mutation": 2500,
+        "header_mutation": 2500,
+        "truncation": 2500,
+        "extension": 2500,
+        "sequence_boundary": 2500,
+        "declared_length_boundary": 2500,
+        "wrong_type": 2500,
+        "valid_fixture": 2500
+      }
+    },
+    "client_hello": {
+      "cases": 20000,
+      "accepted": 5438,
+      "rejected": 14562,
+      "errors": 0,
+      "categories": {
+        "random_and_exporter_fields": 2500,
+        "valid_sorted_offer_lists": 2500,
+        "schema_field_mutation": 2500,
+        "offer_count_boundary": 2500,
+        "truncation": 2500,
+        "extension": 2500,
+        "wrong_type": 2500,
+        "identity_grammar_boundary": 2500
+      }
+    },
+    "record": {
+      "cases": 20000,
+      "accepted": 2500,
+      "rejected": 17500,
+      "errors": 0,
+      "categories": {
+        "valid_authenticated_record": 2500,
+        "replayed_authenticated_record": 2500,
+        "ciphertext_or_tag_flip": 2500,
+        "aad_header_flip": 2500,
+        "skipped_sequence": 2500,
+        "truncation": 2500,
+        "coalesced_frames_given_to_single_frame_api": 2500,
+        "wrong_type": 2500
+      }
+    },
+    "oversize_pk": {
+      "cases": 3,
+      "accepted": 0,
+      "rejected": 3,
+      "errors": 0,
+      "categories": {
+        "bounded_large_input": 3
+      }
+    },
+    "oversize_ct": {
+      "cases": 3,
+      "accepted": 0,
+      "rejected": 3,
+      "errors": 0,
+      "categories": {
+        "bounded_large_input": 3
+      }
+    },
+    "oversize_frame": {
+      "cases": 3,
+      "accepted": 0,
+      "rejected": 3,
+      "errors": 0,
+      "categories": {
+        "bounded_large_input": 3
+      }
+    },
+    "oversize_ch": {
+      "cases": 3,
+      "accepted": 0,
+      "rejected": 3,
+      "errors": 0,
+      "categories": {
+        "bounded_large_input": 3
+      }
+    },
+    "kem_fallback": {
+      "cases": 256,
+      "accepted": 256,
+      "rejected": 0,
+      "errors": 0,
+      "categories": {
+        "canonical_tampered_ciphertext": 256
+      }
+    }
+  },
+  "limits": [
+    "Finite fixed-seed sample; no exhaustive input-space coverage or security proof.",
+    "No timing/cache leakage or remote service load measurement in this campaign.",
+    "No branch/line coverage claimed; acceptance/rejection counts are not coverage metrics."
+  ],
+  "fallback_decapsulation_calls": 513,
+  "status": "passed",
+  "finished_utc": "2026-11-06T04:02:34.620846+00:00",
+  "elapsed_seconds": 12.360100329999113,
+  "total_cases": 100268,
+  "source_sha256": {
+    "protocol_v01/validation/fuzz_campaign.py": "fa182906bb8c0f3c5be4b85f387ec98995ba54dcba758f77426de1bbf60e04a8",
+    "protocol_v01/wire.py": "cf915f84510857814f3722f3d1f3c3358e318a958216fbcdaac292486e40fbaf",
+    "protocol_v01/handshake.py": "5e86ee9278db82115f953eb06cca1cf54998149c55459d3021ffa9562fd025ce",
+    "protocol_v01/records.py": "443006d2efb19da0f302a4c29677360a5b848fe39fc183bb4984831f62cfb5dd",
+    "code/opt2/spiral_kem_toy_v031_opt2.py": "74c1ff02669d5b6eea87ccf650bc6930bc1822ffe8568fa68ce79fb29958a118",
+    "protocol_v01/tests/fixtures/test_vectors_v0.1.json": "b556ca8741a649dfe3346d2033a2685492470beedbc601dbb36877f4c5881ee8"
+  }
+}

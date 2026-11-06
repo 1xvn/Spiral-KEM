@@ -1,0 +1,615 @@
+{
+  "documentType": "codex-security.hardening-analysis",
+  "schemaVersion": "1.0",
+  "analysisId": "spiral-item2-20261106",
+  "sourceEvidence": {
+    "kind": "document_collection",
+    "label": "Spiral OPT2 sources and bounded validation evidence",
+    "collectionSha256": "ecc73e22cf8e7e99f605aa42ae9bb4a6101aab612097ff6eec3f716935d4b9f1",
+    "artifactCount": 8,
+    "targetRevision": "7c859d926b062c4ff08a0f31eeeec3596e21095a",
+    "sourceDrift": "none"
+  },
+  "assessment": {
+    "outcome": "opportunities_identified",
+    "summary": "Proposes a native boundary that consolidates secret operations and lifetime ownership. Implementation and constant-time validation have not yet been performed."
+  },
+  "constraints": {
+    "profile": "balanced",
+    "changeHorizons": [
+      "incremental",
+      "medium_term",
+      "foundational"
+    ],
+    "nonNegotiables": [
+      "Preserve n256/k2/q3329/eta1 and existing wire/hash/protocol KAT.",
+      "No production seeded RNG or silent Python fallback.",
+      "No native implementation changes in this design task."
+    ],
+    "assumptions": [
+      "Initial target proposed Linux x86_64; performance/memory budgets not specified.",
+      "External researcher review deferred at user request.",
+      "Rust/Cargo not available; no toolchain build verification yet."
+    ]
+  },
+  "opportunities": [
+    {
+      "opportunityId": "native-secret-boundary",
+      "title": "Native ownership of secret operations and lifetimes",
+      "summary": "An option that consolidates secret generation, KDF, AEAD, and disposal in one engine.",
+      "diagnosis": "Secret operations and immutable key objects are currently distributed across the Python KEM, schedule, and records.",
+      "evidence": [
+        {
+          "claimType": "observed",
+          "sourceKind": "source",
+          "evidenceId": "bigint",
+          "path": "code/opt2/spiral_kem_toy_v031_opt2.py",
+          "claim": "Python large-integer polynomial arithmetic; scope and source locations are defined in the proposal."
+        },
+        {
+          "claimType": "observed",
+          "sourceKind": "source",
+          "evidenceId": "secret-flow",
+          "path": "code/opt2/spiral_kem_toy_v031_opt2.py",
+          "claim": "Message and secret coefficient processing; scope and source locations are defined in the proposal."
+        },
+        {
+          "claimType": "observed",
+          "sourceKind": "source",
+          "evidenceId": "python-keys",
+          "path": "protocol_v01/handshake.py",
+          "claim": "Shared secret and derived key transfer; scope and source locations are defined in the proposal."
+        },
+        {
+          "claimType": "observed",
+          "sourceKind": "source",
+          "evidenceId": "cleanup",
+          "path": "protocol_v01/records.py",
+          "claim": "Record key ownership and reference release; scope and source locations are defined in the proposal."
+        },
+        {
+          "claimType": "observed",
+          "sourceKind": "experiment",
+          "evidenceId": "timing",
+          "path": "protocol_v01/validation/results/timing.json",
+          "claim": "24,000 exploratory timing diagnostics; scope and source locations are defined in the proposal."
+        },
+        {
+          "claimType": "observed",
+          "sourceKind": "document",
+          "evidenceId": "compatibility",
+          "path": "protocol_v01/SPEC_v0.1.md",
+          "claim": "Protocol v0.1 byte contract; scope and source locations are defined in the proposal."
+        },
+        {
+          "claimType": "observed",
+          "sourceKind": "document",
+          "evidenceId": "fixture",
+          "path": "protocol_v01/tests/fixtures/test_vectors_v0.1.json",
+          "claim": "Public fixed protocol vectors; scope and source locations are defined in the proposal."
+        },
+        {
+          "claimType": "observed",
+          "sourceKind": "experiment",
+          "evidenceId": "regression",
+          "path": "protocol_v01/validation/results/regression.json",
+          "claim": "Evidence from 75 regression checks; scope and source locations are defined in the proposal."
+        }
+      ],
+      "desiredInvariants": [
+        "No secret-dependent branch/address/loop/variable-size allocation before explicitly authorized final Finished/AEAD acceptance or output declassification; internal KEM validity remains private.",
+        "No raw SK/ss/KDF/AEAD key exports in native productionAPI.",
+        "Fail closed on entropy/native failure; preserve one-shot and nonce ownership.",
+        "Explicit lifetime and wipe-before-free for owned buffers without claiming every hardware copy is erased.",
+        "Every outbound frame has a single-use pending-write ticket; every payload feed requires the exact approved-header receive permit.",
+        "Recoverable checked errors and containable Rust panics do not imply ABI UB or segmentation faults can be caught safely."
+      ],
+      "proposalPath": "proposals/native-secret-boundary.md",
+      "options": [
+        {
+          "optionId": "python-restrictions",
+          "title": "Stricter Python restrictions",
+          "kind": "baseline",
+          "status": "proposed_not_implemented",
+          "summary": "Mitigates accidental logging and API misuse; no Python CT or erasure guarantees",
+          "diagramPaths": {
+            "before": "diagrams/native-secret-boundary-before.mmd",
+            "after": "diagrams/native-secret-boundary-python-restrictions-after.mmd"
+          },
+          "evidenceCoverage": [
+            {
+              "evidenceId": "bigint",
+              "effect": "unaffected",
+              "tacticalFixRequired": false,
+              "rationale": "Expected effect only after implementation and validation. Existing parser, one-shot, nonce, authentication and deadline controls remain mandatory."
+            },
+            {
+              "evidenceId": "secret-flow",
+              "effect": "mitigates",
+              "tacticalFixRequired": false,
+              "rationale": "Expected effect only after implementation and validation. Existing parser, one-shot, nonce, authentication and deadline controls remain mandatory."
+            },
+            {
+              "evidenceId": "python-keys",
+              "effect": "mitigates",
+              "tacticalFixRequired": false,
+              "rationale": "Expected effect only after implementation and validation. Existing parser, one-shot, nonce, authentication and deadline controls remain mandatory."
+            },
+            {
+              "evidenceId": "cleanup",
+              "effect": "mitigates",
+              "tacticalFixRequired": false,
+              "rationale": "Expected effect only after implementation and validation. Existing parser, one-shot, nonce, authentication and deadline controls remain mandatory."
+            },
+            {
+              "evidenceId": "timing",
+              "effect": "unaffected",
+              "tacticalFixRequired": false,
+              "rationale": "Expected effect only after implementation and validation. Existing parser, one-shot, nonce, authentication and deadline controls remain mandatory."
+            },
+            {
+              "evidenceId": "compatibility",
+              "effect": "addresses",
+              "tacticalFixRequired": false,
+              "rationale": "Expected effect only after implementation and validation. Existing parser, one-shot, nonce, authentication and deadline controls remain mandatory."
+            }
+          ],
+          "tradeoffs": [
+            {
+              "dimension": "security",
+              "direction": "improves",
+              "confidence": "medium",
+              "basis": "source-derived",
+              "assessment": "Mitigates accidental logging and API misuse; no Python CT or erasure guarantees",
+              "validationPlan": "G1..G7 evidence and explicit residual risks; no source-only CT claim."
+            },
+            {
+              "dimension": "performance",
+              "direction": "unknown",
+              "confidence": "low",
+              "basis": "hypothetical",
+              "assessment": "Close to the current path but unmeasured",
+              "validationPlan": "Same CPU/input compare Python and candidate p50/p95/p99 for keygen/encap/decap/full frames at concurrency1/2/4; set budgets after baseline."
+            },
+            {
+              "dimension": "memory",
+              "direction": "neutral",
+              "confidence": "low",
+              "basis": "hypothetical",
+              "assessment": "Retains Python key objects and temporary copies",
+              "validationPlan": "Measure scratch allocation, peakRSS and library state copies; assert bounded ownership."
+            },
+            {
+              "dimension": "reliability",
+              "direction": "unknown",
+              "confidence": "low",
+              "basis": "hypothetical",
+              "assessment": "Retains existing exception paths",
+              "validationPlan": "Inject entropy/alloc/I/O/panic/cancel faults; no session revival or use-after-free."
+            },
+            {
+              "dimension": "operability",
+              "direction": "neutral",
+              "confidence": "low",
+              "basis": "hypothetical",
+              "assessment": "Requires no new build environment",
+              "validationPlan": "Verify pinned toolchain/library/licenses, target binary identity and failure telemetry without secrets."
+            },
+            {
+              "dimension": "migration",
+              "direction": "neutral",
+              "confidence": "medium",
+              "basis": "source-derived",
+              "assessment": "Local changes while retaining research mode",
+              "validationPlan": "Exact KAT, SKW1+legacy hash, both protocol roles and explicit native-required failure behavior."
+            },
+            {
+              "dimension": "developer_ergonomics",
+              "direction": "unknown",
+              "confidence": "low",
+              "basis": "hypothetical",
+              "assessment": "Familiar code, but lifetime rules remain distributed",
+              "validationPlan": "Check API misuse at compile time where possible, stalehandle/serialization/repr rejection tests."
+            },
+            {
+              "dimension": "rollback",
+              "direction": "unknown",
+              "confidence": "low",
+              "basis": "source-derived",
+              "assessment": "Only local research-mode patches can be rolled back",
+              "validationPlan": "Close all old sessions; new connection only; no silent Python fallback."
+            }
+          ],
+          "residualRisks": [
+            "No new cryptographic security proof.",
+            "Compiler, libraries, hardware and memory copies require target-specific evidence.",
+            "Application plaintext and TLS secrets are distinct ownership domains."
+          ],
+          "implementationReadiness": {
+            "affectedComponents": [
+              "code/opt2/spiral_kem_toy_v031_opt2.py (comparison baseline only)",
+              "protocol_v01/handshake.py",
+              "protocol_v01/records.py",
+              "protocol_v01/channel.py",
+              "future native engine"
+            ],
+            "workPackages": [
+              "Freeze compatibility and secret classification.",
+              "Implement chosen control owner after explicit option selection.",
+              "Record G1..G7 acceptance evidence."
+            ],
+            "acceptanceCriteria": [
+              "No raw protocol secret export in native options.",
+              "Exact KAT and one-shot/nonce/deadline invariants.",
+              "No CT claim without compiled-target analysis."
+            ],
+            "migrationNotes": [
+              "Python baseline remains explicitly research-only."
+            ],
+            "rollback": "Close active sessions; use only explicit research mode for new connections, never silent fallback."
+          }
+        },
+        {
+          "optionId": "native-engine",
+          "title": "Rust native secret engine",
+          "kind": "structural",
+          "status": "proposed_not_implemented",
+          "summary": "Consolidates secret ownership within one boundary, requiring compiler and dependency validation",
+          "diagramPaths": {
+            "before": "diagrams/native-secret-boundary-before.mmd",
+            "after": "diagrams/native-secret-boundary-native-engine-after.mmd"
+          },
+          "evidenceCoverage": [
+            {
+              "evidenceId": "bigint",
+              "effect": "addresses",
+              "tacticalFixRequired": false,
+              "rationale": "Expected effect only after implementation and validation. Existing parser, one-shot, nonce, authentication and deadline controls remain mandatory."
+            },
+            {
+              "evidenceId": "secret-flow",
+              "effect": "addresses",
+              "tacticalFixRequired": false,
+              "rationale": "Expected effect only after implementation and validation. Existing parser, one-shot, nonce, authentication and deadline controls remain mandatory."
+            },
+            {
+              "evidenceId": "python-keys",
+              "effect": "addresses",
+              "tacticalFixRequired": false,
+              "rationale": "Expected effect only after implementation and validation. Existing parser, one-shot, nonce, authentication and deadline controls remain mandatory."
+            },
+            {
+              "evidenceId": "cleanup",
+              "effect": "mitigates",
+              "tacticalFixRequired": false,
+              "rationale": "Expected effect only after implementation and validation. Existing parser, one-shot, nonce, authentication and deadline controls remain mandatory."
+            },
+            {
+              "evidenceId": "timing",
+              "effect": "unknown",
+              "tacticalFixRequired": false,
+              "rationale": "Expected effect only after implementation and validation. Existing parser, one-shot, nonce, authentication and deadline controls remain mandatory."
+            },
+            {
+              "evidenceId": "compatibility",
+              "effect": "unknown",
+              "tacticalFixRequired": false,
+              "rationale": "Expected effect only after implementation and validation. Existing parser, one-shot, nonce, authentication and deadline controls remain mandatory."
+            }
+          ],
+          "tradeoffs": [
+            {
+              "dimension": "security",
+              "direction": "improves",
+              "confidence": "medium",
+              "basis": "source-derived",
+              "assessment": "Consolidates secret ownership within one boundary, requiring compiler and dependency validation",
+              "validationPlan": "G1..G7 evidence and explicit residual risks; no source-only CT claim."
+            },
+            {
+              "dimension": "performance",
+              "direction": "unknown",
+              "confidence": "low",
+              "basis": "hypothetical",
+              "assessment": "Total cost of FFI and fixed n² arithmetic is unmeasured",
+              "validationPlan": "Same CPU/input compare Python and candidate p50/p95/p99 for keygen/encap/decap/full frames at concurrency1/2/4; set budgets after baseline."
+            },
+            {
+              "dimension": "memory",
+              "direction": "unknown",
+              "confidence": "low",
+              "basis": "hypothetical",
+              "assessment": "Fixed workspaces and copies of hash/AEAD state require inspection",
+              "validationPlan": "Measure scratch allocation, peakRSS and library state copies; assert bounded ownership."
+            },
+            {
+              "dimension": "reliability",
+              "direction": "unknown",
+              "confidence": "low",
+              "basis": "hypothetical",
+              "assessment": "Must explicitly handle panic, FFI, and cancellation races",
+              "validationPlan": "Inject entropy/alloc/I/O/panic/cancel faults; no session revival or use-after-free."
+            },
+            {
+              "dimension": "operability",
+              "direction": "unknown",
+              "confidence": "low",
+              "basis": "hypothetical",
+              "assessment": "Supported toolchain, binary, and target validation required",
+              "validationPlan": "Verify pinned toolchain/library/licenses, target binary identity and failure telemetry without secrets."
+            },
+            {
+              "dimension": "migration",
+              "direction": "unknown",
+              "confidence": "medium",
+              "basis": "source-derived",
+              "assessment": "Preserves wire format and replaces the internal key API with handles",
+              "validationPlan": "Exact KAT, SKW1+legacy hash, both protocol roles and explicit native-required failure behavior."
+            },
+            {
+              "dimension": "developer_ergonomics",
+              "direction": "unknown",
+              "confidence": "low",
+              "basis": "hypothetical",
+              "assessment": "Ownership types can reduce mistakes, but require learning Rust and FFI",
+              "validationPlan": "Check API misuse at compile time where possible, stalehandle/serialization/repr rejection tests."
+            },
+            {
+              "dimension": "rollback",
+              "direction": "unknown",
+              "confidence": "low",
+              "basis": "source-derived",
+              "assessment": "Close open sessions; choose the previous mode only for new research connections",
+              "validationPlan": "Close all old sessions; new connection only; no silent Python fallback."
+            }
+          ],
+          "residualRisks": [
+            "No new cryptographic security proof.",
+            "Compiler, libraries, hardware and memory copies require target-specific evidence.",
+            "Application plaintext and TLS secrets are distinct ownership domains."
+          ],
+          "implementationReadiness": {
+            "affectedComponents": [
+              "code/opt2/spiral_kem_toy_v031_opt2.py (comparison baseline only)",
+              "protocol_v01/handshake.py",
+              "protocol_v01/records.py",
+              "protocol_v01/channel.py",
+              "future native engine"
+            ],
+            "workPackages": [
+              "Freeze compatibility and secret classification.",
+              "Implement chosen control owner after explicit option selection.",
+              "Record G1..G7 acceptance evidence."
+            ],
+            "acceptanceCriteria": [
+              "No raw protocol secret export in native options.",
+              "Exact KAT and one-shot/nonce/deadline invariants.",
+              "No CT claim without compiled-target analysis."
+            ],
+            "migrationNotes": [
+              "Python baseline remains explicitly research-only."
+            ],
+            "rollback": "Close active sessions; use only explicit research mode for new connections, never silent fallback."
+          }
+        },
+        {
+          "optionId": "isolated-worker",
+          "title": "Native engine in a separate process",
+          "kind": "isolation",
+          "status": "proposed_not_implemented",
+          "summary": "Adds an address-space boundary to the same engine validation and also requires a permissions policy",
+          "diagramPaths": {
+            "before": "diagrams/native-secret-boundary-before.mmd",
+            "after": "diagrams/native-secret-boundary-isolated-worker-after.mmd"
+          },
+          "evidenceCoverage": [
+            {
+              "evidenceId": "bigint",
+              "effect": "addresses",
+              "tacticalFixRequired": false,
+              "rationale": "Expected effect only after implementation and validation. Existing parser, one-shot, nonce, authentication and deadline controls remain mandatory."
+            },
+            {
+              "evidenceId": "secret-flow",
+              "effect": "addresses",
+              "tacticalFixRequired": false,
+              "rationale": "Expected effect only after implementation and validation. Existing parser, one-shot, nonce, authentication and deadline controls remain mandatory."
+            },
+            {
+              "evidenceId": "python-keys",
+              "effect": "addresses",
+              "tacticalFixRequired": false,
+              "rationale": "Expected effect only after implementation and validation. Existing parser, one-shot, nonce, authentication and deadline controls remain mandatory."
+            },
+            {
+              "evidenceId": "cleanup",
+              "effect": "mitigates",
+              "tacticalFixRequired": false,
+              "rationale": "Expected effect only after implementation and validation. Existing parser, one-shot, nonce, authentication and deadline controls remain mandatory."
+            },
+            {
+              "evidenceId": "timing",
+              "effect": "unknown",
+              "tacticalFixRequired": false,
+              "rationale": "Expected effect only after implementation and validation. Existing parser, one-shot, nonce, authentication and deadline controls remain mandatory."
+            },
+            {
+              "evidenceId": "compatibility",
+              "effect": "unknown",
+              "tacticalFixRequired": false,
+              "rationale": "Expected effect only after implementation and validation. Existing parser, one-shot, nonce, authentication and deadline controls remain mandatory."
+            }
+          ],
+          "tradeoffs": [
+            {
+              "dimension": "security",
+              "direction": "improves",
+              "confidence": "medium",
+              "basis": "source-derived",
+              "assessment": "Adds an address-space boundary to the same engine validation and also requires a permissions policy",
+              "validationPlan": "G1..G7 evidence and explicit residual risks; no source-only CT claim."
+            },
+            {
+              "dimension": "performance",
+              "direction": "unknown",
+              "confidence": "low",
+              "basis": "hypothetical",
+              "assessment": "Adds IPC round trips, serialization, and copies to engine costs",
+              "validationPlan": "Same CPU/input compare Python and candidate p50/p95/p99 for keygen/encap/decap/full frames at concurrency1/2/4; set budgets after baseline."
+            },
+            {
+              "dimension": "memory",
+              "direction": "unknown",
+              "confidence": "low",
+              "basis": "hypothetical",
+              "assessment": "Additional costs for worker RSS, IPC buffers, and queues",
+              "validationPlan": "Measure scratch allocation, peakRSS and library state copies; assert bounded ownership."
+            },
+            {
+              "dimension": "reliability",
+              "direction": "unknown",
+              "confidence": "low",
+              "basis": "hypothetical",
+              "assessment": "Requires fault isolation and session disposal on worker restart",
+              "validationPlan": "Inject entropy/alloc/I/O/panic/cancel faults; no session revival or use-after-free."
+            },
+            {
+              "dimension": "operability",
+              "direction": "unknown",
+              "confidence": "low",
+              "basis": "hypothetical",
+              "assessment": "Adds IPC permissions, supervision, queues, and fault monitoring",
+              "validationPlan": "Verify pinned toolchain/library/licenses, target binary identity and failure telemetry without secrets."
+            },
+            {
+              "dimension": "migration",
+              "direction": "unknown",
+              "confidence": "medium",
+              "basis": "source-derived",
+              "assessment": "Both native engine and IPC adapter require validation",
+              "validationPlan": "Exact KAT, SKW1+legacy hash, both protocol roles and explicit native-required failure behavior."
+            },
+            {
+              "dimension": "developer_ergonomics",
+              "direction": "unknown",
+              "confidence": "low",
+              "basis": "hypothetical",
+              "assessment": "Reuses the engine but complicates process-state debugging",
+              "validationPlan": "Check API misuse at compile time where possible, stalehandle/serialization/repr rejection tests."
+            },
+            {
+              "dimension": "rollback",
+              "direction": "unknown",
+              "confidence": "low",
+              "basis": "source-derived",
+              "assessment": "Switch only on new connections after disposing of worker key sessions",
+              "validationPlan": "Close all old sessions; new connection only; no silent Python fallback."
+            }
+          ],
+          "residualRisks": [
+            "No new cryptographic security proof.",
+            "Compiler, libraries, hardware and memory copies require target-specific evidence.",
+            "Application plaintext and TLS secrets are distinct ownership domains."
+          ],
+          "implementationReadiness": {
+            "affectedComponents": [
+              "code/opt2/spiral_kem_toy_v031_opt2.py (comparison baseline only)",
+              "protocol_v01/handshake.py",
+              "protocol_v01/records.py",
+              "protocol_v01/channel.py",
+              "future native engine"
+            ],
+            "workPackages": [
+              "Freeze compatibility and secret classification.",
+              "Implement chosen control owner after explicit option selection.",
+              "Record G1..G7 acceptance evidence."
+            ],
+            "acceptanceCriteria": [
+              "No raw protocol secret export in native options.",
+              "Exact KAT and one-shot/nonce/deadline invariants.",
+              "No CT claim without compiled-target analysis."
+            ],
+            "migrationNotes": [
+              "Python baseline remains explicitly research-only."
+            ],
+            "rollback": "Close active sessions; use only explicit research mode for new connections, never silent fallback."
+          }
+        }
+      ],
+      "recommendedOptionId": "native-engine",
+      "recommendation": "Option 2 is conditionally recommended as a design proposal. Reevaluate option 3 if address-space isolation is required."
+    }
+  ],
+  "selectedOptionId": null,
+  "evidenceInventory": [
+    {
+      "evidenceId": "bigint",
+      "title": "Python large-integer polynomial arithmetic",
+      "path": "code/opt2/spiral_kem_toy_v031_opt2.py",
+      "sourceKind": "source",
+      "lines": "479–508",
+      "sha256": "74c1ff02669d5b6eea87ccf650bc6930bc1822ffe8568fa68ce79fb29958a118"
+    },
+    {
+      "evidenceId": "secret-flow",
+      "title": "Message and secret coefficient processing",
+      "path": "code/opt2/spiral_kem_toy_v031_opt2.py",
+      "sourceKind": "source",
+      "lines": "216–248;372–382;581–618",
+      "sha256": "74c1ff02669d5b6eea87ccf650bc6930bc1822ffe8568fa68ce79fb29958a118"
+    },
+    {
+      "evidenceId": "python-keys",
+      "title": "Shared secret and derived key transfer",
+      "path": "protocol_v01/handshake.py",
+      "sourceKind": "source",
+      "lines": "42–49;284–302",
+      "sha256": "5e86ee9278db82115f953eb06cca1cf54998149c55459d3021ffa9562fd025ce"
+    },
+    {
+      "evidenceId": "cleanup",
+      "title": "Record key ownership and reference release",
+      "path": "protocol_v01/records.py",
+      "sourceKind": "source",
+      "lines": "35–50;83–92;128–130;193–195",
+      "sha256": "443006d2efb19da0f302a4c29677360a5b848fe39fc183bb4984831f62cfb5dd"
+    },
+    {
+      "evidenceId": "timing",
+      "title": "24,000 exploratory timing diagnostics",
+      "path": "protocol_v01/validation/results/timing.json",
+      "sourceKind": "experiment",
+      "lines": null,
+      "sha256": "e125708c8a34e58c1ccab9023f34a99cb9f231bb87c5a8e5f2151235a9415d3b"
+    },
+    {
+      "evidenceId": "compatibility",
+      "title": "Protocol v0.1 byte contract",
+      "path": "protocol_v01/SPEC_v0.1.md",
+      "sourceKind": "document",
+      "lines": null,
+      "sha256": "7a8b12b0238da93048e296320b6b04aac9e2dbc9014a381b76e5d904e57d1745"
+    },
+    {
+      "evidenceId": "fixture",
+      "title": "Public fixed protocol vectors",
+      "path": "protocol_v01/tests/fixtures/test_vectors_v0.1.json",
+      "sourceKind": "document",
+      "lines": null,
+      "sha256": "b556ca8741a649dfe3346d2033a2685492470beedbc601dbb36877f4c5881ee8"
+    },
+    {
+      "evidenceId": "regression",
+      "title": "Evidence from 75 regression checks",
+      "path": "protocol_v01/validation/results/regression.json",
+      "sourceKind": "experiment",
+      "lines": null,
+      "sha256": "7643629465a48f94f88313c6358c2ba9a4ebebe2d71dfc13a9b2f6b2a1ca9351"
+    }
+  ],
+  "openQuestions": [
+    "Supported deployment OS/CPU set.",
+    "Pinned primitive libraries/FFI/toolchain after license and zeroization review.",
+    "Latency/memory budgets after first measurements."
+  ]
+}
