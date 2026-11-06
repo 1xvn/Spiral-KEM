@@ -1,0 +1,4 @@
+0000000000002db0 T sp_decaps_once
+0000000000002b80 T sp_encaps
+0000000000003370 T sp_key_destroy
+0000000000002ab0 T sp_keygen

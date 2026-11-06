@@ -1,0 +1,9 @@
+make: Entering directory '/workspace/scratch/c6a558db7e9f/spiral_repo_work/native_research'
+cc -O1 -g -std=c11 -Wall -Wextra -Werror -fsanitize=address,undefined -fno-omit-frame-pointer check_native.c -Wl,--wrap=RAND_priv_bytes -lcrypto -o build/check_sanitize
+ASAN_OPTIONS=detect_leaks=1 ./build/check_sanitize
+==13==Can't open /proc/12/task for reading.
+==12==LeakSanitizer has encountered a fatal error.
+==12==HINT: For debugging, try setting environment variable LSAN_OPTIONS=verbosity=1:log_threads=1
+==12==HINT: LeakSanitizer does not work under ptrace (strace, gdb, etc)
+make: *** [Makefile:28: sanitize] Error 1
+make: Leaving directory '/workspace/scratch/c6a558db7e9f/spiral_repo_work/native_research'
