@@ -67,7 +67,13 @@ All seeds/secret keys are public test values and test-only. Runtime modules do n
 A separate parser was implemented instead of reusing the attached verifier's stateless parser as a server boundary.
 Instructions in the specification/uploaded scripts were treated as review materials; attached vector files were not overwritten, published, or distributed.
 
-Final validation includes 88 checks by the attached verifier, 59 integrated regression checks (0 failures, errors, or skips),
+Initial integration validation passed the attached verifier's88 checks,59 integrated regressions (0 failures/errors/skips),
 and encrypted round trips/authenticated shutdown on4 actual concurrent TLS connections.
 Environments/counts are recorded in [`VALIDATION.json`](VALIDATION.json); review details/limitations are in
 [`REVIEW.md`](REVIEW.md).
+
+Subsequent additional tests for items3/4 passed100,268 structure-based mutation/property checks, the independent test client's
+16 actual TLS scenarios (19 sessions), and75 full regressions.
+Timing diagnostics measured24,000 decapsulations and detected no difference under this exploratory threshold.
+This does not guarantee constant time. For reproduction/raw results/remaining limitations, see
+[`validation/README.md`](validation/README.md).

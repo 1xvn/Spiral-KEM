@@ -1,0 +1,185 @@
+{
+  "tested_at_utc": "2026-11-06T04:02:46.464500+00:00",
+  "python": "3.12.14",
+  "tests_run": 16,
+  "failures": 0,
+  "errors": 0,
+  "skipped": 0,
+  "elapsed_seconds": 1.1032718259993999,
+  "real_tls_sessions": 19,
+  "observations": [
+    {
+      "scenario": "test_bad_tag_has_no_plaintext_delivery",
+      "established": true,
+      "decapsulations": 1,
+      "application_deliveries": 0,
+      "closed": true,
+      "server_outcome": "ProtocolError",
+      "server_reason": "record rejected"
+    },
+    {
+      "scenario": "test_canonical_changed_ciphertext_never_establishes",
+      "established": false,
+      "decapsulations": 1,
+      "application_deliveries": 0,
+      "closed": true,
+      "server_outcome": "ProtocolError",
+      "server_reason": "client Finished failed"
+    },
+    {
+      "scenario": "test_duplicate_clientkey_after_established_is_rejected",
+      "established": true,
+      "decapsulations": 1,
+      "application_deliveries": 0,
+      "closed": true,
+      "server_outcome": "ProtocolError",
+      "server_reason": "unexpected message state"
+    },
+    {
+      "scenario": "test_early_data_never_decapsulates_or_delivers",
+      "established": false,
+      "decapsulations": 0,
+      "application_deliveries": 0,
+      "closed": true,
+      "server_outcome": "ProtocolError",
+      "server_reason": "unexpected message state"
+    },
+    {
+      "scenario": "test_eof_without_spiral_close_is_not_clean_shutdown",
+      "established": true,
+      "decapsulations": 1,
+      "application_deliveries": 0,
+      "closed": true,
+      "server_outcome": "ProtocolError",
+      "server_reason": "TLS I/O failed"
+    },
+    {
+      "scenario": "test_forged_client_finished_never_establishes",
+      "established": false,
+      "decapsulations": 1,
+      "application_deliveries": 0,
+      "closed": true,
+      "server_outcome": "ProtocolError",
+      "server_reason": "client Finished failed"
+    },
+    {
+      "scenario": "test_independent_peer_boundary_data_and_authenticated_close",
+      "established": true,
+      "decapsulations": 1,
+      "application_deliveries": 2,
+      "closed": true,
+      "server_outcome": "clean_close",
+      "server_reason": "authenticated_close"
+    },
+    {
+      "scenario": "test_new_connections_change_session_exporter_and_kem_key",
+      "established": true,
+      "decapsulations": 1,
+      "application_deliveries": 0,
+      "closed": true,
+      "server_outcome": "clean_close",
+      "server_reason": "authenticated_close"
+    },
+    {
+      "scenario": "test_new_connections_change_session_exporter_and_kem_key",
+      "established": true,
+      "decapsulations": 1,
+      "application_deliveries": 0,
+      "closed": true,
+      "server_outcome": "clean_close",
+      "server_reason": "authenticated_close"
+    },
+    {
+      "scenario": "test_new_connections_change_session_exporter_and_kem_key",
+      "established": true,
+      "decapsulations": 1,
+      "application_deliveries": 0,
+      "closed": true,
+      "server_outcome": "clean_close",
+      "server_reason": "authenticated_close"
+    },
+    {
+      "scenario": "test_previous_session_clientkey_is_rejected",
+      "established": true,
+      "decapsulations": 1,
+      "application_deliveries": 0,
+      "closed": true,
+      "server_outcome": "clean_close",
+      "server_reason": "authenticated_close"
+    },
+    {
+      "scenario": "test_previous_session_clientkey_is_rejected",
+      "established": false,
+      "decapsulations": 0,
+      "application_deliveries": 0,
+      "closed": true,
+      "server_outcome": "ProtocolError",
+      "server_reason": "unexpected message state"
+    },
+    {
+      "scenario": "test_skipped_sequence_has_no_plaintext_delivery",
+      "established": true,
+      "decapsulations": 1,
+      "application_deliveries": 0,
+      "closed": true,
+      "server_outcome": "ProtocolError",
+      "server_reason": "unexpected message state"
+    },
+    {
+      "scenario": "test_truncated_clientkey_claims_opportunity_without_decapsulation",
+      "established": false,
+      "decapsulations": 0,
+      "application_deliveries": 0,
+      "closed": true,
+      "server_outcome": "ProtocolError",
+      "server_reason": "TLS I/O failed"
+    },
+    {
+      "scenario": "test_untrusted_additional_signing_pin_is_rejected",
+      "established": false,
+      "decapsulations": 0,
+      "application_deliveries": 0,
+      "closed": true,
+      "server_outcome": "ProtocolError",
+      "server_reason": "TLS I/O failed"
+    },
+    {
+      "scenario": "test_valid_record_replay_delivers_only_once",
+      "established": true,
+      "decapsulations": 1,
+      "application_deliveries": 1,
+      "closed": true,
+      "server_outcome": "ProtocolError",
+      "server_reason": "unexpected message state"
+    },
+    {
+      "scenario": "test_wrong_binding_rejected_before_keygen",
+      "established": false,
+      "decapsulations": 0,
+      "application_deliveries": 0,
+      "closed": true,
+      "server_outcome": "ProtocolError",
+      "server_reason": "TLS exporter mismatch"
+    },
+    {
+      "scenario": "test_wrong_direction_has_no_plaintext_delivery",
+      "established": true,
+      "decapsulations": 1,
+      "application_deliveries": 0,
+      "closed": true,
+      "server_outcome": "ProtocolError",
+      "server_reason": "unexpected message state"
+    },
+    {
+      "scenario": "test_wrong_scoped_service_rejected_before_keygen",
+      "established": false,
+      "decapsulations": 0,
+      "application_deliveries": 0,
+      "closed": true,
+      "server_outcome": "ProtocolError",
+      "server_reason": "unregistered server identity"
+    }
+  ],
+  "client_implementation": "Independently written framing, transcript, HMAC/HKDF, AEAD and raw PyOpenSSL TLS client from spec; shared KEM algorithm and crypto primitives.",
+  "scope": "Experimental test peer vs existing server on loopback; not independent audited production implementations, remote/WAN tests or full design security proof."
+}
