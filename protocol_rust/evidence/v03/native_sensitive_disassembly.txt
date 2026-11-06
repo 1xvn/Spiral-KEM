@@ -1,0 +1,399 @@
+<multiply>
+
+    1200:	push   %r12
+    1202:	mov    %rdx,%r9
+    1205:	mov    %rdx,%r8
+    1208:	xor    %r11d,%r11d
+    120b:	push   %rbp
+    120c:	mov    $0xa91a01,%r10d
+    1212:	lea    0x2(%rsi),%rbp
+    1216:	push   %rbx
+    1217:	mov    %rsi,%rbx
+    121a:	nopw   0x0(%rax,%rax,1)
+    1220:	mov    %rbx,%rsi
+    1223:	mov    %r8,%rdx
+    1226:	xor    %eax,%eax
+    1228:	data16 cs nopw 0x0(%rax,%rax,1)
+    1233:	data16 cs nopw 0x0(%rax,%rax,1)
+    123e:	xchg   %ax,%ax
+    1240:	movzwl (%rsi),%ecx
+    1243:	movzwl (%rdx),%r12d
+    1247:	add    $0x2,%rsi
+    124b:	imul   %r12d,%ecx
+    124f:	add    %ecx,%eax
+    1251:	mov    %rdx,%rcx
+    1254:	sub    $0x2,%rdx
+    1258:	cmp    %rcx,%r9
+    125b:	jne    1240 <multiply+0x40>
+    125d:	add    $0x1,%r11
+    1261:	cmp    $0x100,%r11
+    1268:	je     12e0 <multiply+0xe0>
+    126a:	lea    0x1fe(%r9),%rdx
+    1271:	mov    %rbp,%rsi
+    1274:	data16 cs nopw 0x0(%rax,%rax,1)
+    127f:	nop
+    1280:	movzwl (%rdx),%r12d
+    1284:	movzwl (%rsi),%ecx
+    1287:	sub    $0x2,%rdx
+    128b:	add    $0x2,%rsi
+    128f:	imul   %r12d,%ecx
+    1293:	mov    %r10d,%r12d
+    1296:	sub    %ecx,%r12d
+    1299:	add    %r12d,%eax
+    129c:	cmp    %rdx,%r8
+    129f:	jne    1280 <multiply+0x80>
+    12a1:	lea    -0xd01(%rax),%edx
+    12a7:	add    $0x2,%rbp
+    12ab:	add    $0x2,%r8
+    12af:	imul   $0x13afb7,%rax,%rax
+    12b6:	shr    $0x20,%rax
+    12ba:	imul   $0xd01,%eax,%eax
+    12c0:	sub    %eax,%edx
+    12c2:	mov    %edx,%eax
+    12c4:	sar    $0x1f,%eax
+    12c7:	and    $0xd01,%ax
+    12cb:	add    %edx,%eax
+    12cd:	mov    %ax,-0x2(%rdi,%r11,2)
+    12d3:	jmp    1220 <multiply+0x20>
+    12d8:	nopl   0x0(%rax,%rax,1)
+    12e0:	lea    -0xd01(%rax),%edx
+    12e6:	pop    %rbx
+    12e7:	pop    %rbp
+    12e8:	imul   $0x13afb7,%rax,%rax
+    12ef:	pop    %r12
+    12f1:	shr    $0x20,%rax
+    12f5:	imul   $0xd01,%eax,%eax
+    12fb:	sub    %eax,%edx
+    12fd:	mov    %edx,%eax
+    12ff:	sar    $0x1f,%eax
+    1302:	and    $0xd01,%ax
+    1306:	add    %edx,%eax
+    1308:	mov    %ax,0x1fe(%rdi)
+    130f:	ret
+
+<sp_decaps_once>
+
+    2d20:	test   %rcx,%rcx
+    2d23:	je     30a8 <sp_decaps_once+0x388>
+    2d29:	push   %r15
+    2d2b:	push   %r14
+    2d2d:	push   %r13
+    2d2f:	push   %r12
+    2d31:	mov    %rdi,%r12
+    2d34:	push   %rbp
+    2d35:	push   %rbx
+    2d36:	sub    $0x1598,%rsp
+    2d3d:	test   %rdi,%rdi
+    2d40:	je     2ea8 <sp_decaps_once+0x188>
+    2d46:	pxor   %xmm0,%xmm0
+    2d4a:	mov    %rcx,%r15
+    2d4d:	xor    %eax,%eax
+    2d4f:	movups %xmm0,(%rcx)
+    2d52:	movups %xmm0,0x10(%rcx)
+    2d56:	mov    $0x1,%ecx
+    2d5b:	lock cmpxchg %ecx,(%rdi)
+    2d5f:	jne    32f5 <sp_decaps_once+0x5d5>
+    2d65:	mov    %rsi,%r13
+    2d68:	test   %rsi,%rsi
+    2d6b:	je     3090 <sp_decaps_once+0x370>
+    2d71:	cmp    $0x488,%rdx
+    2d78:	jne    3090 <sp_decaps_once+0x370>
+    2d7e:	lea    0x990(%rsp),%r11
+    2d86:	movabs $0x64331574b53,%rax
+    2d90:	mov    %r11,0x20(%rsp)
+    2d95:	cmp    %rax,(%rsi)
+    2d98:	je     2ec1 <sp_decaps_once+0x1a1>
+    2d9e:	lea    0x4(%r12),%rax
+    2da3:	mov    $0x1,%ecx
+    2da8:	lea    0x300(%rsp),%r14
+    2db0:	mov    %rax,0x8(%rsp)
+    2db5:	lea    0xf90(%rsp),%rax
+    2dbd:	lea    0x40(%rsp),%rbx
+    2dc2:	mov    %rax,(%rsp)
+    2dc6:	lea    0x60(%rsp),%rax
+    2dcb:	lea    0x100(%rsp),%rbp
+    2dd3:	mov    %rax,0x28(%rsp)
+    2dd8:	lea    0xa0(%rsp),%rax
+    2de0:	mov    %rax,0x18(%rsp)
+    2de5:	lea    0x80(%rsp),%rax
+    2ded:	mov    %rax,0x10(%rsp)
+    2df2:	mov    0x20(%rsp),%rdi
+    2df7:	mov    $0x600,%esi
+    2dfc:	mov    %ecx,0x30(%rsp)
+    2e00:	call   1090 <OPENSSL_cleanse@plt>
+    2e05:	mov    (%rsp),%rdi
+    2e09:	mov    $0x600,%esi
+    2e0e:	call   1090 <OPENSSL_cleanse@plt>
+    2e13:	mov    %rbp,%rdi
+    2e16:	mov    $0x200,%esi
+    2e1b:	call   1090 <OPENSSL_cleanse@plt>
+    2e20:	mov    %r14,%rdi
+    2e23:	mov    $0x200,%esi
+    2e28:	call   1090 <OPENSSL_cleanse@plt>
+    2e2d:	mov    %rbx,%rdi
+    2e30:	mov    $0x20,%esi
+    2e35:	call   1090 <OPENSSL_cleanse@plt>
+    2e3a:	lea    0x500(%rsp),%rdi
+    2e42:	mov    $0x488,%esi
+    2e47:	call   1090 <OPENSSL_cleanse@plt>
+    2e4c:	mov    0x28(%rsp),%rdi
+    2e51:	mov    $0x20,%esi
+    2e56:	call   1090 <OPENSSL_cleanse@plt>
+    2e5b:	mov    0x10(%rsp),%rdi
+    2e60:	mov    $0x20,%esi
+    2e65:	call   1090 <OPENSSL_cleanse@plt>
+    2e6a:	mov    0x18(%rsp),%rdi
+    2e6f:	mov    $0x60,%esi
+    2e74:	call   1090 <OPENSSL_cleanse@plt>
+    2e79:	mov    0x8(%rsp),%rdi
+    2e7e:	mov    $0x840,%esi
+    2e83:	call   1090 <OPENSSL_cleanse@plt>
+    2e88:	mov    $0x2,%eax
+    2e8d:	xchg   %eax,(%r12)
+    2e91:	mov    $0x20,%esi
+    2e96:	mov    %r15,%rdi
+    2e99:	call   1090 <OPENSSL_cleanse@plt>
+    2e9e:	mov    0x30(%rsp),%ecx
+    2ea2:	jmp    2ead <sp_decaps_once+0x18d>
+    2ea4:	nopl   0x0(%rax)
+    2ea8:	mov    $0x1,%ecx
+    2ead:	add    $0x1598,%rsp
+    2eb4:	mov    %ecx,%eax
+    2eb6:	pop    %rbx
+    2eb7:	pop    %rbp
+    2eb8:	pop    %r12
+    2eba:	pop    %r13
+    2ebc:	pop    %r14
+    2ebe:	pop    %r15
+    2ec0:	ret
+    2ec1:	lea    0x8(%rsi),%rsi
+    2ec5:	mov    %r11,%rdi
+    2ec8:	lea    0xd90(%rsp),%rbx
+    2ed0:	call   1380 <unpack12>
+    2ed5:	lea    0x188(%r13),%rsi
+    2edc:	lea    0xb90(%rsp),%rdi
+    2ee4:	mov    %eax,%ebp
+    2ee6:	call   1380 <unpack12>
+    2eeb:	lea    0x308(%r13),%rsi
+    2ef2:	mov    %rbx,%rdi
+    2ef5:	mov    %eax,%r14d
+    2ef8:	call   1380 <unpack12>
+    2efd:	or     %r14d,%ebp
+    2f00:	or     %eax,%ebp
+    2f02:	jne    2d9e <sp_decaps_once+0x7e>
+    2f08:	lea    0x300(%rsp),%r14
+    2f10:	lea    0x424(%r12),%rsi
+    2f18:	mov    %r11,%rdx
+    2f1b:	mov    %r14,%rdi
+    2f1e:	lea    0x100(%rsp),%rbp
+    2f26:	call   19d0 <dot>
+    2f2b:	mov    $0xd010d01,%edi
+    2f30:	xor    %eax,%eax
+    2f32:	pxor   %xmm3,%xmm3
+    2f36:	movd   %edi,%xmm6
+    2f3a:	pshufd $0x0,%xmm6,%xmm6
+    2f3f:	nop
+    2f40:	movdqa (%rbx,%rax,1),%xmm2
+    2f45:	movdqa (%r14,%rax,1),%xmm4
+    2f4b:	movdqa %xmm2,%xmm0
+    2f4f:	movdqa %xmm4,%xmm1
+    2f53:	movdqa %xmm4,%xmm5
+    2f57:	punpcklwd %xmm3,%xmm1
+    2f5b:	punpcklwd %xmm3,%xmm0
+    2f5f:	punpckhwd %xmm3,%xmm5
+    2f63:	psubd  %xmm1,%xmm0
+    2f67:	movdqa %xmm2,%xmm1
+    2f6b:	psubw  %xmm4,%xmm2
+    2f6f:	punpckhwd %xmm3,%xmm1
+    2f73:	psrld  $0x1f,%xmm0
+    2f78:	psubd  %xmm5,%xmm1
+    2f7c:	movdqa %xmm0,%xmm5
+    2f80:	psrld  $0x1f,%xmm1
+    2f85:	punpcklwd %xmm1,%xmm0
+    2f89:	punpckhwd %xmm1,%xmm5
+    2f8d:	movdqa %xmm0,%xmm1
+    2f91:	punpcklwd %xmm5,%xmm0
+    2f95:	punpckhwd %xmm5,%xmm1
+    2f99:	punpcklwd %xmm1,%xmm0
+    2f9d:	pmullw %xmm6,%xmm0
+    2fa1:	paddw  %xmm2,%xmm0
+    2fa5:	movaps %xmm0,0x0(%rbp,%rax,1)
+    2faa:	add    $0x10,%rax
+    2fae:	cmp    $0x200,%rax
+    2fb4:	jne    2f40 <sp_decaps_once+0x220>
+    2fb6:	mov    $0x9c0,%eax
+    2fbb:	movzwl 0x100(%rsp),%ecx
+    2fc3:	mov    $0x340,%edx
+    2fc8:	pxor   %xmm0,%xmm0
+    2fcc:	movaps %xmm0,0x40(%rsp)
+    2fd1:	lea    0x40(%rsp),%rbx
+    2fd6:	mov    $0x340,%edi
+    2fdb:	mov    $0x9c0,%r8d
+    2fe1:	sub    %ecx,%eax
+    2fe3:	sub    %ecx,%edx
+    2fe5:	movaps %xmm0,0x50(%rsp)
+    2fea:	shr    $0x1f,%eax
+    2fed:	shr    $0x1f,%edx
+    2ff0:	xor    $0x1,%eax
+    2ff3:	and    %edx,%eax
+    2ff5:	mov    $0x1,%edx
+    2ffa:	mov    %al,0x40(%rsp)
+    2ffe:	xchg   %ax,%ax
+    3000:	movzwl 0x0(%rbp,%rdx,2),%r9d
+    3006:	mov    %r8d,%eax
+    3009:	mov    %edi,%ecx
+    300b:	mov    %rdx,%rsi
+    300e:	shr    $0x3,%rsi
+    3012:	sub    %r9d,%eax
+    3015:	sub    %r9d,%ecx
+    3018:	shr    $0x1f,%eax
+    301b:	shr    $0x1f,%ecx
+    301e:	xor    $0x1,%eax
+    3021:	and    %ecx,%eax
+    3023:	mov    %edx,%ecx
+    3025:	add    $0x1,%rdx
+    3029:	and    $0x7,%ecx
+    302c:	shl    %cl,%eax
+    302e:	or     %al,(%rbx,%rsi,1)
+    3031:	cmp    $0x100,%rdx
+    3038:	jne    3000 <sp_decaps_once+0x2e0>
+    303a:	lea    0xf90(%rsp),%rax
+    3042:	lea    0x4(%r12),%rsi
+    3047:	mov    %rbx,%rdx
+    304a:	mov    %rax,%rdi
+    304d:	mov    %rsi,0x8(%rsp)
+    3052:	mov    %rax,(%rsp)
+    3056:	call   22f0 <encrypt_message>
+    305b:	test   %eax,%eax
+    305d:	lea    0x60(%rsp),%rax
+    3062:	mov    %rax,0x28(%rsp)
+    3067:	je     30ae <sp_decaps_once+0x38e>
+    3069:	lea    0xa0(%rsp),%rax
+    3071:	mov    %rax,0x18(%rsp)
+    3076:	lea    0x80(%rsp),%rax
+    307e:	mov    %rax,0x10(%rsp)
+    3083:	mov    $0x2,%ecx
+    3088:	jmp    2df2 <sp_decaps_once+0xd2>
+    308d:	nopl   (%rax)
+    3090:	lea    0x990(%rsp),%rax
+    3098:	mov    %rax,0x20(%rsp)
+    309d:	jmp    2d9e <sp_decaps_once+0x7e>
+    30a2:	nopw   0x0(%rax,%rax,1)
+    30a8:	mov    $0x1,%eax
+    30ad:	ret
+    30ae:	mov    0x20(%rsp),%rcx
+    30b3:	mov    0x8(%rsp),%rsi
+    30b8:	mov    %rbx,%rdx
+    30bb:	mov    %rax,%rdi
+    30be:	call   1ef0 <shared>
+    30c3:	test   %eax,%eax
+    30c5:	lea    0xa0(%rsp),%rax
+    30cd:	mov    %rax,0x18(%rsp)
+    30d2:	jne    32e3 <sp_decaps_once+0x5c3>
+    30d8:	movdqu 0x824(%r12),%xmm0
+    30e2:	mov    0x8(%rsp),%rsi
+    30e7:	lea    0xc0(%rsp),%rdi
+    30ef:	movaps %xmm0,0xa0(%rsp)
+    30f7:	movdqu 0x834(%r12),%xmm0
+    3101:	movaps %xmm0,0xb0(%rsp)
+    3109:	call   1d40 <public_hash>
+    310e:	lea    0x80(%rsp),%rdi
+    3116:	mov    %rdi,0x10(%rsp)
+    311b:	test   %eax,%eax
+    311d:	jne    3083 <sp_decaps_once+0x363>
+    3123:	mov    0x20(%rsp),%rsi
+    3128:	lea    0xe0(%rsp),%rdi
+    3130:	call   1b20 <cipher_hash>
+    3135:	test   %eax,%eax
+    3137:	jne    3083 <sp_decaps_once+0x363>
+    313d:	mov    0x10(%rsp),%r8
+    3142:	mov    0x18(%rsp),%rdx
+    3147:	mov    $0x20,%r9d
+    314d:	mov    $0x60,%ecx
+    3152:	mov    $0x9,%esi
+    3157:	lea    0xecc(%rip),%rdi        # 402a <_fini+0xcf6>
+    315e:	call   1400 <xof>
+    3163:	test   %eax,%eax
+    3165:	jne    3083 <sp_decaps_once+0x363>
+    316b:	mov    (%rsp),%rsi
+    316f:	mov    %eax,0x3c(%rsp)
+    3173:	lea    0x508(%rsp),%rdi
+    317b:	movabs $0x64331574b53,%rax
+    3185:	mov    %rax,0x500(%rsp)
+    318d:	lea    0x500(%rsp),%r10
+    3195:	call   1310 <pack12>
+    319a:	lea    0x1190(%rsp),%rsi
+    31a2:	lea    0x688(%rsp),%rdi
+    31aa:	call   1310 <pack12>
+    31af:	lea    0x1390(%rsp),%rsi
+    31b7:	lea    0x808(%rsp),%rdi
+    31bf:	call   1310 <pack12>
+    31c4:	mov    %r10,%rsi
+    31c7:	mov    %r13,%rdi
+    31ca:	mov    $0x488,%edx
+    31cf:	mov    %r10,0x30(%rsp)
+    31d4:	call   1050 <CRYPTO_memcmp@plt>
+    31d9:	movdqa 0x60(%rsp),%xmm3
+    31df:	mov    0x20(%rsp),%rdi
+    31e4:	mov    $0x600,%esi
+    31e9:	movdqa 0x80(%rsp),%xmm2
+    31f2:	test   %eax,%eax
+    31f4:	sete   %al
+    31f7:	sete   %dl
+    31fa:	movzbl %al,%eax
+    31fd:	neg    %edx
+    31ff:	sub    $0x1,%eax
+    3202:	movd   %edx,%xmm1
+    3206:	movd   %eax,%xmm0
+    320a:	punpcklbw %xmm1,%xmm1
+    320e:	punpcklbw %xmm0,%xmm0
+    3212:	punpcklwd %xmm1,%xmm1
+    3216:	punpcklwd %xmm0,%xmm0
+    321a:	pshufd $0x0,%xmm1,%xmm1
+    321f:	pshufd $0x0,%xmm0,%xmm0
+    3224:	pand   %xmm1,%xmm3
+    3228:	pand   0x70(%rsp),%xmm1
+    322e:	pand   %xmm0,%xmm2
+    3232:	pand   0x90(%rsp),%xmm0
+    323b:	por    %xmm3,%xmm2
+    323f:	por    %xmm1,%xmm0
+    3243:	movups %xmm2,(%r15)
+    3247:	movups %xmm0,0x10(%r15)
+    324c:	call   1090 <OPENSSL_cleanse@plt>
+    3251:	mov    (%rsp),%rdi
+    3255:	mov    $0x600,%esi
+    325a:	call   1090 <OPENSSL_cleanse@plt>
+    325f:	mov    %rbp,%rdi
+    3262:	mov    $0x200,%esi
+    3267:	call   1090 <OPENSSL_cleanse@plt>
+    326c:	mov    %r14,%rdi
+    326f:	mov    $0x200,%esi
+    3274:	call   1090 <OPENSSL_cleanse@plt>
+    3279:	mov    %rbx,%rdi
+    327c:	mov    $0x20,%esi
+    3281:	call   1090 <OPENSSL_cleanse@plt>
+    3286:	mov    0x30(%rsp),%rdi
+    328b:	mov    $0x488,%esi
+    3290:	call   1090 <OPENSSL_cleanse@plt>
+    3295:	mov    0x28(%rsp),%rdi
+    329a:	mov    $0x20,%esi
+    329f:	call   1090 <OPENSSL_cleanse@plt>
+    32a4:	mov    0x10(%rsp),%rdi
+    32a9:	mov    $0x20,%esi
+    32ae:	call   1090 <OPENSSL_cleanse@plt>
+    32b3:	mov    0x18(%rsp),%rdi
+    32b8:	mov    $0x60,%esi
+    32bd:	call   1090 <OPENSSL_cleanse@plt>
+    32c2:	mov    0x8(%rsp),%rdi
+    32c7:	mov    $0x840,%esi
+    32cc:	call   1090 <OPENSSL_cleanse@plt>
+    32d1:	mov    $0x2,%eax
+    32d6:	xchg   %eax,(%r12)
+    32da:	mov    0x3c(%rsp),%ecx
+    32de:	jmp    2ead <sp_decaps_once+0x18d>
+    32e3:	lea    0x80(%rsp),%rax
+    32eb:	mov    %rax,0x10(%rsp)
+    32f0:	jmp    3083 <sp_decaps_once+0x363>
+    32f5:	mov    $0x3,%ecx
+    32fa:	jmp    2ead <sp_decaps_once+0x18d>
+    32ff:	nop

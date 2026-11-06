@@ -1,0 +1,55 @@
+   Compiling spiral-protocol v0.3.0 (/workspace/scratch/c6a558db7e9f/spiral_hardening_v03/protocol_rust)
+warning: unused import: `secret::Secret`
+ --> src/handshake.rs:5:5
+  |
+5 |     secret::Secret,
+  |     ^^^^^^^^^^^^^^
+  |
+  = note: `#[warn(unused_imports)]` (part of `#[warn(unused)]`) on by default
+
+warning: field `shutdown` is never read
+  --> src/worker.rs:34:5
+   |
+26 | struct Inner {
+   |        ----- field in this struct
+...
+34 |     shutdown: Arc<Shutdown>,
+   |     ^^^^^^^^
+   |
+   = note: `#[warn(dead_code)]` (part of `#[warn(unused)]`) on by default
+
+warning: fields `started`, `result`, and `complete` are never read
+  --> src/worker.rs:38:5
+   |
+37 | struct Shutdown {
+   |        -------- fields in this struct
+38 |     started: AtomicBool,
+   |     ^^^^^^^
+39 |     result: Mutex<Option<Result<()>>>,
+   |     ^^^^^^
+40 |     complete: Notify,
+   |     ^^^^^^^^
+
+warning: `spiral-protocol` (lib) generated 3 warnings (run `cargo fix --lib -p spiral-protocol` to apply 1 suggestion)
+warning: `spiral-protocol` (lib test) generated 3 warnings (3 duplicates)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 2.39s
+     Running unittests src/lib.rs (protocol_rust/target/debug/deps/spiral_protocol-df126eda0942daa4)
+
+running 1 test
+test worker::tests::concurrent_shutdown_waits_even_if_first_caller_is_canceled ... FAILED
+
+failures:
+
+---- worker::tests::concurrent_shutdown_waits_even_if_first_caller_is_canceled stdout ----
+
+thread 'worker::tests::concurrent_shutdown_waits_even_if_first_caller_is_canceled' (96) panicked at src/worker.rs:523:9:
+second shutdown returned before native worker joined
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+
+failures:
+    worker::tests::concurrent_shutdown_waits_even_if_first_caller_is_canceled
+
+test result: FAILED. 0 passed; 1 failed; 0 ignored; 0 measured; 40 filtered out; finished in 0.25s
+
+error: test failed, to rerun pass `--lib`

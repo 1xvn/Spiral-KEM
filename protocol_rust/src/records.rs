@@ -396,4 +396,104 @@ mod tests {
         drop(held);
         drop(b);
     }
+
+    #[test]
+    fn both_directions_match_vectors_and_reject_data_after_close() {
+        let v = vector();
+        let pool = Pool::new();
+        for (name, role) in [("client", 0), ("server", 1)] {
+            let prefix: [u8; 4] = hex::decode(
+                v["expected"][format!("{name}_nonce_prefix")]
+                    .as_str()
+                    .unwrap(),
+            )
+            .unwrap()
+            .try_into()
+            .unwrap();
+            let sid = hex::decode(v["public"]["session_id"].as_str().unwrap())
+                .unwrap()
+                .try_into()
+                .unwrap();
+            let mut tx = Tx::new(key(&v, &format!("{name}_data_key")), prefix, sid, role).unwrap();
+            let mut rx =
+                Rx::new(key(&v, &format!("{name}_data_key")), prefix, sid, 1 - role).unwrap();
+            let message =
+                hex::decode(v["plaintexts"][format!("{name}_data")].as_str().unwrap()).unwrap();
+            let wire = tx
+                .data(Plaintext {
+                    buffer: buf(&pool, &message),
+                    start: 0,
+                    length: message.len(),
+                })
+                .unwrap();
+            assert_eq!(
+                hex::encode(&wire.data),
+                v["frames"][format!("{name}_data")].as_str().unwrap()
+            );
+            drop(rx.decode(buf(&pool, &wire.data)).unwrap());
+            let close = tx.close(0).unwrap();
+            assert_eq!(
+                hex::encode(close),
+                v["frames"][format!("{name}_close")].as_str().unwrap()
+            );
+            drop(rx.decode(buf(&pool, &close)).unwrap());
+            assert!(rx.decode(buf(&pool, &wire.data)).is_err());
+            assert!(tx
+                .data(Plaintext {
+                    buffer: buf(&pool, b"x"),
+                    start: 0,
+                    length: 1
+                })
+                .is_err());
+        }
+    }
+
+    #[test]
+    fn authenticated_unknown_close_and_receive_byte_overrun_poison_keys() {
+        let pool = Pool::new();
+        for bad_reason in [false, true] {
+            let mut tx = Tx::new(Secret::zeros(), [0; 4], [1; 16], 0).unwrap();
+            let mut rx = Rx::new(Secret::zeros(), [0; 4], [1; 16], 1).unwrap();
+            let p = Plaintext {
+                buffer: buf(&pool, &[3]),
+                start: 0,
+                length: 1,
+            };
+            let wire = if bad_reason {
+                tx.encode(CLOSE, p).unwrap()
+            } else {
+                rx.bytes = MAX_BYTES;
+                tx.data(p).unwrap()
+            };
+            assert!(rx.decode(wire).is_err());
+            assert!(rx.closed && rx.key.is_none());
+        }
+    }
+
+    #[test]
+    fn failed_encryption_burns_sequence_and_cannot_retry() {
+        let pool = Pool::new();
+        let mut tx = Tx::new(Secret::zeros(), [0; 4], [1; 16], 0).unwrap();
+        let mut buffer = buf(&pool, b"x");
+        // Inject a broken capacity invariant without touching the AEAD or RNG.
+        buffer.data.shrink_to_fit();
+        assert!(matches!(
+            tx.data(Plaintext {
+                buffer,
+                start: 0,
+                length: 1
+            }),
+            Err(Error::Internal)
+        ));
+        assert_eq!(tx.seq, 1);
+        assert!(tx.closed && tx.key.is_none());
+        assert!(tx
+            .data(Plaintext {
+                buffer: buf(&pool, b"x"),
+                start: 0,
+                length: 1
+            })
+            .is_err());
+        assert_eq!(tx.seq, 1);
+    }
 }

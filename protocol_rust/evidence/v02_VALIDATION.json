@@ -1,0 +1,646 @@
+{
+  "schema": "spiral-rust-c-validation/v0.2",
+  "date_utc": "2026-11-06",
+  "status": "research implementation; functional tests pass; TLS memory diagnostic unresolved",
+  "base_repository": "1xvn/Spiral-KEM",
+  "base_commit": "ee7b66101e053d8e421d9cf95d92bb9cb6b869f4",
+  "wire_version": "SPK1 v0.1 / suite 0xF001",
+  "build": {
+    "rust": "1.99.1 (58cf8f9c3 2026-10-13)",
+    "profile": "release, thin LTO, codegen-units 1, C -O2, no SPIRAL_TESTING",
+    "platform": "Linux x86-64, Ubuntu 24.04 / glibc 2.39",
+    "system_crypto": "OpenSSL 3.0.13, libcrypto.so.3 dynamically linked",
+    "cargo_locked": true,
+    "cargo_package_count_including_dev_and_target_specific": 109
+  },
+  "sha256": {
+    "spiral-lab": "865526991c3c782cea7beece916bed43af8b2ad6e57cfd38c26fff60afce7d6a",
+    "spiral_native.c": "ccb29fe8b1f428c25a93c8cb967f1090eea619ad36dcba7d53dc9bfaedc1cd0f",
+    "spiral_native.h": "85f0454ee626cc0c38cdd6b60b12453f90276b6681dd91ab634d48c20bb1597b",
+    "Cargo.lock": "182f009b3a1d9ac33dd65037c5eb9ea750852948ab885fd626a9c08e2c20bc19"
+  },
+  "checks": {
+    "unit_methods": 30,
+    "compile_fail_doc_tests": 1,
+    "unit_failures": 0,
+    "clippy_all_targets_warnings_denied": "passed",
+    "format": "passed",
+    "real_TLS_interop_methods": 15,
+    "interop_failures": 0,
+    "interop_errors": 0,
+    "benchmark_profiles": 9,
+    "benchmark_trials_per_profile": 5,
+    "benchmark_connections_per_trial": 4,
+    "benchmark_measured_connections": 180,
+    "benchmark_warmup_connections": 72,
+    "bundled_script_prebuilt_real_TLS_methods": 15,
+    "bundled_script_prebuilt_failures": 0
+  },
+  "scope": [
+    "Python to Rust and Rust to Python: four independent sessions each",
+    "Rust to Rust: payload 64, 1024 and 16384 bytes; four sessions; eight producers; 32 echo messages",
+    "bad CA/name/ALPN/auth pin/expiry/revocation/Finished/tag, duplicates, truncation, oversized declared length, absent authenticated CLOSE",
+    "same-IP 16/64 connection bursts exercise admission rejection and cleanup, not 64 established sessions",
+    "baseline C/Python source preserved; existing Python 69 methods not presented as Rust results"
+  ],
+  "memory_diagnostics": {
+    "passed": false,
+    "versions": [
+      "3.22.0",
+      "3.28.0"
+    ],
+    "instrumentation_runtime": "staged glibc 2.39-0ubuntu8.8 loader/libc with matching debug symbols; benchmark used host runtime",
+    "default_cipher": "TLS_AES_256_GCM_SHA384, rustls 0.23.46 / ring 0.17.14",
+    "warning": "Uninitialised value diagnostics in TLS AES-GCM encryption/decryption; reproduced in TLS-only control; unresolved; no suppression or runtime cipher change",
+    "latest": [
+      {
+        "case": "success",
+        "process_exit": 99,
+        "expected_exit": 0,
+        "memcheck_errors": 5,
+        "passed": false,
+        "report": {
+          "admission_released": true,
+          "connections": 1,
+          "kem": {
+            "executed_jobs": 2,
+            "live_keys": 0,
+            "rejected_jobs": 0
+          },
+          "role": "server",
+          "sessions": [
+            {
+              "authenticated_close": true,
+              "binding_hash": "889c1d5ee7fc6570cfa4fc2c6719fefb64c4cdbab1cb9dafa62e6915f1cc196d",
+              "messages": 1,
+              "session_id": "42dcfcf988c0525a9e0fed4fa5512192",
+              "transcript_hash": "e451f111bf36e78f8562ccbd3a1087362b7d1e052dca69191feb98fce6cd997b"
+            }
+          ],
+          "status": "passed"
+        },
+        "stderr": ""
+      },
+      {
+        "case": "finished-failure",
+        "process_exit": 1,
+        "expected_exit": 1,
+        "memcheck_errors": 0,
+        "passed": true,
+        "report": {
+          "kem": {
+            "executed_jobs": 2,
+            "live_keys": 0,
+            "rejected_jobs": 0
+          },
+          "status": "failed"
+        },
+        "stderr": "Error: Authentication\n"
+      },
+      {
+        "case": "tls-only-default",
+        "process_exit": 99,
+        "expected_exit": 0,
+        "memcheck_errors": 3,
+        "passed": false,
+        "report": null,
+        "stderr": ""
+      },
+      {
+        "case": "tls-only-chacha",
+        "process_exit": 0,
+        "expected_exit": 0,
+        "memcheck_errors": 0,
+        "passed": true,
+        "report": null,
+        "stderr": ""
+      }
+    ],
+    "comparison_322": [
+      {
+        "case": "success",
+        "process_exit": 99,
+        "expected_exit": 0,
+        "memcheck_errors": 5,
+        "passed": false,
+        "report": {
+          "admission_released": true,
+          "connections": 1,
+          "kem": {
+            "executed_jobs": 2,
+            "live_keys": 0,
+            "rejected_jobs": 0
+          },
+          "role": "server",
+          "sessions": [
+            {
+              "authenticated_close": true,
+              "binding_hash": "15e7fcf6ead4e32cecbcd331ff2ab077fe44c5fec0927db930c8172bdadcad2f",
+              "messages": 1,
+              "session_id": "9081885a3c454b620372f799517524f3",
+              "transcript_hash": "a00494caf29ef47a07fc359e14b448db7b7eb5e1238513964c21d816a4cc7858"
+            }
+          ],
+          "status": "passed"
+        },
+        "stderr": ""
+      },
+      {
+        "case": "finished-failure",
+        "process_exit": 99,
+        "expected_exit": 1,
+        "memcheck_errors": 1,
+        "passed": false,
+        "report": {
+          "kem": {
+            "executed_jobs": 2,
+            "live_keys": 0,
+            "rejected_jobs": 0
+          },
+          "status": "failed"
+        },
+        "stderr": "Error: Authentication\n"
+      },
+      {
+        "case": "tls-only-default",
+        "process_exit": 99,
+        "expected_exit": 0,
+        "memcheck_errors": 4,
+        "passed": false,
+        "report": null,
+        "stderr": ""
+      },
+      {
+        "case": "tls-only-chacha",
+        "process_exit": 0,
+        "expected_exit": 0,
+        "memcheck_errors": 0,
+        "passed": true,
+        "report": null,
+        "stderr": ""
+      }
+    ],
+    "all_latest_definite_indirect_possible_leak_bytes": 0,
+    "still_reachable_note": "548 bytes from process-wide Rust runtime state in inspected runs; not claimed erased"
+  },
+  "limitations": [
+    "No independent cryptanalysis or production approval",
+    "No proof of constant-time execution, side-channel resistance, forward secrecy or complete physical RAM erasure",
+    "No coverage-guided fuzzing, long soak, other OS/CPU validation or sustained capacity test",
+    "Same-process C FFI; no crash isolation; no forced cancellation of native operation",
+    "No mlock/dump exclusion; library/provider copies, registers, swap and application copies outside erasure guarantee",
+    "Windows native build untested; prebuilt binary targets Ubuntu 24.04 Linux x86-64 / glibc 2.39 + libcrypto.so.3"
+  ],
+  "benchmark_summary": [
+    {
+      "workers_per_endpoint": 1,
+      "payload": 64,
+      "trials": 5,
+      "connection_samples": 20,
+      "summary_ms": {
+        "handshake_ms": {
+          "median": 13.0138545,
+          "p95": 21.955199,
+          "p99": 22.868399
+        },
+        "tcp_ms": {
+          "median": 0.3051375,
+          "p95": 0.76673,
+          "p99": 1.106241
+        },
+        "tls_ms": {
+          "median": 1.2083504999999999,
+          "p95": 2.339135,
+          "p99": 2.547775
+        },
+        "spiral_ms": {
+          "median": 11.060797,
+          "p95": 20.328165,
+          "p99": 20.960441
+        },
+        "app_ms": {
+          "median": 2.5865905,
+          "p95": 6.099596,
+          "p99": 7.859390000000001
+        }
+      },
+      "whole_run_echo_payload_MiB_per_second": {
+        "median": 0.46699084549260317,
+        "p95": 0.6176149800429228,
+        "p99": 0.6176149800429228
+      },
+      "rss_kib": {
+        "client_peak_rss_kib": {
+          "median": 6172,
+          "p95": 6236,
+          "p99": 6236
+        },
+        "server_peak_rss_kib": {
+          "median": 5760,
+          "p95": 5788,
+          "p99": 5788
+        }
+      }
+    },
+    {
+      "workers_per_endpoint": 1,
+      "payload": 1024,
+      "trials": 5,
+      "connection_samples": 20,
+      "summary_ms": {
+        "handshake_ms": {
+          "median": 10.309879,
+          "p95": 17.715364,
+          "p99": 17.859343
+        },
+        "tcp_ms": {
+          "median": 0.268457,
+          "p95": 0.367842,
+          "p99": 0.522948
+        },
+        "tls_ms": {
+          "median": 1.1536205000000002,
+          "p95": 1.879119,
+          "p99": 2.560851
+        },
+        "spiral_ms": {
+          "median": 8.6869335,
+          "p95": 15.474234,
+          "p99": 15.804687000000001
+        },
+        "app_ms": {
+          "median": 3.9424855,
+          "p95": 10.144153,
+          "p99": 13.465278000000001
+        }
+      },
+      "whole_run_echo_payload_MiB_per_second": {
+        "median": 7.121367500773055,
+        "p95": 9.297999546515438,
+        "p99": 9.297999546515438
+      },
+      "rss_kib": {
+        "client_peak_rss_kib": {
+          "median": 6172,
+          "p95": 6488,
+          "p99": 6488
+        },
+        "server_peak_rss_kib": {
+          "median": 5596,
+          "p95": 5892,
+          "p99": 5892
+        }
+      }
+    },
+    {
+      "workers_per_endpoint": 1,
+      "payload": 16384,
+      "trials": 5,
+      "connection_samples": 20,
+      "summary_ms": {
+        "handshake_ms": {
+          "median": 10.983234,
+          "p95": 15.989361,
+          "p99": 16.520726
+        },
+        "tcp_ms": {
+          "median": 0.328875,
+          "p95": 0.775842,
+          "p99": 1.1614749999999998
+        },
+        "tls_ms": {
+          "median": 1.518944,
+          "p95": 3.9093519999999997,
+          "p99": 4.110336
+        },
+        "spiral_ms": {
+          "median": 9.362672,
+          "p95": 12.286981,
+          "p99": 12.471286
+        },
+        "app_ms": {
+          "median": 8.853129,
+          "p95": 12.17098,
+          "p99": 12.909672
+        }
+      },
+      "whole_run_echo_payload_MiB_per_second": {
+        "median": 108.05535665180618,
+        "p95": 146.72921684014395,
+        "p99": 146.72921684014395
+      },
+      "rss_kib": {
+        "client_peak_rss_kib": {
+          "median": 9180,
+          "p95": 9628,
+          "p99": 9628
+        },
+        "server_peak_rss_kib": {
+          "median": 5916,
+          "p95": 6040,
+          "p99": 6040
+        }
+      }
+    },
+    {
+      "workers_per_endpoint": 2,
+      "payload": 64,
+      "trials": 5,
+      "connection_samples": 20,
+      "summary_ms": {
+        "handshake_ms": {
+          "median": 11.560975,
+          "p95": 15.821287,
+          "p99": 16.026042
+        },
+        "tcp_ms": {
+          "median": 0.2633305,
+          "p95": 0.609001,
+          "p99": 0.746088
+        },
+        "tls_ms": {
+          "median": 1.471581,
+          "p95": 2.427294,
+          "p99": 2.47182
+        },
+        "spiral_ms": {
+          "median": 10.1264355,
+          "p95": 13.647547,
+          "p99": 13.845146
+        },
+        "app_ms": {
+          "median": 2.8026455,
+          "p95": 6.00632,
+          "p99": 6.754268
+        }
+      },
+      "whole_run_echo_payload_MiB_per_second": {
+        "median": 0.5552176870984366,
+        "p95": 0.5947571915541059,
+        "p99": 0.5947571915541059
+      },
+      "rss_kib": {
+        "client_peak_rss_kib": {
+          "median": 5988,
+          "p95": 6356,
+          "p99": 6356
+        },
+        "server_peak_rss_kib": {
+          "median": 5940,
+          "p95": 6040,
+          "p99": 6040
+        }
+      }
+    },
+    {
+      "workers_per_endpoint": 2,
+      "payload": 1024,
+      "trials": 5,
+      "connection_samples": 20,
+      "summary_ms": {
+        "handshake_ms": {
+          "median": 14.74544,
+          "p95": 18.91225,
+          "p99": 19.141849999999998
+        },
+        "tcp_ms": {
+          "median": 0.346232,
+          "p95": 1.896684,
+          "p99": 2.585366
+        },
+        "tls_ms": {
+          "median": 1.6111745000000002,
+          "p95": 6.802842,
+          "p99": 8.389598999999999
+        },
+        "spiral_ms": {
+          "median": 11.08726,
+          "p95": 17.635416,
+          "p99": 17.654432
+        },
+        "app_ms": {
+          "median": 3.0838270000000003,
+          "p95": 7.1058520000000005,
+          "p99": 7.154807
+        }
+      },
+      "whole_run_echo_payload_MiB_per_second": {
+        "median": 7.746040185482436,
+        "p95": 8.330277232357165,
+        "p99": 8.330277232357165
+      },
+      "rss_kib": {
+        "client_peak_rss_kib": {
+          "median": 6120,
+          "p95": 6616,
+          "p99": 6616
+        },
+        "server_peak_rss_kib": {
+          "median": 5788,
+          "p95": 6076,
+          "p99": 6076
+        }
+      }
+    },
+    {
+      "workers_per_endpoint": 2,
+      "payload": 16384,
+      "trials": 5,
+      "connection_samples": 20,
+      "summary_ms": {
+        "handshake_ms": {
+          "median": 12.7584835,
+          "p95": 23.88689,
+          "p99": 24.289438999999998
+        },
+        "tcp_ms": {
+          "median": 0.211055,
+          "p95": 0.442171,
+          "p99": 0.48281399999999997
+        },
+        "tls_ms": {
+          "median": 2.23714,
+          "p95": 2.983205,
+          "p99": 3.065302
+        },
+        "spiral_ms": {
+          "median": 10.069909500000001,
+          "p95": 21.119778,
+          "p99": 21.834036
+        },
+        "app_ms": {
+          "median": 8.623191,
+          "p95": 15.437643,
+          "p99": 16.96454
+        }
+      },
+      "whole_run_echo_payload_MiB_per_second": {
+        "median": 80.49102584366133,
+        "p95": 110.31113171728683,
+        "p99": 110.31113171728683
+      },
+      "rss_kib": {
+        "client_peak_rss_kib": {
+          "median": 8992,
+          "p95": 9628,
+          "p99": 9628
+        },
+        "server_peak_rss_kib": {
+          "median": 5916,
+          "p95": 6044,
+          "p99": 6044
+        }
+      }
+    },
+    {
+      "workers_per_endpoint": 4,
+      "payload": 64,
+      "trials": 5,
+      "connection_samples": 20,
+      "summary_ms": {
+        "handshake_ms": {
+          "median": 9.530061499999999,
+          "p95": 19.672083,
+          "p99": 20.146415
+        },
+        "tcp_ms": {
+          "median": 0.254019,
+          "p95": 0.596442,
+          "p99": 0.8901920000000001
+        },
+        "tls_ms": {
+          "median": 1.4448095,
+          "p95": 2.088037,
+          "p99": 3.641976
+        },
+        "spiral_ms": {
+          "median": 8.028125500000002,
+          "p95": 18.04673,
+          "p99": 18.868285
+        },
+        "app_ms": {
+          "median": 2.715306,
+          "p95": 4.931287,
+          "p99": 7.077516
+        }
+      },
+      "whole_run_echo_payload_MiB_per_second": {
+        "median": 0.5692733324952214,
+        "p95": 0.6120571697619437,
+        "p99": 0.6120571697619437
+      },
+      "rss_kib": {
+        "client_peak_rss_kib": {
+          "median": 6112,
+          "p95": 6232,
+          "p99": 6232
+        },
+        "server_peak_rss_kib": {
+          "median": 5660,
+          "p95": 5764,
+          "p99": 5764
+        }
+      }
+    },
+    {
+      "workers_per_endpoint": 4,
+      "payload": 1024,
+      "trials": 5,
+      "connection_samples": 20,
+      "summary_ms": {
+        "handshake_ms": {
+          "median": 10.886463500000001,
+          "p95": 12.239984,
+          "p99": 12.965331
+        },
+        "tcp_ms": {
+          "median": 0.22534949999999998,
+          "p95": 0.6513270000000001,
+          "p99": 0.652581
+        },
+        "tls_ms": {
+          "median": 1.0982455,
+          "p95": 4.7022770000000005,
+          "p99": 6.913524
+        },
+        "spiral_ms": {
+          "median": 8.094590499999999,
+          "p95": 10.916917999999999,
+          "p99": 11.211306
+        },
+        "app_ms": {
+          "median": 3.8907505000000002,
+          "p95": 5.062930000000001,
+          "p99": 5.820619
+        }
+      },
+      "whole_run_echo_payload_MiB_per_second": {
+        "median": 8.26118728346737,
+        "p95": 9.190742951637146,
+        "p99": 9.190742951637146
+      },
+      "rss_kib": {
+        "client_peak_rss_kib": {
+          "median": 6308,
+          "p95": 6400,
+          "p99": 6400
+        },
+        "server_peak_rss_kib": {
+          "median": 5700,
+          "p95": 6044,
+          "p99": 6044
+        }
+      }
+    },
+    {
+      "workers_per_endpoint": 4,
+      "payload": 16384,
+      "trials": 5,
+      "connection_samples": 20,
+      "summary_ms": {
+        "handshake_ms": {
+          "median": 11.362169999999999,
+          "p95": 14.018543,
+          "p99": 14.83113
+        },
+        "tcp_ms": {
+          "median": 0.32999,
+          "p95": 0.782769,
+          "p99": 1.009879
+        },
+        "tls_ms": {
+          "median": 1.188858,
+          "p95": 1.646769,
+          "p99": 1.839955
+        },
+        "spiral_ms": {
+          "median": 10.111011999999999,
+          "p95": 11.408348,
+          "p99": 13.493355000000001
+        },
+        "app_ms": {
+          "median": 9.943575,
+          "p95": 16.680085000000002,
+          "p99": 18.48143
+        }
+      },
+      "whole_run_echo_payload_MiB_per_second": {
+        "median": 90.05183631352898,
+        "p95": 107.31369383652589,
+        "p99": 107.31369383652589
+      },
+      "rss_kib": {
+        "client_peak_rss_kib": {
+          "median": 8612,
+          "p95": 8700,
+          "p99": 8700
+        },
+        "server_peak_rss_kib": {
+          "median": 5852,
+          "p95": 5928,
+          "p99": 5928
+        }
+      }
+    }
+  ]
+}

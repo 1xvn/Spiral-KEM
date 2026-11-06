@@ -9,14 +9,19 @@ use tokio::{
 async fn main() -> Result<(), Box<dyn std::error::Error>> {
     let a: Vec<_> = std::env::args().collect();
     if a.len() != 4 {
-        return Err("cert key cipher(default|chacha)".into());
+        return Err("cert key cipher(default|aes128|aes256|chacha)".into());
     }
     let mut config =
         (*spiral_protocol::transport::server_config(Path::new(&a[1]), Path::new(&a[2]))?).clone();
-    if a[3] == "chacha" {
+    if a[3] != "default" {
         let mut provider = rustls::crypto::ring::default_provider();
-        provider.cipher_suites =
-            vec![rustls::crypto::ring::cipher_suite::TLS13_CHACHA20_POLY1305_SHA256];
+        use rustls::crypto::ring::cipher_suite::*;
+        provider.cipher_suites = vec![match a[3].as_str() {
+            "chacha" => TLS13_CHACHA20_POLY1305_SHA256,
+            "aes128" => TLS13_AES_128_GCM_SHA256,
+            "aes256" => TLS13_AES_256_GCM_SHA384,
+            _ => return Err("unsupported diagnostic cipher".into()),
+        }];
         let certs =
             rustls_pemfile::certs(&mut std::io::BufReader::new(std::fs::File::open(&a[1])?))
                 .collect::<std::result::Result<Vec<_>, _>>()?;
@@ -29,6 +34,9 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
             .with_single_cert(certs, key)?;
         config.alpn_protocols = vec![spiral_protocol::transport::ALPN.to_vec()];
         config.send_tls13_tickets = 0;
+        config.max_early_data_size = 0;
+        config.send_half_rtt_data = false;
+        config.session_storage = Arc::new(rustls::server::NoServerSessionStorage {});
     }
     let listener = TcpListener::bind("127.0.0.1:0").await?;
     println!("{}", listener.local_addr()?.port());

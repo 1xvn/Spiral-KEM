@@ -1,0 +1,10 @@
+{
+  "source_sha256": "ccb29fe8b1f428c25a93c8cb967f1090eea619ad36dcba7d53dc9bfaedc1cd0f",
+  "compiler": "cc (Debian 14.2.0-19) 14.2.0",
+  "functions": [
+    "multiply",
+    "sp_decaps_once"
+  ],
+  "divide_instructions_in_sensitive_functions": [],
+  "review_scope": "gcc -O2 x86_64; public loop/format/provider-status branches remain; not a proof"
+}

@@ -1,66 +1,88 @@
 {
-  "schema": "spiral-rust-c-validation/v0.2",
+  "schema": "spiral-rust-c-validation/v0.3",
   "date_utc": "2026-11-06",
-  "status": "research implementation; functional tests pass; TLS memory diagnostic unresolved",
   "base_repository": "1xvn/Spiral-KEM",
-  "base_commit": "ee7b66101e053d8e421d9cf95d92bb9cb6b869f4",
+  "base_commit": "7f3d987fd18b9b5d851f299d8d4234b447d5920f",
+  "delivery_branch": "spiral-opt2-secret-lifecycle-v03-20261106",
   "wire_version": "SPK1 v0.1 / suite 0xF001",
-  "build": {
+  "status": "functional checks passed; TLS memory warning and libtest possible-loss remain open; no constant-time proof",
+  "environment": {
+    "os_release": {
+      "NAME": "Debian GNU/Linux",
+      "ID": "debian",
+      "PRETTY_NAME": "Debian GNU/Linux 13 (trixie)",
+      "VERSION_ID": "13",
+      "VERSION": "13 (trixie)",
+      "VERSION_CODENAME": "trixie",
+      "DEBIAN_VERSION_FULL": "13.6",
+      "HOME_URL": "https://www.debian.org/",
+      "SUPPORT_URL": "https://www.debian.org/support",
+      "BUG_REPORT_URL": "https://bugs.debian.org/"
+    },
+    "platform": "Linux-6.18.57-x86_64-with-glibc2.41",
+    "python": "3.12.14",
+    "cpu_affinity_count": 9,
+    "compiler": "cc (Debian 14.2.0-19) 14.2.0",
+    "openssl": "OpenSSL 3.5.7 9 Jun 2026 (Library: OpenSSL 3.5.7 9 Jun 2026)",
+    "instrumentation_loader": "Ubuntu glibc 2.39-0ubuntu8.8 staged loader/libc; host libcrypto 3.5.7",
     "rust": "1.99.1 (58cf8f9c3 2026-10-13)",
-    "profile": "release, thin LTO, codegen-units 1, C -O2, no SPIRAL_TESTING",
-    "platform": "Linux x86-64, Ubuntu 24.04 / glibc 2.39",
-    "system_crypto": "OpenSSL 3.0.13, libcrypto.so.3 dynamically linked",
-    "cargo_locked": true,
-    "cargo_package_count_including_dev_and_target_specific": 109
+    "valgrind": "3.28.0",
+    "binary_sha256": "d9371d7faa3643e1f06dc7879b0d688eb0e5bb6985245ef65c43660ac113181a"
   },
+  "profile": "release, thin LTO, codegen-units=1; audit inherits release plus debug=2, strip=none; C -O2; no SPIRAL_TESTING in production",
   "sha256": {
-    "spiral-lab": "865526991c3c782cea7beece916bed43af8b2ad6e57cfd38c26fff60afce7d6a",
+    "spiral-lab": "d9371d7faa3643e1f06dc7879b0d688eb0e5bb6985245ef65c43660ac113181a",
+    "Cargo.lock": "19eb708fbf0c56f42704bd0a699c0f687f2b1516fc38e52c4c5d721a81889aca",
     "spiral_native.c": "ccb29fe8b1f428c25a93c8cb967f1090eea619ad36dcba7d53dc9bfaedc1cd0f",
-    "spiral_native.h": "85f0454ee626cc0c38cdd6b60b12453f90276b6681dd91ab634d48c20bb1597b",
-    "Cargo.lock": "182f009b3a1d9ac33dd65037c5eb9ea750852948ab885fd626a9c08e2c20bc19"
+    "spiral_native.h": "85f0454ee626cc0c38cdd6b60b12453f90276b6681dd91ab634d48c20bb1597b"
   },
   "checks": {
-    "unit_methods": 30,
-    "compile_fail_doc_tests": 1,
+    "rust_unit_methods": 52,
+    "compile_fail_docs": 4,
+    "ignored_taint_methods_run_separately": 2,
     "unit_failures": 0,
+    "real_tls_methods": 35,
+    "interop_failures": 0,
+    "python_reference_methods": 85,
+    "python_reference_failures": 0,
+    "native_python_methods": 9,
+    "native_python_failures": 0,
     "clippy_all_targets_warnings_denied": "passed",
     "format": "passed",
-    "real_TLS_interop_methods": 15,
-    "interop_failures": 0,
-    "interop_errors": 0,
-    "benchmark_profiles": 9,
-    "benchmark_trials_per_profile": 5,
-    "benchmark_connections_per_trial": 4,
-    "benchmark_measured_connections": 180,
-    "benchmark_warmup_connections": 72,
-    "bundled_script_prebuilt_real_TLS_methods": 15,
-    "bundled_script_prebuilt_failures": 0
+    "native_asan_ubsan": "passed with detect_leaks=0; LeakSanitizer unsupported under host ptrace",
+    "native_public_input_corpus": 20000,
+    "regression_before_fix": "old shutdown fails new test with early-return assertion",
+    "regression_after_fix": "passed",
+    "requirement_map": {
+      "tested": 72,
+      "structural": 8,
+      "partial": 5
+    },
+    "coverage_guided_fuzzing": false,
+    "packaged_script_fresh_venv_real_tls_methods": 35,
+    "packaged_script_fresh_venv_failures": 0
   },
-  "scope": [
-    "Python to Rust and Rust to Python: four independent sessions each",
-    "Rust to Rust: payload 64, 1024 and 16384 bytes; four sessions; eight producers; 32 echo messages",
-    "bad CA/name/ALPN/auth pin/expiry/revocation/Finished/tag, duplicates, truncation, oversized declared length, absent authenticated CLOSE",
-    "same-IP 16/64 connection bursts exercise admission rejection and cleanup, not 64 established sessions",
-    "baseline C/Python source preserved; existing Python 69 methods not presented as Rust results"
-  ],
-  "memory_diagnostics": {
-    "passed": false,
-    "versions": [
-      "3.22.0",
-      "3.28.0"
-    ],
-    "instrumentation_runtime": "staged glibc 2.39-0ubuntu8.8 loader/libc with matching debug symbols; benchmark used host runtime",
-    "default_cipher": "TLS_AES_256_GCM_SHA384, rustls 0.23.46 / ring 0.17.14",
-    "warning": "Uninitialised value diagnostics in TLS AES-GCM encryption/decryption; reproduced in TLS-only control; unresolved; no suppression or runtime cipher change",
-    "latest": [
+  "benchmark": {
+    "profiles": 9,
+    "trials_per_profile": 5,
+    "measured_connections": 180,
+    "warmup_connections": 72,
+    "raw": "evidence/v03/benchmark_release.json",
+    "environment_comparison": "Do not directly compare previous Ubuntu/OCI/WSL results with this Debian host"
+  },
+  "memory": {
+    "fully_passed": false,
+    "release": [
       {
         "case": "success",
+        "binary_sha256": "d9371d7faa3643e1f06dc7879b0d688eb0e5bb6985245ef65c43660ac113181a",
         "process_exit": 99,
         "expected_exit": 0,
-        "memcheck_errors": 5,
+        "memcheck_errors": 4,
         "passed": false,
         "report": {
           "admission_released": true,
+          "auth_key_closed": true,
           "connections": 1,
           "kem": {
             "executed_jobs": 2,
@@ -71,10 +93,58 @@
           "sessions": [
             {
               "authenticated_close": true,
-              "binding_hash": "889c1d5ee7fc6570cfa4fc2c6719fefb64c4cdbab1cb9dafa62e6915f1cc196d",
+              "binding_hash": "859e8b5c1030a9fbc8ec5687bc9b13864a3600d310185031f7b2dceaf1dee2c0",
               "messages": 1,
-              "session_id": "42dcfcf988c0525a9e0fed4fa5512192",
-              "transcript_hash": "e451f111bf36e78f8562ccbd3a1087362b7d1e052dca69191feb98fce6cd997b"
+              "session_id": "f00791e9a7263b662a47757965b6c194",
+              "transcript_hash": "3d8096270846dafce4a19ee05c3b7f50054306629f86216ca8f8925b147376d8"
+            }
+          ],
+          "status": "passed"
+        },
+        "stderr": ""
+      },
+      {
+        "case": "finished-failure",
+        "binary_sha256": "d9371d7faa3643e1f06dc7879b0d688eb0e5bb6985245ef65c43660ac113181a",
+        "process_exit": 1,
+        "expected_exit": 1,
+        "memcheck_errors": 0,
+        "passed": true,
+        "report": {
+          "kem": {
+            "executed_jobs": 2,
+            "live_keys": 0,
+            "rejected_jobs": 0
+          },
+          "status": "failed"
+        },
+        "stderr": "Error: Authentication\n"
+      }
+    ],
+    "tls_audit": [
+      {
+        "case": "success",
+        "process_exit": 99,
+        "expected_exit": 0,
+        "memcheck_errors": 6,
+        "passed": false,
+        "report": {
+          "admission_released": true,
+          "auth_key_closed": true,
+          "connections": 1,
+          "kem": {
+            "executed_jobs": 2,
+            "live_keys": 0,
+            "rejected_jobs": 0
+          },
+          "role": "server",
+          "sessions": [
+            {
+              "authenticated_close": true,
+              "binding_hash": "90fd8779802e3ac36176e9f841ce048d2a9a8b058c1791fb99817c3d8bace548",
+              "messages": 1,
+              "session_id": "3e025646f9543a0d9cfbac5ae76e4ca5",
+              "transcript_hash": "e04531991b4a15c96597de9a17bfe24910d6fa2bde955d3b687ac21440a4fb7e"
             }
           ],
           "status": "passed"
@@ -101,68 +171,22 @@
         "case": "tls-only-default",
         "process_exit": 99,
         "expected_exit": 0,
-        "memcheck_errors": 3,
+        "memcheck_errors": 4,
         "passed": false,
         "report": null,
         "stderr": ""
       },
       {
-        "case": "tls-only-chacha",
-        "process_exit": 0,
+        "case": "tls-only-aes128",
+        "process_exit": 99,
         "expected_exit": 0,
-        "memcheck_errors": 0,
-        "passed": true,
+        "memcheck_errors": 4,
+        "passed": false,
         "report": null,
         "stderr": ""
-      }
-    ],
-    "comparison_322": [
-      {
-        "case": "success",
-        "process_exit": 99,
-        "expected_exit": 0,
-        "memcheck_errors": 5,
-        "passed": false,
-        "report": {
-          "admission_released": true,
-          "connections": 1,
-          "kem": {
-            "executed_jobs": 2,
-            "live_keys": 0,
-            "rejected_jobs": 0
-          },
-          "role": "server",
-          "sessions": [
-            {
-              "authenticated_close": true,
-              "binding_hash": "15e7fcf6ead4e32cecbcd331ff2ab077fe44c5fec0927db930c8172bdadcad2f",
-              "messages": 1,
-              "session_id": "9081885a3c454b620372f799517524f3",
-              "transcript_hash": "a00494caf29ef47a07fc359e14b448db7b7eb5e1238513964c21d816a4cc7858"
-            }
-          ],
-          "status": "passed"
-        },
-        "stderr": ""
       },
       {
-        "case": "finished-failure",
-        "process_exit": 99,
-        "expected_exit": 1,
-        "memcheck_errors": 1,
-        "passed": false,
-        "report": {
-          "kem": {
-            "executed_jobs": 2,
-            "live_keys": 0,
-            "rejected_jobs": 0
-          },
-          "status": "failed"
-        },
-        "stderr": "Error: Authentication\n"
-      },
-      {
-        "case": "tls-only-default",
+        "case": "tls-only-aes256",
         "process_exit": 99,
         "expected_exit": 0,
         "memcheck_errors": 4,
@@ -180,467 +204,228 @@
         "stderr": ""
       }
     ],
-    "all_latest_definite_indirect_possible_leak_bytes": 0,
-    "still_reachable_note": "548 bytes from process-wide Rust runtime state in inspected runs; not claimed erased"
+    "public_crypto_control_cases": 6102,
+    "public_crypto_controls": [
+      {
+        "mode": "aes128",
+        "binary_sha256": "39858f57eaa87ea3a44cbf543f8858edeae14f3d9c85f8abf002cefe218f0b11",
+        "process_exit": 0,
+        "memcheck_errors": 0,
+        "actual": {
+          "algorithm": "aes128",
+          "cases": 196,
+          "ciphertext_sha256": "b8f44c322e6973f2eb2d0aa9168ab33482fde722b79d9613a27695b3a1632fb6",
+          "roundtrip_and_append_vs_separate": true
+        },
+        "oracle": {
+          "cases": 196,
+          "ciphertext_sha256": "b8f44c322e6973f2eb2d0aa9168ab33482fde722b79d9613a27695b3a1632fb6"
+        },
+        "oracle_matches": true,
+        "stderr": "",
+        "passed": true
+      },
+      {
+        "mode": "aes256",
+        "binary_sha256": "39858f57eaa87ea3a44cbf543f8858edeae14f3d9c85f8abf002cefe218f0b11",
+        "process_exit": 0,
+        "memcheck_errors": 0,
+        "actual": {
+          "algorithm": "aes256",
+          "cases": 196,
+          "ciphertext_sha256": "3334189346b7865a505a80d9d31af338858fedbfe9d118abd2d41138778d70f8",
+          "roundtrip_and_append_vs_separate": true
+        },
+        "oracle": {
+          "cases": 196,
+          "ciphertext_sha256": "3334189346b7865a505a80d9d31af338858fedbfe9d118abd2d41138778d70f8"
+        },
+        "oracle_matches": true,
+        "stderr": "",
+        "passed": true
+      },
+      {
+        "mode": "chacha",
+        "binary_sha256": "39858f57eaa87ea3a44cbf543f8858edeae14f3d9c85f8abf002cefe218f0b11",
+        "process_exit": 0,
+        "memcheck_errors": 0,
+        "actual": {
+          "algorithm": "chacha",
+          "cases": 196,
+          "ciphertext_sha256": "23cd8246508925561a4ea2c71cb5dc173153c160d97e6ded19ee6418b21192b7",
+          "roundtrip_and_append_vs_separate": true
+        },
+        "oracle": {
+          "cases": 196,
+          "ciphertext_sha256": "23cd8246508925561a4ea2c71cb5dc173153c160d97e6ded19ee6418b21192b7"
+        },
+        "oracle_matches": true,
+        "stderr": "",
+        "passed": true
+      },
+      {
+        "mode": "hash-hkdf-ed25519",
+        "binary_sha256": "73702639a7389273a221e69c0ecf806e2477b2084d5d6ad6818f47bcede14bb2",
+        "process_exit": 0,
+        "memcheck_errors": 0,
+        "actual": {
+          "algorithms": "SHA256/SHA384/SHA512, HKDF, Ed25519, five streaming chunk sizes",
+          "cases": 798,
+          "sha256": "002600ab9223a3d0bc1e13322f5d853ec7acd84dab222fe17f991b6dd0044a7f"
+        },
+        "oracle": {
+          "cases": 798,
+          "sha256": "002600ab9223a3d0bc1e13322f5d853ec7acd84dab222fe17f991b6dd0044a7f"
+        },
+        "oracle_matches": true,
+        "stderr": "",
+        "passed": true
+      },
+      {
+        "mode": "prefixed-aes128",
+        "binary_sha256": "b8289e4cb268bacf4395e3ef432524e28efcf8c0cc5fa88de483e3e7f13ef3b2",
+        "process_exit": 0,
+        "memcheck_errors": 0,
+        "actual": {
+          "algorithm": "aes128",
+          "cases": 1572,
+          "ciphertext_sha256": "e2729773ab005e71e22ac23efb89cf72b9beaef192138309b6e251f3aa02aae0"
+        },
+        "oracle": {
+          "cases": 1572,
+          "ciphertext_sha256": "e2729773ab005e71e22ac23efb89cf72b9beaef192138309b6e251f3aa02aae0"
+        },
+        "oracle_matches": true,
+        "stderr": "",
+        "passed": true
+      },
+      {
+        "mode": "prefixed-aes256",
+        "binary_sha256": "b8289e4cb268bacf4395e3ef432524e28efcf8c0cc5fa88de483e3e7f13ef3b2",
+        "process_exit": 0,
+        "memcheck_errors": 0,
+        "actual": {
+          "algorithm": "aes256",
+          "cases": 1572,
+          "ciphertext_sha256": "2f9aa3ea4e94ab70881019d0a0c32dd04000a0dfff7796d400a26c9e144c7150"
+        },
+        "oracle": {
+          "cases": 1572,
+          "ciphertext_sha256": "2f9aa3ea4e94ab70881019d0a0c32dd04000a0dfff7796d400a26c9e144c7150"
+        },
+        "oracle_matches": true,
+        "stderr": "",
+        "passed": true
+      },
+      {
+        "mode": "prefixed-chacha",
+        "binary_sha256": "b8289e4cb268bacf4395e3ef432524e28efcf8c0cc5fa88de483e3e7f13ef3b2",
+        "process_exit": 0,
+        "memcheck_errors": 0,
+        "actual": {
+          "algorithm": "chacha",
+          "cases": 1572,
+          "ciphertext_sha256": "810492e51b440b38bf05e521155e18daf7a861c01f6f0f377c1aea4b025409a2"
+        },
+        "oracle": {
+          "cases": 1572,
+          "ciphertext_sha256": "810492e51b440b38bf05e521155e18daf7a861c01f6f0f377c1aea4b025409a2"
+        },
+        "oracle_matches": true,
+        "stderr": "",
+        "passed": true
+      }
+    ],
+    "secret_taint": [
+      {
+        "case": "rust-positive",
+        "process_exit": 99,
+        "expected_exit": 99,
+        "memcheck_errors": 2,
+        "branch_address_contexts": 1,
+        "possibly_lost_bytes": 48,
+        "scoped_secret_branch_check_passed": false,
+        "passed": true,
+        "binary_sha256": "7aea7aada4ee60900f8d6ed3a1a495e79faedcb9b6bec4811b81bf00b011f7ae"
+      },
+      {
+        "case": "rust-secret-path",
+        "process_exit": 99,
+        "expected_exit": 0,
+        "memcheck_errors": 1,
+        "branch_address_contexts": 0,
+        "possibly_lost_bytes": 48,
+        "scoped_secret_branch_check_passed": true,
+        "passed": false,
+        "binary_sha256": "7aea7aada4ee60900f8d6ed3a1a495e79faedcb9b6bec4811b81bf00b011f7ae"
+      },
+      {
+        "case": "native-positive",
+        "process_exit": 99,
+        "expected_exit": 99,
+        "memcheck_errors": 1,
+        "branch_address_contexts": 1,
+        "possibly_lost_bytes": null,
+        "scoped_secret_branch_check_passed": false,
+        "passed": true,
+        "binary_sha256": "6f7ef3c6f075fcb60cdb3331d9bca2dba992a6f53bcb6d769b03ca553035d2e0"
+      },
+      {
+        "case": "native-secret-path",
+        "process_exit": 0,
+        "expected_exit": 0,
+        "memcheck_errors": 0,
+        "branch_address_contexts": 0,
+        "possibly_lost_bytes": null,
+        "scoped_secret_branch_check_passed": true,
+        "passed": true,
+        "binary_sha256": "6f7ef3c6f075fcb60cdb3331d9bca2dba992a6f53bcb6d769b03ca553035d2e0"
+      },
+      {
+        "case": "native-memory",
+        "process_exit": 0,
+        "expected_exit": 0,
+        "memcheck_errors": 0,
+        "branch_address_contexts": 0,
+        "possibly_lost_bytes": null,
+        "scoped_secret_branch_check_passed": false,
+        "passed": true,
+        "binary_sha256": "8e3e7e317af850ea7982e2796eaac4ce6449065f9a1e7f4ab6d28a10f38c595c"
+      }
+    ],
+    "c_asan_lsan_initial": "LeakSanitizer fatal under ptrace; retained native_checks.log, independent native Memcheck passed",
+    "runtime_reachable_note": "Rust runs retain 548 runtime bytes; libtest taint runs additionally classify 48 thread-state bytes as possibly lost. No suppression."
   },
-  "limitations": [
-    "No independent cryptanalysis or production approval",
-    "No proof of constant-time execution, side-channel resistance, forward secrecy or complete physical RAM erasure",
-    "No coverage-guided fuzzing, long soak, other OS/CPU validation or sustained capacity test",
-    "Same-process C FFI; no crash isolation; no forced cancellation of native operation",
-    "No mlock/dump exclusion; library/provider copies, registers, swap and application copies outside erasure guarantee",
-    "Windows native build untested; prebuilt binary targets Ubuntu 24.04 Linux x86-64 / glibc 2.39 + libcrypto.so.3"
-  ],
-  "benchmark_summary": [
-    {
-      "workers_per_endpoint": 1,
-      "payload": 64,
-      "trials": 5,
-      "connection_samples": 20,
-      "summary_ms": {
-        "handshake_ms": {
-          "median": 13.0138545,
-          "p95": 21.955199,
-          "p99": 22.868399
-        },
-        "tcp_ms": {
-          "median": 0.3051375,
-          "p95": 0.76673,
-          "p99": 1.106241
-        },
-        "tls_ms": {
-          "median": 1.2083504999999999,
-          "p95": 2.339135,
-          "p99": 2.547775
-        },
-        "spiral_ms": {
-          "median": 11.060797,
-          "p95": 20.328165,
-          "p99": 20.960441
-        },
-        "app_ms": {
-          "median": 2.5865905,
-          "p95": 6.099596,
-          "p99": 7.859390000000001
-        }
-      },
-      "whole_run_echo_payload_MiB_per_second": {
-        "median": 0.46699084549260317,
-        "p95": 0.6176149800429228,
-        "p99": 0.6176149800429228
-      },
-      "rss_kib": {
-        "client_peak_rss_kib": {
-          "median": 6172,
-          "p95": 6236,
-          "p99": 6236
-        },
-        "server_peak_rss_kib": {
-          "median": 5760,
-          "p95": 5788,
-          "p99": 5788
-        }
-      }
+  "timing": {
+    "initial": {
+      "samples": 6000,
+      "cpu": 0,
+      "positive_t": -3.14995669,
+      "secret_class_t": -0.11159953,
+      "sham_t": -0.36330853,
+      "class0_mean_ns": 542994.564,
+      "class1_mean_ns": 545258.769,
+      "clock": "CLOCK_MONOTONIC_RAW"
     },
-    {
-      "workers_per_endpoint": 1,
-      "payload": 1024,
-      "trials": 5,
-      "connection_samples": 20,
-      "summary_ms": {
-        "handshake_ms": {
-          "median": 10.309879,
-          "p95": 17.715364,
-          "p99": 17.859343
-        },
-        "tcp_ms": {
-          "median": 0.268457,
-          "p95": 0.367842,
-          "p99": 0.522948
-        },
-        "tls_ms": {
-          "median": 1.1536205000000002,
-          "p95": 1.879119,
-          "p99": 2.560851
-        },
-        "spiral_ms": {
-          "median": 8.6869335,
-          "p95": 15.474234,
-          "p99": 15.804687000000001
-        },
-        "app_ms": {
-          "median": 3.9424855,
-          "p95": 10.144153,
-          "p99": 13.465278000000001
-        }
-      },
-      "whole_run_echo_payload_MiB_per_second": {
-        "median": 7.121367500773055,
-        "p95": 9.297999546515438,
-        "p99": 9.297999546515438
-      },
-      "rss_kib": {
-        "client_peak_rss_kib": {
-          "median": 6172,
-          "p95": 6488,
-          "p99": 6488
-        },
-        "server_peak_rss_kib": {
-          "median": 5596,
-          "p95": 5892,
-          "p99": 5892
-        }
-      }
+    "quiet_rerun": {
+      "samples": 6000,
+      "cpu": 0,
+      "positive_t": -16.99713091,
+      "secret_class_t": 0.38582162,
+      "sham_t": -1.13698155,
+      "class0_mean_ns": 358649.281,
+      "class1_mean_ns": 357416.208,
+      "clock": "CLOCK_MONOTONIC_RAW"
     },
-    {
-      "workers_per_endpoint": 1,
-      "payload": 16384,
-      "trials": 5,
-      "connection_samples": 20,
-      "summary_ms": {
-        "handshake_ms": {
-          "median": 10.983234,
-          "p95": 15.989361,
-          "p99": 16.520726
-        },
-        "tcp_ms": {
-          "median": 0.328875,
-          "p95": 0.775842,
-          "p99": 1.1614749999999998
-        },
-        "tls_ms": {
-          "median": 1.518944,
-          "p95": 3.9093519999999997,
-          "p99": 4.110336
-        },
-        "spiral_ms": {
-          "median": 9.362672,
-          "p95": 12.286981,
-          "p99": 12.471286
-        },
-        "app_ms": {
-          "median": 8.853129,
-          "p95": 12.17098,
-          "p99": 12.909672
-        }
-      },
-      "whole_run_echo_payload_MiB_per_second": {
-        "median": 108.05535665180618,
-        "p95": 146.72921684014395,
-        "p99": 146.72921684014395
-      },
-      "rss_kib": {
-        "client_peak_rss_kib": {
-          "median": 9180,
-          "p95": 9628,
-          "p99": 9628
-        },
-        "server_peak_rss_kib": {
-          "median": 5916,
-          "p95": 6040,
-          "p99": 6040
-        }
-      }
-    },
-    {
-      "workers_per_endpoint": 2,
-      "payload": 64,
-      "trials": 5,
-      "connection_samples": 20,
-      "summary_ms": {
-        "handshake_ms": {
-          "median": 11.560975,
-          "p95": 15.821287,
-          "p99": 16.026042
-        },
-        "tcp_ms": {
-          "median": 0.2633305,
-          "p95": 0.609001,
-          "p99": 0.746088
-        },
-        "tls_ms": {
-          "median": 1.471581,
-          "p95": 2.427294,
-          "p99": 2.47182
-        },
-        "spiral_ms": {
-          "median": 10.1264355,
-          "p95": 13.647547,
-          "p99": 13.845146
-        },
-        "app_ms": {
-          "median": 2.8026455,
-          "p95": 6.00632,
-          "p99": 6.754268
-        }
-      },
-      "whole_run_echo_payload_MiB_per_second": {
-        "median": 0.5552176870984366,
-        "p95": 0.5947571915541059,
-        "p99": 0.5947571915541059
-      },
-      "rss_kib": {
-        "client_peak_rss_kib": {
-          "median": 5988,
-          "p95": 6356,
-          "p99": 6356
-        },
-        "server_peak_rss_kib": {
-          "median": 5940,
-          "p95": 6040,
-          "p99": 6040
-        }
-      }
-    },
-    {
-      "workers_per_endpoint": 2,
-      "payload": 1024,
-      "trials": 5,
-      "connection_samples": 20,
-      "summary_ms": {
-        "handshake_ms": {
-          "median": 14.74544,
-          "p95": 18.91225,
-          "p99": 19.141849999999998
-        },
-        "tcp_ms": {
-          "median": 0.346232,
-          "p95": 1.896684,
-          "p99": 2.585366
-        },
-        "tls_ms": {
-          "median": 1.6111745000000002,
-          "p95": 6.802842,
-          "p99": 8.389598999999999
-        },
-        "spiral_ms": {
-          "median": 11.08726,
-          "p95": 17.635416,
-          "p99": 17.654432
-        },
-        "app_ms": {
-          "median": 3.0838270000000003,
-          "p95": 7.1058520000000005,
-          "p99": 7.154807
-        }
-      },
-      "whole_run_echo_payload_MiB_per_second": {
-        "median": 7.746040185482436,
-        "p95": 8.330277232357165,
-        "p99": 8.330277232357165
-      },
-      "rss_kib": {
-        "client_peak_rss_kib": {
-          "median": 6120,
-          "p95": 6616,
-          "p99": 6616
-        },
-        "server_peak_rss_kib": {
-          "median": 5788,
-          "p95": 6076,
-          "p99": 6076
-        }
-      }
-    },
-    {
-      "workers_per_endpoint": 2,
-      "payload": 16384,
-      "trials": 5,
-      "connection_samples": 20,
-      "summary_ms": {
-        "handshake_ms": {
-          "median": 12.7584835,
-          "p95": 23.88689,
-          "p99": 24.289438999999998
-        },
-        "tcp_ms": {
-          "median": 0.211055,
-          "p95": 0.442171,
-          "p99": 0.48281399999999997
-        },
-        "tls_ms": {
-          "median": 2.23714,
-          "p95": 2.983205,
-          "p99": 3.065302
-        },
-        "spiral_ms": {
-          "median": 10.069909500000001,
-          "p95": 21.119778,
-          "p99": 21.834036
-        },
-        "app_ms": {
-          "median": 8.623191,
-          "p95": 15.437643,
-          "p99": 16.96454
-        }
-      },
-      "whole_run_echo_payload_MiB_per_second": {
-        "median": 80.49102584366133,
-        "p95": 110.31113171728683,
-        "p99": 110.31113171728683
-      },
-      "rss_kib": {
-        "client_peak_rss_kib": {
-          "median": 8992,
-          "p95": 9628,
-          "p99": 9628
-        },
-        "server_peak_rss_kib": {
-          "median": 5916,
-          "p95": 6044,
-          "p99": 6044
-        }
-      }
-    },
-    {
-      "workers_per_endpoint": 4,
-      "payload": 64,
-      "trials": 5,
-      "connection_samples": 20,
-      "summary_ms": {
-        "handshake_ms": {
-          "median": 9.530061499999999,
-          "p95": 19.672083,
-          "p99": 20.146415
-        },
-        "tcp_ms": {
-          "median": 0.254019,
-          "p95": 0.596442,
-          "p99": 0.8901920000000001
-        },
-        "tls_ms": {
-          "median": 1.4448095,
-          "p95": 2.088037,
-          "p99": 3.641976
-        },
-        "spiral_ms": {
-          "median": 8.028125500000002,
-          "p95": 18.04673,
-          "p99": 18.868285
-        },
-        "app_ms": {
-          "median": 2.715306,
-          "p95": 4.931287,
-          "p99": 7.077516
-        }
-      },
-      "whole_run_echo_payload_MiB_per_second": {
-        "median": 0.5692733324952214,
-        "p95": 0.6120571697619437,
-        "p99": 0.6120571697619437
-      },
-      "rss_kib": {
-        "client_peak_rss_kib": {
-          "median": 6112,
-          "p95": 6232,
-          "p99": 6232
-        },
-        "server_peak_rss_kib": {
-          "median": 5660,
-          "p95": 5764,
-          "p99": 5764
-        }
-      }
-    },
-    {
-      "workers_per_endpoint": 4,
-      "payload": 1024,
-      "trials": 5,
-      "connection_samples": 20,
-      "summary_ms": {
-        "handshake_ms": {
-          "median": 10.886463500000001,
-          "p95": 12.239984,
-          "p99": 12.965331
-        },
-        "tcp_ms": {
-          "median": 0.22534949999999998,
-          "p95": 0.6513270000000001,
-          "p99": 0.652581
-        },
-        "tls_ms": {
-          "median": 1.0982455,
-          "p95": 4.7022770000000005,
-          "p99": 6.913524
-        },
-        "spiral_ms": {
-          "median": 8.094590499999999,
-          "p95": 10.916917999999999,
-          "p99": 11.211306
-        },
-        "app_ms": {
-          "median": 3.8907505000000002,
-          "p95": 5.062930000000001,
-          "p99": 5.820619
-        }
-      },
-      "whole_run_echo_payload_MiB_per_second": {
-        "median": 8.26118728346737,
-        "p95": 9.190742951637146,
-        "p99": 9.190742951637146
-      },
-      "rss_kib": {
-        "client_peak_rss_kib": {
-          "median": 6308,
-          "p95": 6400,
-          "p99": 6400
-        },
-        "server_peak_rss_kib": {
-          "median": 5700,
-          "p95": 6044,
-          "p99": 6044
-        }
-      }
-    },
-    {
-      "workers_per_endpoint": 4,
-      "payload": 16384,
-      "trials": 5,
-      "connection_samples": 20,
-      "summary_ms": {
-        "handshake_ms": {
-          "median": 11.362169999999999,
-          "p95": 14.018543,
-          "p99": 14.83113
-        },
-        "tcp_ms": {
-          "median": 0.32999,
-          "p95": 0.782769,
-          "p99": 1.009879
-        },
-        "tls_ms": {
-          "median": 1.188858,
-          "p95": 1.646769,
-          "p99": 1.839955
-        },
-        "spiral_ms": {
-          "median": 10.111011999999999,
-          "p95": 11.408348,
-          "p99": 13.493355000000001
-        },
-        "app_ms": {
-          "median": 9.943575,
-          "p95": 16.680085000000002,
-          "p99": 18.48143
-        }
-      },
-      "whole_run_echo_payload_MiB_per_second": {
-        "median": 90.05183631352898,
-        "p95": 107.31369383652589,
-        "p99": 107.31369383652589
-      },
-      "rss_kib": {
-        "client_peak_rss_kib": {
-          "median": 8612,
-          "p95": 8700,
-          "p99": 8700
-        },
-        "server_peak_rss_kib": {
-          "median": 5852,
-          "p95": 5928,
-          "p99": 5928
-        }
-      }
-    }
+    "interpretation": "Initial positive control weak under concurrent compilation. Quiet positive control detected, no large fixed/random-secret separation observed in this sample; not dudect, not a proof."
+  },
+  "limits": [
+    "No independent cryptanalysis, production approval, all-copy RAM erasure, or constant-time proof.",
+    "Taint scope: C sampled keygen/encaps/decaps; Rust HKDF/HMAC, sealing and Ed25519; excludes full authenticated open and TLS.",
+    "Same-process FFI; running C not forcibly canceled; SIGKILL/abort/power loss outside Drop guarantees.",
+    "Library temporaries, TLS keys, application copies, registers, swap/core dumps outside complete-erasure claim.",
+    "No native Windows/OCI ARM/Ubuntu24 whole-OS run this turn. Rebuild and retest on target.",
+    "Five reference scenarios retain explicit API/scope differences in REGRESSION_MAP.json.",
+    "No coverage-guided fuzzing, long soak, independent audit, or sustained capacity test."
   ]
 }

@@ -86,3 +86,119 @@ mod ownership_contract {
     static_assertions::assert_not_impl_any!(crate::secret::Plaintext: Clone,Copy);
     static_assertions::assert_not_impl_any!(crate::handshake::Established: Clone,Copy);
 }
+
+// Valgrind's documented amd64 client-request ABI. Compiled only into tests;
+// normal binaries have neither client requests nor taint/fixed-seed entry points.
+#[cfg(all(test, target_arch = "x86_64"))]
+mod taint_audit {
+    use crate::{
+        buffer::Pool,
+        identity::ServerIdentity,
+        records::Tx,
+        schedule,
+        secret::{Plaintext, Secret},
+    };
+
+    fn request(code: usize, address: usize, length: usize) -> usize {
+        let arguments = [code, address, length, 0, 0, 0];
+        let mut result = 0usize;
+        // SAFETY: exact valgrind.h amd64 request sequence; the live argument array
+        // is read synchronously. The request never changes actual byte values.
+        // RDI rotates by 128 total bits and RBX is exchanged with itself.
+        unsafe {
+            core::arch::asm!(
+                "rol rdi, 3", "rol rdi, 13", "rol rdi, 61", "rol rdi, 51",
+                "xchg rbx, rbx",
+                in("rax") arguments.as_ptr(), inout("rdx") result,
+                lateout("rdi") _, options(nostack),
+            );
+        }
+        result
+    }
+    fn require_valgrind() {
+        assert!(
+            request(0x1001, 0, 0) > 0,
+            "run this ignored test under Valgrind Memcheck"
+        );
+    }
+    fn secret(bytes: &mut [u8]) {
+        request(0x4d43_0001, bytes.as_mut_ptr() as usize, bytes.len());
+    }
+    fn public(bytes: &mut [u8]) {
+        request(0x4d43_0002, bytes.as_mut_ptr() as usize, bytes.len());
+    }
+
+    #[test]
+    #[ignore = "positive control: must produce Memcheck exit code 99"]
+    fn positive_control() {
+        require_valgrind();
+        let mut bit = [1u8];
+        secret(&mut bit);
+        if std::hint::black_box(bit[0]) != 0 {
+            std::hint::black_box(1);
+        }
+        public(&mut bit);
+    }
+
+    #[test]
+    #[ignore = "run optimized test executable under Valgrind; no TLS or C in this scope"]
+    fn rust_secret_derivation_sealing_and_signing() {
+        require_valgrind();
+        let v: serde_json::Value = serde_json::from_str(include_str!(
+            "../../protocol_v01/tests/fixtures/test_vectors_v0.1.json"
+        ))
+        .unwrap();
+        let frame = |name: &str| hex::decode(v["frames"][name].as_str().unwrap()).unwrap();
+        let (ch, sh, ck, sf) = (
+            frame("client_hello"),
+            frame("server_hello"),
+            frame("client_key"),
+            frame("server_finished"),
+        );
+        let mut ss = Secret::<32>::zeros();
+        ss.bytes_mut().fill(7);
+        secret(ss.bytes_mut());
+        let mut s = schedule::schedule(&ch, &sh, &ck[..40], &ck[40..1200], ss).unwrap();
+        // Only transmitted Finished/MAC/ciphertext/public-key/signature outputs
+        // are declassified. PRKs, derived keys and signing seeds stay tainted.
+        public(&mut s.cf);
+        let mut finished = schedule::mac(s.sf.bytes(), &[b"public transcript"]);
+        public(&mut finished);
+        let keys = schedule::finish(s, [1; 16], &ch, &sh, &ck, &sf).unwrap();
+        for (key, prefix, role) in [(keys.c, keys.cp, 0), (keys.s, keys.sp, 1)] {
+            let mut tx = Tx::new(key, prefix, [1; 16], role).unwrap();
+            let pool = Pool::new();
+            for length in [1, 16, 63, 64, 65, 1024, 16384] {
+                let mut buffer = pool.take().unwrap();
+                buffer.data.resize(length, 0x55);
+                secret(&mut buffer.data);
+                let mut wire = tx
+                    .data(Plaintext {
+                        buffer,
+                        start: 0,
+                        length,
+                    })
+                    .unwrap();
+                public(&mut wire.data);
+                assert_eq!(wire.data.len(), 40 + length + 16);
+            }
+            let mut close = tx.close(0).unwrap();
+            public(&mut close);
+        }
+        let mut seed = [7; 32];
+        secret(&mut seed);
+        let identity = ServerIdentity::fixture(&seed);
+        let mut key = identity.public_key();
+        public(&mut key);
+        for message in [b"".as_slice(), b"public transcript", sh.as_slice()] {
+            let mut signature = identity.sign(message).unwrap().to_bytes();
+            public(&mut signature);
+            ed25519_dalek::VerifyingKey::from_bytes(&key)
+                .unwrap()
+                .verify_strict(message, &ed25519_dalek::Signature::from_bytes(&signature))
+                .unwrap();
+        }
+        identity.close().unwrap();
+        public(&mut seed);
+    }
+}

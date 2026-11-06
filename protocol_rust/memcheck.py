@@ -4,6 +4,7 @@ No errors are suppressed. This does not prove erasure or constant-time execution
 """
 
 import argparse
+import hashlib
 import json
 import os
 from pathlib import Path
@@ -51,7 +52,12 @@ def main():
         fixture.signing, fixture.pin = interop.identities(fixture.folder)
         cases = ["success", "finished-failure"]
         if args.tls_control:
-            cases += ["tls-only-default", "tls-only-chacha"]
+            cases += [
+                "tls-only-default",
+                "tls-only-aes128",
+                "tls-only-aes256",
+                "tls-only-chacha",
+            ]
         for case in cases:
             log = args.output.resolve() / (case + ".log")
             if case.startswith("tls-only-"):
@@ -122,6 +128,9 @@ def main():
                 expected = 1 if case == "finished-failure" else 0
                 item = {
                     "case": case,
+                    "binary_sha256": hashlib.sha256(
+                        Path(command[0]).read_bytes()
+                    ).hexdigest(),
                     "process_exit": process.returncode,
                     "expected_exit": expected,
                     "memcheck_errors": errors,

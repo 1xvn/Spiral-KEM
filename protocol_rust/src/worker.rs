@@ -9,7 +9,7 @@ use std::{
     thread,
     time::{Duration, Instant},
 };
-use tokio::sync::{oneshot, OwnedSemaphorePermit, Semaphore};
+use tokio::sync::{oneshot, Notify, OwnedSemaphorePermit, Semaphore};
 
 #[derive(Default)]
 struct Counters {
@@ -31,6 +31,13 @@ struct Inner {
     key_slots: Arc<Semaphore>,
     next: AtomicUsize,
     stats: Arc<Counters>,
+    shutdown: Arc<Shutdown>,
+}
+#[derive(Default)]
+struct Shutdown {
+    started: AtomicBool,
+    result: Mutex<Option<Result<()>>>,
+    complete: Notify,
 }
 impl Drop for Inner {
     fn drop(&mut self) {
@@ -228,6 +235,7 @@ impl KemPool {
                 key_slots: Arc::new(Semaphore::new(32)),
                 next: AtomicUsize::new(0),
                 stats,
+                shutdown: Arc::new(Shutdown::default()),
             }),
         })
     }
@@ -354,15 +362,33 @@ impl KemPool {
     }
     pub async fn shutdown(&self) -> Result<()> {
         self.inner.stop.store(true, Ordering::Release);
-        let handles = std::mem::take(&mut *self.inner.threads.lock().map_err(|_| Error::Internal)?);
-        tokio::task::spawn_blocking(move || {
-            for h in handles {
-                h.join().map_err(|_| Error::Internal)?;
+        let shutdown = self.inner.shutdown.clone();
+        if !shutdown.started.swap(true, Ordering::AcqRel) {
+            let handles =
+                std::mem::take(&mut *self.inner.threads.lock().unwrap_or_else(|e| e.into_inner()));
+            let completion = shutdown.clone();
+            // This join owns its work independently of any one awaiting future.
+            // Cancellation of a caller cannot make a second caller return early.
+            tokio::task::spawn_blocking(move || {
+                let mut result = Ok(());
+                for h in handles {
+                    if h.join().is_err() {
+                        result = Err(Error::Internal);
+                    }
+                }
+                *completion.result.lock().unwrap_or_else(|e| e.into_inner()) = Some(result);
+                completion.complete.notify_waiters();
+            });
+        }
+        loop {
+            let ready = shutdown.complete.notified();
+            tokio::pin!(ready);
+            ready.as_mut().enable();
+            if let Some(result) = *shutdown.result.lock().unwrap_or_else(|e| e.into_inner()) {
+                return result;
             }
-            Ok(())
-        })
-        .await
-        .map_err(|_| Error::Internal)?
+            ready.await;
+        }
     }
 }
 
@@ -485,5 +511,93 @@ mod tests {
         drop(key);
         clean(&p).await;
         p.shutdown().await.unwrap();
+    }
+    #[tokio::test]
+    async fn concurrent_shutdown_waits_even_if_first_caller_is_canceled() {
+        let pool = KemPool::new(1).unwrap();
+        let end = Instant::now() + Duration::from_secs(3);
+        let (_, lease) = pool.generate(end).await.unwrap();
+        let q = pool.clone();
+        let before = pool.metrics().executed;
+        let hold = tokio::spawn(async move {
+            q.run(
+                0,
+                Request::Hold(Duration::from_millis(250)),
+                Arc::new(AtomicBool::new(false)),
+                end,
+            )
+            .await
+        });
+        while pool.metrics().executed == before {
+            tokio::task::yield_now().await;
+        }
+        let first = pool.clone();
+        let a = tokio::spawn(async move { first.shutdown().await });
+        while !pool.inner.threads.lock().unwrap().is_empty() {
+            tokio::task::yield_now().await;
+        }
+        let second = pool.clone();
+        let mut b = tokio::spawn(async move { second.shutdown().await });
+        assert!(
+            tokio::time::timeout(Duration::from_millis(20), &mut b)
+                .await
+                .is_err(),
+            "second shutdown returned before native worker joined"
+        );
+        a.abort();
+        let _ = a.await;
+        b.await.unwrap().unwrap();
+        let _ = hold.await;
+        assert_eq!(pool.metrics().live_keys, 0);
+        assert_eq!(pool.inner.key_slots.available_permits(), 32);
+        drop(lease);
+        pool.shutdown().await.unwrap();
+        assert!(matches!(pool.generate(end).await, Err(Error::Closed)));
+    }
+    #[tokio::test]
+    async fn wrong_pool_and_expired_leases_never_reuse_a_key() {
+        let first = KemPool::new(1).unwrap();
+        let second = KemPool::new(1).unwrap();
+        let end = Instant::now() + Duration::from_secs(3);
+        let (pk, lease) = first.generate(end).await.unwrap();
+        let (ct, _) = first.encapsulate(pk, end).await.unwrap();
+        assert!(matches!(
+            second.decapsulate(lease, ct, end).await,
+            Err(Error::Input)
+        ));
+        clean(&first).await;
+        let (_, lease) = first
+            .generate(Instant::now() + Duration::from_millis(100))
+            .await
+            .unwrap();
+        tokio::time::sleep(Duration::from_millis(140)).await;
+        clean(&first).await;
+        assert!(matches!(
+            first.decapsulate(lease, Box::new([0; 1160]), end).await,
+            Err(Error::UsedKey)
+        ));
+        first.shutdown().await.unwrap();
+        second.shutdown().await.unwrap();
+    }
+    #[tokio::test]
+    async fn shutdown_drains_live_keys_across_workers_and_is_idempotent() {
+        let pool = KemPool::new(4).unwrap();
+        let mut leases = Vec::new();
+        for _ in 0..16 {
+            leases.push(
+                pool.generate(Instant::now() + Duration::from_secs(3))
+                    .await
+                    .unwrap()
+                    .1,
+            );
+        }
+        assert_eq!(pool.metrics().live_keys, 16);
+        let (a, b, c) = tokio::join!(pool.shutdown(), pool.shutdown(), pool.shutdown());
+        a.unwrap();
+        b.unwrap();
+        c.unwrap();
+        assert_eq!(pool.metrics().live_keys, 0);
+        assert_eq!(pool.inner.key_slots.available_permits(), 32);
+        drop(leases);
     }
 }

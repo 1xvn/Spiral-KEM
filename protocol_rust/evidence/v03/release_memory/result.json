@@ -1,0 +1,49 @@
+[
+  {
+    "case": "success",
+    "binary_sha256": "d9371d7faa3643e1f06dc7879b0d688eb0e5bb6985245ef65c43660ac113181a",
+    "process_exit": 99,
+    "expected_exit": 0,
+    "memcheck_errors": 4,
+    "passed": false,
+    "report": {
+      "admission_released": true,
+      "auth_key_closed": true,
+      "connections": 1,
+      "kem": {
+        "executed_jobs": 2,
+        "live_keys": 0,
+        "rejected_jobs": 0
+      },
+      "role": "server",
+      "sessions": [
+        {
+          "authenticated_close": true,
+          "binding_hash": "859e8b5c1030a9fbc8ec5687bc9b13864a3600d310185031f7b2dceaf1dee2c0",
+          "messages": 1,
+          "session_id": "f00791e9a7263b662a47757965b6c194",
+          "transcript_hash": "3d8096270846dafce4a19ee05c3b7f50054306629f86216ca8f8925b147376d8"
+        }
+      ],
+      "status": "passed"
+    },
+    "stderr": ""
+  },
+  {
+    "case": "finished-failure",
+    "binary_sha256": "d9371d7faa3643e1f06dc7879b0d688eb0e5bb6985245ef65c43660ac113181a",
+    "process_exit": 1,
+    "expected_exit": 1,
+    "memcheck_errors": 0,
+    "passed": true,
+    "report": {
+      "kem": {
+        "executed_jobs": 2,
+        "live_keys": 0,
+        "rejected_jobs": 0
+      },
+      "status": "failed"
+    },
+    "stderr": "Error: Authentication\n"
+  }
+]

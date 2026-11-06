@@ -1,0 +1,17 @@
+[
+  {
+    "driver": "release_memory",
+    "exit": 1,
+    "expected_diagnostic_exit": 1
+  },
+  {
+    "driver": "taint",
+    "exit": 1,
+    "expected_diagnostic_exit": 1
+  },
+  {
+    "driver": "crypto_controls",
+    "exit": 0,
+    "expected_diagnostic_exit": 0
+  }
+]

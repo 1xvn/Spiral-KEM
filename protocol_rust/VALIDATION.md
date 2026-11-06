@@ -1,48 +1,78 @@
-# Rust–C communication implementation validation results (2026-11-06)
+# Rust–C v0.3 validation results · 2026-11-06
 
-Actual Rust servers/clients were connected to the existing C KEM. Figures below are local loopback results and do not establish Spiral's cryptographic security or operational capacity.
+This research implementation strengthens signing key ownership and concurrent shutdown. Functional tests passed; full memory checks and constant time validation remain incomplete. See `HARDENING_v0.3.md` for code/execution details and `REGRESSION_MAP.md` for individual requirements.
 
-## Functional and ownership checks
+## Functional and cleanup results
 
-- 30 Rust unit tests and1 compile-fail documentation test:0 failures.
-- 15 actual TLS interoperability tests:0 failures/errors.
-- The executable intended for the ZIP passed the same15 tests again using a fresh venv and `run_local.sh --prebuilt`.
-- `cargo clippy --all-targets --locked -- -D warnings`, formatting checks, and release build: passed.
-- Checked C-key-pointer Send/Sync/Copy/Clone prohibitions, truncated inputs, canonical formats, Finished, AEAD, cancellation, queue saturation, and partial-I/O state.
-- Confirmed Python↔Rust/Rust↔Rust use matching exporters/transcripts/test vectors and native-key counts reach0 after normal shutdown. Native-key cleanup was also checked on failure/connection bursts.
-- Existing C/Python files were unchanged. Existing Python69 methods and Rust test counts are distinct.
+| Item | Result |
+|---|---|
+| Rust unit / compile-fail documentation tests | 52 / 4, 0 failures |
+| Real TLS negative/interoperability tests | 35, 0 failures/errors |
+| Bundled binary and run_local.sh, new venv | 35, 0 failures/errors |
+| Python baseline / C-Python comparison | 85 / 9, 0 failures |
+| fmt / clippy all-targets -D warnings / release | Pass |
+| Concurrent shutdown regression | Assertion failure with the previous function, passed after the fix |
+| C ASan/UBSan / public input corpus | Passed with detect_leaks=0 / 20,000 cases |
+| Separate C Memcheck | 0 errors |
 
-## Speed and memory
+LSan could not run in this host's ptrace environment, and the initial fatal result is also preserved. We do not claim LSan passed. C leak checking is the separate Memcheck result. The two taint methods excluded by regular Rust unit tests were instrumented separately in an optimized audit executable.
 
-Nine conditions: workers1/2/4 × payload64/1,024/16,384 bytes. Processes restarted per condition for2 warm-up rounds and5 measured rounds. Each round used four connections,32 echoes per connection, and8 senders. Total measured connections:180.
+## Environment and speed
 
-Handshake timing spans client TCP startup through completion of TLS and Spiral Finished. Throughput counts both request/echo payloads and divides by full-round duration including client process startup, handshake, and authenticated shutdown. RSS is the median of five server-process peaks measured by GNU time. It includes TLS/native heap/threads and differs from connection-buffer bounds. Clients also retain public test-payload copies for verification. Samples are small and affected by runner/host load.
+The host is Debian 13 x86-64 / glibc 2.41 / GCC 14.2 / OpenSSL 3.5.7 / Python 3.12.14 / Rust 1.99.1, with affinity to 9 CPUs. Valgrind instrumentation used the Ubuntu glibc 2.39-0ubuntu8.8 loader/libc with debug symbols and host libcrypto 3.5.7. This does not mean this version was tested on a full Ubuntu 24.04 system or WSL/OCI ARM.
 
-| Workers/endpoint | payload B | Handshake median ms | Handshake p95 ms | Round-trip payload median MiB/s | Server peak RSS median KiB |
+For each of nine conditions, workers 1/2/4 × payload 64/1,024/16,384, there were 2 warmups followed by 5 measurements, using four connections per run, 32 echoes per connection, and 8 senders. That is 180 measured connections and 72 warmup connections. Throughput divides request+echo payload by wall time including process startup, connections, and shutdown. RSS is the peak for the entire process. With 20 connection samples per condition, interpretation of p95/p99 and capacity is limited.
+
+| Workers/endpoint | Payload B | Median handshake ms | p95 ms | Median round-trip payload MiB/s | Median server RSS KiB |
 |---|---|---|---|---|---|
-| 1 | 64 | 13.014 | 21.955 | 0.47 | 5760 |
-| 1 | 1,024 | 10.310 | 17.715 | 7.12 | 5596 |
-| 1 | 16,384 | 10.983 | 15.989 | 108.06 | 5916 |
-| 2 | 64 | 11.561 | 15.821 | 0.56 | 5940 |
-| 2 | 1,024 | 14.745 | 18.912 | 7.75 | 5788 |
-| 2 | 16,384 | 12.758 | 23.887 | 80.49 | 5916 |
-| 4 | 64 | 9.530 | 19.672 | 0.57 | 5660 |
-| 4 | 1,024 | 10.886 | 12.240 | 8.26 | 5700 |
-| 4 | 16,384 | 11.362 | 14.019 | 90.05 | 5852 |
+| 1 | 64 | 13.539 | 20.216 | 0.48 | 6652 |
+| 1 | 1,024 | 8.338 | 13.027 | 10.01 | 6852 |
+| 1 | 16,384 | 7.504 | 14.785 | 173.00 | 6828 |
+| 2 | 64 | 10.910 | 21.112 | 0.60 | 6616 |
+| 2 | 1,024 | 10.173 | 13.177 | 9.80 | 6572 |
+| 2 | 16,384 | 10.109 | 12.354 | 122.08 | 6572 |
+| 4 | 64 | 11.919 | 14.413 | 0.56 | 6576 |
+| 4 | 1,024 | 9.870 | 11.681 | 9.58 | 6444 |
+| 4 | 16,384 | 10.054 | 11.876 | 154.26 | 6672 |
 
-Original per-round/per-connection figures are in `evidence/benchmark_release.json`. These results do not establish a general ranking of worker counts or speedup factors over Python/C. The16/64 same-IP connection tests check admission limits, not64-connection throughput performance.
+These values are not divided by v0.2, WSL, or OCI figures from different environments to claim an improvement factor. Target-device performance requires separate measurement. Originals are in `evidence/v03/benchmark_release.json`, including binary/Cargo.lock hashes.
 
-## Memory checks: unresolved items
+## Memory and secret branch instrumentation
 
-Valgrind 3.22.0 and3.28.0 reported uninitialized-value warnings on normal TLS AES-GCM paths. They also reproduce in TLS-only controls without Spiral/C KEM/app buffers. They were not classified as false positives. The default TLS cipher was not changed and warnings were not suppressed.
-
-| Valgrind 3.28.0 case | Errors | Expected behavior |
+| Scope | Observation | Verdict |
 |---|---|---|
-| Actual normal Spiral communication | 5 | Communication complete, native keys0; memory check not passed |
-| Incorrect client Finished | 0 | Handshake rejected, native keys0 |
-| TLS-only default AES-GCM | 3 | 120-byte echo complete; warnings reproduced |
-| TLS-only ChaCha | 0 | 120-byte echo complete |
+| release success | 4 Memcheck errors | Not passed |
+| release finished-failure | 0 Memcheck errors | Pass |
+| audit tls-only-default | 4 errors | Not passed |
+| audit tls-only-aes128 | 4 errors | Not passed |
+| audit tls-only-aes256 | 4 errors | Not passed |
+| audit tls-only-chacha | 0 errors | Pass |
+| ring public vectors/offset buffers/hash/KDF/signing | 6,102 reference matches, 0 warnings | Sample passed |
+| C secret taint | 0 secret-dependent branch/address warnings, 1 positive control detected | Sample passed |
+| Rust secret taint | 0 secret branch/address warnings; libtest 48B possibly-lost | Full memory check not passed |
 
-All four cases had0 bytes of definite/indirect/possible leaks;548 bytes of Rust-runtime global state remained reachable. This does not mean all memory checks passed or prove all-path/secret-erasure/side-channel safety. Evidence is in `evidence/memcheck_322/` and `evidence/memcheck_328/`. Each run used a separate glibc 2.39-0ubuntu8.8 loader/libc with matching debug symbols. To avoid relying solely on an older tool,3.28.0 reproduced the issue under the same conditions.
+TLS warnings are reported in decrypt tag checks and writev. In debug symbols, origins point to hash context fork_finish or Ed25519 digest stack allocations. Optimization and stack reuse mean these symbols alone cannot establish the cause. Clean public primitive/offset-buffer controls without TLS do not prove TLS warnings are false positives. No warning suppressions, arbitrary marking of memory as defined, or production cipher changes were applied. Public output declassification for dynamic secret taint is separate test-only code.
 
-Final executable/C source/Cargo.lock SHA-256, scope, and limitations are in `VALIDATION.json`. Use this as a local research implementation; do not treat it as a service-security standard before resolving these items and independent cryptanalysis.
+The additional 48 bytes in Rust taint are reported on the libtest/thread initialization stack. Full check exit=99 remains a failure; we do not conclude that it is a key-path leak or a harmless false positive. Definite/indirect/possible leak totals are 0 in C memory and normal/failure release checks, while normal TLS uninitialized-value warnings remain separately. Nor do we claim completed erasure of Rust runtime's 548 reachable bytes.
+
+## Limits of timing diagnostics
+
+Each of two C diagnostics uses 6,000 fixed/variable secret samples and 6,000 sham decapsulations. The first run, under compilation load, had weak sensitivity with positive control |t|=3.15. Remeasurement after the work completed gave positive control t=-16.997, secret classification t=0.386, and sham t=-1.137. This means no large difference was found in these samples; it is neither execution of the dudect package nor proof of constant time. The first result is also retained in `native_timing.json`.
+
+We jointly checked C fixed arithmetic and mask selection, optimized assembly, and secret marking instrumentation. Rust KDF/HMAC, record seal, and Ed25519 marking checks were added, but this does not evaluate side channels in all authenticated decryption, TLS, or all providers/compilers/CPUs.
+
+## Evidence and reproduction
+
+v0.3 logs are in `evidence/v03/`, source hashes in `SOURCE_SHA256.json`, and log hashes before/after trailing whitespace cleanup in `LOG_FORMATTING.json`. v0.2 results are preserved in `evidence/v02_VALIDATION.json`/`v02_VALIDATION.md` and existing logs. Diagnostic commands follow. If errors remain, memcheck.py/taint.py exit with failure; we do not turn this into a pass.
+
+```bash
+cargo build --profile audit --examples --bins --locked --manifest-path protocol_rust/Cargo.toml
+cargo test --profile audit --lib --no-run --locked --manifest-path protocol_rust/Cargo.toml
+python3 protocol_rust/memcheck.py --binary protocol_rust/target/audit/spiral-lab --tls-control protocol_rust/target/audit/examples/tls_control
+python3 protocol_rust/crypto_probe.py --examples protocol_rust/target/audit/examples --output protocol_rust/local_crypto_probe
+# For taint.py --rust-tests, specify the target/audit/deps/spiral_protocol-<hash> executable path printed by Cargo
+# C diagnostic binaries: make -C native_research build/taint build/check_memcheck
+python3 protocol_rust/taint.py --rust-tests protocol_rust/target/audit/deps/spiral_protocol-REPLACE_HASH --output protocol_rust/local_taint
+```
+
+The taint C build requires Valgrind development headers. Warnings and timing values can change with tool/CPU/libc/provider versions. For regular validation/benchmark commands on target environments, use `RUN_UBUNTU_WSL.md`.
