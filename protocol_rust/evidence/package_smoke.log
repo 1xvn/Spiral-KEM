@@ -1,0 +1,22 @@
+Bundled executable invoked via bash protocol_rust/run_local.sh --prebuilt. Fresh venv dependency installation succeeded. Test output follows.
+test_client_finished_rejected (__main__.Interop.test_client_finished_rejected) ... ok
+test_corrupted_tag (__main__.Interop.test_corrupted_tag) ... ok
+test_duplicate_record (__main__.Interop.test_duplicate_record) ... ok
+test_length_bomb (__main__.Interop.test_length_bomb) ... ok
+test_missing_authenticated_close (__main__.Interop.test_missing_authenticated_close) ... ok
+test_python_to_rust_four_sessions (__main__.Interop.test_python_to_rust_four_sessions) ... ok
+test_rust_to_python_four_sessions (__main__.Interop.test_rust_to_python_four_sessions) ... ok
+test_rust_to_rust_sizes_and_parallel_senders (__main__.Interop.test_rust_to_rust_sizes_and_parallel_senders) ... ok
+test_same_ip_connection_bursts_are_bounded (__main__.Interop.test_same_ip_connection_bursts_are_bounded) ... ok
+test_server_finished_rejected_before_data (__main__.Interop.test_server_finished_rejected_before_data) ... ok
+test_truncated_record (__main__.Interop.test_truncated_record) ... ok
+test_untrusted_tls_ca (__main__.Interop.test_untrusted_tls_ca) ... ok
+test_wrong_alpn (__main__.Interop.test_wrong_alpn) ... ok
+test_wrong_pin_expired_and_revoked (__main__.Interop.test_wrong_pin_expired_and_revoked) ... ok
+test_wrong_tls_hostname (__main__.Interop.test_wrong_tls_hostname) ... ok
+
+----------------------------------------------------------------------
+Ran 15 tests in 1.798s
+
+OK
+{"interop_result": "passed", "tests": 15, "failures": 0, "errors": 0}

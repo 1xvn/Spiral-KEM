@@ -1,0 +1,50 @@
+   Compiling spiral-protocol v0.2.0 (/workspace/scratch/c6a558db7e9f/spiral_rust_work/protocol_rust)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 3.06s
+     Running unittests src/lib.rs (protocol_rust/target/debug/deps/spiral_protocol-0f28d4aa787977e0)
+
+running 30 tests
+test admission::tests::bounds_and_release ... ok
+test channel::tests::close_and_failure_have_finite_deadlines ... ok
+test admission::tests::mapped_ip_and_pending_cap ... ok
+test channel::tests::authenticated_queued_data_survives_clean_close ... ok
+test handshake::tests::identities_and_hello_grammar ... ok
+test records::tests::duplicate_and_out_of_order_rejected ... ok
+test records::tests::encode_matches_fixture_and_reserves_close ... ok
+test handshake::tests::original_signature_and_clienthello ... ok
+test records::tests::golden_records_and_close ... ok
+test records::tests::count_and_byte_limits_still_allow_close ... ok
+test schedule::tests::original_key_schedule_vector ... ok
+test records::tests::pool_capacity_is_fixed_and_allocation_is_reused ... ok
+test transport::tests::invalid_length_never_reaches_payload_read ... ok
+test transport::tests::close_read_is_not_starved_by_plaintext_buffers ... ok
+test wire::tests::all_fixture_roundtrips_and_truncations ... ok
+test wire::tests::deterministic_mutation_corpus_canonical_if_accepted ... ok
+test wire::tests::length_bombs_and_reserved_close ... ok
+test wire::tests::every_header_bit_under_connection_expectation ... ok
+test handshake::tests::valid_server_state_and_exporter_mismatch ... ok
+test records::tests::exhausted_buffers_wait_without_allocating ... ok
+test channel::tests::partial_write_deadline_cannot_be_extended_by_activity ... ok
+test worker::tests::malformed_ct_consumes_native_key ... ok
+test worker::tests::canceled_generation_cannot_leak_stored_key ... ok
+test worker::tests::worker_roundtrip_and_drop_lease ... ok
+test handshake::tests::finished_each_byte_and_changed_ct_rejected ... ok
+test channel::tests::partial_reads_keep_progress_across_notifications ... ok
+test worker::tests::expiration_cleans_abandoned_key ... ok
+test worker::tests::queue_full_and_cancel_does_not_free_running_state ... ok
+test worker::tests::queued_deadline_and_canceled_lease_cleanup ... ok
+test records::tests::every_record_bit_tamper_poisoned ... ok
+
+test result: ok. 30 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.28s
+
+     Running unittests src/main.rs (protocol_rust/target/debug/deps/spiral_lab-fefaab73e84f3a1d)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+   Doc-tests spiral_protocol
+
+running 1 test
+test src/lib.rs - (line 4) - compile fail ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.12s

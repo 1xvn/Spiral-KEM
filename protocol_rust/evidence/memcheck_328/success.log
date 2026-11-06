@@ -1,0 +1,80 @@
+==6== Memcheck, a memory error detector
+==6== Copyright (C) 2002-2026, and GNU GPL'd, by Julian Seward et al.
+==6== Using Valgrind-3.28.0 and LibVEX; rerun with -h for copyright info
+==6== Command: /workspace/scratch/c6a558db7e9f/spiral_hardening_runs/valgrind_local/usr/lib/x86_64-linux-gnu/ld-linux-x86-64.so.2 --library-path /workspace/scratch/c6a558db7e9f/spiral_hardening_runs/valgrind_local/usr/lib/x86_64-linux-gnu /workspace/scratch/c6a558db7e9f/spiral_rust_work/protocol_rust/target/release/spiral-lab server --name spiral-lab.example --service spiral-research --workers 2 --cert /tmp/spiral-memcheck-gptwep5b/cert.pem --key /tmp/spiral-memcheck-gptwep5b/key.pem --auth /tmp/spiral-memcheck-gptwep5b/auth.bin --port 0 --connections 1 --messages 1
+==6== Parent PID: 5
+==6==
+==6== Thread 2 tokio-rt-worker:
+==6== Syscall param writev(vector[0]) points to uninitialised byte(s)
+==6==    at 0x526E9CB: writev (in /workspace/scratch/c6a558db7e9f/spiral_hardening_runs/valgrind_local/usr/lib/x86_64-linux-gnu/libc.so.6)
+==6==    by 0x4A6B4DA: <tokio::net::tcp::stream::TcpStream>::poll_write_vectored_priv (in /workspace/scratch/c6a558db7e9f/spiral_rust_work/protocol_rust/target/release/spiral-lab)
+==6==    by 0x4A1FE55: <tokio_rustls::common::SyncWriteAdapter<tokio::net::tcp::stream::TcpStream> as core::io::write::Write>::write_vectored (in /workspace/scratch/c6a558db7e9f/spiral_rust_work/protocol_rust/target/release/spiral-lab)
+==6==    by 0x4952F68: <rustls::vecbuf::ChunkVecBuffer>::write_to (in /workspace/scratch/c6a558db7e9f/spiral_rust_work/protocol_rust/target/release/spiral-lab)
+==6==    by 0x4A1EEB3: <tokio_rustls::TlsStream<tokio::net::tcp::stream::TcpStream> as tokio::io::async_write::AsyncWrite>::poll_write (in /workspace/scratch/c6a558db7e9f/spiral_rust_work/protocol_rust/target/release/spiral-lab)
+==6==    by 0x4A25458: <core::pin::Pin<&mut spiral_protocol::transport::write_record<tokio::io::split::WriteHalf<tokio_rustls::TlsStream<tokio::net::tcp::stream::TcpStream>>>::{closure#0}> as core::future::future::Future>::poll (in /workspace/scratch/c6a558db7e9f/spiral_rust_work/protocol_rust/target/release/spiral-lab)
+==6==    by 0x49FFD94: <spiral_protocol::channel::Session>::start::{closure#0} (in /workspace/scratch/c6a558db7e9f/spiral_rust_work/protocol_rust/target/release/spiral-lab)
+==6==    by 0x49FC352: tokio::runtime::task::raw::poll::<<spiral_protocol::channel::Session>::start::{closure#0}, alloc::sync::Arc<tokio::runtime::scheduler::multi_thread::handle::Handle>> (in /workspace/scratch/c6a558db7e9f/spiral_rust_work/protocol_rust/target/release/spiral-lab)
+==6==    by 0x4A73333: <tokio::runtime::scheduler::multi_thread::worker::Context>::run_task (in /workspace/scratch/c6a558db7e9f/spiral_rust_work/protocol_rust/target/release/spiral-lab)
+==6==    by 0x4A63A21: tokio::runtime::task::raw::poll::<tokio::runtime::blocking::task::BlockingTask<<tokio::runtime::scheduler::multi_thread::worker::Launch>::launch::{closure#0}>, tokio::runtime::blocking::schedule::BlockingSchedule> (in /workspace/scratch/c6a558db7e9f/spiral_rust_work/protocol_rust/target/release/spiral-lab)
+==6==    by 0x4A61C60: std::sys::backtrace::__rust_begin_short_backtrace::<<tokio::runtime::blocking::pool::Spawner>::spawn_thread::{closure#0}, ()> (in /workspace/scratch/c6a558db7e9f/spiral_rust_work/protocol_rust/target/release/spiral-lab)
+==6==    by 0x4A65EFB: <std::thread::lifecycle::spawn_unchecked<<tokio::runtime::blocking::pool::Spawner>::spawn_thread::{closure#0}, ()>::{closure#1} as core::ops::function::FnOnce<()>>::call_once::{shim:vtable#0} (in /workspace/scratch/c6a558db7e9f/spiral_rust_work/protocol_rust/target/release/spiral-lab)
+==6==  Address 0x54b3efe is 126 bytes inside a block of size 142 alloc'd
+==6==    at 0x4AF97EF: malloc (vg_replace_malloc.c:447)
+==6==    by 0x494534D: <rustls::msgs::message::outbound::PrefixedPayload>::with_capacity (in /workspace/scratch/c6a558db7e9f/spiral_rust_work/protocol_rust/target/release/spiral-lab)
+==6==    by 0x4978381: <rustls::crypto::ring::tls13::Tls13MessageEncrypter as rustls::crypto::cipher::MessageEncrypter>::encrypt (in /workspace/scratch/c6a558db7e9f/spiral_rust_work/protocol_rust/target/release/spiral-lab)
+==6==    by 0x493BCFB: <rustls::common_state::CommonState>::send_appdata_encrypt (in /workspace/scratch/c6a558db7e9f/spiral_rust_work/protocol_rust/target/release/spiral-lab)
+==6==    by 0x4A0FE4D: <rustls::conn::ConnectionCommon<rustls::server::server_conn::ServerConnectionData>>::send_plaintext (in /workspace/scratch/c6a558db7e9f/spiral_rust_work/protocol_rust/target/release/spiral-lab)
+==6==    by 0x4A1EE84: <tokio_rustls::TlsStream<tokio::net::tcp::stream::TcpStream> as tokio::io::async_write::AsyncWrite>::poll_write (in /workspace/scratch/c6a558db7e9f/spiral_rust_work/protocol_rust/target/release/spiral-lab)
+==6==    by 0x4A25458: <core::pin::Pin<&mut spiral_protocol::transport::write_record<tokio::io::split::WriteHalf<tokio_rustls::TlsStream<tokio::net::tcp::stream::TcpStream>>>::{closure#0}> as core::future::future::Future>::poll (in /workspace/scratch/c6a558db7e9f/spiral_rust_work/protocol_rust/target/release/spiral-lab)
+==6==    by 0x49FFD94: <spiral_protocol::channel::Session>::start::{closure#0} (in /workspace/scratch/c6a558db7e9f/spiral_rust_work/protocol_rust/target/release/spiral-lab)
+==6==    by 0x49FC352: tokio::runtime::task::raw::poll::<<spiral_protocol::channel::Session>::start::{closure#0}, alloc::sync::Arc<tokio::runtime::scheduler::multi_thread::handle::Handle>> (in /workspace/scratch/c6a558db7e9f/spiral_rust_work/protocol_rust/target/release/spiral-lab)
+==6==    by 0x4A73333: <tokio::runtime::scheduler::multi_thread::worker::Context>::run_task (in /workspace/scratch/c6a558db7e9f/spiral_rust_work/protocol_rust/target/release/spiral-lab)
+==6==    by 0x4A63A21: tokio::runtime::task::raw::poll::<tokio::runtime::blocking::task::BlockingTask<<tokio::runtime::scheduler::multi_thread::worker::Launch>::launch::{closure#0}>, tokio::runtime::blocking::schedule::BlockingSchedule> (in /workspace/scratch/c6a558db7e9f/spiral_rust_work/protocol_rust/target/release/spiral-lab)
+==6==    by 0x4A61C60: std::sys::backtrace::__rust_begin_short_backtrace::<<tokio::runtime::blocking::pool::Spawner>::spawn_thread::{closure#0}, ()> (in /workspace/scratch/c6a558db7e9f/spiral_rust_work/protocol_rust/target/release/spiral-lab)
+==6==  Uninitialised value was created by a stack allocation
+==6==    at 0x491E72A: ring::ec::curve25519::ed25519::eddsa_digest (in /workspace/scratch/c6a558db7e9f/spiral_rust_work/protocol_rust/target/release/spiral-lab)
+==6==
+==6== Thread 3 tokio-rt-worker:
+==6== Conditional jump or move depends on uninitialised value(s)
+==6==    at 0x497B439: <rustls::crypto::ring::tls13::Tls13MessageDecrypter as rustls::crypto::cipher::MessageDecrypter>::decrypt (in /workspace/scratch/c6a558db7e9f/spiral_rust_work/protocol_rust/target/release/spiral-lab)
+==6==    by 0x4A22890: <tokio_rustls::server::TlsStream<tokio::net::tcp::stream::TcpStream> as tokio::io::async_buf_read::AsyncBufRead>::poll_fill_buf (in /workspace/scratch/c6a558db7e9f/spiral_rust_work/protocol_rust/target/release/spiral-lab)
+==6==    by 0x4A1E35C: <tokio_rustls::TlsStream<tokio::net::tcp::stream::TcpStream> as tokio::io::async_read::AsyncRead>::poll_read (in /workspace/scratch/c6a558db7e9f/spiral_rust_work/protocol_rust/target/release/spiral-lab)
+==6==    by 0x4A19AE8: <tokio::io::split::ReadHalf<tokio_rustls::TlsStream<tokio::net::tcp::stream::TcpStream>> as tokio::io::async_read::AsyncRead>::poll_read (in /workspace/scratch/c6a558db7e9f/spiral_rust_work/protocol_rust/target/release/spiral-lab)
+==6==    by 0x4A18203: <tokio::io::util::read_exact::ReadExact<tokio::io::split::ReadHalf<tokio_rustls::TlsStream<tokio::net::tcp::stream::TcpStream>>> as core::future::future::Future>::poll (in /workspace/scratch/c6a558db7e9f/spiral_rust_work/protocol_rust/target/release/spiral-lab)
+==6==    by 0x4A022DE: <spiral_protocol::channel::Session>::start::{closure#1} (in /workspace/scratch/c6a558db7e9f/spiral_rust_work/protocol_rust/target/release/spiral-lab)
+==6==    by 0x49FCD42: tokio::runtime::task::raw::poll::<<spiral_protocol::channel::Session>::start::{closure#1}, alloc::sync::Arc<tokio::runtime::scheduler::multi_thread::handle::Handle>> (in /workspace/scratch/c6a558db7e9f/spiral_rust_work/protocol_rust/target/release/spiral-lab)
+==6==    by 0x4A7327A: <tokio::runtime::scheduler::multi_thread::worker::Context>::run_task (in /workspace/scratch/c6a558db7e9f/spiral_rust_work/protocol_rust/target/release/spiral-lab)
+==6==    by 0x4A63E78: tokio::runtime::task::raw::poll::<tokio::runtime::blocking::task::BlockingTask<<tokio::runtime::scheduler::multi_thread::worker::Launch>::launch::{closure#0}>, tokio::runtime::blocking::schedule::BlockingSchedule> (in /workspace/scratch/c6a558db7e9f/spiral_rust_work/protocol_rust/target/release/spiral-lab)
+==6==    by 0x4A61C60: std::sys::backtrace::__rust_begin_short_backtrace::<<tokio::runtime::blocking::pool::Spawner>::spawn_thread::{closure#0}, ()> (in /workspace/scratch/c6a558db7e9f/spiral_rust_work/protocol_rust/target/release/spiral-lab)
+==6==    by 0x4A65EFB: <std::thread::lifecycle::spawn_unchecked<<tokio::runtime::blocking::pool::Spawner>::spawn_thread::{closure#0}, ()>::{closure#1} as core::ops::function::FnOnce<()>>::call_once::{shim:vtable#0} (in /workspace/scratch/c6a558db7e9f/spiral_rust_work/protocol_rust/target/release/spiral-lab)
+==6==    by 0x4A5722D: <std::sys::thread::unix::Thread>::new::thread_start (in /workspace/scratch/c6a558db7e9f/spiral_rust_work/protocol_rust/target/release/spiral-lab)
+==6==  Uninitialised value was created by a stack allocation
+==6==    at 0x491E72A: ring::ec::curve25519::ed25519::eddsa_digest (in /workspace/scratch/c6a558db7e9f/spiral_rust_work/protocol_rust/target/release/spiral-lab)
+==6==
+==6==
+==6== HEAP SUMMARY:
+==6==     in use at exit: 548 bytes in 2 blocks
+==6==   total heap usage: 7,962 allocs, 7,960 frees, 867,812 bytes allocated
+==6==
+==6== Thread 1:
+==6== 4 bytes in 1 blocks are still reachable in loss record 1 of 2
+==6==    at 0x4AF97EF: malloc (vg_replace_malloc.c:447)
+==6==    by 0x4A55A1B: std::sys::pal::unix::stack_overflow::thread_info::set_current_info (in /workspace/scratch/c6a558db7e9f/spiral_rust_work/protocol_rust/target/release/spiral-lab)
+==6==    by 0x4A4FBCF: std::rt::lang_start_internal (in /workspace/scratch/c6a558db7e9f/spiral_rust_work/protocol_rust/target/release/spiral-lab)
+==6==    by 0x49EDAF4: main (in /workspace/scratch/c6a558db7e9f/spiral_rust_work/protocol_rust/target/release/spiral-lab)
+==6==
+==6== 544 bytes in 1 blocks are still reachable in loss record 2 of 2
+==6==    at 0x4AF97EF: malloc (vg_replace_malloc.c:447)
+==6==    by 0x4A55C1D: std::sys::pal::unix::stack_overflow::thread_info::set_current_info (in /workspace/scratch/c6a558db7e9f/spiral_rust_work/protocol_rust/target/release/spiral-lab)
+==6==    by 0x4A4FBCF: std::rt::lang_start_internal (in /workspace/scratch/c6a558db7e9f/spiral_rust_work/protocol_rust/target/release/spiral-lab)
+==6==    by 0x49EDAF4: main (in /workspace/scratch/c6a558db7e9f/spiral_rust_work/protocol_rust/target/release/spiral-lab)
+==6==
+==6== LEAK SUMMARY:
+==6==    definitely lost: 0 bytes in 0 blocks
+==6==    indirectly lost: 0 bytes in 0 blocks
+==6==      possibly lost: 0 bytes in 0 blocks
+==6==    still reachable: 548 bytes in 2 blocks
+==6==         suppressed: 0 bytes in 0 blocks
+==6==
+==6== For lists of detected and suppressed errors, rerun with: -s
+==6== ERROR SUMMARY: 5 errors from 2 contexts (suppressed: 0 from 0)

@@ -1,0 +1,4 @@
+sp_decaps_once
+sp_encaps
+sp_key_destroy
+sp_keygen

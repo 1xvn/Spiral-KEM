@@ -9,6 +9,8 @@ This repository organizes research code, experimental materials, and documentati
 | Path | Contents |
 | --- | --- |
 | [code/opt2/](code/opt2/) | Original v0.3.1, opt1, and opt2 code; comparison and verification scripts |
+| [protocol_rust/](protocol_rust/README.md) | Rust/Tokio/rustls–C KEM communication implementation, Python interoperability tests, and measurements |
+| [native_research/](native_research/README.md) | C KEM research implementation and adversarial-input and memory-check records |
 | [originals/](originals/) | Earlier code versions, benchmark scripts, mathematical specifications, and explanatory materials |
 | [archives/releases/](archives/releases/) | Original opt1 and opt2 release ZIPs |
 | [archives/benchmarks/](archives/benchmarks/) | Original ML-KEM comparison ZIPs |
@@ -39,5 +41,7 @@ See its guide for instructions and validation scope. Security validation for pro
 interoperability validation between independent implementations have not been completed.
 
 ## Archive Status
+
+The Rust–C communication implementation provides [running instructions](protocol_rust/README.md) and [validation results](protocol_rust/VALIDATION.md). It passed 31 unit/compile tests and 15 real TLS interoperability tests. The Valgrind uninitialized-value warning in the TLS AES-GCM path also reproduces in TLS-only control code and remains unresolved. These results do not establish production-service security validation or Spiral's own security.
 
 `results/results.zip` is a previously uploaded result bundle and does not imply that all measurement results are included. Only some fragments of the large original design files are retained, so they cannot be reconstructed from this repository alone. See the [temporary upload guide](imports/README.md).

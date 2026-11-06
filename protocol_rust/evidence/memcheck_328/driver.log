@@ -1,0 +1,4 @@
+{"case": "success", "process_exit": 99, "expected_exit": 0, "memcheck_errors": 5, "passed": false}
+{"case": "finished-failure", "process_exit": 1, "expected_exit": 1, "memcheck_errors": 0, "passed": true}
+{"case": "tls-only-default", "process_exit": 99, "expected_exit": 0, "memcheck_errors": 3, "passed": false}
+{"case": "tls-only-chacha", "process_exit": 0, "expected_exit": 0, "memcheck_errors": 0, "passed": true}
