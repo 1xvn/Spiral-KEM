@@ -1,0 +1,32 @@
+{
+  "scope": "Local execution of the CI runner; not a GitHub-hosted run or security approval.",
+  "functional_status": "passed",
+  "memory_gate_exit": 1,
+  "memory_gate_expected_failure": true,
+  "classification_tests": 7,
+  "source_sha256": {
+    "ci/validate.py": "ecff1569d2e59e7750fe99f0484b5703295bbf51d1a2e4597e696b13ec4ee0e0",
+    "ci/check_memory_result.py": "c92007fcf51efa39d6b97e6be5e5d04f2bc0655fae2a7b5d7004a8b0353265af",
+    "ci/test_checks.py": "1f5eaab8dd4944da448447fa9f0559ca39c266ac3f0381d7ec2f617d4ade2678",
+    "rust-toolchain.toml": "ca67e66659a82661386e5a08471c913cb8b3f7c7ce37592207d3f513589a41c2",
+    ".github/workflows/memory-diagnostics.yml": "f2139100e3cb870e4a6c51aef4a5793e962e45d8fc5d5954d638f342b6c237ec",
+    ".github/workflows/validation.yml": "2106ca3bfa5ea4e2a412c45b44af3bf3124893a560ddb4a7825d5d9f975cbf5a"
+  },
+  "evidence_sha256": {
+    "ci/local_ci_20261107/classification-tests.log": "912908d9a97fb729b7d1db561a073115cda6bd6f8b97db60e775bb5a5908fc66",
+    "ci/local_ci_20261107/functional/cargo-version.log": "99ef17c8e536a7c7bc486f6f1ab6348874701495ad0a749b36796b7db9659bfe",
+    "ci/local_ci_20261107/functional/diagnostic-parser.log": "a7879a593598676a425019c532a897009736f600f7fdc8c4d46f22259501b698",
+    "ci/local_ci_20261107/functional/interop.json": "88da153c942f018a4e74c78e19a251a789376bdc7a6c8b681edfe4f6e0b81df8",
+    "ci/local_ci_20261107/functional/native-kem.log": "b8999863996d3063065a145d8f2894b783162260cd0b4a22e9d70e8748909cbf",
+    "ci/local_ci_20261107/functional/python-protocol.log": "94b18a788ec538ba25e05a1a79fbc2d799ce3032a9d83b2292886c806cacf63c",
+    "ci/local_ci_20261107/functional/result.json": "c30f1e8e4b42e5ca304902b8dd477bbf1d9c4bc93cfd1e876e2d8e94659d8fd8",
+    "ci/local_ci_20261107/functional/rust-doc.log": "b579eef207658c2d82ac6135e7c839951085af46c158cd279c8c12155519e546",
+    "ci/local_ci_20261107/functional/rust-release.log": "23f19898958dd391906c450b0c98b76be1ff708148d05f4ce9d049dd42fd6651",
+    "ci/local_ci_20261107/functional/rust-tls.log": "d4763b759ba4c8b2e658e4506df00543dfcc6404ab4383cce8d1cab2a645bd59",
+    "ci/local_ci_20261107/functional/rust-unit.log": "b096f5cfc27a2140569b7de343e4fa0ac9bc2dc61a6189007f2462fd289170f2",
+    "ci/local_ci_20261107/functional/rustc-version.log": "a03b7b055fbe7fd69d759022e6bf596d8fed4460d1fd784856075ecd1835d5fb",
+    "ci/local_ci_20261107/initial_failure/python-protocol.log": "83479ace37902d16862cda74d76c33b1a1440788009651246e8e5da0e95e11c5",
+    "ci/local_ci_20261107/initial_failure/result.json": "6aaf016dd9d74beec7460c14751f19866ab47944923e67e7430b4783bfac90a1",
+    "ci/local_ci_20261107/memory-gate.log": "c1bb7fc9a6419944e9c9fbe58af083a06324f4e9a1a211ef9beaf05df4edafd2"
+  }
+}

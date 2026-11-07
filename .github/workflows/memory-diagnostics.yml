@@ -1,0 +1,64 @@
+name: Runtime memory diagnostics
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '17 2 * * 1'
+
+permissions:
+  contents: read
+
+concurrency:
+  group: memory-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  std-memory-controls:
+    name: Std/libtest Memcheck controls (not production approval)
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    env:
+      PYTHONDONTWRITEBYTECODE: '1'
+      RUSTUP_TOOLCHAIN: 1.99.1
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065 # v5
+        with:
+          python-version: '3.12'
+      - name: Install signed distribution packages
+        run: |
+          sudo apt-get update
+          sudo apt-get install --no-install-recommends -y build-essential valgrind libc6-dbg
+      - name: Install exact Rust toolchain
+        run: rustup toolchain install 1.99.1 --profile minimal
+      - name: Check result-classification rules
+        run: python -m unittest discover -s ci -p 'test_checks.py' -v
+      - name: Measure controls and preserve child errors
+        run: |
+          python protocol_rust/diagnostics/libtest_memory.py \
+            --rustc "$(rustup which --toolchain 1.99.1 rustc)" \
+            --valgrind "$(command -v valgrind)" \
+            --output ci-results/memory
+      - name: Require clean control measurements, not merely completed diagnostics
+        if: always()
+        run: python ci/check_memory_result.py ci-results/memory/result.json
+      - name: Publish memory evidence even on failure
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: std-memory-${{ github.run_id }}-${{ github.run_attempt }}
+          path: |
+            ci-results/memory/*.json
+            ci-results/memory/*.log
+            ci-results/memory/*.stdout
+            ci-results/memory/*.stderr
+            ci-results/memory/*.rs
+          if-no-files-found: warn
+          retention-days: 30
+      - name: State diagnostic scope
+        if: always()
+        run: |
+          echo 'Std/libtest controls only; not a production-memory acceptance check.' >> "$GITHUB_STEP_SUMMARY"
+          echo 'A reproduced Memcheck error makes this job fail. Exit 99 is preserved. Original findings are not closed by a clean control run.' >> "$GITHUB_STEP_SUMMARY"

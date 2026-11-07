@@ -1,0 +1,58 @@
+name: Functional validation
+
+on:
+  pull_request:
+  push:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: functional-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  functional:
+    name: Python, C, Rust and real TLS
+    runs-on: ubuntu-24.04
+    timeout-minutes: 45
+    env:
+      PYTHONDONTWRITEBYTECODE: '1'
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065 # v5
+        with:
+          python-version: '3.12'
+      - name: Install compiler prerequisites
+        run: |
+          sudo apt-get update
+          sudo apt-get install --no-install-recommends -y build-essential pkg-config libssl-dev
+      - name: Install exact Rust toolchain
+        run: rustup toolchain install 1.99.1 --profile minimal
+      - name: Install pinned Python dependencies
+        run: |
+          python -m venv .ci-venv
+          .ci-venv/bin/python -m pip install -r protocol_v01/requirements.txt
+          .ci-venv/bin/python -m pip check
+      - name: Check CI result classification
+        run: .ci-venv/bin/python -m unittest discover -s ci -p 'test_checks.py' -v
+      - name: Run functional acceptance checks
+        env:
+          RUSTUP_TOOLCHAIN: 1.99.1
+        run: .ci-venv/bin/python ci/validate.py --cargo cargo --output ci-results/functional
+      - name: Publish functional evidence
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: functional-${{ github.run_id }}-${{ github.run_attempt }}
+          path: ci-results/functional/
+          if-no-files-found: warn
+          retention-days: 14
+      - name: State validation scope
+        if: always()
+        run: |
+          echo 'Functional checks only. Success is not memory, side-channel, or cryptographic security approval.' >> "$GITHUB_STEP_SUMMARY"
+          echo 'Memory controls run separately under the Runtime memory diagnostics workflow.' >> "$GITHUB_STEP_SUMMARY"
