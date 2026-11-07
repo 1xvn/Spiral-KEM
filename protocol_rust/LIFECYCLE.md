@@ -122,7 +122,7 @@ Check `result.json` and original logs in each result folder.
 - Test sources must match the commit and remain unchanged during execution.
 - Overall `status` and each test suite must be `passed`.
 - Each suite's actual scenario list/execution count must match the requested round count.
-- Process errors, panics, sanitizer errors, deadline overruns, and missing tests must be recorded as failures.
+- Unexpected process failures, panics, sanitizer errors, external watchdog timeouts, and missing tests must be recorded as failures.
 
 Rust test builds use ASan/leak checks and debug/overflow checks.
 These results do not collect libFuzzer instrumentation or runtime coverage. They evaluate functionality/cleanup
@@ -133,6 +133,11 @@ Bundles contain result JSON, original logs, public test observations, and hashes
 executables, temporary certificates, private keys, signing seeds, and separately installed Rust tools.
 Test credentials are generated fresh during execution and must not be reused for services.
 These OCI/WSL lifecycle results are newly collected and not replaced with preceding record results.
+
+Locally, the same runner passed 5 rounds with 40 channel tests (135 detailed conditions),
+30 actual Rust TLS cases, and 30 independent peer TLS cases. Also checked compilation audits,
+result bundles, hashes, and exclusion of secret test material.
+Actual results and limitations are recorded in the [local validation record](evidence/lifecycle_20261108/README.md).
 
 ## 6. Transfer result files to Windows
 

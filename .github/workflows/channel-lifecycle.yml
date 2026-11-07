@@ -35,7 +35,8 @@ jobs:
           python -m venv "$RUNNER_TEMP/spiral-lifecycle-venv"
           "$RUNNER_TEMP/spiral-lifecycle-venv/bin/python" -m pip install --disable-pip-version-check -r protocol_v01/requirements.txt
       - name: Verify lifecycle runner gates
-        run: '"$RUNNER_TEMP/spiral-lifecycle-venv/bin/python" -m unittest discover -s protocol_rust/lifecycle -p ''test_*.py'' -v'
+        run: |
+          "$RUNNER_TEMP/spiral-lifecycle-venv/bin/python" -m unittest discover -s protocol_rust/lifecycle -p 'test_*.py' -v
       - name: Install isolated pinned official nightly
         run: python -S protocol_rust/fuzzing/install_toolchain.py --prefix "$RUNNER_TEMP/spiral-parser-nightly-20261107"
       - name: Build and run bounded lifecycle matrix
