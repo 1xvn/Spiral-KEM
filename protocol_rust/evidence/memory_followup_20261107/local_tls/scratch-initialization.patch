@@ -1,0 +1,6 @@
+--- a/pregenerated/ghash-x86_64-elf.S
++++ b/pregenerated/ghash-x86_64-elf.S
+@@ -675,0 +676,3 @@
++	vpxor %xmm0,%xmm0,%xmm0
++	vpxor %xmm1,%xmm1,%xmm1
++	vpxor %xmm2,%xmm2,%xmm2

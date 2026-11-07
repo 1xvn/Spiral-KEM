@@ -1,0 +1,11 @@
+{
+  "checked_at_utc": "2026-11-07",
+  "repository": "briansmith/ring",
+  "commit": "57f81b455c30d55e3c92b55255cb0410abbb0dee",
+  "manifest_version": "0.17.16000",
+  "release_status": "development main only; no published fixed release verified",
+  "short_path": "same copy / branch / XOR idiom remains in inspected main source",
+  "source_url": "https://github.com/briansmith/ring/blob/57f81b455c30d55e3c92b55255cb0410abbb0dee/crypto/fipsmodule/aes/asm/ghash-x86_64.pl",
+  "cargo_url": "https://github.com/briansmith/ring/blob/57f81b455c30d55e3c92b55255cb0410abbb0dee/Cargo.toml",
+  "contacted_upstream": false
+}

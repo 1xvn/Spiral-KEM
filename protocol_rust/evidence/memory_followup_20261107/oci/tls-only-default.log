@@ -1,0 +1,75 @@
+==23666== Memcheck, a memory error detector
+==23666== Copyright (C) 2002-2022, and GNU GPL'd, by Julian Seward et al.
+==23666== Using Valgrind-3.22.0 and LibVEX; rerun with -h for copyright info
+==23666== Command: /home/ubuntu/spiral_v03_oci/Spiral-KEM-main/protocol_rust/target/audit/examples/tls_control /tmp/spiral-memcheck-ww_53reh/cert.pem /tmp/spiral-memcheck-ww_53reh/key.pem default
+==23666== Parent PID: 23653
+==23666==
+==23666==
+==23666== HEAP SUMMARY:
+==23666==     in use at exit: 548 bytes in 2 blocks
+==23666==   total heap usage: 208 allocs, 206 frees, 111,279 bytes allocated
+==23666==
+==23666== 4 bytes in 1 blocks are still reachable in loss record 1 of 2
+==23666==    at 0x4885250: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-arm64-linux.so)
+==23666==    by 0x1B44A7: alloc (unix.rs:31)
+==23666==    by 0x1B44A7: __rdl_alloc (alloc.rs:472)
+==23666==    by 0x1B44A7: alloc (alloc.rs:130)
+==23666==    by 0x1B44A7: alloc_impl_runtime (alloc.rs:302)
+==23666==    by 0x1B44A7: alloc_impl (alloc.rs:424)
+==23666==    by 0x1B44A7: allocate (alloc.rs:541)
+==23666==    by 0x1B44A7: try_clone_from_ref_in<str, alloc::alloc::Global> (boxed.rs:886)
+==23666==    by 0x1B44A7: clone_from_ref_in<str, alloc::alloc::Global> (boxed.rs:845)
+==23666==    by 0x1B44A7: clone_from_ref<str> (boxed.rs:798)
+==23666==    by 0x1B44A7: from (convert.rs:138)
+==23666==    by 0x1B44A7: call_once<fn(&str) -> alloc::boxed::Box<str, alloc::alloc::Global>, (&str)> (function.rs:250)
+==23666==    by 0x1B44A7: map<&str, alloc::boxed::Box<str, alloc::alloc::Global>, fn(&str) -> alloc::boxed::Box<str, alloc::alloc::Global>> (option.rs:1163)
+==23666==    by 0x1B44A7: {closure#0} (thread_info.rs:114)
+==23666==    by 0x1B44A7: {closure#0}<std::sys::pal::unix::stack_overflow::thread_info::set_current_info::{closure_env#0}, core::option::Option<alloc::boxed::Box<str, alloc::alloc::Global>>> (current.rs:234)
+==23666==    by 0x1B44A7: try_with_current<std::thread::current::with_current_name::{closure_env#0}<std::sys::pal::unix::stack_overflow::thread_info::set_current_info::{closure_env#0}, core::option::Option<alloc::boxed::Box<str, alloc::alloc::Global>>>, core::option::Option<alloc::boxed::Box<str, alloc::alloc::Global>>> (current.rs:204)
+==23666==    by 0x1B44A7: with_current_name<std::sys::pal::unix::stack_overflow::thread_info::set_current_info::{closure_env#0}, core::option::Option<alloc::boxed::Box<str, alloc::alloc::Global>>> (current.rs:216)
+==23666==    by 0x1B44A7: std::sys::pal::unix::stack_overflow::thread_info::set_current_info (thread_info.rs:114)
+==23666==    by 0x1AF26B: init (stack_overflow.rs:185)
+==23666==    by 0x1AF26B: init (mod.rs:38)
+==23666==    by 0x1AF26B: init (rt.rs:118)
+==23666==    by 0x1AF26B: {closure#0} (rt.rs:173)
+==23666==    by 0x1AF26B: do_call<std::rt::lang_start_internal::{closure_env#0}, isize> (panicking.rs:576)
+==23666==    by 0x1AF26B: catch_unwind<isize, std::rt::lang_start_internal::{closure_env#0}> (panicking.rs:544)
+==23666==    by 0x1AF26B: catch_unwind<std::rt::lang_start_internal::{closure_env#0}, isize> (panic.rs:359)
+==23666==    by 0x1AF26B: std::rt::lang_start_internal (rt.rs:171)
+==23666==    by 0x1D1123: main (in /home/ubuntu/spiral_v03_oci/Spiral-KEM-main/protocol_rust/target/audit/examples/tls_control)
+==23666==
+==23666== 544 bytes in 1 blocks are still reachable in loss record 2 of 2
+==23666==    at 0x4885250: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-arm64-linux.so)
+==23666==    by 0x1B468F: alloc (unix.rs:31)
+==23666==    by 0x1B468F: __rdl_alloc (alloc.rs:472)
+==23666==    by 0x1B468F: alloc (alloc.rs:130)
+==23666==    by 0x1B468F: alloc_impl_runtime (alloc.rs:302)
+==23666==    by 0x1B468F: alloc_impl (alloc.rs:424)
+==23666==    by 0x1B468F: allocate (alloc.rs:541)
+==23666==    by 0x1B468F: try_new_uninit_in<alloc::collections::btree::node::LeafNode<usize, std::sys::pal::unix::stack_overflow::thread_info::ThreadInfo>, alloc::alloc::Global> (boxed.rs:619)
+==23666==    by 0x1B468F: new_uninit_in<alloc::collections::btree::node::LeafNode<usize, std::sys::pal::unix::stack_overflow::thread_info::ThreadInfo>, alloc::alloc::Global> (boxed.rs:586)
+==23666==    by 0x1B468F: new<usize, std::sys::pal::unix::stack_overflow::thread_info::ThreadInfo, alloc::alloc::Global> (node.rs:87)
+==23666==    by 0x1B468F: new_leaf<usize, std::sys::pal::unix::stack_overflow::thread_info::ThreadInfo, alloc::alloc::Global> (node.rs:225)
+==23666==    by 0x1B468F: insert_entry<usize, std::sys::pal::unix::stack_overflow::thread_info::ThreadInfo, alloc::alloc::Global> (entry.rs:452)
+==23666==    by 0x1B468F: insert<usize, std::sys::pal::unix::stack_overflow::thread_info::ThreadInfo, alloc::alloc::Global> (entry.rs:426)
+==23666==    by 0x1B468F: insert<usize, std::sys::pal::unix::stack_overflow::thread_info::ThreadInfo, alloc::alloc::Global> (map.rs:1052)
+==23666==    by 0x1B468F: std::sys::pal::unix::stack_overflow::thread_info::set_current_info (thread_info.rs:122)
+==23666==    by 0x1AF26B: init (stack_overflow.rs:185)
+==23666==    by 0x1AF26B: init (mod.rs:38)
+==23666==    by 0x1AF26B: init (rt.rs:118)
+==23666==    by 0x1AF26B: {closure#0} (rt.rs:173)
+==23666==    by 0x1AF26B: do_call<std::rt::lang_start_internal::{closure_env#0}, isize> (panicking.rs:576)
+==23666==    by 0x1AF26B: catch_unwind<isize, std::rt::lang_start_internal::{closure_env#0}> (panicking.rs:544)
+==23666==    by 0x1AF26B: catch_unwind<std::rt::lang_start_internal::{closure_env#0}, isize> (panic.rs:359)
+==23666==    by 0x1AF26B: std::rt::lang_start_internal (rt.rs:171)
+==23666==    by 0x1D1123: main (in /home/ubuntu/spiral_v03_oci/Spiral-KEM-main/protocol_rust/target/audit/examples/tls_control)
+==23666==
+==23666== LEAK SUMMARY:
+==23666==    definitely lost: 0 bytes in 0 blocks
+==23666==    indirectly lost: 0 bytes in 0 blocks
+==23666==      possibly lost: 0 bytes in 0 blocks
+==23666==    still reachable: 548 bytes in 2 blocks
+==23666==         suppressed: 0 bytes in 0 blocks
+==23666==
+==23666== For lists of detected and suppressed errors, rerun with: -s
+==23666== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)

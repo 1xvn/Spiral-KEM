@@ -1,0 +1,12 @@
+{
+  "vcs": {
+    "git": {
+      "sha1": "2723abbca9e83347d82b056d5b239c6604f786df",
+      "dirty": true
+    },
+    "path_in_vcs": ""
+  },
+  "crate_sha256": "a4689e6c2294d81e88dc6261c768b63bc4fcdb852be6d1352498b114f61383b7",
+  "assembly_sha256": "66192b018e799f09f1cf9891861ed9e2372fd7c5f03d61f711ff81ea1edbb7a5",
+  "published_crate_matches_local_assembly": true
+}

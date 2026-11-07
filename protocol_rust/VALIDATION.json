@@ -5,7 +5,7 @@
   "base_commit": "7f3d987fd18b9b5d851f299d8d4234b447d5920f",
   "delivery_branch": "spiral-opt2-secret-lifecycle-v03-20261106",
   "wire_version": "SPK1 v0.1 / suite 0xF001",
-  "status": "functional checks passed; TLS memory warning and libtest possible-loss remain open; no constant-time proof",
+  "status": "functional checks passed; original WSL TLS Memcheck failures retained with scoped local false-positive evidence; libtest possible-loss remains open; no constant-time proof",
   "environment": {
     "os_release": {
       "NAME": "Debian GNU/Linux",
@@ -427,5 +427,27 @@
     "No native Windows/OCI ARM/Ubuntu24 whole-OS run this turn. Rebuild and retest on target.",
     "Five reference scenarios retain explicit API/scope differences in REGRESSION_MAP.json.",
     "No coverage-guided fuzzing, long soak, independent audit, or sustained capacity test."
-  ]
+  ],
+  "followups": [
+    {
+      "date_utc": "2026-11-07",
+      "document": "MEMORY_FOLLOWUP.md",
+      "evidence": "evidence/memory_followup_20261107/SUMMARY.json",
+      "user_oci_memcheck_passed_cases": 6,
+      "user_oci_memcheck_total_cases": 6,
+      "user_wsl_memcheck_passed_cases": 2,
+      "user_wsl_memcheck_total_cases": 6,
+      "original_wsl_fully_passed": false,
+      "local_ghash_definedness_false_positive_mechanism_reproduced": true,
+      "libtest_48_byte_possible_loss_retested": false,
+      "production_crypto_changed": false,
+      "production_memcheck_policy_changed": false,
+      "full_functional_suite_rerun_for_this_followup": false
+    }
+  ],
+  "artifact_language_normalization": {
+    "applied": true,
+    "historical_execution_repeated": false,
+    "integrity_values_describe_translated_artifacts": true
+  }
 }
