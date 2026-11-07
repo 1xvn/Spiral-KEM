@@ -130,6 +130,9 @@ ASan/leak diagnostics, panics, verdict mismatches, and missing instrumentation e
 
 User OCI/WSL results for this new Rust parser campaign have not yet been collected.
 Results of preceding C or Python fuzzing are not used as run counts for this campaign.
+In local Debian validation, each target executed 100,000 times; final saved inputs
+all matched Python: frame 129 and hello 107.
+Validation evidence and existing functionality regression results are in the [local record](evidence/parser_fuzz_20261107/README.md).
 
 ## 6. Transfer archives to Windows
 

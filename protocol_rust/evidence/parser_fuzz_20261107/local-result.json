@@ -1,0 +1,903 @@
+{
+  "status": "passed",
+  "label": "local",
+  "started_utc": "2026-11-07T13:38:24.036309+00:00",
+  "platform": {
+    "system": "Linux",
+    "node": "6f5ecbe8475e",
+    "release": "6.18.57",
+    "version": "#1 SMP Tue Oct 20 21:56:04 UTC 2026",
+    "machine": "x86_64",
+    "processor": ""
+  },
+  "python": "3.12.14 (main, Aug 25 2026, 14:00:49) [Clang 22.1.3 ]",
+  "commands": [
+    {
+      "name": "git-head",
+      "argv": [
+        "git",
+        "rev-parse",
+        "HEAD"
+      ],
+      "timeout_seconds": 30
+    },
+    {
+      "name": "rustc-version",
+      "argv": [
+        "/workspace/rust-parser-tools/installer-verified/bin/rustc",
+        "-Vv"
+      ],
+      "timeout_seconds": 30
+    },
+    {
+      "name": "cargo-version",
+      "argv": [
+        "/workspace/rust-parser-tools/installer-verified/bin/cargo",
+        "-V"
+      ],
+      "timeout_seconds": 30
+    },
+    {
+      "name": "openssl",
+      "argv": [
+        "openssl",
+        "version",
+        "-a"
+      ],
+      "timeout_seconds": 30
+    },
+    {
+      "name": "compile-oracle-tests",
+      "argv": [
+        "/workspace/rust-parser-tools/installer-verified/bin/rustc",
+        "--edition",
+        "2021",
+        "--test",
+        "/workspace/Spiral-KEM/protocol_rust/fuzz/oracles.rs",
+        "-o",
+        "/workspace/rust-parser-validation-20261107/build/oracle-tests"
+      ],
+      "timeout_seconds": 120
+    },
+    {
+      "name": "oracle-tests",
+      "argv": [
+        "/workspace/rust-parser-validation-20261107/build/oracle-tests"
+      ],
+      "timeout_seconds": 120
+    },
+    {
+      "name": "cargo-build",
+      "argv": [
+        "/workspace/rust-parser-tools/installer-verified/bin/cargo",
+        "build",
+        "--locked",
+        "--manifest-path",
+        "/workspace/Spiral-KEM/protocol_rust/fuzz/Cargo.toml",
+        "--release",
+        "--target",
+        "x86_64-unknown-linux-gnu",
+        "--target-dir",
+        "/workspace/rust-parser-validation-20261107/build/cargo-target",
+        "-j",
+        "2"
+      ],
+      "timeout_seconds": 1800
+    },
+    {
+      "name": "frame/engine",
+      "argv": [
+        "/workspace/rust-parser-validation-20261107/build/cargo-target/x86_64-unknown-linux-gnu/release/frame_target",
+        "/workspace/rust-parser-validation-20261107/frame/corpus",
+        "-runs=100000",
+        "-max_total_time=60",
+        "-seed=20261107",
+        "-max_len=16500",
+        "-timeout=5",
+        "-rss_limit_mb=1536",
+        "-print_final_stats=1",
+        "-artifact_prefix=/workspace/rust-parser-validation-20261107/frame/artifacts/"
+      ],
+      "timeout_seconds": 120
+    },
+    {
+      "name": "frame/replay/batch-0000",
+      "argv": [
+        "/workspace/rust-parser-validation-20261107/build/cargo-target/x86_64-unknown-linux-gnu/release/replay_target",
+        "frame",
+        "/workspace/rust-parser-validation-20261107/frame/corpus/0043554108736e2be4fbce05ffc318e9d100d8c6cd4cf99bc4e3114d5a0908c6",
+        "/workspace/rust-parser-validation-20261107/frame/corpus/010fd575c7e51194b31c04a30ed49b77c8da1137",
+        "/workspace/rust-parser-validation-20261107/frame/corpus/0210dfa4018861707da4e908def6e638fbcb3800",
+        "/workspace/rust-parser-validation-20261107/frame/corpus/02aa629c8b16cd17a44f3a0efec2feed43937642",
+        "/workspace/rust-parser-validation-20261107/frame/corpus/0caba824594845e792adbdad143e4237285d99fbcc7b9ad058f2351b3b144332",
+        "/workspace/rust-parser-validation-20261107/frame/corpus/0d12d4f32a8dcf0ce1e575c18f5aff647c8808f9",
+        "/workspace/rust-parser-validation-20261107/frame/corpus/0e64d69d03e1b1c22abed9658bb2f3c38a816582",
+        "/workspace/rust-parser-validation-20261107/frame/corpus/12c03648cbae41646a906f33379642297d2f1b32",
+        "/workspace/rust-parser-validation-20261107/frame/corpus/15138407afe7e3cb1b907bc1457f27c4af9ab654687302ac2f26e300a06529f5",
+        "/workspace/rust-parser-validation-20261107/frame/corpus/16180605196480d288907975218acc54aaf2ecfa",
+        "/workspace/rust-parser-validation-20261107/frame/corpus/1953d934c2985777ca2ebf44218bf32f634569a3f87a45e91623b980c072fbd3",
+        "/workspace/rust-parser-validation-20261107/frame/corpus/1c1f09081430261cc6ca07f03f01cbe67d97aec49a7c49db4ed87d2152434463",
+        "/workspace/rust-parser-validation-20261107/frame/corpus/22d2935a1445d10ed4dbbefba17ed93b1336a8b7",
+        "/workspace/rust-parser-validation-20261107/frame/corpus/2300fff01fc79a38b7ae1a8fcd02b70341d44e1f",
+        "/workspace/rust-parser-validation-20261107/frame/corpus/264785be4125bf5dccef8820bfacb399f974552e7c5566d4e221e4215ecf1cdb",
+        "/workspace/rust-parser-validation-20261107/frame/corpus/2dbd26166b35bc7b1c5734ef315927e72109e24a4d3161b0e61e74cee975ed97",
+        "/workspace/rust-parser-validation-20261107/frame/corpus/2f512fcd843fbf28548e340c502eaab55961448c",
+        "/workspace/rust-parser-validation-20261107/frame/corpus/307c66571af5b3947ae9cf33944023a27a6f4eca",
+        "/workspace/rust-parser-validation-20261107/frame/corpus/332864a0b7c9038595c178fd24dfd65fa99ac49f9ac0612e8754e6a855a6b714",
+        "/workspace/rust-parser-validation-20261107/frame/corpus/3579810182aa58a77d11b01e90daf5ad50b9b846",
+        "/workspace/rust-parser-validation-20261107/frame/corpus/37d295c8973b77e55f2c2d115f9afa1ac7fe45f01e543bf59b42a0102fe84980",
+        "/workspace/rust-parser-validation-20261107/frame/corpus/381b354fb076057f791c2972ed97a1396d2b2164",
+        "/workspace/rust-parser-validation-20261107/frame/corpus/3f23d6fda79dbe4af05b2508e4b7441b08234505",
+        "/workspace/rust-parser-validation-20261107/frame/corpus/4173c5981573b2fe802a7144f30e9a00fd6671919afbdcdb01f8d349a2c75ddb",
+        "/workspace/rust-parser-validation-20261107/frame/corpus/4276ed4f6eb162d249eef6eb53ea942180347046",
+        "/workspace/rust-parser-validation-20261107/frame/corpus/437b77e2f0110b9d8457c466c0916dc37793e05042320f9ce3834a8918a1c5eb",
+        "/workspace/rust-parser-validation-20261107/frame/corpus/44062705fc82cfd3b15805dabeda2c7e446610a4",
+        "/workspace/rust-parser-validation-20261107/frame/corpus/440eba736456f8c9410534d37f27f5ca754f734f",
+        "/workspace/rust-parser-validation-20261107/frame/corpus/462ad206361542c6b495ebfab3ce9d67b9f4dad5",
+        "/workspace/rust-parser-validation-20261107/frame/corpus/48f5b5c28d5168761cb735802aabfe2a8c8f599e",
+        "/workspace/rust-parser-validation-20261107/frame/corpus/4ae5ba585a8dece3a9aa8744b53b30cd7657a851342cb09c47f1a8936c3c2e57",
+        "/workspace/rust-parser-validation-20261107/frame/corpus/4d80390632006067ceb2e10a04f445fa2c09fc82b75ae269775bd632fc86a17d"
+      ],
+      "timeout_seconds": 180
+    },
+    {
+      "name": "frame/replay/batch-0001",
+      "argv": [
+        "/workspace/rust-parser-validation-20261107/build/cargo-target/x86_64-unknown-linux-gnu/release/replay_target",
+        "frame",
+        "/workspace/rust-parser-validation-20261107/frame/corpus/4ea94fecebc55f016dfcd54707f70742da148203",
+        "/workspace/rust-parser-validation-20261107/frame/corpus/4fd2d25f259415b587798072887f0c3b8e66147f",
+        "/workspace/rust-parser-validation-20261107/frame/corpus/5070abd0837bb8003f6fe6b63a626481b0e1a041b057db4eea74eb47ca51eb32",
+        "/workspace/rust-parser-validation-20261107/frame/corpus/521fecee440b87bbc259c196a0271f800a2cdfa0",
+        "/workspace/rust-parser-validation-20261107/frame/corpus/52ab8bb2d6832e5deaa490f8a478ab50ced793b5fbfb882a143ff33232414bba",
+        "/workspace/rust-parser-validation-20261107/frame/corpus/53e67ceda65b866a8893ffb02cf43f2784a1b0f3dc1633680abf82d7840a98db",
+        "/workspace/rust-parser-validation-20261107/frame/corpus/5730bb181e34d5eeee41a5b8022d53c9edf7659d",
+        "/workspace/rust-parser-validation-20261107/frame/corpus/574c280e66685ae6f89d05e3923a69f04729d547bb6fe9a854b73b86c127ae8f",
+        "/workspace/rust-parser-validation-20261107/frame/corpus/5b3b030a7b01d24995a87a3569ee0d5f36634320",
+        "/workspace/rust-parser-validation-20261107/frame/corpus/622f83ce608f5e3ca363c0dc467524bef8fd73b3",
+        "/workspace/rust-parser-validation-20261107/frame/corpus/63a958de152ce53ccce828ca6b138a5649f1acb7",
+        "/workspace/rust-parser-validation-20261107/frame/corpus/643fe88059f670465b21b8a715932217e7074f68",
+        "/workspace/rust-parser-validation-20261107/frame/corpus/6463bd4f541fb1d402bf1020da26680fedb53497",
+        "/workspace/rust-parser-validation-20261107/frame/corpus/66a1056a153a67d4af28b8ddc6b615764958e08fe6c19dbab959acf15b2cff6d",
+        "/workspace/rust-parser-validation-20261107/frame/corpus/67b5b7d99352131ba6469b2f9c881aaba2f8dbe2",
+        "/workspace/rust-parser-validation-20261107/frame/corpus/694767258c2752d88dc76d280884840c0ead2b06",
+        "/workspace/rust-parser-validation-20261107/frame/corpus/6c40cfaae7ec807d8e132012ca6a27f2336e6891",
+        "/workspace/rust-parser-validation-20261107/frame/corpus/6e40b3e49e1adab9fa0119c4d3af5b4738f954edf937c0ccb777feed22388147",
+        "/workspace/rust-parser-validation-20261107/frame/corpus/70e73765221dac28f1df3fba1bbb31e7482363a7",
+        "/workspace/rust-parser-validation-20261107/frame/corpus/7175bb6a3080bfb881cac6435190ea4c1c0c828f",
+        "/workspace/rust-parser-validation-20261107/frame/corpus/71e908ef40c68c38a883dbd6d429ee6c940f5e13",
+        "/workspace/rust-parser-validation-20261107/frame/corpus/7396f949b0c8c48a3c5854b3f425dd00e75caccea5146213eb6ba31621c116d2",
+        "/workspace/rust-parser-validation-20261107/frame/corpus/7430a2cbeed2d7f638bf854796fea0f13f1206a5",
+        "/workspace/rust-parser-validation-20261107/frame/corpus/7861d91e72371a1eb6aa235d2881c16f6164f2cd67a6d76904752d1dc2568181",
+        "/workspace/rust-parser-validation-20261107/frame/corpus/7937486f4fcf5dde4de74eccd79595efccb10f07",
+        "/workspace/rust-parser-validation-20261107/frame/corpus/7c32ffb59d3005c8c40a066751ed59bad2c38c51",
+        "/workspace/rust-parser-validation-20261107/frame/corpus/7c38bd2fb0851853c566521b590d676b6bafab3e35a9a2f58ca412f219bfdf96",
+        "/workspace/rust-parser-validation-20261107/frame/corpus/7facdf1d71bc3843414ca1ce5543ef4390ad10ba",
+        "/workspace/rust-parser-validation-20261107/frame/corpus/80ddf46bc385ffa6fde021a4c2a4d76e6793f357",
+        "/workspace/rust-parser-validation-20261107/frame/corpus/828955b33d8927848e8cc6624924c89e336243f2",
+        "/workspace/rust-parser-validation-20261107/frame/corpus/89f7f64776a1ed8ee0cc931be95ab630050d6a17",
+        "/workspace/rust-parser-validation-20261107/frame/corpus/8ad7c4b05719ad90b2840ac450baa819f0a45509"
+      ],
+      "timeout_seconds": 180
+    },
+    {
+      "name": "frame/replay/batch-0002",
+      "argv": [
+        "/workspace/rust-parser-validation-20261107/build/cargo-target/x86_64-unknown-linux-gnu/release/replay_target",
+        "frame",
+        "/workspace/rust-parser-validation-20261107/frame/corpus/8f2d2353d8323c056583ba3bdd356e97922ef072",
+        "/workspace/rust-parser-validation-20261107/frame/corpus/912b98440e544309a931d7f250737115d5d291e55ffd1b98680e25861dcc055f",
+        "/workspace/rust-parser-validation-20261107/frame/corpus/91bb48bf32c12bad270cfdebde290394da20f1fb",
+        "/workspace/rust-parser-validation-20261107/frame/corpus/920cac21969f77b6be36a66f4aba8bc3ace094c985970543bbef68ddc71dc307",
+        "/workspace/rust-parser-validation-20261107/frame/corpus/9a0cf5d03f94a33eba092940ca4357312899e0f5",
+        "/workspace/rust-parser-validation-20261107/frame/corpus/9c220d0e28156a405860398b9642bdf4a6c986cd78c851273dcc97b0271d6025",
+        "/workspace/rust-parser-validation-20261107/frame/corpus/9c5d963e03cbf870026804da29c084030afb0e93",
+        "/workspace/rust-parser-validation-20261107/frame/corpus/9d40ed029e59bd043e5275a1ab511f6395257509",
+        "/workspace/rust-parser-validation-20261107/frame/corpus/9d9f59cf721300f19323cbf3b123eebfeadc52f2929b5730ed9a464b2f95b897",
+        "/workspace/rust-parser-validation-20261107/frame/corpus/a311691ba6b5e4cd480b21bf5e0300408c3bc356",
+        "/workspace/rust-parser-validation-20261107/frame/corpus/a36792fa266b1ade84f81733dc3ba2a97561a03f",
+        "/workspace/rust-parser-validation-20261107/frame/corpus/a455d7cf937ddd135c6ec0e887acf1cedfce431884d556b1674ab328e3f035a1",
+        "/workspace/rust-parser-validation-20261107/frame/corpus/a457c8fcfa8676a293089d95396d248202645d63",
+        "/workspace/rust-parser-validation-20261107/frame/corpus/a500eae3426e3c70af5efbc56dc940d068de9f6e",
+        "/workspace/rust-parser-validation-20261107/frame/corpus/a6085c150758884190d71285c766c8c7dc61fe48",
+        "/workspace/rust-parser-validation-20261107/frame/corpus/a91bc443e2c0b6bb9b523b1e59e764cda26be7a19e4b0b8ec060c1292b850125",
+        "/workspace/rust-parser-validation-20261107/frame/corpus/ac70bbad3393c11a58cca9f1553f45bf842de5e4",
+        "/workspace/rust-parser-validation-20261107/frame/corpus/ad294db5ad5e657180a5fe1225f3355fc4d1bceb",
+        "/workspace/rust-parser-validation-20261107/frame/corpus/b100aa77eeef732df5c746042b3260db10cdf3bcfe1719359710c544084589ff",
+        "/workspace/rust-parser-validation-20261107/frame/corpus/b21cd11440d3b60813ce695bfe1e65e25fe65a0a",
+        "/workspace/rust-parser-validation-20261107/frame/corpus/b64e2f80cb4b908ff80d8b4f2054caf32b92399a",
+        "/workspace/rust-parser-validation-20261107/frame/corpus/b6904afa2ffa55737544652d55dc9de5f75dc01a",
+        "/workspace/rust-parser-validation-20261107/frame/corpus/beeafb3dd992f66ce70cc8a4c124a25dd793203f3a40f5dcf84bdff0315e71b2",
+        "/workspace/rust-parser-validation-20261107/frame/corpus/c2f77a3e7d4bf85f49757486981bd9c4ddc60641",
+        "/workspace/rust-parser-validation-20261107/frame/corpus/c71bfa8d1959687bd4b960c23e002067b61296a8",
+        "/workspace/rust-parser-validation-20261107/frame/corpus/c9031456b3f1f8cb031d44da0bf807d173b8fd47",
+        "/workspace/rust-parser-validation-20261107/frame/corpus/c9c2fb520098086f5dbadc721ee16142bbb02e3fd80aa1a01195aee39b1db271",
+        "/workspace/rust-parser-validation-20261107/frame/corpus/ca52cd4c48a1c1f016012c4a8dd417f0c33378ff",
+        "/workspace/rust-parser-validation-20261107/frame/corpus/cb58cc69496c8b124688e825db3a889e7be7ba63",
+        "/workspace/rust-parser-validation-20261107/frame/corpus/cb7418227128e2cf59c5b1c2d54fda06f1a87c3e",
+        "/workspace/rust-parser-validation-20261107/frame/corpus/cd23180055f8dadbf2b0776b9aadf80fef1770a0e2b3ac2b1dfe175cdd42d91a",
+        "/workspace/rust-parser-validation-20261107/frame/corpus/ce35774f058cd13a22dbdb69bc52285b403b9fda"
+      ],
+      "timeout_seconds": 180
+    },
+    {
+      "name": "frame/replay/batch-0003",
+      "argv": [
+        "/workspace/rust-parser-validation-20261107/build/cargo-target/x86_64-unknown-linux-gnu/release/replay_target",
+        "frame",
+        "/workspace/rust-parser-validation-20261107/frame/corpus/cecc404f8c224844331c4aa6e55749836cbcc79b",
+        "/workspace/rust-parser-validation-20261107/frame/corpus/d0740e347cbf96ef23e0217b9fac1759919c71ef",
+        "/workspace/rust-parser-validation-20261107/frame/corpus/d07e986b1b194f659a5445c04b19a278683a8e4b",
+        "/workspace/rust-parser-validation-20261107/frame/corpus/d1ad264c02f414aab15146e25a86f36d38020c933edc2c99e2ccef2e087cb9ce",
+        "/workspace/rust-parser-validation-20261107/frame/corpus/d3ff49e12448aab090d8a445686232a8a3d46b4b",
+        "/workspace/rust-parser-validation-20261107/frame/corpus/d5fe6a834183a662c39c691a4b43d6f890c42bfd",
+        "/workspace/rust-parser-validation-20261107/frame/corpus/da3a92682aaa4421221fd95d988c6138c2175c0c",
+        "/workspace/rust-parser-validation-20261107/frame/corpus/dc7d8326dd1b70884cb236260edf7984f88434a0",
+        "/workspace/rust-parser-validation-20261107/frame/corpus/de510d6ef61acf5d29f36ea9a584dde993fbf786",
+        "/workspace/rust-parser-validation-20261107/frame/corpus/de6e6941b2d9ad9b7638a3a1538e4d2a7faa3754",
+        "/workspace/rust-parser-validation-20261107/frame/corpus/dfc6ab5cd5de2c69d0e2afd4209269f133e5a9d5c519274bc1506ecec908f84a",
+        "/workspace/rust-parser-validation-20261107/frame/corpus/e162086b18075b861ce049cc6f19245dda890d10a4ea861c62e70ad3ed32bbf6",
+        "/workspace/rust-parser-validation-20261107/frame/corpus/e1bab507dad127873a0bb6d9bcce0d36ac66548e",
+        "/workspace/rust-parser-validation-20261107/frame/corpus/e2522076c166490ed85ab422d17fc7b527db46abcb819ffd870c61232f53557e",
+        "/workspace/rust-parser-validation-20261107/frame/corpus/e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "/workspace/rust-parser-validation-20261107/frame/corpus/e41104cb19d0fe2e4ed06e7de8f0d77b30fbaee0",
+        "/workspace/rust-parser-validation-20261107/frame/corpus/e4d451181bd572c0c68453bb19c33946f79c13f0",
+        "/workspace/rust-parser-validation-20261107/frame/corpus/ea541212bdf3f535f081a6e5e4c9e4663bfdb813",
+        "/workspace/rust-parser-validation-20261107/frame/corpus/eb5a0601b5f763fdde1835e3f460cce702e33801",
+        "/workspace/rust-parser-validation-20261107/frame/corpus/eb9817b3a0357706730b136ca356823601f68b1f54fedc4a8c244e6928ebd671",
+        "/workspace/rust-parser-validation-20261107/frame/corpus/ec3b97044428c12ad43e7b35a4119d9d27686c81",
+        "/workspace/rust-parser-validation-20261107/frame/corpus/ed22eb9665105fdafb8a4bbb8a8b487771d2533c",
+        "/workspace/rust-parser-validation-20261107/frame/corpus/ed53d62c0bcd0fd98bf7561a4e80c371922e537c",
+        "/workspace/rust-parser-validation-20261107/frame/corpus/eda8900aa25eea15fba621221fc14657af101960388c23b4d84727ade8e79340",
+        "/workspace/rust-parser-validation-20261107/frame/corpus/ef81a12f1b94b5ecc45afdf2ea5787755fff694e",
+        "/workspace/rust-parser-validation-20261107/frame/corpus/ef94be34519004c36dd72486ba5f3a0fe7510d3d",
+        "/workspace/rust-parser-validation-20261107/frame/corpus/f3a0c65365fe892975e03565487f26810a7bb73562a5d892a57157abdb5e7549",
+        "/workspace/rust-parser-validation-20261107/frame/corpus/f4475c1dafaa389744eacdb5531308c574bd7b470237b15a0fa7005b462bd94f",
+        "/workspace/rust-parser-validation-20261107/frame/corpus/f605d8b46792c2d7e3ef3b47ff2a1e82b1bed628",
+        "/workspace/rust-parser-validation-20261107/frame/corpus/f877951cdb5325db25881378505cf4a024140e1a",
+        "/workspace/rust-parser-validation-20261107/frame/corpus/f93efe753e5fad5eedfdee20b48390a6c64e11877d85cec259aa2bc47458be84",
+        "/workspace/rust-parser-validation-20261107/frame/corpus/fa4b0eab89da5b17e2fffb2c0970b6e0d96688f7"
+      ],
+      "timeout_seconds": 180
+    },
+    {
+      "name": "frame/replay/batch-0004",
+      "argv": [
+        "/workspace/rust-parser-validation-20261107/build/cargo-target/x86_64-unknown-linux-gnu/release/replay_target",
+        "frame",
+        "/workspace/rust-parser-validation-20261107/frame/corpus/feb9530d7925245c8dc07c4d8ea29009eafc3187"
+      ],
+      "timeout_seconds": 180
+    },
+    {
+      "name": "hello/engine",
+      "argv": [
+        "/workspace/rust-parser-validation-20261107/build/cargo-target/x86_64-unknown-linux-gnu/release/hello_target",
+        "/workspace/rust-parser-validation-20261107/hello/corpus",
+        "-runs=100000",
+        "-max_total_time=60",
+        "-seed=20261107",
+        "-max_len=512",
+        "-timeout=5",
+        "-rss_limit_mb=1536",
+        "-print_final_stats=1",
+        "-artifact_prefix=/workspace/rust-parser-validation-20261107/hello/artifacts/"
+      ],
+      "timeout_seconds": 120
+    },
+    {
+      "name": "hello/replay/batch-0000",
+      "argv": [
+        "/workspace/rust-parser-validation-20261107/build/cargo-target/x86_64-unknown-linux-gnu/release/replay_target",
+        "hello",
+        "/workspace/rust-parser-validation-20261107/hello/corpus/0045f20a7d67a88fcef91ea4804efd7fa38e45305143e1e6b13b46e9a5cce2ce",
+        "/workspace/rust-parser-validation-20261107/hello/corpus/0088af0296aed563334437131634bf1268bfbf74",
+        "/workspace/rust-parser-validation-20261107/hello/corpus/050aca3dce1d10246bbcc01274aa62a20f82526e98a7cf6a6cc06ba4fac94b18",
+        "/workspace/rust-parser-validation-20261107/hello/corpus/080fa79f452172c8b503ce2b53e032b3a8df5035",
+        "/workspace/rust-parser-validation-20261107/hello/corpus/0aa64d4406509f4cf90f9399385d7d97851cfc5d",
+        "/workspace/rust-parser-validation-20261107/hello/corpus/0c31eec8021d91e34ca47a183e8ac279daa6e248ddc5cc25db340192f2793804",
+        "/workspace/rust-parser-validation-20261107/hello/corpus/0e356ba505631fbf715758bed27d503f8b260e3a",
+        "/workspace/rust-parser-validation-20261107/hello/corpus/11ccdfcf9c1bcc047e64a3f1527238415063d7a7",
+        "/workspace/rust-parser-validation-20261107/hello/corpus/1382a63a40a7fb00dd98e769e1726a2bc3eb6aff",
+        "/workspace/rust-parser-validation-20261107/hello/corpus/144ec60ac26e89b0a039e3bde42bee93446b9ee8",
+        "/workspace/rust-parser-validation-20261107/hello/corpus/14e733a8f785b8aaa733e48f3bf853a278dd555066c98bf666cb143900b98087",
+        "/workspace/rust-parser-validation-20261107/hello/corpus/166a9cbede984186e9c85064fec2154aa5e8dfc5",
+        "/workspace/rust-parser-validation-20261107/hello/corpus/1703830d435a4ee0862e96878c4ffa9bc705b819e6bb621a937914e92fc33a1c",
+        "/workspace/rust-parser-validation-20261107/hello/corpus/1b7b8f1e3d1ebc67e60cb7a8998793acefdb76b1",
+        "/workspace/rust-parser-validation-20261107/hello/corpus/1d58df14195cb72851ad9d6b4310c01b35fb9f33",
+        "/workspace/rust-parser-validation-20261107/hello/corpus/1e6954fc11a8671ddbdb0ecb186c66c82af9ce343310016756db148a8645d03b",
+        "/workspace/rust-parser-validation-20261107/hello/corpus/226c84d2f5e5a4bd0a7e7b1c56ffc17f5d5ed038d0f1c4c1103848b389840e95",
+        "/workspace/rust-parser-validation-20261107/hello/corpus/28d6dc894615a5c247787f86386eafc534afeb7e21c3440e943d08a6af916af2",
+        "/workspace/rust-parser-validation-20261107/hello/corpus/29807d41de583a4a2a70b08f81ec0a6839fa4c55",
+        "/workspace/rust-parser-validation-20261107/hello/corpus/314e17ab943e74d993c17305ead5214a739f6019",
+        "/workspace/rust-parser-validation-20261107/hello/corpus/31909bb64f161209d91e326377f240451a1459a316d5e677c305801d8940398d",
+        "/workspace/rust-parser-validation-20261107/hello/corpus/32aaeb26c6a956a278bf98e8bef817e1a88b47ad341028d9c512412022942ca3",
+        "/workspace/rust-parser-validation-20261107/hello/corpus/36c44d35619da35a9224f8344c0b4b5cd4356f4e2e65ae67090ff7c08a9fe272",
+        "/workspace/rust-parser-validation-20261107/hello/corpus/37d7dfd0cee95c70190b9cae339071a1fcd9bcc444583f703f5ab8987a043f5d",
+        "/workspace/rust-parser-validation-20261107/hello/corpus/395df8f7c51f007019cb30201c49e884b46b92fa",
+        "/workspace/rust-parser-validation-20261107/hello/corpus/3af1dcb104e9a7f3ae5f271d5efdc9222da9adbe",
+        "/workspace/rust-parser-validation-20261107/hello/corpus/3d1ccaeb67a83d73e6edd9443a7bbe6187c8bc60fdfc329256c09e50ed3e7126",
+        "/workspace/rust-parser-validation-20261107/hello/corpus/3e01c37adc9c2249c3da97e41a254b83d60532a4",
+        "/workspace/rust-parser-validation-20261107/hello/corpus/403c56e78d8d69b93485bbbb57b0b32157565fc96d38e0c162457e282a323b7f",
+        "/workspace/rust-parser-validation-20261107/hello/corpus/417d9606581a171880d426aecd2a508b2a910287",
+        "/workspace/rust-parser-validation-20261107/hello/corpus/41c5055217faa86a4cc87a04408293247d36dc960e309e0dd6d82a374f14437a",
+        "/workspace/rust-parser-validation-20261107/hello/corpus/4556cb7256dd391d32817ea0db8150f37af23b87d4f85f9acb5290fb08bb0798"
+      ],
+      "timeout_seconds": 180
+    },
+    {
+      "name": "hello/replay/batch-0001",
+      "argv": [
+        "/workspace/rust-parser-validation-20261107/build/cargo-target/x86_64-unknown-linux-gnu/release/replay_target",
+        "hello",
+        "/workspace/rust-parser-validation-20261107/hello/corpus/455f467a93eabcd9513952951a353737779bee8b",
+        "/workspace/rust-parser-validation-20261107/hello/corpus/45a76a8a2cca2778061326f4581daf5d1038a630",
+        "/workspace/rust-parser-validation-20261107/hello/corpus/46cff31d0cfebf618d49febaed572930772a19fb5b964cdceef5991e2196c4ac",
+        "/workspace/rust-parser-validation-20261107/hello/corpus/49873e3ee2d2a840a38db8ce838381daf7dd61fb",
+        "/workspace/rust-parser-validation-20261107/hello/corpus/4d26e96816c654b24ea8dc3649829381fa81eb7a",
+        "/workspace/rust-parser-validation-20261107/hello/corpus/4e87237ea4b3d8e8da814f6b747bd7cd76533685",
+        "/workspace/rust-parser-validation-20261107/hello/corpus/51656d54d9bc9e8567cf94d74f62e923ba3263581718a3952fef9dd8a38ed454",
+        "/workspace/rust-parser-validation-20261107/hello/corpus/5359f6327bd729ae0c228ad761107a626ffcd0f099b1ec1eb8a8d4f05e0e9a44",
+        "/workspace/rust-parser-validation-20261107/hello/corpus/54e4ce4de9ee3fb4dd1c583a7c835cbac19436e19eef43c015bfd936082dfb1c",
+        "/workspace/rust-parser-validation-20261107/hello/corpus/59cc0e2671cc69270763c3df17daf2a900a738df339175a461f4860e8b5dda18",
+        "/workspace/rust-parser-validation-20261107/hello/corpus/59f18122e8756ef08d0a0ae3f5a4e2c007de07c9",
+        "/workspace/rust-parser-validation-20261107/hello/corpus/5a91f7b2a159c8c64f227464d48783f2511636cb82436a22b66f83f0e8f54b41",
+        "/workspace/rust-parser-validation-20261107/hello/corpus/5e4f7e0705cfdfa5d6b8c79859c525593cc5219f",
+        "/workspace/rust-parser-validation-20261107/hello/corpus/5f706b8bbab909e28ca3cdadc97f5220ef5db4dd",
+        "/workspace/rust-parser-validation-20261107/hello/corpus/623b7dda70860ada7efded5e912b1ced70735663b76dd5cea3a821a2bd87d66f",
+        "/workspace/rust-parser-validation-20261107/hello/corpus/65746ef0158394ed0177b913906e353745f432810750b02b11ce977f9c695f12",
+        "/workspace/rust-parser-validation-20261107/hello/corpus/663e29ed0bcac0aafea51c27b74c847c64f113e409bcc06d1a5c22f7eb4ba470",
+        "/workspace/rust-parser-validation-20261107/hello/corpus/68ea10f2c7b96e6755950aba89a00b3e01af3a47",
+        "/workspace/rust-parser-validation-20261107/hello/corpus/6e300161716f8e4cff5bc2fc016db73c6361831b625f989963cc4bcb3e11f20f",
+        "/workspace/rust-parser-validation-20261107/hello/corpus/6e357ea0068ce2d9f7ad94daaacb68d23f551a4d",
+        "/workspace/rust-parser-validation-20261107/hello/corpus/6f3ae3bc5173ac4f8faefcbb8d32652f8980c7ed7346c9f051643cd358aa2e12",
+        "/workspace/rust-parser-validation-20261107/hello/corpus/7673217f3e512dd75b9002fa9927187d6f8e14a8929ef8dbac21f3aaf54eab5a",
+        "/workspace/rust-parser-validation-20261107/hello/corpus/776ffb7d57fd8fc449e9430a8d69fd188f4c6111",
+        "/workspace/rust-parser-validation-20261107/hello/corpus/8721cdd30c6f69da420e2620d805db1f6d3e18a4",
+        "/workspace/rust-parser-validation-20261107/hello/corpus/8758e2f574f7c37beac49828d112516be5672f1f",
+        "/workspace/rust-parser-validation-20261107/hello/corpus/8884dc12c2d07956ef34d694e0f09caca2862e2f8892c6911523e3c269470855",
+        "/workspace/rust-parser-validation-20261107/hello/corpus/8d9851e6f20f897af5671ad7789ef1fd75a73b2f15fad3691af7aa27a239c5b3",
+        "/workspace/rust-parser-validation-20261107/hello/corpus/8de7e2ad683490aea87ae58e9155752a3a58b9ed201dfb028510647866a22b07",
+        "/workspace/rust-parser-validation-20261107/hello/corpus/8e1fd9befab40b373a492f3b385a680b77457fcb3a815e3d4f2be00318f983cb",
+        "/workspace/rust-parser-validation-20261107/hello/corpus/923690da613c877fb2043fb5cbc8c48934f93bc6",
+        "/workspace/rust-parser-validation-20261107/hello/corpus/931042ef870ff65762d0a7c97f935b997c18c920",
+        "/workspace/rust-parser-validation-20261107/hello/corpus/95d534d353a8f10dd2305e332da8339c4296b14f"
+      ],
+      "timeout_seconds": 180
+    },
+    {
+      "name": "hello/replay/batch-0002",
+      "argv": [
+        "/workspace/rust-parser-validation-20261107/build/cargo-target/x86_64-unknown-linux-gnu/release/replay_target",
+        "hello",
+        "/workspace/rust-parser-validation-20261107/hello/corpus/98040e5166c72c22d8b746d2fe55d9eeb8e550ec",
+        "/workspace/rust-parser-validation-20261107/hello/corpus/9a8bfde81eb48509c3a586e02477bbf40c6ea304cf2f5534b9dcd63db8d59402",
+        "/workspace/rust-parser-validation-20261107/hello/corpus/9b5df2e3f65a38682b0f9baa7291da08aaa75705",
+        "/workspace/rust-parser-validation-20261107/hello/corpus/9c41ae88c664c305c0b34673e5a65f62ef1970d6",
+        "/workspace/rust-parser-validation-20261107/hello/corpus/9d349e8b337e9fe579abc5ae5943d26bf44f8844",
+        "/workspace/rust-parser-validation-20261107/hello/corpus/9ed5f99b1e0f85dea1894343696c21dfbc25f2bdce33d29bc3eed6bfc120478d",
+        "/workspace/rust-parser-validation-20261107/hello/corpus/a28893c7b1e002b92ecb7d16da1da7a932d1382e",
+        "/workspace/rust-parser-validation-20261107/hello/corpus/a7750f55bdd53d83f66a93149ddf474c06f8d035314323b06b6825cfe9cb7cb3",
+        "/workspace/rust-parser-validation-20261107/hello/corpus/afafd84541803741ffee38c3a735dc38fbc352a7",
+        "/workspace/rust-parser-validation-20261107/hello/corpus/b3579510aeb914feee0037317e5a9de78aba1bffa6eda2e7c5ddf339535d98f7",
+        "/workspace/rust-parser-validation-20261107/hello/corpus/b4ae5e2832a3598a68b274c3a4f63c4401b539db",
+        "/workspace/rust-parser-validation-20261107/hello/corpus/b53c002448a6777b6cd6a8cc5e0f27b45c9483e9",
+        "/workspace/rust-parser-validation-20261107/hello/corpus/b8cc9b83d8e8bae1e0f1c8ddcfebb28c6079e1333f0358c0c47a6ca619d2c59b",
+        "/workspace/rust-parser-validation-20261107/hello/corpus/b995b6e6d3fd5a90ff9c947f682af67e7e84096b",
+        "/workspace/rust-parser-validation-20261107/hello/corpus/bdce4d2c923cd7fefceb0ab3e45120e8631e4a95",
+        "/workspace/rust-parser-validation-20261107/hello/corpus/bea4191214f7a87dbff34c128d717bab855ad5a422c7244d6d6f598f2bb083df",
+        "/workspace/rust-parser-validation-20261107/hello/corpus/bebc4ba431f4567cf7c437d8f1f9018629616037",
+        "/workspace/rust-parser-validation-20261107/hello/corpus/bffb43ff2fc6f4b1496cd958cdba0d451e544adb",
+        "/workspace/rust-parser-validation-20261107/hello/corpus/c4861d77faf85d04585a4f3bbc457a4f3edf1558",
+        "/workspace/rust-parser-validation-20261107/hello/corpus/c91115ab2c40d472282c9c99062e8774d196a4b4",
+        "/workspace/rust-parser-validation-20261107/hello/corpus/cca0775a9f64015e13787884984b0a846ac2413eed96504e86d2abc8bc1dc8db",
+        "/workspace/rust-parser-validation-20261107/hello/corpus/cfbb6e6199160647c42135d73bd520e601148fda",
+        "/workspace/rust-parser-validation-20261107/hello/corpus/d36119e26eb75cac5d433791ac15eb2b64fd0c1e",
+        "/workspace/rust-parser-validation-20261107/hello/corpus/d74c0b0a44897e13419da9448761cd4ee560419ba03c05f61d27b60d4fc2e775",
+        "/workspace/rust-parser-validation-20261107/hello/corpus/dc43f908c21de23d16d378a11e6bf3382ca494680797fd86bb61fd79e3ecf3a7",
+        "/workspace/rust-parser-validation-20261107/hello/corpus/dc84c9f65d18de67161ebad99a05966a6dcd528c76aecf9803b5cacb78612cba",
+        "/workspace/rust-parser-validation-20261107/hello/corpus/dc86ebd42d02a74e02447f9334e89df8e86ec7e0",
+        "/workspace/rust-parser-validation-20261107/hello/corpus/de15f2f982ce4b429efabab1aa1a9c70df9c9324",
+        "/workspace/rust-parser-validation-20261107/hello/corpus/deb5388d45ede49c53cce3ad7b657f996b07cf5eea6ec4a3c0fcb44ae7dd9e49",
+        "/workspace/rust-parser-validation-20261107/hello/corpus/df504cb4da97b0f69aea452c961bff57d1256a07997fad293fa27f9f7dfa8fdc",
+        "/workspace/rust-parser-validation-20261107/hello/corpus/e01b7b4013d3821151c78546a03b905256b3b786301066b08e14c43a14ac70f2",
+        "/workspace/rust-parser-validation-20261107/hello/corpus/e1c06b137dc34c8525585ac693b4ccc6da70e37810688c0f1ede2297bbc8e338"
+      ],
+      "timeout_seconds": 180
+    },
+    {
+      "name": "hello/replay/batch-0003",
+      "argv": [
+        "/workspace/rust-parser-validation-20261107/build/cargo-target/x86_64-unknown-linux-gnu/release/replay_target",
+        "hello",
+        "/workspace/rust-parser-validation-20261107/hello/corpus/e25dd91923cb2fffa66bc3514a26504b5ccdcbdf7abe1917506deffd0b80a7ec",
+        "/workspace/rust-parser-validation-20261107/hello/corpus/e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "/workspace/rust-parser-validation-20261107/hello/corpus/e5321ee8e524be9b254329f18a61618b27918fb7",
+        "/workspace/rust-parser-validation-20261107/hello/corpus/e5a535449bc80c6e85430a521612aa0f8d9d59e624a508f48d0b37b08dbd0487",
+        "/workspace/rust-parser-validation-20261107/hello/corpus/eca8d47ed8935ab7608430dd1551b88181d6f25ad67cf70d3925e8f8cddd32f8",
+        "/workspace/rust-parser-validation-20261107/hello/corpus/f02ccbc9fc92819d9e1ec3f09f2da97eefb1d9f10a93a4be08f2b4561b2e941c",
+        "/workspace/rust-parser-validation-20261107/hello/corpus/f7ee5901d571f2fc046974de9a20c1360fb1540f85573a651c90461ca8fef697",
+        "/workspace/rust-parser-validation-20261107/hello/corpus/f87cebe54d641cf23236575ca7381d14025eb8eb06223fb639f1bdce0dc3e4a4",
+        "/workspace/rust-parser-validation-20261107/hello/corpus/fcfc1f9aa1df392c53363b1e9f21e3c91d99e9ee",
+        "/workspace/rust-parser-validation-20261107/hello/corpus/fe0c17d4d0ce9fd2bfd409f2f1aa6845a244baa9",
+        "/workspace/rust-parser-validation-20261107/hello/corpus/ff81c92a0932cb80abf3e1935219b26a6818ca64ffb3c361ced4afceb55c5c03"
+      ],
+      "timeout_seconds": 180
+    }
+  ],
+  "targets": [
+    {
+      "name": "frame",
+      "status": "passed",
+      "differential": {
+        "status": "passed",
+        "expected_files": 129,
+        "checked_files": 129,
+        "accepted_checked": 13,
+        "rejected_checked": 116,
+        "mismatches": []
+      },
+      "initial_corpus_files": 42,
+      "engine_exit": 0,
+      "feedback": {
+        "initialization_executed": 42,
+        "executed": 100000,
+        "initial_cov": 69,
+        "final_cov": 69,
+        "final_features": 99,
+        "new_corpus_events": 5
+      },
+      "final_corpus_files": 129,
+      "artifacts": []
+    },
+    {
+      "name": "hello",
+      "status": "passed",
+      "differential": {
+        "status": "passed",
+        "expected_files": 107,
+        "checked_files": 107,
+        "accepted_checked": 15,
+        "rejected_checked": 92,
+        "mismatches": []
+      },
+      "initial_corpus_files": 54,
+      "engine_exit": 0,
+      "feedback": {
+        "initialization_executed": 54,
+        "executed": 100000,
+        "initial_cov": 139,
+        "final_cov": 149,
+        "final_features": 266,
+        "new_corpus_events": 28
+      },
+      "final_corpus_files": 107,
+      "artifacts": []
+    }
+  ],
+  "requested_runs_per_target": 100000,
+  "seconds_per_target": 60,
+  "scope": "Reachable Rust frame/ClientHello protocol code; Rust driver/oracles lack sancov; no C/OpenSSL/prebuilt-std coverage claim; saved-corpus replay is finite",
+  "constant_time_approved": false,
+  "security_approved": false,
+  "source_sha256": {
+    "native_research/spiral_native.c": "ccb29fe8b1f428c25a93c8cb967f1090eea619ad36dcba7d53dc9bfaedc1cd0f",
+    "native_research/spiral_native.h": "85f0454ee626cc0c38cdd6b60b12453f90276b6681dd91ab634d48c20bb1597b",
+    "protocol_rust/Cargo.lock": "19eb708fbf0c56f42704bd0a699c0f687f2b1516fc38e52c4c5d721a81889aca",
+    "protocol_rust/Cargo.toml": "be3f9a428c42ab68a357d2fee843d9089f52ad689caa87957dc06e1271752aea",
+    "protocol_rust/build.rs": "9124a4764196d3147fed056dc9d18d29f3e1e775334c234848fc9728554ad6a8",
+    "protocol_rust/fuzz/Cargo.lock": "e06ad0ffc01eb1a8def0eb99355558b96951992053b04bb6e955ff7da8a9f0cf",
+    "protocol_rust/fuzz/Cargo.toml": "12eadfbbb5f4e4f57323b9e8c76a3f046d3cddc9ba0764f5031b4981192f6626",
+    "protocol_rust/fuzz/checks.rs": "133c702379d2ca87cabb810f15c486078902df24c35e51260eac27787b9e06e4",
+    "protocol_rust/fuzz/frame_target.rs": "2ff98f099e84b62f70e0d7d92d4da635fb6a6da526fd8de86c3c8e710d8fff07",
+    "protocol_rust/fuzz/hello_target.rs": "7e2f2a7ccd7e9ae383c2c3ff63dce7b61e61e7bca8725c883e63cf58d1a4c223",
+    "protocol_rust/fuzz/oracles.rs": "c01304ae9390a6809f7c5d7335b02837c2739b4cc88a18a63dfb0c66c4eb8200",
+    "protocol_rust/fuzz/replay_target.rs": "f7b88ff783d24ce45cfff12c5cca0df5ea73a935a7248c1964b980a89f4e3b62",
+    "protocol_rust/fuzzing/campaign.py": "51c9133f001d031c5b1c50a88ef2d3799f6a6b25fb822918a75b138eb1706c93",
+    "protocol_rust/fuzzing/coverage_evidence.py": "c010696cab9621c97f076985addbdb1573f64b7d9cf2df3df66ef6eebf1d3898",
+    "protocol_rust/fuzzing/inputs.py": "4d9d6693071d63077301f7f9d3e83a92d6a9e448efe3eae2aa7f6ae8e088633a",
+    "protocol_rust/fuzzing/install_toolchain.py": "a61ec0217cd5c789c3b4af0d2410fe638bb54ac0951bfd69a89faea9bedf819c",
+    "protocol_rust/fuzzing/rustc_wrapper.py": "867f63077fb407a5110eb07aa2727a5a891540e7b56580c7fd824689e2f1d4d4",
+    "protocol_rust/fuzzing/test_campaign.py": "dfcee3970472be13030634a738eabb053bbfa74fad250eb50af128f27eb6cd16",
+    "protocol_rust/fuzzing/test_coverage_evidence.py": "d3769e7eff1b6efe902d3ceff5581b6afc084cf3e8c7bde92d0a5d970f34bba3",
+    "protocol_rust/fuzzing/test_inputs.py": "f6b8074ace4cdfaba3455ae234e6bfa447f1226f6d4741938a976f090c37cb76",
+    "protocol_rust/fuzzing/test_install_toolchain.py": "505349f79ad96ad76ace3c401c58b85185dfc80c9587dddf06247a0369b1159e",
+    "protocol_rust/src/admission.rs": "07fe88b8f3985cfb082445e50ab0c96f12ba7d60c06fa10f87ad5b0756f7513a",
+    "protocol_rust/src/buffer.rs": "5365ce69f805e05eec1ed7fc6530a71cd384b40ac67c685302dd32ea83b94626",
+    "protocol_rust/src/channel.rs": "b2499e4f35f5d281540032de6bb30f22524b460bced7550151105b218e623be1",
+    "protocol_rust/src/error.rs": "cad570f7b7bbd2d4e3413648298679fd7218285a6f188e455a778a2f72e754ab",
+    "protocol_rust/src/ffi.rs": "92b7dd0c32c18a7f88b1447490c938eca4964b20d6c23a0a7506d93c6f148791",
+    "protocol_rust/src/handshake.rs": "731d5d4d048ab56c9e386340ee96929e46a2f4876569d0503bd5dc4c2c463492",
+    "protocol_rust/src/identity.rs": "f8de104ec385fa1b15ee00e13cb77f3157d6d34c8e79b2b005893220e877f0b7",
+    "protocol_rust/src/lib.rs": "d0c81fe74030e13ea04e81fac215615755474aa9895021a1eabc63a50f2554c8",
+    "protocol_rust/src/main.rs": "6fd34f294352fbe4257577be8281be3c59d816d941e9f9eabd324117acd7701b",
+    "protocol_rust/src/records.rs": "fcaabedd4e0a66db71fc1272996a2bbbd561bd00b2256461808e635ad90c80c2",
+    "protocol_rust/src/schedule.rs": "d3e5b57d293cfb5129c638912dda74c4f704548ff5a6de0cf0073d1e7a5049ea",
+    "protocol_rust/src/secret.rs": "b24ab189e8688951e2bf000bf0c7d14ed5e4d688cbcdc4b0926182bb5582765e",
+    "protocol_rust/src/test_support.rs": "4748cbadd46d66c4e2a9c38d222f1401955073275a8f99b57fecb348694383ed",
+    "protocol_rust/src/transport.rs": "d7cc8e1527f7065bf7ec6ea3b18d095d0170f94ae32e958ee859a798f871a0e7",
+    "protocol_rust/src/wire.rs": "4cb125a7e84f488864763825f9f2662ea2a1feb936113bcb405aed9b80409d21",
+    "protocol_rust/src/worker.rs": "eed5c4f026ab4944a704e4a32eed0600f29b7378f466af5f459e7720f35799fb",
+    "protocol_v01/tests/fixtures/test_vectors_v0.1.json": "b556ca8741a649dfe3346d2033a2685492470beedbc601dbb36877f4c5881ee8",
+    "rust-toolchain.toml": "ca67e66659a82661386e5a08471c913cb8b3f7c7ce37592207d3f513589a41c2"
+  },
+  "commit": "443c6c3ddab557cef2ae77f83d590c3e4a9068ae",
+  "sources_match_head": true,
+  "build_environment": {
+    "RUSTFLAGS": "-Zsanitizer=address -Cdebuginfo=1 -Cforce-frame-pointers=yes -Coverflow-checks=yes -Cdebug-assertions=yes",
+    "RUSTC_WRAPPER": "/workspace/Spiral-KEM/protocol_rust/fuzzing/rustc_wrapper.py",
+    "CARGO_PROFILE_RELEASE_LTO": "false",
+    "CARGO_PROFILE_RELEASE_OPT_LEVEL": "1",
+    "CARGO_PROFILE_RELEASE_DEBUG": "1",
+    "CARGO_PROFILE_RELEASE_CODEGEN_UNITS": "1",
+    "CARGO_PROFILE_RELEASE_PANIC": "abort",
+    "CARGO_PROFILE_RELEASE_STRIP": "none",
+    "ASAN_OPTIONS": "detect_leaks=1:abort_on_error=1",
+    "LSAN_OPTIONS": "exitcode=23"
+  },
+  "coverage": {
+    "status": "verified",
+    "scope": "Reachable spiral-protocol Rust parser instrumentation; harness/oracles excluded. No native C or OpenSSL coverage claim.",
+    "trace": {
+      "path": "/workspace/rust-parser-validation-20261107/rustc-invocations.jsonl",
+      "sha256": "0d3326e07e7ea769e654320415a660f53ec280f495c810ccf92ea4d85f8b64be",
+      "bytes": 296055,
+      "invocations": 132,
+      "instrumented_invocations": 1
+    },
+    "llvm_ir": {
+      "spiral_protocol": {
+        "path": "/workspace/rust-parser-validation-20261107/build/cargo-target/x86_64-unknown-linux-gnu/release/build/spiral-protocol/d7894e47c211efa3/out/spiral_protocol-d7894e47c211efa3.ll",
+        "sha256": "545c6d3d93e2e31f33ef9bc48cd763ae795e6641d59bb7fafae1e29da79dd9c0",
+        "bytes": 33178655,
+        "sancov_counter_section_tokens": 891,
+        "sancov_generated_tokens": 39402,
+        "trace_callback_tokens": 10997,
+        "functions": {
+          "header_parse": {
+            "symbol": "_RNvMNtCs1K0wxfkMoe8_15spiral_protocol4wireNtB2_6Header5parse",
+            "counter_access": true,
+            "trace_comparisons": true,
+            "bytes": 67277,
+            "sha256": "e4dee2548f1d2a751c49a0b73cc82291446ad514987e6e6314c6917ecbe42c5a"
+          },
+          "parse_frame": {
+            "symbol": "_RNvNtCs1K0wxfkMoe8_15spiral_protocol12test_support11parse_frame",
+            "counter_access": true,
+            "trace_comparisons": true,
+            "bytes": 30393,
+            "sha256": "691323c92274413c0cca46d6d926064f73091cc2a4c5f4e5b24ee6998129ac83"
+          },
+          "parse_client_hello": {
+            "symbol": "_RNvNtCs1K0wxfkMoe8_15spiral_protocol12test_support18parse_client_hello",
+            "counter_access": true,
+            "trace_comparisons": false,
+            "bytes": 978,
+            "sha256": "efae270191212e1b17f97d688c438a2295cb4b40cbaf7b54ac270480afc01d8e"
+          },
+          "wire_parse": {
+            "symbol": "_RNvNtCs1K0wxfkMoe8_15spiral_protocol4wire5parse",
+            "counter_access": true,
+            "trace_comparisons": true,
+            "bytes": 29186,
+            "sha256": "1f1b7e17413e884b8daf12039c922cddeebd52b79a6233872da9f8b28db7fb5a"
+          },
+          "parse_hello": {
+            "symbol": "_RNvNtCs1K0wxfkMoe8_15spiral_protocol9handshake11parse_hello",
+            "counter_access": true,
+            "trace_comparisons": true,
+            "bytes": 138474,
+            "sha256": "d3185b583727231627e224ceba8d452463fb00cbb32fca1310daab80c2cd26c2"
+          },
+          "validate_identity": {
+            "symbol": "_RNvNtCs1K0wxfkMoe8_15spiral_protocol9handshake17validate_identity",
+            "counter_access": true,
+            "trace_comparisons": true,
+            "bytes": 119835,
+            "sha256": "79f5d3a1cced9effbae349fb14b154aa0b905d6d2fbe29af2b227ddcc0f0245f"
+          }
+        }
+      },
+      "frame_target": {
+        "path": "/workspace/rust-parser-validation-20261107/build/cargo-target/x86_64-unknown-linux-gnu/release/build/spiral-parser-fuzz/7b61ce011362bbd9/out/frame_target.ll",
+        "sha256": "481ecdc910f14367db9295983b61b2ba7f482fb04b6bc9790ee942b9b5ff1545",
+        "bytes": 348136,
+        "sancov_counter_section_tokens": 0,
+        "sancov_generated_tokens": 0,
+        "trace_callback_tokens": 0,
+        "functions": {}
+      },
+      "hello_target": {
+        "path": "/workspace/rust-parser-validation-20261107/build/cargo-target/x86_64-unknown-linux-gnu/release/build/spiral-parser-fuzz/b46aa9d34dc50f08/out/hello_target.ll",
+        "sha256": "669b9a2234ccf5650363c2f27a123c5b0cb099c33d46da4ae10b7ef5e5cd614d",
+        "bytes": 333034,
+        "sancov_counter_section_tokens": 0,
+        "sancov_generated_tokens": 0,
+        "trace_callback_tokens": 0,
+        "functions": {}
+      },
+      "replay_target": {
+        "path": "/workspace/rust-parser-validation-20261107/build/cargo-target/x86_64-unknown-linux-gnu/release/build/spiral-parser-fuzz/d2aea07aa7d6a1f7/out/replay_target.ll",
+        "sha256": "3dae3f0da172bd484a3f771e3117c435ef827b7fe4df5f4ef4068152e56c6251",
+        "bytes": 2222251,
+        "sancov_counter_section_tokens": 0,
+        "sancov_generated_tokens": 0,
+        "trace_callback_tokens": 0,
+        "functions": {}
+      }
+    },
+    "binaries": {
+      "frame_target": {
+        "path": "/workspace/rust-parser-validation-20261107/build/cargo-target/x86_64-unknown-linux-gnu/release/frame_target",
+        "sha256": "e36cbba7e5f1247b5345ab8962f3710ebe38bd898f2ca42be8c61265c07383b8",
+        "bytes": 34085832,
+        "functions": {
+          "header_parse": {
+            "symbol": "_RNvMNtCs1K0wxfkMoe8_15spiral_protocol4wireNtB2_6Header5parse",
+            "attribution": "standalone",
+            "trace_comparisons": true,
+            "counter_reference_present": true
+          },
+          "parse_frame": {
+            "symbol": "_RNvNtCs1K0wxfkMoe8_15spiral_protocol12test_support11parse_frame",
+            "attribution": "standalone",
+            "trace_comparisons": true,
+            "counter_reference_present": true
+          },
+          "wire_parse": {
+            "symbol": "_RNvNtCs1K0wxfkMoe8_15spiral_protocol4wire5parse",
+            "attribution": "inlined",
+            "inlined_into": "_RNvNtCs1K0wxfkMoe8_15spiral_protocol12test_support11parse_frame",
+            "source": "wire.rs",
+            "trace_comparisons": true
+          }
+        },
+        "commands": [
+          [
+            "nm",
+            "--defined-only",
+            "--no-demangle",
+            "/workspace/rust-parser-validation-20261107/build/cargo-target/x86_64-unknown-linux-gnu/release/frame_target"
+          ],
+          [
+            "objdump",
+            "-d",
+            "-l",
+            "--inlines",
+            "--disassemble=_RNvMNtCs1K0wxfkMoe8_15spiral_protocol4wireNtB2_6Header5parse",
+            "/workspace/rust-parser-validation-20261107/build/cargo-target/x86_64-unknown-linux-gnu/release/frame_target"
+          ],
+          [
+            "objdump",
+            "-d",
+            "-l",
+            "--inlines",
+            "--disassemble=_RNvNtCs1K0wxfkMoe8_15spiral_protocol12test_support11parse_frame",
+            "/workspace/rust-parser-validation-20261107/build/cargo-target/x86_64-unknown-linux-gnu/release/frame_target"
+          ]
+        ],
+        "symbol_evidence": {
+          "path": "/workspace/rust-parser-validation-20261107/coverage/frame_target-parser-symbols.txt",
+          "sha256": "2399b0c8305051a2a890edc50f0ff176033a9c0464cedf7dcea8d421ac42352e",
+          "bytes": 326
+        },
+        "disassembly_evidence": {
+          "path": "/workspace/rust-parser-validation-20261107/coverage/frame_target-parser-disassembly.txt",
+          "sha256": "dce5e8f6ad69018bd8aa83f08b3588e5ab1bfa2ee97b77c87b907e61803d15dd",
+          "bytes": 387650
+        },
+        "audited_link_output": {
+          "path": "/workspace/rust-parser-validation-20261107/build/cargo-target/x86_64-unknown-linux-gnu/release/build/spiral-parser-fuzz/7b61ce011362bbd9/out/frame_target",
+          "sha256": "e36cbba7e5f1247b5345ab8962f3710ebe38bd898f2ca42be8c61265c07383b8",
+          "bytes": 34085832
+        }
+      },
+      "hello_target": {
+        "path": "/workspace/rust-parser-validation-20261107/build/cargo-target/x86_64-unknown-linux-gnu/release/hello_target",
+        "sha256": "f44dd158d4bb7b8157844da28e631412d86b0561d3f5dc1f0c4187bebd822795",
+        "bytes": 34087416,
+        "functions": {
+          "parse_client_hello": {
+            "symbol": "_RNvNtCs1K0wxfkMoe8_15spiral_protocol12test_support18parse_client_hello",
+            "attribution": "standalone",
+            "trace_comparisons": false,
+            "counter_reference_present": true
+          },
+          "parse_hello": {
+            "symbol": "_RNvNtCs1K0wxfkMoe8_15spiral_protocol9handshake11parse_hello",
+            "attribution": "standalone",
+            "trace_comparisons": true,
+            "counter_reference_present": true
+          },
+          "validate_identity": {
+            "symbol": "_RNvNtCs1K0wxfkMoe8_15spiral_protocol9handshake17validate_identity",
+            "attribution": "standalone",
+            "trace_comparisons": true,
+            "counter_reference_present": true
+          }
+        },
+        "commands": [
+          [
+            "nm",
+            "--defined-only",
+            "--no-demangle",
+            "/workspace/rust-parser-validation-20261107/build/cargo-target/x86_64-unknown-linux-gnu/release/hello_target"
+          ],
+          [
+            "objdump",
+            "-d",
+            "-l",
+            "--inlines",
+            "--disassemble=_RNvNtCs1K0wxfkMoe8_15spiral_protocol12test_support18parse_client_hello",
+            "/workspace/rust-parser-validation-20261107/build/cargo-target/x86_64-unknown-linux-gnu/release/hello_target"
+          ],
+          [
+            "objdump",
+            "-d",
+            "-l",
+            "--inlines",
+            "--disassemble=_RNvNtCs1K0wxfkMoe8_15spiral_protocol9handshake11parse_hello",
+            "/workspace/rust-parser-validation-20261107/build/cargo-target/x86_64-unknown-linux-gnu/release/hello_target"
+          ],
+          [
+            "objdump",
+            "-d",
+            "-l",
+            "--inlines",
+            "--disassemble=_RNvNtCs1K0wxfkMoe8_15spiral_protocol9handshake17validate_identity",
+            "/workspace/rust-parser-validation-20261107/build/cargo-target/x86_64-unknown-linux-gnu/release/hello_target"
+          ]
+        ],
+        "symbol_evidence": {
+          "path": "/workspace/rust-parser-validation-20261107/coverage/hello_target-parser-symbols.txt",
+          "sha256": "2f41f40536e7a830eac4a9eb3641babc120b2e7c309413bff44e70b89d04f791",
+          "bytes": 257
+        },
+        "disassembly_evidence": {
+          "path": "/workspace/rust-parser-validation-20261107/coverage/hello_target-parser-disassembly.txt",
+          "sha256": "94f2a1318455e06534e0b764e5c4d89df2d96ec3e743da1e7aef40c8c1840282",
+          "bytes": 1964326
+        },
+        "audited_link_output": {
+          "path": "/workspace/rust-parser-validation-20261107/build/cargo-target/x86_64-unknown-linux-gnu/release/build/spiral-parser-fuzz/b46aa9d34dc50f08/out/hello_target",
+          "sha256": "f44dd158d4bb7b8157844da28e631412d86b0561d3f5dc1f0c4187bebd822795",
+          "bytes": 34087416
+        }
+      },
+      "replay_target": {
+        "path": "/workspace/rust-parser-validation-20261107/build/cargo-target/x86_64-unknown-linux-gnu/release/replay_target",
+        "sha256": "1bf3beeba606be61a02b1361c05a04f919a9157e45ce45746141868ebadeed68",
+        "bytes": 22422000,
+        "functions": {
+          "header_parse": {
+            "symbol": "_RNvMNtCs1K0wxfkMoe8_15spiral_protocol4wireNtB2_6Header5parse",
+            "attribution": "standalone",
+            "trace_comparisons": true,
+            "counter_reference_present": true
+          },
+          "parse_frame": {
+            "symbol": "_RNvNtCs1K0wxfkMoe8_15spiral_protocol12test_support11parse_frame",
+            "attribution": "standalone",
+            "trace_comparisons": true,
+            "counter_reference_present": true
+          },
+          "parse_client_hello": {
+            "symbol": "_RNvNtCs1K0wxfkMoe8_15spiral_protocol12test_support18parse_client_hello",
+            "attribution": "standalone",
+            "trace_comparisons": false,
+            "counter_reference_present": true
+          },
+          "parse_hello": {
+            "symbol": "_RNvNtCs1K0wxfkMoe8_15spiral_protocol9handshake11parse_hello",
+            "attribution": "standalone",
+            "trace_comparisons": true,
+            "counter_reference_present": true
+          },
+          "validate_identity": {
+            "symbol": "_RNvNtCs1K0wxfkMoe8_15spiral_protocol9handshake17validate_identity",
+            "attribution": "standalone",
+            "trace_comparisons": true,
+            "counter_reference_present": true
+          },
+          "wire_parse": {
+            "symbol": "_RNvNtCs1K0wxfkMoe8_15spiral_protocol4wire5parse",
+            "attribution": "inlined",
+            "inlined_into": "_RNvNtCs1K0wxfkMoe8_15spiral_protocol12test_support11parse_frame",
+            "source": "wire.rs",
+            "trace_comparisons": true
+          }
+        },
+        "commands": [
+          [
+            "nm",
+            "--defined-only",
+            "--no-demangle",
+            "/workspace/rust-parser-validation-20261107/build/cargo-target/x86_64-unknown-linux-gnu/release/replay_target"
+          ],
+          [
+            "objdump",
+            "-d",
+            "-l",
+            "--inlines",
+            "--disassemble=_RNvMNtCs1K0wxfkMoe8_15spiral_protocol4wireNtB2_6Header5parse",
+            "/workspace/rust-parser-validation-20261107/build/cargo-target/x86_64-unknown-linux-gnu/release/replay_target"
+          ],
+          [
+            "objdump",
+            "-d",
+            "-l",
+            "--inlines",
+            "--disassemble=_RNvNtCs1K0wxfkMoe8_15spiral_protocol12test_support11parse_frame",
+            "/workspace/rust-parser-validation-20261107/build/cargo-target/x86_64-unknown-linux-gnu/release/replay_target"
+          ],
+          [
+            "objdump",
+            "-d",
+            "-l",
+            "--inlines",
+            "--disassemble=_RNvNtCs1K0wxfkMoe8_15spiral_protocol12test_support18parse_client_hello",
+            "/workspace/rust-parser-validation-20261107/build/cargo-target/x86_64-unknown-linux-gnu/release/replay_target"
+          ],
+          [
+            "objdump",
+            "-d",
+            "-l",
+            "--inlines",
+            "--disassemble=_RNvNtCs1K0wxfkMoe8_15spiral_protocol9handshake11parse_hello",
+            "/workspace/rust-parser-validation-20261107/build/cargo-target/x86_64-unknown-linux-gnu/release/replay_target"
+          ],
+          [
+            "objdump",
+            "-d",
+            "-l",
+            "--inlines",
+            "--disassemble=_RNvNtCs1K0wxfkMoe8_15spiral_protocol9handshake17validate_identity",
+            "/workspace/rust-parser-validation-20261107/build/cargo-target/x86_64-unknown-linux-gnu/release/replay_target"
+          ]
+        ],
+        "symbol_evidence": {
+          "path": "/workspace/rust-parser-validation-20261107/coverage/replay_target-parser-symbols.txt",
+          "sha256": "fda75d35680b16bc41b95d1ccd22813104a08285a04eb05590aeba2fc3e3a8e0",
+          "bytes": 583
+        },
+        "disassembly_evidence": {
+          "path": "/workspace/rust-parser-validation-20261107/coverage/replay_target-parser-disassembly.txt",
+          "sha256": "05838d2237cf0e98f5e6388ad67c824dba165a40cb412cbaa29e3bcce21754bd",
+          "bytes": 2352121
+        },
+        "audited_link_output": {
+          "path": "/workspace/rust-parser-validation-20261107/build/cargo-target/x86_64-unknown-linux-gnu/release/build/spiral-parser-fuzz/d2aea07aa7d6a1f7/out/replay_target",
+          "sha256": "1bf3beeba606be61a02b1361c05a04f919a9157e45ce45746141868ebadeed68",
+          "bytes": 22422000
+        }
+      }
+    },
+    "lto_disabled": true,
+    "fuzz_profile": {
+      "path": "/workspace/Spiral-KEM/protocol_rust/fuzz/Cargo.toml",
+      "sha256": "12eadfbbb5f4e4f57323b9e8c76a3f046d3cddc9ba0764f5031b4981192f6626",
+      "bytes": 587
+    },
+    "artifacts": {
+      "compiler_invocations": {
+        "path": "/workspace/rust-parser-validation-20261107/coverage/compiler-invocations.json",
+        "sha256": "b495532302bb0fe863420aa4c86b59b0d856fd4f091225a24a821c405fa0f33b",
+        "bytes": 62923
+      },
+      "production_parser_functions": {
+        "path": "/workspace/rust-parser-validation-20261107/coverage/production-parser-functions.ll",
+        "sha256": "bf86a557d5a65750f690a63f9360a6de1864d94a73ff63d2ab414dc8757ef825",
+        "bytes": 386426
+      }
+    }
+  },
+  "sources_unchanged_during_run": true,
+  "elapsed_seconds": 58.02309101400897,
+  "finished_utc": "2026-11-07T13:39:22.060827+00:00",
+  "archive": "/workspace/rust-parser-validation-20261107.tar.gz",
+  "artifact_language_normalization": {
+    "applied": true,
+    "historical_execution_repeated": false,
+    "integrity_values_describe_translated_artifacts": true
+  }
+}
