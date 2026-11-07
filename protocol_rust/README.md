@@ -16,7 +16,8 @@ against the Python reference implementation. OCI ARM64 and WSL2 x86-64 results a
 The [Rust DATA/CLOSE state fuzzing guide](FUZZ_RECORDS.md) uses the disabled-by-default
 `record-fuzz` entry points to compare sequence numbers, limits, tampering rejection, and post-shutdown state of actual `Tx`/`Rx`
 against an independent model. It uses the same pinned nightly, and OCI/WSL execution results are
-Collected separately from the preceding parser checks.
+collected separately from the preceding parser checks. The submitted OCI 17,380 runs and WSL 34,543 runs and
+rechecks of 702/702 and 718/718 saved inputs passed.
 
 ## Quick start
 
