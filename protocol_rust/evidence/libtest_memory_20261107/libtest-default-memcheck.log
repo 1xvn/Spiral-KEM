@@ -1,0 +1,113 @@
+==119163== Memcheck, a memory error detector
+==119163== Copyright (C) 2002-2024, and GNU GPL'd, by Julian Seward et al.
+==119163== Using Valgrind-3.24.0 and LibVEX; rerun with -h for copyright info
+==119163== Command: /workspace/rust48-tools/runtime/ld-linux-x86-64.so.2 --library-path /workspace/rust48-tools/debian/usr/lib/x86_64-linux-gnu /workspace/rust48-local-run/libtest-control --exact control::empty --test-threads=1
+==119163== Parent PID: 119102
+==119163== 
+==119163== 
+==119163== HEAP SUMMARY:
+==119163==     in use at exit: 596 bytes in 3 blocks
+==119163==   total heap usage: 256 allocs, 253 frees, 42,905 bytes allocated
+==119163== 
+==119163== 4 bytes in 1 blocks are still reachable in loss record 1 of 3
+==119163==    at 0x48DF818: malloc (vg_replace_malloc.c:446)
+==119163==    by 0x48A8C17: alloc (alloc.rs:130)
+==119163==    by 0x48A8C17: alloc_impl_runtime (alloc.rs:302)
+==119163==    by 0x48A8C17: alloc_impl (alloc.rs:424)
+==119163==    by 0x48A8C17: allocate (alloc.rs:541)
+==119163==    by 0x48A8C17: try_clone_from_ref_in<str, alloc::alloc::Global> (boxed.rs:886)
+==119163==    by 0x48A8C17: clone_from_ref_in<str, alloc::alloc::Global> (boxed.rs:845)
+==119163==    by 0x48A8C17: clone_from_ref<str> (boxed.rs:798)
+==119163==    by 0x48A8C17: from (convert.rs:138)
+==119163==    by 0x48A8C17: call_once<fn(&str) -> alloc::boxed::Box<str, alloc::alloc::Global>, (&str)> (function.rs:250)
+==119163==    by 0x48A8C17: map<&str, alloc::boxed::Box<str, alloc::alloc::Global>, fn(&str) -> alloc::boxed::Box<str, alloc::alloc::Global>> (option.rs:1163)
+==119163==    by 0x48A8C17: {closure#0} (thread_info.rs:114)
+==119163==    by 0x48A8C17: {closure#0}<std::sys::pal::unix::stack_overflow::thread_info::set_current_info::{closure_env#0}, core::option::Option<alloc::boxed::Box<str, alloc::alloc::Global>>> (current.rs:234)
+==119163==    by 0x48A8C17: try_with_current<std::thread::current::with_current_name::{closure_env#0}<std::sys::pal::unix::stack_overflow::thread_info::set_current_info::{closure_env#0}, core::option::Option<alloc::boxed::Box<str, alloc::alloc::Global>>>, core::option::Option<alloc::boxed::Box<str, alloc::alloc::Global>>> (current.rs:204)
+==119163==    by 0x48A8C17: with_current_name<std::sys::pal::unix::stack_overflow::thread_info::set_current_info::{closure_env#0}, core::option::Option<alloc::boxed::Box<str, alloc::alloc::Global>>> (current.rs:216)
+==119163==    by 0x48A8C17: std::sys::pal::unix::stack_overflow::thread_info::set_current_info (thread_info.rs:114)
+==119163==    by 0x48A20B8: init (stack_overflow.rs:185)
+==119163==    by 0x48A20B8: init (mod.rs:38)
+==119163==    by 0x48A20B8: init (rt.rs:118)
+==119163==    by 0x48A20B8: {closure#0} (rt.rs:173)
+==119163==    by 0x48A20B8: do_call<std::rt::lang_start_internal::{closure_env#0}, isize> (panicking.rs:576)
+==119163==    by 0x48A20B8: catch_unwind<isize, std::rt::lang_start_internal::{closure_env#0}> (panicking.rs:544)
+==119163==    by 0x48A20B8: catch_unwind<std::rt::lang_start_internal::{closure_env#0}, isize> (panic.rs:359)
+==119163==    by 0x48A20B8: std::rt::lang_start_internal (rt.rs:171)
+==119163==    by 0x483299B: main (in /workspace/rust48-local-run/libtest-control)
+==119163== 
+==119163== 48 bytes in 1 blocks are possibly lost in loss record 2 of 3
+==119163==    at 0x48DF818: malloc (vg_replace_malloc.c:446)
+==119163==    by 0x489419E: alloc (unix.rs:31)
+==119163==    by 0x489419E: alloc_impl (alloc.rs:161)
+==119163==    by 0x489419E: allocate (alloc.rs:223)
+==119163==    by 0x489419E: {closure#0}<std::thread::thread::Inner, std::alloc::System> (sync.rs:823)
+==119163==    by 0x489419E: allocate_for_layout<core::mem::maybe_uninit::MaybeUninit<std::thread::thread::Inner>, alloc::sync::{impl#17}::new_uninit_in::{closure_env#0}<std::thread::thread::Inner, std::alloc::System>, fn(*mut u8) -> *mut alloc::sync::ArcInner<core::mem::maybe_uninit::MaybeUninit<std::thread::thread::Inner>>> (sync.rs:2191)
+==119163==    by 0x489419E: new_uninit_in<std::thread::thread::Inner, std::alloc::System> (sync.rs:821)
+==119163==    by 0x489419E: <std::thread::thread::Thread>::new (thread.rs:102)
+==119163==    by 0x48A41A9: std::thread::current::init_current (current.rs:294)
+==119163==    by 0x4888B6F: current_or_unnamed (current.rs:251)
+==119163==    by 0x4888B6F: <std::sync::mpmc::context::Context>::new (context.rs:72)
+==119163==    by 0x48331AD: __rust_std_internal_init_fn (context.rs:43)
+==119163==    by 0x48331AD: call_once<fn() -> core::cell::Cell<core::option::Option<std::sync::mpmc::context::Context>>, ()> (function.rs:250)
+==119163==    by 0x48331AD: unwrap_or_else<core::cell::Cell<core::option::Option<std::sync::mpmc::context::Context>>, fn() -> core::cell::Cell<core::option::Option<std::sync::mpmc::context::Context>>> (option.rs:1065)
+==119163==    by 0x48331AD: <std::sys::thread_local::native::lazy::Storage<core::cell::Cell<core::option::Option<std::sync::mpmc::context::Context>>, ()>>::get_or_init_slow::<<std::sync::mpmc::context::Context>::with::CONTEXT::__rust_std_internal_init_fn> (lazy.rs:80)
+==119163==    by 0x484C2CB: get_or_init<core::cell::Cell<core::option::Option<std::sync::mpmc::context::Context>>, (), fn() -> core::cell::Cell<core::option::Option<std::sync::mpmc::context::Context>>> (lazy.rs:62)
+==119163==    by 0x484C2CB: {closure#0} (mod.rs:97)
+==119163==    by 0x484C2CB: call_once<std::sync::mpmc::context::{impl#0}::with::CONTEXT::{constant#0}::{closure_env#0}, (core::option::Option<&mut core::option::Option<core::cell::Cell<core::option::Option<std::sync::mpmc::context::Context>>>>)> (function.rs:250)
+==119163==    by 0x484C2CB: try_with<core::cell::Cell<core::option::Option<std::sync::mpmc::context::Context>>, std::sync::mpmc::context::{impl#0}::with::{closure_env#1}<std::sync::mpmc::list::{impl#3}::recv::{closure_env#1}<test::event::CompletedTest>, ()>, ()> (local.rs:462)
+==119163==    by 0x484C2CB: with<std::sync::mpmc::list::{impl#3}::recv::{closure_env#1}<test::event::CompletedTest>, ()> (context.rs:53)
+==119163==    by 0x484C2CB: <std::sync::mpmc::list::Channel<test::event::CompletedTest>>::recv (list.rs:442)
+==119163==    by 0x4858ED9: recv<test::event::CompletedTest> (mod.rs:1025)
+==119163==    by 0x4858ED9: recv<test::event::CompletedTest> (mpsc.rs:890)
+==119163==    by 0x4858ED9: run_tests<test::console::run_tests_console::{closure_env#2}> (lib.rs:445)
+==119163==    by 0x4858ED9: test::console::run_tests_console (console.rs:328)
+==119163==    by 0x4844CBC: test_main_inner<test::test_main_static::{closure_env#0}> (lib.rs:170)
+==119163==    by 0x4844CBC: test::test_main_static (lib.rs:195)
+==119163==    by 0x4832912: call_once<fn(), ()> (library/core/src/ops/function.rs:250)
+==119163==    by 0x4832912: std::sys::backtrace::__rust_begin_short_backtrace::<fn(), ()> (library/std/src/sys/backtrace.rs:166)
+==119163==    by 0x4832928: std::rt::lang_start::<()>::{closure#0} (library/std/src/rt.rs:206)
+==119163==    by 0x48A2178: call_once<(), (dyn core::ops::function::Fn<(), Output=i32> + core::marker::Sync + core::panic::unwind_safe::RefUnwindSafe)> (function.rs:287)
+==119163==    by 0x48A2178: do_call<&(dyn core::ops::function::Fn<(), Output=i32> + core::marker::Sync + core::panic::unwind_safe::RefUnwindSafe), i32> (panicking.rs:576)
+==119163==    by 0x48A2178: catch_unwind<i32, &(dyn core::ops::function::Fn<(), Output=i32> + core::marker::Sync + core::panic::unwind_safe::RefUnwindSafe)> (panicking.rs:544)
+==119163==    by 0x48A2178: catch_unwind<&(dyn core::ops::function::Fn<(), Output=i32> + core::marker::Sync + core::panic::unwind_safe::RefUnwindSafe), i32> (panic.rs:359)
+==119163==    by 0x48A2178: {closure#0} (rt.rs:175)
+==119163==    by 0x48A2178: do_call<std::rt::lang_start_internal::{closure_env#0}, isize> (panicking.rs:576)
+==119163==    by 0x48A2178: catch_unwind<isize, std::rt::lang_start_internal::{closure_env#0}> (panicking.rs:544)
+==119163==    by 0x48A2178: catch_unwind<std::rt::lang_start_internal::{closure_env#0}, isize> (panic.rs:359)
+==119163==    by 0x48A2178: std::rt::lang_start_internal (rt.rs:171)
+==119163==    by 0x483299B: main (in /workspace/rust48-local-run/libtest-control)
+==119163== 
+==119163== 544 bytes in 1 blocks are still reachable in loss record 3 of 3
+==119163==    at 0x48DF818: malloc (vg_replace_malloc.c:446)
+==119163==    by 0x48A8E3D: alloc (alloc.rs:130)
+==119163==    by 0x48A8E3D: alloc_impl_runtime (alloc.rs:302)
+==119163==    by 0x48A8E3D: alloc_impl (alloc.rs:424)
+==119163==    by 0x48A8E3D: allocate (alloc.rs:541)
+==119163==    by 0x48A8E3D: try_new_uninit_in<alloc::collections::btree::node::LeafNode<usize, std::sys::pal::unix::stack_overflow::thread_info::ThreadInfo>, alloc::alloc::Global> (boxed.rs:619)
+==119163==    by 0x48A8E3D: new_uninit_in<alloc::collections::btree::node::LeafNode<usize, std::sys::pal::unix::stack_overflow::thread_info::ThreadInfo>, alloc::alloc::Global> (boxed.rs:586)
+==119163==    by 0x48A8E3D: new<usize, std::sys::pal::unix::stack_overflow::thread_info::ThreadInfo, alloc::alloc::Global> (node.rs:87)
+==119163==    by 0x48A8E3D: new_leaf<usize, std::sys::pal::unix::stack_overflow::thread_info::ThreadInfo, alloc::alloc::Global> (node.rs:225)
+==119163==    by 0x48A8E3D: insert_entry<usize, std::sys::pal::unix::stack_overflow::thread_info::ThreadInfo, alloc::alloc::Global> (entry.rs:452)
+==119163==    by 0x48A8E3D: insert<usize, std::sys::pal::unix::stack_overflow::thread_info::ThreadInfo, alloc::alloc::Global> (entry.rs:426)
+==119163==    by 0x48A8E3D: insert<usize, std::sys::pal::unix::stack_overflow::thread_info::ThreadInfo, alloc::alloc::Global> (map.rs:1052)
+==119163==    by 0x48A8E3D: std::sys::pal::unix::stack_overflow::thread_info::set_current_info (thread_info.rs:122)
+==119163==    by 0x48A20B8: init (stack_overflow.rs:185)
+==119163==    by 0x48A20B8: init (mod.rs:38)
+==119163==    by 0x48A20B8: init (rt.rs:118)
+==119163==    by 0x48A20B8: {closure#0} (rt.rs:173)
+==119163==    by 0x48A20B8: do_call<std::rt::lang_start_internal::{closure_env#0}, isize> (panicking.rs:576)
+==119163==    by 0x48A20B8: catch_unwind<isize, std::rt::lang_start_internal::{closure_env#0}> (panicking.rs:544)
+==119163==    by 0x48A20B8: catch_unwind<std::rt::lang_start_internal::{closure_env#0}, isize> (panic.rs:359)
+==119163==    by 0x48A20B8: std::rt::lang_start_internal (rt.rs:171)
+==119163==    by 0x483299B: main (in /workspace/rust48-local-run/libtest-control)
+==119163== 
+==119163== LEAK SUMMARY:
+==119163==    definitely lost: 0 bytes in 0 blocks
+==119163==    indirectly lost: 0 bytes in 0 blocks
+==119163==      possibly lost: 48 bytes in 1 blocks
+==119163==    still reachable: 548 bytes in 2 blocks
+==119163==         suppressed: 0 bytes in 0 blocks
+==119163== 
+==119163== For lists of detected and suppressed errors, rerun with: -s
+==119163== ERROR SUMMARY: 1 errors from 1 contexts (suppressed: 0 from 0)

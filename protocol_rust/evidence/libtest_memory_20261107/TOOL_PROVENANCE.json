@@ -1,0 +1,48 @@
+{
+  "rust": {
+    "rustc": {
+      "url": "https://static.rust-lang.org/dist/2026-10-15/rustc-1.99.1-x86_64-unknown-linux-gnu.tar.xz",
+      "sha256": "2ff05ff9c08a90861e7f6e4065b40a8b87463b4576186fd613871c3e37f2091f"
+    },
+    "rust-std": {
+      "url": "https://static.rust-lang.org/dist/2026-10-15/rust-std-1.99.1-x86_64-unknown-linux-gnu.tar.xz",
+      "sha256": "109b074225bf5b9ea3820890876bfdf4ed161adbfaf94b2b4b5984c85ee5d958"
+    },
+    "cargo": {
+      "url": "https://static.rust-lang.org/dist/2026-10-15/cargo-1.99.1-x86_64-unknown-linux-gnu.tar.xz",
+      "sha256": "53f3521949404d595efb06a55c12c5658d4ed1c75566f33d3d514eaebe70bd8a"
+    }
+  },
+  "rust_manifest_url": "https://static.rust-lang.org/dist/channel-rust-1.99.1.toml",
+  "rust_manifest_sha256": "fb152be80975c194aa5fc684b2aec3a6e14e2b855efe2faa4e5f8ae6e590f463",
+  "debian_packages": {
+    "libc6": {
+      "Version": "2.41-12+deb13u4",
+      "Filename": "pool/main/g/glibc/libc6_2.41-12+deb13u4_amd64.deb",
+      "SHA256": "967aa62605721081c3eb2a17650611a792aa802d76a6511d1840242623d204c9"
+    },
+    "libc6-dbg": {
+      "Version": "2.41-12+deb13u4",
+      "Filename": "pool/main/g/glibc/libc6-dbg_2.41-12+deb13u4_amd64.deb",
+      "SHA256": "0123a767a462c59d75e1bd56c4a0f7192c389f600e4743e807d3d33c679dbcf7"
+    },
+    "valgrind": {
+      "Version": "1:3.24.0-3",
+      "Filename": "pool/main/v/valgrind/valgrind_3.24.0-3_amd64.deb",
+      "SHA256": "0359e30820ccee7ee5c8d4c951ca276e3978b18f157d71bd77981de05b344907"
+    }
+  },
+  "debian_release_url": "https://deb.debian.org/debian/dists/trixie/InRelease",
+  "debian_inrelease_sha256": "0584fba32e13e0ab8285fb16c27adea1ec03a73669c18702821094fd6ca86675",
+  "debian_signed_release_sha256": "8604eb6fba4e103b48f029f4d945e8c96d07a418b663de8386617d0b78bd3bcf",
+  "debian_trusted_keyring_sha256": "506b815cbb32d9b6066b4a2aa524071e071761e7e7f68c3ac74f3061ba852017",
+  "debian_signature_verified": true,
+  "package_index_sha256": "7778d3e3f303b7ddb8ce0fe7c8d57473a076c6bf2e8f241f75421d2396352498",
+  "package_index_checked_against_signed_release": true,
+  "packages_and_rust_artifacts_verified_before_use": true,
+  "runtime_note": "User-local extracted libc and matching debug symbols. Staged loader executable is byte-identical to the signed Debian package; debug files were placed adjacent using the original GNU debuglink name. No executable patches, suppressions, or system installation.",
+  "loader_sha256": "c8438e4fde1934e61c88311633f00949ff645d5c04cdb8671fa3d78164d2f307",
+  "libc_sha256": "9792e3cbb541c8f44c7acf5f14f4022ea62998ecc787d326bed4d8b6547dfd92",
+  "system_configuration_changed": false,
+  "original_environment_difference": "Original: Rust1.99.1, Valgrind3.28.0, Ubuntu glibc2.39. New: Rust1.99.1, Valgrind3.24.0, Debian glibc2.41-12+deb13u4; cannot transfer a complete production verdict."
+}
