@@ -128,8 +128,13 @@ It adds no API that opens authentication or session creation boundaries.
 These checks do not approve full authentication/session state, constant-time behavior, or cryptographic security.
 ASan/leak diagnostics, panics, verdict mismatches, and missing instrumentation evidence remain execution failures.
 
-User OCI/WSL results for this new Rust parser campaign have not yet been collected.
-Results of preceding C or Python fuzzing are not used as run counts for this campaign.
+In user-submitted results dated 2026-11-07, OCI ARM64 and WSL2 x86-64 each executed both targets
+100,000 times. OCI saved inputs were frame 125 and hello 108;
+WSL saved frame 142 and hello 106. Original replay output was independently compared with Python,
+and all matched. Verified the same `fe2cdc1` commit, 39 source files, and pinned Rust tools,
+with no sanitizer errors, crashes, panics, or verdict mismatches.
+Evidence is recorded in the [submitted result validation summary](evidence/parser_fuzz_20261107/platform-review.json).
+Earlier C fuzzing, Python fuzzing, local runs, and these two platform runs are recorded separately.
 In local Debian validation, each target executed 100,000 times; final saved inputs
 all matched Python: frame 129 and hello 107.
 Validation evidence and existing functionality regression results are in the [local record](evidence/parser_fuzz_20261107/README.md).

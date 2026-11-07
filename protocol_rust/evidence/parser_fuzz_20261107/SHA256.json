@@ -1,5 +1,5 @@
 {
-  "README.md": "6b585667a95be057804c632efae3fc5c78880b70500b6b927d8ebe1460562c44",
+  "README.md": "4b80188cc636ead5c73595533405f76e762561ab34738b0c875c5a1b93301831",
   "feature-doc.log": "714f1704f560358aa37844b18bdffb95ace28f3426c65f811ac6719d47c8d57e",
   "feature-unit.log": "70250989298d12e640539fb042b48494bf056375f244e67d0586d913ce93a7f5",
   "functional/cargo-version.log": "99ef17c8e536a7c7bc486f6f1ab6348874701495ad0a749b36796b7db9659bfe",
@@ -15,5 +15,6 @@
   "functional/rustc-version.log": "a03b7b055fbe7fd69d759022e6bf596d8fed4460d1fd784856075ecd1835d5fb",
   "local-100k.tar.gz": "69b4831a2a45f1e221040a63498e906489ee08fea6e34c97a877c827f9a0765d",
   "local-result.json": "cd72e4dda6d3e13532cca9c3d0da3f7346a710dccd9cfd514bdc0e6d7275c7d6",
+  "platform-review.json": "d0f9609269a0a2dc2c1775879a6e8a2d6db0b9096178f6b445c59bcf55f7ebac",
   "smoke-2k.tar.gz": "2dccd27ea4d38b2002a60d4604348d813310ccec1a825e7bc02c6fbb2e814a2d"
 }

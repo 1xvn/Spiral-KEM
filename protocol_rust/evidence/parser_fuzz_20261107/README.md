@@ -1,10 +1,10 @@
-# Rust frame/ClientHello fuzzer local validation · 2026-11-07
+# Rust frame and ClientHello fuzzer validation on local/OCI/WSL environments · 2026-11-07
 
 The official nightly-2026-11-07 / Rust 1.101.0-nightly commit
 `c980177d81d16f843a500905ac98c0cf3af1fd8d` was installed separately on Debian 13 x86-64 and run.
 We also actually ran the user installation script that verifies the official manifest and component SHA-256 hashes.
 Installation was confined to the working directory, preserving the existing Rust 1.99.1 configuration.
-New Rust results for OCI ARM64/WSL2 are not yet available.
+OCI ARM64/WSL2 submissions collected after this local preparation check are summarized separately below.
 
 ## Actual campaigns
 
@@ -71,3 +71,41 @@ must be checked separately in the corresponding Actions run.
 These results are finite runs of the frame/ClientHello parsers. They do not approve all record states, all TLS authentication,
 constant time behavior, resolution of existing memory diagnostic warnings, or Spiral's own security.
 Execution procedures for both platforms are in the [Rust parser fuzzing guide](../../FUZZ_PARSERS.md).
+
+## Submitted OCI·WSL results
+
+| Environment / target | Actual engine executions | Initial → final cov | Final ft | Saved inputs rechecked with Python | Errors/crashes |
+| --- | ---: | --- | ---: | --- | ---: |
+| OCI ARM64 / frame | 100,000 | 69 → 69 | 99 | 125/125 matched | 0 |
+| OCI ARM64 / hello | 100,000 | 169 → 180 | 300 | 108/108 matched | 0 |
+| WSL2 x86-64 / frame | 100,000 | 69 → 69 | 99 | 142/142 matched | 0 |
+| WSL2 x86-64 / hello | 100,000 | 139 → 150 | 264 | 106/106 matched | 0 |
+
+The shared commit is `fe2cdc18c99a8b49db3b3e2b6ceaac813e7cef9c`, and 39 source files
+match that immutable commit. We checked the full Rust 1.101.0-nightly compiler commit, Cargo version,
+official nightly manifest, and CPU-specific component URLs/SHA-256 hashes.
+All 272 file hashes in the original OCI bundle and 289 in the WSL bundle matched.
+We confirmed valid gzip/tar structure with no links, duplicates, path traversal, or build binaries.
+
+The live engine logs for all four runs show 100,000 executions and exit 0, with input evaluation
+continuing after initialization. We verified input lengths/hashes against the final corpus and manifest, and independently compared
+481 original Rust rerun JSON records with separate Python reference values.
+Results for the 99 target/input combinations saved in common also matched across the two platforms.
+Do not interpret corpus or cov/ft differences as code coverage percentages or relative performance.
+
+There are 132 saved compilation audit JSONL records for WSL and 131 for OCI. In each bundle,
+only one `spiral_protocol` library invocation has sancov; other crates do not,
+and we verified ASan/overflow/debug options for the protocol and driver builds.
+Arguments in the selected compiler-invocations.json also match the full audit record.
+We independently rechecked hashes, sizes, counters, and comparison tracing for the six excerpted parser IR definitions, plus saved symbols/disassembly.
+WSL's inlined `wire::parse` and OCI's separate symbol matched
+the reported DWARF inline chain and disassembly, respectively.
+
+The archives contain neither executables nor full IR, so we did not recalculate full binary/full IR hashes or the harness's
+full IR token counts during review. We confirmed that the metadata is
+consistent with the audited compilation arguments and preserved parser definitions, symbols, and disassembly.
+This review did not rerun the programs in the original target environments.
+
+`platform-review.json` records original archive SHA-256 hashes, environments, checked metrics, and source hashes.
+This is a pass within the finite execution scope of these two parsers, not approval of all Rust DATA/CLOSE states or authentication flows,
+constant time, cryptographic security, or resolution of existing memory diagnostic warnings.
