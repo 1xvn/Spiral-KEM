@@ -160,6 +160,7 @@ def main():
     if out.exists() or destination.exists():
         parser.error('output folder and archive must both be new paths')
     out.mkdir(parents=True)
+    print('Output:',out,flush=True)
     build = out/'build'; build.mkdir()
     report = {'status':'incomplete','label':args.label,'started_utc':datetime.now(timezone.utc).isoformat(),
               'platform':platform.uname()._asdict(),'python':sys.version,'commands':[], 'targets':[],
@@ -224,6 +225,7 @@ def main():
             str(ROOT/'protocol_rust/fuzz/oracles.rs'),'-o',str(oracle_tests)],120)
         run('oracle-tests',[str(oracle_tests)],120)
         cargo_target = build/'cargo-target'
+        print('Building Rust targets; first build can take several minutes. Log:',out/'cargo-build.log',flush=True)
         run('cargo-build',[str(toolchain/'bin/cargo'),'build','--locked','--manifest-path',
             str(ROOT/'protocol_rust/fuzz/Cargo.toml'),'--release','--target',target,
             '--target-dir',str(cargo_target),'-j',str(args.jobs)],1800,env)
@@ -232,6 +234,7 @@ def main():
         report['coverage'] = coverage_evidence.verify(cargo_target,trace,binaries,coverage_dir)
         if report['coverage'].get('status') != 'verified':
             raise RuntimeError('runtime-only coverage evidence was not verified')
+        print('Rust parser coverage verified; harness/oracles excluded.',flush=True)
         corpus_seeds = inputs.seeds()
         for name in inputs.TARGETS:
             work = out/name; corpus = work/'corpus'; artifacts = work/'artifacts'
@@ -249,6 +252,7 @@ def main():
                 '-max_total_time='+str(args.seconds),'-seed=20261107','-max_len='+str(inputs.MAX_LEN[name]),
                 '-timeout=5','-rss_limit_mb=1536','-print_final_stats=1','-artifact_prefix='+str(artifacts)+'/']
             report['commands'].append({'name':name+'/engine','argv':command,'timeout_seconds':args.seconds+60})
+            print('Starting',name,'with at most',args.runs,'runs or',args.seconds,'seconds',flush=True)
             with (work/'engine.log').open('wb') as output:
                 done = subprocess.run(command,cwd=ROOT,env=env,stdout=output,stderr=subprocess.STDOUT,timeout=args.seconds+60)
             text = (work/'engine.log').read_text(errors='replace'); metrics = parse_feedback(text)
