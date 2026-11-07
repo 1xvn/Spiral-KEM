@@ -120,5 +120,9 @@ First preserve original failing inputs/logs. After fixing confirmed defects, ret
 A60-second run is an initial compatibility/behavior check, not a criterion for long-term fuzzing, cryptographic security,
 constant-time behavior, or completion of all item3.
 
-OCI/WSL results are not yet available for this new C check. Earlier OCI memory-check passes,
-WSL Valgrind warnings, and Python fuzzing successes are not counted as passes for this check.
+In submissions received2026-11-07, OCI ARM64 and WSL2 x86-64 each completed100,000 runs.
+The same `c9e4075` commit,5 source files, and Clang 18.1.3 were confirmed, with no sanitizer errors or crashes.
+All21 OCI result-file hashes and36 WSL result-file hashes matched.
+The validation summary is [platform-review.json](evidence/fuzz_platforms_20261107/platform-review.json).
+The initially submitted WSL archive was empty; a new file containing valid results was checked.
+This verdict is limited to public-key parsing/encapsulation targets and recorded separately from earlier Valgrind/Python checks.

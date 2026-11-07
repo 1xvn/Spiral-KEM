@@ -36,6 +36,8 @@ Thus these changes should not be interpreted as improving whole-Python-process s
 Procedures for running the new C coverage-guided checks on both platforms are in
 the [OCI ARM64 / WSL2 x86-64 guide](FUZZ_PLATFORMS.md).
 The first targets are public-key parsing and common encapsulation, separate from existing fixed-input checks.
+The subsequent ciphertext/one-time-key-lifetime target can be run at the same commit using the [C decapsulation fuzzing guide](FUZZ_CT.md),
+and saved inputs can be compared against the Python reference implementation.
 
 Linux x86-64 requires a C11 compiler, make, and OpenSSL 3 development headers/libraries.
 Run Python checks in an environment with the pinned dependencies from `protocol_v01/requirements.txt` installed.

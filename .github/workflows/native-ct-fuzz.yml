@@ -1,0 +1,49 @@
+name: Native C ciphertext fuzzing
+
+on:
+  pull_request:
+  push:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: native-ct-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  ciphertext:
+    name: C lifecycle and Python differential replay
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    env:
+      PYTHONDONTWRITEBYTECODE: '1'
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065 # v5
+        with:
+          python-version: '3.12'
+      - name: Install native test toolchain
+        run: |
+          sudo apt-get update
+          sudo apt-get install --no-install-recommends -y clang-18 llvm-18 libclang-rt-18-dev libssl-dev openssl
+      - name: Check independent reference and result gates
+        run: python -S -m unittest native_research.test_ct_oracle native_research.test_fuzz_ct_runner -v
+      - name: Run bounded C campaign and saved-corpus differential replay
+        run: python -S native_research/fuzz_ct.py --label local --cc clang-18 --runs 2000 --seconds 10 --output fuzz-results/native-ct
+      - name: Preserve result bundle
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: native-ct-${{ github.run_id }}-${{ github.run_attempt }}
+          path: fuzz-results/native-ct.tar.gz
+          if-no-files-found: warn
+          retention-days: 14
+      - name: State runner scope
+        if: always()
+        run: |
+          echo 'C ciphertext parsing/one-use key lifecycle; saved-corpus Python differential checks are counted separately from live fuzz executions.' >> "$GITHUB_STEP_SUMMARY"
+          echo 'This GitHub Linux run does not substitute for OCI ARM64 and WSL2 runs, constant-time testing, or cryptographic safety evaluation.' >> "$GITHUB_STEP_SUMMARY"
