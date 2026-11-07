@@ -1,4 +1,4 @@
-"""Verify and retain evidence for Rust parser-only libFuzzer feedback."""
+"""Verify and retain evidence for protocol-only Rust libFuzzer feedback."""
 
 import hashlib
 import json
@@ -6,9 +6,12 @@ from pathlib import Path
 import re
 import subprocess
 import tomllib
+from dataclasses import dataclass
 
 
 CRATES = ("spiral_protocol", "frame_target", "hello_target", "replay_target")
+RECORD_CRATES = ("spiral_protocol", "record_target", "record_replay")
+IR_CRATES = frozenset(CRATES + RECORD_CRATES)
 COVERAGE_CODEGEN = frozenset(
     {
         "passes=sancov-module",
@@ -28,6 +31,50 @@ FUNCTION_MARKERS = {
 }
 FRAME_FUNCTIONS = ("header_parse", "wire_parse", "parse_frame")
 HELLO_FUNCTIONS = ("parse_client_hello", "parse_hello", "validate_identity")
+RECORD_FUNCTION_MARKERS = {
+    "header_parse": "6Header5parse",
+    "wire_parse": "4wire5parse",
+    "tx_data": "2Tx4data",
+    "tx_close": "2Tx5close",
+    "tx_encode": "2Tx6encode",
+    "rx_decode": "2Rx6decode",
+}
+
+
+@dataclass(frozen=True)
+class EvidenceProfile:
+    crates: tuple[str, ...]
+    function_markers: dict[str, str]
+    binary_functions: dict[str, tuple[str, ...]]
+    trace_optional: frozenset[str]
+    inline_parents: dict[str, tuple[str, str]]
+    artifact_stem: str
+    scope: str
+
+
+PARSER_PROFILE = EvidenceProfile(
+    CRATES, FUNCTION_MARKERS,
+    {"frame_target": FRAME_FUNCTIONS, "hello_target": HELLO_FUNCTIONS,
+     "replay_target": tuple(FUNCTION_MARKERS)},
+    frozenset({"parse_client_hello"}), {"wire_parse": ("parse_frame", "wire.rs")},
+    "parser", "Reachable spiral-protocol Rust parser instrumentation; harness/oracles excluded. No native C or OpenSSL coverage claim.",
+)
+RECORD_PROFILE = EvidenceProfile(
+    RECORD_CRATES, RECORD_FUNCTION_MARKERS,
+    {name: tuple(RECORD_FUNCTION_MARKERS) for name in RECORD_CRATES[1:]},
+    frozenset(), {"wire_parse": ("rx_decode", "wire.rs")},
+    "record", "Reachable spiral-protocol Rust DATA/CLOSE Tx/Rx instrumentation, including fixed-fixture bridge; harness/model/ring excluded. No channel/TLS lifecycle, native C, OpenSSL or constant-time claim.",
+)
+
+
+def profile_for(suite):
+    if suite == "parsers":
+        return PARSER_PROFILE
+    if suite == "records":
+        return RECORD_PROFILE
+    raise ValueError("unknown coverage suite: " + str(suite))
+
+
 IR_SYMBOL = re.compile(rb'@(?:"([^"\n]+)"|([^\s(]+))\(')
 
 
@@ -59,10 +106,10 @@ def _values(args, option):
     return values
 
 
-def _function_label(symbol):
+def _function_label(symbol, profile=PARSER_PROFILE):
     if "spiral_protocol" not in symbol:
         return None
-    for label, marker in FUNCTION_MARKERS.items():
+    for label, marker in profile.function_markers.items():
         if marker not in symbol:
             continue
         suffix = symbol.split(marker, 1)[1]
@@ -73,7 +120,7 @@ def _function_label(symbol):
     return None
 
 
-def _read_trace(trace_path):
+def _read_trace(trace_path, profile=PARSER_PROFILE):
     records = []
     with trace_path.open(encoding="utf-8") as stream:
         for line_number, line in enumerate(stream, 1):
@@ -109,7 +156,7 @@ def _read_trace(trace_path):
             _require(record["is_query"] is query, "compiler query audit mismatch")
             _require(record["coverage_match"] is (names == ["spiral_protocol"] and types == ["lib"]), "coverage crate match audit mismatch")
             _require(record.get("coverage_enabled") is expected, "coverage decision audit mismatch")
-            ir_expected = name in CRATES and not query
+            ir_expected = name in IR_CRATES and not query
             _require(record.get("llvm_ir_enabled") is ir_expected, "LLVM IR decision audit mismatch")
             codegen = _values(args, "-C")
             feedback = [value for value in codegen if "sancov" in value or "sanitizer-coverage" in value]
@@ -122,13 +169,23 @@ def _read_trace(trace_path):
                 _require(any(item.split("=", 1)[0] == "llvm-ir" for item in emits), f"no IR output for {name}")
                 units = [value.partition("=")[2] for value in codegen if value.partition("=")[0] == "codegen-units"]
                 _require(bool(units) and all(value == "1" for value in units), f"multiple codegen units for {name}")
+                sanitizers = [value.partition("=")[2] for value in _values(args, "-Z") if value.partition("=")[0] == "sanitizer"]
+                _require(bool(sanitizers) and all(value == "address" for value in sanitizers), f"AddressSanitizer is not enabled for {name}")
+                for option, allowed in {
+                    "debuginfo": {"1", "2", "line-tables-only", "limited", "full"},
+                    "force-frame-pointers": {"yes", "on", "true", "1"},
+                    "overflow-checks": {"yes", "on", "true", "1"},
+                    "debug-assertions": {"yes", "on", "true", "1"},
+                }.items():
+                    settings = [value.partition("=")[2] for value in codegen if value.partition("=")[0] == option]
+                    _require(bool(settings) and all(value in allowed for value in settings), f"required {option} is disabled for {name}")
                 for value in codegen:
                     key, _, setting = value.partition("=")
                     if key in {"lto", "linker-plugin-lto"}:
                         _require(setting in {"off", "false", "no", "0"}, f"LTO enabled for {name}")
             records.append(record)
     _require(bool(records), "empty compiler audit")
-    for name in CRATES:
+    for name in profile.crates:
         _require(any(record.get("crate_name") == name and record.get("llvm_ir_enabled") for record in records), f"missing compiler audit for {name}")
     return records
 
@@ -173,7 +230,7 @@ def _linked_output(record, build_dir):
     return path
 
 
-def _inspect_ir(path, production):
+def _inspect_ir(path, production, profile=PARSER_PROFILE):
     digest = hashlib.sha256()
     size = 0
     counts = {"sancov_counter_section_tokens": 0, "sancov_generated_tokens": 0, "trace_callback_tokens": 0}
@@ -197,7 +254,7 @@ def _inspect_ir(path, production):
                 match = IR_SYMBOL.search(line)
                 if match:
                     symbol = (match.group(1) or match.group(2)).decode("ascii")
-                    label = _function_label(symbol)
+                    label = _function_label(symbol, profile)
                     if label:
                         _require(label not in functions, f"ambiguous production function {label}")
                         current = (label, symbol)
@@ -211,7 +268,7 @@ def _inspect_ir(path, production):
                     store = any(b"store i8" in item and b"@__sancov_gen_" in item for item in body)
                     trace = any(b"call " in item and b"@__sanitizer_cov_trace_" in item for item in body)
                     _require(load and store, f"no inline counter access in {label}")
-                    if label != "parse_client_hello":
+                    if label not in profile.trace_optional:
                         _require(trace, f"no comparison tracing in {label}")
                     functions[label] = {
                         "symbol": symbol,
@@ -222,9 +279,9 @@ def _inspect_ir(path, production):
                     }
                     bodies[label] = raw
                     current = None
-    _require(current is None, "unterminated production parser IR")
+    _require(current is None, "unterminated production protocol IR")
     if production:
-        _require(set(functions) == set(FUNCTION_MARKERS), "missing production parser function definitions")
+        _require(set(functions) == set(profile.function_markers), "missing production protocol function definitions")
         _require(all(counts[key] > 0 for key in counts), "missing production sanitizer coverage IR")
     else:
         _require(not any(counts.values()), f"harness/oracle feedback exists in {path.name}")
@@ -240,27 +297,31 @@ def _run(command):
     return completed.stdout
 
 
-def _inline_wire_evidence(disassembly, wire_symbol, wrapper_symbol):
+def _inline_function_evidence(disassembly, symbol, parent_symbol, source):
     blocks = []
     current = None
     for line in disassembly.splitlines():
         if line and not line[0].isspace() and line.endswith("():"):
             if current:
                 blocks.append("\n".join(current))
-            current = [line] if line == wire_symbol + "():" else None
+            current = [line] if line == symbol + "():" else None
         elif current is not None:
             current.append(line)
     if current:
         blocks.append("\n".join(current))
     return any(
-        "wire.rs:" in block
-        and any("inlined by" in line and wrapper_symbol in line for line in block.splitlines())
+        source + ":" in block
+        and any("inlined by" in line and parent_symbol in line for line in block.splitlines())
         and "__sanitizer_cov_trace_" in block
         for block in blocks
     )
 
 
-def _inspect_binary(name, path, required, ir_functions, out):
+def _inline_wire_evidence(disassembly, wire_symbol, wrapper_symbol):
+    return _inline_function_evidence(disassembly, wire_symbol, wrapper_symbol, "wire.rs")
+
+
+def _inspect_binary(name, path, required, ir_functions, out, profile=PARSER_PROFILE):
     path = path.resolve()
     _require(path.is_file(), f"missing linked binary {path}")
     nm_command = ["nm", "--defined-only", "--no-demangle", str(path)]
@@ -277,14 +338,14 @@ def _inspect_binary(name, path, required, ir_functions, out):
     for label in required:
         symbol = ir_functions[label]["symbol"]
         if symbol not in symbols:
-            _require(label == "wire_parse", f"{name} does not link production function {label}")
+            _require(label in profile.inline_parents, f"{name} does not link production function {label}")
             continue
         symbol_lines.append(symbols[symbol])
         command = ["objdump", "-d", "-l", "--inlines", "--disassemble=" + symbol, str(path)]
         text = _run(command)
         _require(re.search(r"^\s*[0-9a-fA-F]+ <" + re.escape(symbol) + r">:", text, re.MULTILINE), f"no linked function body for {name}/{label}")
         trace = "__sanitizer_cov_trace_" in text
-        if label != "parse_client_hello":
+        if label not in profile.trace_optional:
             _require(trace, f"linked parser {name}/{label} lacks comparison callbacks")
         functions[label] = {
             "symbol": symbol, "attribution": "standalone",
@@ -293,20 +354,22 @@ def _inspect_binary(name, path, required, ir_functions, out):
         }
         disassembly[label] = text
         commands.append(command)
-    if "wire_parse" in required and "wire_parse" not in functions:
-        wire_symbol = ir_functions["wire_parse"]["symbol"]
-        wrapper_symbol = ir_functions["parse_frame"]["symbol"]
-        _require(_inline_wire_evidence(disassembly["parse_frame"], wire_symbol, wrapper_symbol), f"no linked inline wire::parse attribution in {name}")
-        functions["wire_parse"] = {
-            "symbol": wire_symbol, "attribution": "inlined",
-            "inlined_into": wrapper_symbol, "source": "wire.rs",
+    for label, (parent, source) in profile.inline_parents.items():
+        if label not in required or label in functions:
+            continue
+        symbol = ir_functions[label]["symbol"]
+        parent_symbol = ir_functions[parent]["symbol"]
+        _require(parent in disassembly and _inline_function_evidence(disassembly[parent], symbol, parent_symbol, source), f"no linked inline {label} attribution in {name}")
+        functions[label] = {
+            "symbol": symbol, "attribution": "inlined",
+            "inlined_into": parent_symbol, "source": source,
             "trace_comparisons": True,
         }
-        symbol_lines.append(f"# {wire_symbol} is attributed by DWARF inline records inside {wrapper_symbol}")
-    _require(set(functions) == set(required), f"incomplete linked parser attribution for {name}")
-    symbol_path = out / (name + "-parser-symbols.txt")
+        symbol_lines.append(f"# {symbol} is attributed by DWARF inline records inside {parent_symbol}")
+    _require(set(functions) == set(required), f"incomplete linked protocol attribution for {name}")
+    symbol_path = out / (name + "-" + profile.artifact_stem + "-symbols.txt")
     symbol_path.write_text("\n".join(symbol_lines) + "\n", encoding="utf-8")
-    disassembly_path = out / (name + "-parser-disassembly.txt")
+    disassembly_path = out / (name + "-" + profile.artifact_stem + "-disassembly.txt")
     disassembly_path.write_text("\n\n".join("# " + label + "\n" + text for label, text in disassembly.items()), encoding="utf-8")
     return {
         **_file_info(path), "functions": functions, "commands": commands,
@@ -315,7 +378,7 @@ def _inspect_binary(name, path, required, ir_functions, out):
     }
 
 
-def verify(build_dir: Path, trace_path: Path, binaries: dict[str, Path], out: Path) -> dict:
+def verify(build_dir: Path, trace_path: Path, binaries: dict[str, Path], out: Path, *, suite="parsers") -> dict:
     """Fail closed unless audit, emitted IR, and linked parser evidence agree.
 
     The caller creates a fresh output directory and archives the complete rustc
@@ -323,44 +386,47 @@ def verify(build_dir: Path, trace_path: Path, binaries: dict[str, Path], out: Pa
     parser definitions, and linked-symbol/disassembly evidence without copying
     the full production IR file.
     """
+    evidence_profile = profile_for(suite)
+    crates = evidence_profile.crates
     build_dir = Path(build_dir).resolve()
     trace_path = Path(trace_path).resolve()
     out = Path(out).resolve()
     _require(build_dir.is_dir(), "missing build directory")
     _require(out.is_dir() and not any(out.iterdir()), "output directory must exist and be empty")
-    records = _read_trace(trace_path)
+    records = _read_trace(trace_path, evidence_profile)
     profile_path = Path(__file__).resolve().parent.parent / "fuzz" / "Cargo.toml"
     with profile_path.open("rb") as stream:
         profile = tomllib.load(stream).get("profile", {}).get("release", {})
     _require(profile.get("lto") is False, "fuzz release profile does not explicitly disable LTO")
 
-    selected = [record for record in records if record.get("crate_name") in CRATES and record.get("llvm_ir_enabled")]
+    selected = [record for record in records if record.get("crate_name") in crates and record.get("llvm_ir_enabled")]
     compiler_path = out / "compiler-invocations.json"
     compiler_path.write_text(json.dumps(selected, indent=2) + "\n", encoding="utf-8")
     ir = {}
     production_bodies = {}
-    for name in CRATES:
+    for name in crates:
+        _require(sum(record["crate_name"] == name for record in selected) == 1, f"ambiguous compiler invocations for {name}")
         paths = {_ir_path(record, build_dir) for record in selected if record["crate_name"] == name}
         _require(len(paths) == 1, f"ambiguous LLVM IR artifacts for {name}")
-        info, bodies = _inspect_ir(paths.pop(), name == "spiral_protocol")
+        info, bodies = _inspect_ir(paths.pop(), name == "spiral_protocol", evidence_profile)
         ir[name] = info
         if name == "spiral_protocol":
             production_bodies = bodies
-    parser_path = out / "production-parser-functions.ll"
+    parser_path = out / ("production-" + evidence_profile.artifact_stem + "-functions.ll")
     with parser_path.open("wb") as stream:
-        for label in FUNCTION_MARKERS:
+        for label in evidence_profile.function_markers:
             stream.write(("; Verified production function: " + label + "\n").encode("ascii"))
             stream.write(production_bodies[label])
             stream.write(b"\n")
 
     canonical = {}
     for key, path in binaries.items():
-        name = key if key.endswith("_target") else key + "_target"
-        _require(name in CRATES[1:] and name not in canonical, f"unexpected or duplicate binary {key}")
+        name = key if key in crates[1:] else key + "_target"
+        _require(name in crates[1:] and name not in canonical, f"unexpected or duplicate binary {key}")
         canonical[name] = Path(path)
-    _require(set(canonical) == set(CRATES[1:]), "all three parser binaries are required")
+    _require(set(canonical) == set(crates[1:]), "all suite binaries are required")
     linked = {}
-    for name in CRATES[1:]:
+    for name in crates[1:]:
         candidate = canonical[name].resolve()
         _require(candidate.is_relative_to(build_dir), f"binary {name} is outside the audited build directory")
         outputs = {_linked_output(record, build_dir) for record in selected if record["crate_name"] == name}
@@ -368,13 +434,14 @@ def verify(build_dir: Path, trace_path: Path, binaries: dict[str, Path], out: Pa
         audited = _file_info(outputs.pop())
         supplied = _file_info(candidate)
         _require(supplied["sha256"] == audited["sha256"] and supplied["bytes"] == audited["bytes"], f"binary {name} differs from the audited linked output")
-        required = FRAME_FUNCTIONS if name == "frame_target" else HELLO_FUNCTIONS if name == "hello_target" else tuple(FUNCTION_MARKERS)
-        linked[name] = _inspect_binary(name, candidate, required, ir["spiral_protocol"]["functions"], out)
+        required = evidence_profile.binary_functions[name]
+        linked[name] = _inspect_binary(name, candidate, required, ir["spiral_protocol"]["functions"], out, evidence_profile)
         linked[name]["audited_link_output"] = audited
 
     return {
         "status": "verified",
-        "scope": "Reachable spiral-protocol Rust parser instrumentation; harness/oracles excluded. No native C or OpenSSL coverage claim.",
+        "suite": suite,
+        "scope": evidence_profile.scope,
         "trace": {
             **_file_info(trace_path), "invocations": len(records),
             "instrumented_invocations": sum(record["coverage_enabled"] for record in records),
@@ -385,6 +452,6 @@ def verify(build_dir: Path, trace_path: Path, binaries: dict[str, Path], out: Pa
         "fuzz_profile": _file_info(profile_path),
         "artifacts": {
             "compiler_invocations": _file_info(compiler_path),
-            "production_parser_functions": _file_info(parser_path),
+            "production_" + evidence_profile.artifact_stem + "_functions": _file_info(parser_path),
         },
     }

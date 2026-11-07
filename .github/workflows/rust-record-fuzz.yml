@@ -1,0 +1,51 @@
+name: Rust record state coverage fuzzing
+
+on:
+  pull_request:
+  push:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: rust-record-fuzz-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  records:
+    name: Rust DATA/CLOSE state and Python replay
+    runs-on: ubuntu-24.04
+    timeout-minutes: 25
+    env:
+      PYTHONDONTWRITEBYTECODE: '1'
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065 # v5
+        with:
+          python-version: '3.12'
+      - name: Install native link and evidence tools
+        run: |
+          sudo apt-get update
+          sudo apt-get install --no-install-recommends -y build-essential binutils libssl-dev pkg-config llvm-18
+      - name: Verify references and evidence gates
+        run: python -S -m unittest discover -s protocol_rust/fuzzing -p 'test_*.py' -v
+      - name: Install isolated pinned official nightly
+        run: python -S protocol_rust/fuzzing/install_toolchain.py --prefix "$RUNNER_TEMP/spiral-parser-nightly-20261107"
+      - name: Build, attribute record coverage, fuzz and replay
+        run: python -S protocol_rust/fuzzing/campaign.py --suite records --label local --toolchain-dir "$RUNNER_TEMP/spiral-parser-nightly-20261107" --runs 2000 --seconds 10 --output fuzz-results/rust-records
+      - name: Preserve public-data result bundle
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: rust-record-fuzz-${{ github.run_id }}-${{ github.run_attempt }}
+          path: fuzz-results/rust-records.tar.gz
+          if-no-files-found: warn
+          retention-days: 14
+      - name: State runtime scope
+        if: always()
+        run: |
+          echo 'Reachable Rust DATA/CLOSE Tx/Rx code is instrumented; driver/models are excluded. Saved transcripts are replayed against an independent Python test reference.' >> "$GITHUB_STEP_SUMMARY"
+          echo 'This finite Linux job does not substitute for OCI ARM64 or WSL2 runs. Channel/TLS lifecycle, timers, native C/OpenSSL/prebuilt-std coverage, constant time and cryptographic safety remain outside this result.' >> "$GITHUB_STEP_SUMMARY"

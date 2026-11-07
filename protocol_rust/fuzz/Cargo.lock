@@ -717,7 +717,9 @@ version = "0.0.0"
 dependencies = [
  "hex",
  "libfuzzer-sys",
+ "ring",
  "serde_json",
+ "sha2",
  "spiral-protocol",
 ]
 

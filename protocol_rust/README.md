@@ -13,6 +13,11 @@ The [Rust frame and ClientHello fuzzing guide](FUZZ_PARSERS.md) uses a separatel
 the disabled-by-default `parser-fuzz` entry points to check actual parser coverage and compare saved inputs
 against the Python reference implementation. OCI ARM64 and WSL2 x86-64 results are collected separately.
 
+The [Rust DATA/CLOSE state fuzzing guide](FUZZ_RECORDS.md) uses the disabled-by-default
+`record-fuzz` entry points to compare sequence numbers, limits, tampering rejection, and post-shutdown state of actual `Tx`/`Rx`
+against an independent model. It uses the same pinned nightly, and OCI/WSL execution results are
+Collected separately from the preceding parser checks.
+
 ## Quick start
 
 Local v0.3 validation used Debian 13 x86-64, glibc 2.41, OpenSSL 3.5.7, Rust 1.99.1, and Python 3.12.14.
