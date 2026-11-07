@@ -1,0 +1,74 @@
+{
+  "scope": "Fixed public fixture C ciphertext/one-use key lifecycle; 60second finite runs plus saved-corpus differential checks",
+  "commit": "0a23e038ad0f1610de95f807f5b9b0ae8ca9f2d4",
+  "two_platform_runs_verified": true,
+  "platforms": {
+    "oci": {
+      "status": "passed_for_submitted_scope",
+      "archive_bytes": 23689,
+      "archive_sha256": "d767655d4a8710cbfeb38c39840ecb2b0c41414d865cd501671529d07deb0924",
+      "verified_file_hashes": 69,
+      "source_files_verified": 8,
+      "machine": "aarch64",
+      "kernel": "7.0.0-1013-oracle",
+      "compiler": "Ubuntu clang version 18.1.3 (1ubuntu1)",
+      "openssl": "OpenSSL 3.0.13 30 Jan 2024 (Library: OpenSSL 3.0.13 30 Jan 2024)",
+      "feedback": {
+        "initialization_executed": 53,
+        "executed": 13243,
+        "final_cov": 98,
+        "final_features": 131
+      },
+      "engine_exit": 0,
+      "sanitizer_errors_detected_in_logs": 0,
+      "crash_artifacts": 0,
+      "differential_files_independently_verified": 52,
+      "differential_counts": {
+        "canonical": 25,
+        "malformed": 27,
+        "golden": 1,
+        "canonical_other": 24
+      },
+      "live_new_corpus_units": 0
+    },
+    "wsl": {
+      "status": "passed_for_submitted_scope",
+      "archive_bytes": 23740,
+      "archive_sha256": "7fed80eb8cc71a8b8f8993dcdf345bcac949a33361a12ac5dd11605117676b75",
+      "verified_file_hashes": 69,
+      "source_files_verified": 8,
+      "machine": "x86_64",
+      "kernel": "6.18.54.1-microsoft-standard-WSL2",
+      "compiler": "Ubuntu clang version 18.1.3 (1ubuntu1)",
+      "openssl": "OpenSSL 3.0.13 30 Jan 2024 (Library: OpenSSL 3.0.13 30 Jan 2024)",
+      "feedback": {
+        "initialization_executed": 53,
+        "executed": 24723,
+        "final_cov": 98,
+        "final_features": 131
+      },
+      "engine_exit": 0,
+      "sanitizer_errors_detected_in_logs": 0,
+      "crash_artifacts": 0,
+      "differential_files_independently_verified": 52,
+      "differential_counts": {
+        "canonical": 25,
+        "malformed": 27,
+        "golden": 1,
+        "canonical_other": 24
+      },
+      "live_new_corpus_units": 0
+    }
+  },
+  "identical_saved_inputs_and_outputs_across_platforms": true,
+  "matching_source_sha256": {
+    "native_research/fuzz_ct.c": "3fd8911d85e53957f825e8eb5021357269a42549fa986027bc4f3493d8545671",
+    "native_research/fuzz_ct.py": "d1c5244c4fa3e897356058e571a2a8209e598f142c16af0360ba2e5d6ae392de",
+    "native_research/ct_oracle.py": "f42114e3aba3421936f4b90631a122167eaf1d5eb55d164e084ce142b338e4d5",
+    "native_research/fuzz_pk.py": "0d5bf7c98c644bd86815dced4f2524222a15831f34ead53d3f269aca8972e78f",
+    "native_research/spiral_native.c": "ccb29fe8b1f428c25a93c8cb967f1090eea619ad36dcba7d53dc9bfaedc1cd0f",
+    "native_research/spiral_native.h": "85f0454ee626cc0c38cdd6b60b12453f90276b6681dd91ab634d48c20bb1597b",
+    "code/opt2/spiral_kem_toy_v031_opt2.py": "74c1ff02669d5b6eea87ccf650bc6930bc1822ffe8568fa68ce79fb29958a118",
+    "protocol_v01/tests/fixtures/test_vectors_v0.1.json": "b556ca8741a649dfe3346d2033a2685492470beedbc601dbb36877f4c5881ee8"
+  }
+}
