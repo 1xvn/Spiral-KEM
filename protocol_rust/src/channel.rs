@@ -437,6 +437,9 @@ async fn read_loop<R: AsyncRead + Unpin>(
 }
 
 #[cfg(test)]
+mod lifecycle_tests;
+
+#[cfg(test)]
 mod tests {
     use super::*;
     use crate::secret::Secret;

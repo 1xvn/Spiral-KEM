@@ -1,0 +1,76 @@
+{
+  "status": "passed",
+  "tested_commit": "0c2609c82124f1984cada26ca3c6623ee667bcfb",
+  "source_files": 67,
+  "archive_sha256": "a0e408ba14c66ea6990d0b8d4fc7692874cec7ab40533b13208bfed403051423",
+  "archive_bytes": 773881,
+  "archive_manifest_verified_files": 21,
+  "case_counts": {
+    "loop_methods": 40,
+    "loop_subcases": 135,
+    "authenticated_rust_tls": 30,
+    "independent_peer_tls": 30
+  },
+  "real_tls_error_observations": {
+    "clean": 10,
+    "Closed": 15,
+    "Deadline": 5
+  },
+  "withheld_tls_notify_observations": [
+    {
+      "round": 0,
+      "error": "Deadline",
+      "seconds": 2.0140940060082357
+    },
+    {
+      "round": 1,
+      "error": "Deadline",
+      "seconds": 2.0144033069955185
+    },
+    {
+      "round": 2,
+      "error": "Deadline",
+      "seconds": 2.0156282460084185
+    },
+    {
+      "round": 3,
+      "error": "Deadline",
+      "seconds": 2.014342996000778
+    },
+    {
+      "round": 4,
+      "error": "Deadline",
+      "seconds": 2.0144181179930456
+    }
+  ],
+  "rust_tls_summary": {
+    "auth_key_closed": true,
+    "case_count": 30,
+    "error": null,
+    "kem": {
+      "executed_jobs": 90,
+      "live_keys": 0,
+      "rejected_jobs": 0
+    },
+    "rounds": 5,
+    "seed": 20261108,
+    "status": "passed"
+  },
+  "sources_match_head": true,
+  "sources_unchanged_during_run": true,
+  "compiler_audit_invocations": 127,
+  "compiler_audit_required_targets": [
+    "library",
+    "library_tests",
+    "lifecycle_probe",
+    "spiral_lab"
+  ],
+  "asan_error_patterns_found": false,
+  "private_credentials_and_build_outputs_excluded": true,
+  "runtime_coverage_claimed": false,
+  "stdlib_gate_tests_passed": 17,
+  "constant_time_approved": false,
+  "security_approved": false,
+  "oci_status": "pending lifecycle archive; repeated record archive received",
+  "wsl_status": "passed; see platform-review.json"
+}

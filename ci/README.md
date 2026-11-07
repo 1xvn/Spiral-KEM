@@ -12,6 +12,7 @@ Successful functionality checks do not mean overall memory, constant-time, or cr
 | Native C ciphertext fuzzing | push, Pull Request, manual | C ciphertext/key lifetime checks and Python differential checks of saved corpus. Uses ASan/UBSan/leak checks; OCI/WSL runs are separate |
 | Rust parser coverage fuzzing | push, Pull Request, manual | Validate frame/ClientHello parser instrumentation with a separately pinned nightly, then fuzz and recheck with Python. OCI/WSL runs are separate |
 | Rust record state coverage fuzzing | push, Pull Request, manual | Compare Rust DATA/CLOSE `Tx`/`Rx` state against an independent model and recheck saved inputs with Python. Full channel/TLS state and OCI/WSL runs are separate |
+| Channel and TLS lifecycle validation | push, Pull Request, manual | Channel combination tests for partial writes/cancellation/shutdown/timeouts and actual authenticated TLS lifecycles. Uses ASan/leak checks; runtime coverage collection and OCI/WSL runs are separate |
 | Runtime memory diagnostics | Manual, every Monday 02:17 UTC on default branch | Minimal std/libtest controls. Separate diagnostic completion from memory approval; reproduced warnings are failures |
 
 For PRs, see **Checks** for functional results. Repository **Actions** provides per-run logs and
@@ -19,6 +20,7 @@ evidence artifacts. These do not run in repositories with GitHub Actions disable
 Scheduled runs and the default branch's manual run list become available after the workflow is merged into the default branch.
 See the [fuzzing guide](../fuzzing/README.md) for execution limits, reproduction, and check scope.
 Rust record OCI/WSL commands are in the [DATA/CLOSE state fuzzing guide](../protocol_rust/FUZZ_RECORDS.md).
+For channel shutdown/cancellation combination tests, see the [channel/TLS lifecycle guide](../protocol_rust/LIFECYCLE.md).
 
 If the current 48-byte warning reproduces in the same environment, a red Runtime memory diagnostics failure is expected.
 Do not turn results green using `continue-on-error` or suppressions. Functionality and memory jobs are separate.
@@ -27,7 +29,7 @@ TLS AES-GCM, full Rust taint/memory checks, and long-running fuzzing are outside
 
 ## Reproducible conditions
 
-- The root `rust-toolchain.toml` and functional CI use Rust **1.99.1**. Rust parser and record fuzzing use **nightly-2026-11-07** in a separate directory. Cargo dependencies are installed with `--locked`.
+- Root `rust-toolchain.toml` and functional CI use Rust **1.99.1**. Rust parser/record fuzzing and channel lifecycle checks use **nightly-2026-11-07** in a separate folder. Install Cargo dependencies with `--locked`.
 - Use Python **3.12** and existing exact-pin requirements.
 - Actions checkout/setup-python/upload-artifact are pinned to commit SHAs verified in official repositories.
 - Workflow permissions are `contents: read`; checkout credential persistence is disabled. `pull_request_target` is not used.
