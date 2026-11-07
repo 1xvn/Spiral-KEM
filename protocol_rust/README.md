@@ -19,6 +19,11 @@ against an independent model. It uses the same pinned nightly, and OCI/WSL execu
 collected separately from the preceding parser checks. The submitted OCI 17,380 runs and WSL 34,543 runs and
 rechecks of 702/702 and 718/718 saved inputs passed.
 
+The [channel and TLS lifecycle check guide](LIFECYCLE.md) separately checks channel-loop tests combining partial writes, cancellation, simultaneous shutdown, and
+timeouts, and the shutdown and resource release of actual authenticated TLS connections.
+It uses the same pinned nightly and an independent Python peer, with separate runs on OCI and WSL.
+run each separately.
+
 ## Quick start
 
 Local v0.3 validation used Debian 13 x86-64, glibc 2.41, OpenSSL 3.5.7, Rust 1.99.1, and Python 3.12.14.

@@ -1,0 +1,55 @@
+name: Channel and TLS lifecycle validation
+
+on:
+  pull_request:
+  push:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: channel-lifecycle-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  lifecycle:
+    name: Compound channel I/O and authenticated TLS lifecycle
+    runs-on: ubuntu-24.04
+    timeout-minutes: 25
+    env:
+      PYTHONDONTWRITEBYTECODE: '1'
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065 # v5
+        with:
+          python-version: '3.12'
+      - name: Install native build and TLS tools
+        run: |
+          sudo apt-get update
+          sudo apt-get install --no-install-recommends -y build-essential binutils libssl-dev pkg-config openssl llvm-18
+      - name: Prepare pinned independent TLS peer environment
+        run: |
+          python -m venv "$RUNNER_TEMP/spiral-lifecycle-venv"
+          "$RUNNER_TEMP/spiral-lifecycle-venv/bin/python" -m pip install --disable-pip-version-check -r protocol_v01/requirements.txt
+      - name: Verify lifecycle runner gates
+        run: '"$RUNNER_TEMP/spiral-lifecycle-venv/bin/python" -m unittest discover -s protocol_rust/lifecycle -p ''test_*.py'' -v'
+      - name: Install isolated pinned official nightly
+        run: python -S protocol_rust/fuzzing/install_toolchain.py --prefix "$RUNNER_TEMP/spiral-parser-nightly-20261107"
+      - name: Build and run bounded lifecycle matrix
+        run: python -S protocol_rust/lifecycle/campaign.py --label local --toolchain-dir "$RUNNER_TEMP/spiral-parser-nightly-20261107" --python "$RUNNER_TEMP/spiral-lifecycle-venv/bin/python" --rounds 1 --seed 20261108 --output fuzz-results/channel-lifecycle
+      - name: Preserve public-data result bundle
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: channel-lifecycle-${{ github.run_id }}-${{ github.run_attempt }}
+          path: fuzz-results/channel-lifecycle.tar.gz
+          if-no-files-found: warn
+          retention-days: 14
+      - name: State runtime scope
+        if: always()
+        run: |
+          echo 'Compound generic I/O tests and real authenticated TLS lifecycle tests are separate finite checks. ASan and leak checks are enabled for the Rust test builds.' >> "$GITHUB_STEP_SUMMARY"
+          echo 'TCP/TLS fragmentation is not proof that AsyncWrite returned a short write. This job makes no libFuzzer coverage, full memory, constant-time or cryptographic safety approval claim; OCI and WSL runs remain separate.' >> "$GITHUB_STEP_SUMMARY"
