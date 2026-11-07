@@ -1,0 +1,45 @@
+INFO: Using built-in libfuzzer
+WARNING: Failed to find function "__sanitizer_acquire_crash_state".
+WARNING: Failed to find function "__sanitizer_print_stack_trace".
+WARNING: Failed to find function "__sanitizer_set_death_callback".
+INFO: Running with entropic power schedule (0xFF, 100).
+INFO: Seed: 20261107
+INFO:        9 files found in /workspace/atheris-evidence-20261107/kem_ct/corpus
+INFO: seed corpus: files: 9 min: 1159b max: 1161b total: 10440b rss: 51Mb
+#10	INITED cov: 36 ft: 43 corp: 3/3479b exec/s: 0 rss: 51Mb
+#18	NEW    cov: 36 ft: 48 corp: 4/4639b lim: 1160 exec/s: 0 rss: 51Mb L: 1160/1160 MS: 3 CopyPart-CMP-CopyPart- DE: "\001\000\000\000"-
+#31	REDUCE cov: 36 ft: 48 corp: 4/4080b lim: 1160 exec/s: 0 rss: 51Mb L: 600/1160 MS: 3 InsertByte-CopyPart-EraseBytes-
+#34	REDUCE cov: 36 ft: 48 corp: 4/3983b lim: 1160 exec/s: 0 rss: 51Mb L: 503/1160 MS: 3 InsertRepeatedBytes-InsertByte-EraseBytes-
+#40	NEW    cov: 36 ft: 49 corp: 5/5143b lim: 1160 exec/s: 0 rss: 51Mb L: 1160/1160 MS: 1 CrossOver-
+#48	NEW    cov: 36 ft: 53 corp: 6/6303b lim: 1160 exec/s: 0 rss: 51Mb L: 1160/1160 MS: 3 PersAutoDict-CopyPart-CopyPart- DE: "\001\000\000\000"-
+#52	REDUCE cov: 36 ft: 53 corp: 6/5968b lim: 1160 exec/s: 0 rss: 51Mb L: 168/1160 MS: 4 CrossOver-ChangeBinInt-ChangeBinInt-CrossOver-
+#200	NEW    cov: 36 ft: 54 corp: 7/7128b lim: 1160 exec/s: 0 rss: 51Mb L: 1160/1160 MS: 3 PersAutoDict-ChangeBit-CopyPart- DE: "\001\000\000\000"-
+#201	NEW    cov: 36 ft: 55 corp: 8/8288b lim: 1160 exec/s: 0 rss: 51Mb L: 1160/1160 MS: 1 CrossOver-
+#283	REDUCE cov: 36 ft: 55 corp: 8/8266b lim: 1160 exec/s: 0 rss: 51Mb L: 146/1160 MS: 2 ChangeASCIIInt-EraseBytes-
+#390	REDUCE cov: 36 ft: 55 corp: 8/8264b lim: 1160 exec/s: 0 rss: 51Mb L: 144/1160 MS: 2 CrossOver-EraseBytes-
+#810	REDUCE cov: 36 ft: 55 corp: 8/8237b lim: 1160 exec/s: 0 rss: 51Mb L: 117/1160 MS: 5 CrossOver-CrossOver-CopyPart-ChangeByte-EraseBytes-
+#826	REDUCE cov: 36 ft: 55 corp: 8/8201b lim: 1160 exec/s: 0 rss: 51Mb L: 81/1160 MS: 1 EraseBytes-
+#952	REDUCE cov: 36 ft: 55 corp: 8/8200b lim: 1160 exec/s: 0 rss: 51Mb L: 80/1160 MS: 1 EraseBytes-
+#1858	REDUCE cov: 36 ft: 55 corp: 8/8194b lim: 1160 exec/s: 0 rss: 51Mb L: 74/1160 MS: 1 EraseBytes-
+#1959	REDUCE cov: 36 ft: 55 corp: 8/8168b lim: 1160 exec/s: 0 rss: 51Mb L: 48/1160 MS: 1 EraseBytes-
+#2220	REDUCE cov: 36 ft: 55 corp: 8/8157b lim: 1160 exec/s: 0 rss: 51Mb L: 37/1160 MS: 1 EraseBytes-
+#2901	REDUCE cov: 36 ft: 55 corp: 8/8143b lim: 1160 exec/s: 0 rss: 51Mb L: 23/1160 MS: 1 EraseBytes-
+#3094	REDUCE cov: 36 ft: 55 corp: 8/8140b lim: 1160 exec/s: 0 rss: 51Mb L: 20/1160 MS: 3 ChangeBinInt-InsertByte-EraseBytes-
+#3285	REDUCE cov: 36 ft: 55 corp: 8/8132b lim: 1160 exec/s: 0 rss: 51Mb L: 12/1160 MS: 1 EraseBytes-
+#3321	REDUCE cov: 36 ft: 55 corp: 8/8128b lim: 1160 exec/s: 0 rss: 51Mb L: 8/1160 MS: 1 EraseBytes-
+#3437	REDUCE cov: 36 ft: 55 corp: 8/8124b lim: 1160 exec/s: 0 rss: 51Mb L: 4/1160 MS: 1 EraseBytes-
+#4144	REDUCE cov: 36 ft: 55 corp: 8/8122b lim: 1160 exec/s: 0 rss: 51Mb L: 2/1160 MS: 2 CopyPart-EraseBytes-
+#4205	REDUCE cov: 36 ft: 55 corp: 8/8121b lim: 1160 exec/s: 0 rss: 51Mb L: 1/1160 MS: 1 EraseBytes-
+#19701	NEW    cov: 36 ft: 56 corp: 9/9281b lim: 1280 exec/s: 19701 rss: 51Mb L: 1160/1160 MS: 1 CrossOver-
+#32768	pulse  cov: 36 ft: 56 corp: 9/9281b lim: 1280 exec/s: 16384 rss: 51Mb
+#65536	pulse  cov: 36 ft: 56 corp: 9/9281b lim: 1280 exec/s: 16384 rss: 51Mb
+#100000	DONE   cov: 36 ft: 56 corp: 9/9281b lim: 1280 exec/s: 16666 rss: 51Mb
+###### Recommended dictionary. ######
+"\001\000\000\000" # Uses: 8446
+###### End of recommended dictionary. ######
+Done 100000 runs in 6 second(s)
+stat::number_of_executed_units: 100000
+stat::average_exec_per_sec:     16666
+stat::new_units_added:          24
+stat::slowest_unit_time_sec:    0
+stat::peak_rss_mb:              51

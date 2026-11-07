@@ -1,0 +1,34 @@
+{
+  "target": "hello",
+  "instrumented_runtime_functions": [
+    "protocol_v01.handshake.digest",
+    "protocol_v01.handshake._v16",
+    "protocol_v01.handshake._v32",
+    "protocol_v01.handshake.domain",
+    "protocol_v01.handshake.info",
+    "protocol_v01.handshake.expand",
+    "protocol_v01.handshake._mac",
+    "protocol_v01.handshake.validate_identity",
+    "protocol_v01.handshake.client_hello_payload",
+    "protocol_v01.handshake.parse_client_hello",
+    "protocol_v01.handshake.load_kem",
+    "protocol_v01.handshake._validate_binding",
+    "protocol_v01.handshake._check_deadline",
+    "protocol_v01.handshake._begin",
+    "protocol_v01.handshake._reserve_id",
+    "protocol_v01.handshake._receive",
+    "protocol_v01.handshake._send",
+    "protocol_v01.handshake._shared",
+    "protocol_v01.handshake._schedule",
+    "protocol_v01.handshake._finish",
+    "protocol_v01.handshake._close_quietly",
+    "protocol_v01.handshake.client_handshake",
+    "protocol_v01.handshake.server_handshake"
+  ],
+  "instrumentation_count": 23,
+  "instrumentation": "Atheris3.1 Python bytecode basic blocks/comparisons; named nested functions/lambdas included, generator/comprehension code may be skipped; runtime only",
+  "harness_oracle_instrumented": false,
+  "source_sha256": {
+    "protocol_v01/handshake.py": "5e86ee9278db82115f953eb06cca1cf54998149c55459d3021ffa9562fd025ce"
+  }
+}

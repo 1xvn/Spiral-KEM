@@ -8,11 +8,13 @@ Successful functionality checks do not mean overall memory, constant-time, or cr
 | GitHub Actions name | Trigger | Checks and adjudication |
 |---|---|---|
 | Functional validation | push, Pull Request, manual | Python/C/Rust functionality and real TLS. Failures, 0 tests, and unexpected skips fail |
+| Coverage-guided Python fuzzing | push, Pull Request, manual, every Monday 04:29 UTC | Fuzz 5 targets using Python runtime feedback. Exceptions, verdict mismatches, 0 executions, and initialization-only runs fail |
 | Runtime memory diagnostics | Manual, every Monday 02:17 UTC on default branch | Minimal std/libtest controls. Separate diagnostic completion from memory approval; reproduced warnings are failures |
 
 For PRs, see **Checks** for functional results. Repository **Actions** provides per-run logs and
 evidence artifacts. These do not run in repositories with GitHub Actions disabled.
 Scheduled runs and the default branch's manual run list become available after the workflow is merged into the default branch.
+See the [fuzzing guide](../fuzzing/README.md) for execution limits, reproduction, and check scope.
 
 If the current 48-byte warning reproduces in the same environment, a red Runtime memory diagnostics failure is expected.
 Do not turn results green using `continue-on-error` or suppressions. Functionality and memory jobs are separate.
@@ -26,7 +28,7 @@ TLS AES-GCM, full Rust taint/memory checks, and long-running fuzzing are outside
 - Actions checkout/setup-python/upload-artifact are pinned to commit SHAs verified in official repositories.
 - Workflow permissions are `contents: read`; checkout credential persistence is disabled. `pull_request_target` is not used.
 - Save each run's results in a new folder; do not overwrite existing evidence folders.
-- Uploads cover only dedicated logs, JSON, and generated public test source; do not upload executables, temporary authentication keys, or certificates.
+- Upload only dedicated logs/JSON/generated public test sources and public fuzz inputs; do not upload executables, temporary authentication keys, or certificates.
 
 ## This Local Validation
 

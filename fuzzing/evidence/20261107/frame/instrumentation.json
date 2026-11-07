@@ -1,0 +1,15 @@
+{
+  "target": "frame",
+  "instrumented_runtime_functions": [
+    "protocol_v01.wire.parse_header",
+    "protocol_v01.wire.make_header",
+    "protocol_v01.wire.make_frame",
+    "protocol_v01.wire.parse_frame"
+  ],
+  "instrumentation_count": 4,
+  "instrumentation": "Atheris3.1 Python bytecode basic blocks/comparisons; named nested functions/lambdas included, generator/comprehension code may be skipped; runtime only",
+  "harness_oracle_instrumented": false,
+  "source_sha256": {
+    "protocol_v01/wire.py": "cf915f84510857814f3722f3d1f3c3358e318a958216fbcdaac292486e40fbaf"
+  }
+}

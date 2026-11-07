@@ -1,0 +1,16 @@
+INFO: Using built-in libfuzzer
+WARNING: Failed to find function "__sanitizer_acquire_crash_state".
+WARNING: Failed to find function "__sanitizer_print_stack_trace".
+WARNING: Failed to find function "__sanitizer_set_death_callback".
+INFO: Running with entropic power schedule (0xFF, 100).
+INFO: Seed: 20261107
+INFO:      168 files found in /tmp/atheris-init-only-supervisor-review-20261107/records/corpus
+INFO: seed corpus: files: 168 min: 1b max: 149b total: 3494b rss: 51Mb
+#169	INITED cov: 158 ft: 648 corp: 78/1720b exec/s: 0 rss: 52Mb
+#169	DONE   cov: 158 ft: 648 corp: 78/1720b lim: 64 exec/s: 0 rss: 52Mb
+Done 169 runs in 0 second(s)
+stat::number_of_executed_units: 169
+stat::average_exec_per_sec:     0
+stat::new_units_added:          0
+stat::slowest_unit_time_sec:    0
+stat::peak_rss_mb:              52

@@ -1,0 +1,11 @@
+{
+  "status": "replayed_without_oracle_failure",
+  "inputs": 353,
+  "targets": {
+    "frame": 91,
+    "hello": 39,
+    "kem_pk": 31,
+    "kem_ct": 34,
+    "records": 158
+  }
+}

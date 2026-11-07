@@ -1,0 +1,29 @@
+test_child_failure_or_timeout_cannot_pass_with_positive_feedback (test_campaign.ClassificationTests.test_child_failure_or_timeout_cannot_pass_with_positive_feedback) ... ok
+test_execution_count_below_initialization_cannot_pass (test_campaign.ClassificationTests.test_execution_count_below_initialization_cannot_pass) ... ok
+test_initialization_only_successful_child_cannot_pass (test_campaign.ClassificationTests.test_initialization_only_successful_child_cannot_pass) ... ok
+test_missing_or_zero_execution_coverage_or_features_cannot_pass (test_campaign.ClassificationTests.test_missing_or_zero_execution_coverage_or_features_cannot_pass) ... ok
+test_missing_or_zero_initialization_cannot_pass (test_campaign.ClassificationTests.test_missing_or_zero_initialization_cannot_pass) ... ok
+test_missing_runtime_instrumentation_cannot_pass (test_campaign.ClassificationTests.test_missing_runtime_instrumentation_cannot_pass) ... ok
+test_parse_and_classify_saturated_corpus_run (test_campaign.ClassificationTests.test_parse_and_classify_saturated_corpus_run) ... ok
+test_stable_nonzero_coverage_passes_without_growth (test_campaign.ClassificationTests.test_stable_nonzero_coverage_passes_without_growth) ... ok
+test_empty_or_unrelated_log_has_no_feedback (test_campaign.FeedbackTests.test_empty_or_unrelated_log_has_no_feedback) ... ok
+test_last_execution_statistic_is_used (test_campaign.FeedbackTests.test_last_execution_statistic_is_used) ... ok
+test_missing_coverage_is_not_invented_from_final_statistics (test_campaign.FeedbackTests.test_missing_coverage_is_not_invented_from_final_statistics) ... ok
+test_missing_execution_statistic_is_not_invented_from_progress (test_campaign.FeedbackTests.test_missing_execution_statistic_is_not_invented_from_progress) ... ok
+test_missing_initialization_is_not_invented_from_mutation_or_done (test_campaign.FeedbackTests.test_missing_initialization_is_not_invented_from_mutation_or_done) ... ok
+test_realistic_libfuzzer_progress_and_final_statistics (test_campaign.FeedbackTests.test_realistic_libfuzzer_progress_and_final_statistics) ... ok
+test_acceptance_oracles_detect_false_accepts_and_false_rejects (test_targets.TargetTests.test_acceptance_oracles_detect_false_accepts_and_false_rejects) ... ok
+test_arbitrary_small_inputs_and_structured_record_programs (test_targets.TargetTests.test_arbitrary_small_inputs_and_structured_record_programs) ... ok
+test_corpus_is_public_deterministic_and_all_seeds_pass (test_targets.TargetTests.test_corpus_is_public_deterministic_and_all_seeds_pass) ... ok
+test_frame_expectations_are_supplied_by_selector_not_candidate (test_targets.TargetTests.test_frame_expectations_are_supplied_by_selector_not_candidate) ... ok
+test_kem_positive_negative_and_canonicality_oracles (test_targets.TargetTests.test_kem_positive_negative_and_canonicality_oracles) ... ok
+test_record_commands_are_bounded_and_trailing_bytes_ignored (test_targets.TargetTests.test_record_commands_are_bounded_and_trailing_bytes_ignored) ... ok
+test_record_oracle_checks_sequence_reservation (test_targets.TargetTests.test_record_oracle_checks_sequence_reservation) ... ok
+test_record_oracle_checks_terminal_key_reference_release (test_targets.TargetTests.test_record_oracle_checks_terminal_key_reference_release) ... ok
+test_record_oracle_detects_valid_path_regressions (test_targets.TargetTests.test_record_oracle_detects_valid_path_regressions) ... ok
+test_unexpected_exceptions_are_not_swallowed (test_targets.TargetTests.test_unexpected_exceptions_are_not_swallowed) ... ok
+
+----------------------------------------------------------------------
+Ran 24 tests in 0.052s
+
+OK
