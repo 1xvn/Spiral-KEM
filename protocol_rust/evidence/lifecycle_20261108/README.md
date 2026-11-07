@@ -2,7 +2,8 @@
 
 Executed against pinned source `0c2609c82124f1984cada26ca3c6623ee667bcfb`.
 The recorded local date is 2026-11-08; timestamps in original JSON and logs are UTC.
-These are local Debian x86-64 results. OCI ARM64/WSL2 runs have not yet been collected.
+The first table shows local Debian x86-64 results. Later WSL2 submissions are recorded separately
+below; OCI ARM64 lifecycle results have not yet been submitted.
 
 | Check | Result |
 |---|---|
@@ -63,3 +64,44 @@ Because complete binaries are excluded, recipients of only the archive cannot di
 summarizes counts, hashes, and revalidation; file hashes for this folder are in `SHA256.json`.
 A GitHub workflow was added, but successful GitHub runner execution was not verified in this environment.
 Use the [OCI·WSL guide](../../LIFECYCLE.md) for reproduction.
+
+## Submitted WSL lifecycle results
+
+Validated submitted evidence for pinned commit `9367c7688f3fac2e249b70e3439b3fcddc6e8060`.
+The complete path list and hashes for 67 test source files match the corresponding Git blobs and
+also match the local run's test sources. Used WSL2 x86-64, the same official nightly and LLVM 23.1.5, and pinned
+Python dependencies.
+
+| Check | Submitted record revalidation |
+|---|---|
+| Channel combination tests | 8 × 5 rounds = 40 cases, 135 detailed conditions matched |
+| Real Rust authenticated TLS | 30 cases, cancellation/delivery/shutdown/admission-return observations matched |
+| Independent Python peer TLS | 30 cases, original server stdout/stderr/return codes and verdicts matched |
+| Native KEM cleanup | Rust peer total 90 jobs, final live key count 0; each independent server also had live key count 0 |
+| Shutdown variants | 10 normal, 15 expected `Closed`, 5 `Deadline` after grace period |
+| Compilation audit | Reparsed 127 records; sources, compiler, target, and ASan options matched for four required builds |
+| Result file hashes | Internal list 21/21 matched |
+
+Compared the 5 retained loop logs, Rust peer case/final summaries, independent peer cases, and original server
+outputs against the result JSON separately. Also rechecked SID, transcript, and exporter for successful connections,
+split application write lengths, and expected shutdown results. The five cases withholding close_notify
+terminated directly with `Deadline` after approximately 2.015~2.018 seconds.
+External watchdog termination was not counted as successful rejection.
+
+Retained nm output for three executables contains ASan initialization symbols; all logs showed no unexpected
+sanitizer, leak, or panic diagnostics. Executables were excluded from the submitted bundle,
+so their binary hashes could not be directly recomputed. This is revalidation of submitted logs, observations, and audit records,
+not the result of executing submitted programs. Detailed evidence and limitations are recorded in
+[platform-review.json](platform-review.json).
+
+WSL original bundle SHA-256:
+
+```text
+5631bab532e80b542f7547fa4b6b41412d6a22b65a301b84e5b5329bfd58fc32
+```
+
+The jointly submitted `Spiral-Rust-record-oci-20261108.tar.gz` concerns the previously verified record state
+fuzzing bundle byte-for-byte and in SHA-256. Its internal tests use `suite: records`, commit
+`0516222`; they are not added to this channel/TLS lifecycle result count. Previous OCI record
+pass record, which is retained. The OCI file needed for this phase is
+`Spiral-channel-lifecycle-oci-20261108.tar.gz`, which remains pending submission.

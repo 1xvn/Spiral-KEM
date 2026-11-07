@@ -132,7 +132,11 @@ require separate evaluation. Original adjudication of existing Valgrind warnings
 Bundles contain result JSON, original logs, public test observations, and hashes. They exclude `build/`
 executables, temporary certificates, private keys, signing seeds, and separately installed Rust tools.
 Test credentials are generated fresh during execution and must not be reused for services.
-These OCI/WSL lifecycle results are newly collected and not replaced with preceding record results.
+Lifecycle results are collected separately from the preceding record results. The 5 submitted WSL runs
+passed record revalidation for all 40 channel cases (135 detailed conditions), 30 Rust TLS cases, and 30 independent peer TLS cases.
+OCI lifecycle results await submission; the accompanying previous record bundle
+is not added to this phase. For details,
+the [submitted result validation summary](evidence/lifecycle_20261108/platform-review.json).
 
 Locally, the same runner passed 5 rounds with 40 channel tests (135 detailed conditions),
 30 actual Rust TLS cases, and 30 independent peer TLS cases. Also checked compilation audits,
