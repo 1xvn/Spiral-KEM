@@ -1,0 +1,165 @@
+{
+  "schema": "spiral-xor-definedness-control/v1",
+  "date_utc": "2026-11-07T05:29:40.538941+00:00",
+  "scope": "public fixture diagnostic only; no Spiral, TLS, keys or network",
+  "production_memory_passed": false,
+  "platform": "Linux-6.18.57-x86_64-with-glibc2.41",
+  "machine": "x86_64",
+  "python": "3.12.14",
+  "valgrind_lib": "/workspace/scratch/c6a558db7e9f/rust_setup/vg328/libexec/valgrind",
+  "source_sha256": {
+    "xor_control.c": "e96665d1e72d6ea419f21a10b888efe76e2bbb521d88af6e932a3802098c0638",
+    "xor_control.S": "4235c96c82aab5e22f4e54b664917f81a15011d80575e22835a83d6d76a5fd3a",
+    "xor_definedness.py": "d0dc7431e0a1dc64bd103083f72e4f9e20e47d8572f15ce90f7dc1d151c7e5a0"
+  },
+  "cases": [
+    {
+      "mode": "cancel",
+      "native": {
+        "command": [
+          "/workspace/scratch/c6a558db7e9f/spiral_hardening_runs/valgrind_local/usr/lib/x86_64-linux-gnu/ld-linux-x86-64.so.2",
+          "--library-path",
+          "/workspace/scratch/c6a558db7e9f/spiral_hardening_runs/valgrind_local/usr/lib/x86_64-linux-gnu",
+          "/workspace/scratch/c6a558db7e9f/memory_followup_20261107/reusable_xor_run2/xor_control",
+          "cancel"
+        ],
+        "exit": 0,
+        "stdout": "{\"mode\":\"copy-branch-cancel\",\"zero_output_checks\":1000,\"definedness_reports\":0,\"running_on_valgrind\":0}\n",
+        "stderr": ""
+      },
+      "memcheck": {
+        "command": [
+          "/workspace/scratch/c6a558db7e9f/rust_setup/vg328/bin/valgrind",
+          "--tool=memcheck",
+          "--error-exitcode=99",
+          "--track-origins=yes",
+          "--leak-check=full",
+          "--show-leak-kinds=all",
+          "--errors-for-leak-kinds=all",
+          "--log-file=/workspace/scratch/c6a558db7e9f/memory_followup_20261107/reusable_xor_run2/cancel-memcheck.log",
+          "/workspace/scratch/c6a558db7e9f/spiral_hardening_runs/valgrind_local/usr/lib/x86_64-linux-gnu/ld-linux-x86-64.so.2",
+          "--library-path",
+          "/workspace/scratch/c6a558db7e9f/spiral_hardening_runs/valgrind_local/usr/lib/x86_64-linux-gnu",
+          "/workspace/scratch/c6a558db7e9f/memory_followup_20261107/reusable_xor_run2/xor_control",
+          "cancel"
+        ],
+        "exit": 99,
+        "stdout": "{\"mode\":\"copy-branch-cancel\",\"zero_output_checks\":1000,\"definedness_reports\":1000,\"running_on_valgrind\":1}\n",
+        "stderr": ""
+      },
+      "values": {
+        "mode": "copy-branch-cancel",
+        "zero_output_checks": 1000,
+        "definedness_reports": 1000,
+        "running_on_valgrind": 1
+      },
+      "summary": {
+        "errors": 1000,
+        "contexts": 1,
+        "suppressed": 0,
+        "suppressed_contexts": 0
+      },
+      "leaks": {
+        "definitely lost": 0,
+        "indirectly lost": 0,
+        "possibly lost": 0
+      },
+      "log_sha256": "25aca027e1234ae981dbd5f573240b88cdfe51dc41f8fab8a2407bad87fb7ed5",
+      "observation": "copy_branch_cancellation_false_positive_reproduced"
+    },
+    {
+      "mode": "clear",
+      "native": {
+        "command": [
+          "/workspace/scratch/c6a558db7e9f/spiral_hardening_runs/valgrind_local/usr/lib/x86_64-linux-gnu/ld-linux-x86-64.so.2",
+          "--library-path",
+          "/workspace/scratch/c6a558db7e9f/spiral_hardening_runs/valgrind_local/usr/lib/x86_64-linux-gnu",
+          "/workspace/scratch/c6a558db7e9f/memory_followup_20261107/reusable_xor_run2/xor_control",
+          "clear"
+        ],
+        "exit": 0,
+        "stdout": "{\"mode\":\"direct-clear\",\"zero_output_checks\":1000,\"definedness_reports\":0,\"running_on_valgrind\":0}\n",
+        "stderr": ""
+      },
+      "memcheck": {
+        "command": [
+          "/workspace/scratch/c6a558db7e9f/rust_setup/vg328/bin/valgrind",
+          "--tool=memcheck",
+          "--error-exitcode=99",
+          "--track-origins=yes",
+          "--leak-check=full",
+          "--show-leak-kinds=all",
+          "--errors-for-leak-kinds=all",
+          "--log-file=/workspace/scratch/c6a558db7e9f/memory_followup_20261107/reusable_xor_run2/clear-memcheck.log",
+          "/workspace/scratch/c6a558db7e9f/spiral_hardening_runs/valgrind_local/usr/lib/x86_64-linux-gnu/ld-linux-x86-64.so.2",
+          "--library-path",
+          "/workspace/scratch/c6a558db7e9f/spiral_hardening_runs/valgrind_local/usr/lib/x86_64-linux-gnu",
+          "/workspace/scratch/c6a558db7e9f/memory_followup_20261107/reusable_xor_run2/xor_control",
+          "clear"
+        ],
+        "exit": 0,
+        "stdout": "{\"mode\":\"direct-clear\",\"zero_output_checks\":1000,\"definedness_reports\":0,\"running_on_valgrind\":1}\n",
+        "stderr": ""
+      },
+      "values": {
+        "mode": "direct-clear",
+        "zero_output_checks": 1000,
+        "definedness_reports": 0,
+        "running_on_valgrind": 1
+      },
+      "summary": {
+        "errors": 0,
+        "contexts": 0,
+        "suppressed": 0,
+        "suppressed_contexts": 0
+      },
+      "leaks": {
+        "definitely lost": 0,
+        "indirectly lost": 0,
+        "possibly lost": 0
+      },
+      "log_sha256": "0d75103845402146ee88436f84669c0186b36ec65c539a7ef669733961c7b010",
+      "observation": "defined_zero"
+    }
+  ],
+  "diagnostic_consistent": true,
+  "compiler": {
+    "command": [
+      "/usr/bin/cc",
+      "--version"
+    ],
+    "exit": 0,
+    "stdout": "cc (Debian 14.2.0-19) 14.2.0\nCopyright (C) 2024 Free Software Foundation, Inc.\nThis is free software; see the source for copying conditions.  There is NO\nwarranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.\n\n",
+    "stderr": ""
+  },
+  "valgrind": {
+    "command": [
+      "/workspace/scratch/c6a558db7e9f/rust_setup/vg328/bin/valgrind",
+      "--version"
+    ],
+    "exit": 0,
+    "stdout": "valgrind-3.28.0\n",
+    "stderr": ""
+  },
+  "build": {
+    "command": [
+      "/usr/bin/cc",
+      "-O2",
+      "-g",
+      "-Wall",
+      "-Wextra",
+      "-Werror",
+      "-I",
+      "/workspace/scratch/c6a558db7e9f/rust_setup/vg328/include",
+      "/workspace/scratch/c6a558db7e9f/memory_records_pr/protocol_rust/diagnostics/xor_control.c",
+      "/workspace/scratch/c6a558db7e9f/memory_records_pr/protocol_rust/diagnostics/xor_control.S",
+      "-o",
+      "/workspace/scratch/c6a558db7e9f/memory_followup_20261107/reusable_xor_run2/xor_control"
+    ],
+    "exit": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  "binary_sha256": "6332762614ab77b104fff16697c8d07cc55b9a297f06fa4490f5b547251f0b50",
+  "loader_sha256": "cd4df4f3c7b83673d61189bf2eaebd33ca4f2853ab9772b8a25e025ef99b1e81"
+}

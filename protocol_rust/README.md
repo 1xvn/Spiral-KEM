@@ -7,10 +7,12 @@ v0.2 in the design document does not indicate a wire version change.
 Added opaque signing-key ownership, a simultaneous-shutdown bug fix, negative-test coverage, and secret-branch instrumentation.
 Changes and remaining limitations are in the [v0.3 implementation report](HARDENING_v0.3.md), actual results in the [validation record](VALIDATION.md), and remeasurement commands in the [Ubuntu/WSL guide](RUN_UBUNTU_WSL.md).
 
+The [2026-11-07 memory follow-up record](MEMORY_FOLLOWUP.md) adds user OCI/WSL results, controls investigating local AES-GCM warnings, and independent reproduction code. Production code and original memory-check verdicts are retained.
+
 ## Quick start
 
 Local v0.3 validation used Debian 13 x86-64, glibc 2.41, OpenSSL 3.5.7, Rust 1.99.1, and Python 3.12.14.
-Remeasure after building sources in the target environments: Ubuntu 24.04, WSL2/Ubuntu on Windows 11, and OCI ARM.
+Build from source and check on each new target environment. Subsequently collected OCI ARM/WSL Ubuntu 24.04 memory-check results are in the follow-up record above.
 On Windows, use Ubuntu 24.04 under WSL. Native Windows builds have not been validated.
 Source builds require Rust 1.99 or later, a C11 compiler, OpenSSL development packages, and a Python venv.
 
@@ -130,7 +132,7 @@ Coverage-based fuzzing, long-duration soak, other OS/CPU validation, and indepen
 
 `examples/tls_control.rs` is TLS-only diagnostic code for distinguishing memory-check warnings. It does not run Spiral or C KEM and is not used as a runtime algorithm fallback.
 
-**Unresolved validation item:** Normal TLS communication in the v0.3 release fails with 6 uninitialized-value errors under Valgrind 3.28. TLS-only controls preserving optimization/debug symbols also produce 4 errors each for default/AES128/AES256, and 0 for ChaCha. A separate 6,102 public AEAD/offset-buffer/hash/HKDF/signature vectors matched OpenSSL/Python with 0 warnings, but did not establish the cause or whether these are false positives.
+**Memory validation status:** On 11/6, v0.3 normal TLS communication failed with 4 Valgrind errors in release and 6 in audit. TLS-only controls had 4 each for default/AES128/AES256 and 0 for ChaCha. Separately, 6,102 public AEAD/offset-buffer/hash/HKDF/signature vector cases matched OpenSSL/Python with 0 warnings. The 11/7 follow-up confirmed 6 user OCI passes and 2 WSL passes and isolated the definedness false-positive mechanism in local GHASH copies, branches, and XOR. The original WSL failure was not changed to a pass. See `MEMORY_FOLLOWUP.md` for evidence and scope.
 Rust secret-branch instrumentation produced 0 secret-dependent branch/address warnings in inspected operations, but a 48-byte possibly-lost entry points to libtest thread state, so the full memory check remains failed. C branch instrumentation and memory checks passed. See `VALIDATION.md` for detailed scope and logs. The default cipher was not changed and warnings were not suppressed.
 
 To reproduce optional memory checks, install Valgrind and Python test dependencies, then run. The script exits with failure if the unresolved warnings above recur.

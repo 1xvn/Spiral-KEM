@@ -1,0 +1,32 @@
+[
+  {
+    "mode": "cancel",
+    "native": {
+      "mode": "copy-branch-cancel",
+      "zero_output_checks": 1000,
+      "definedness_reports": 0
+    },
+    "instrumented": {
+      "mode": "copy-branch-cancel",
+      "zero_output_checks": 1000,
+      "definedness_reports": 1000
+    },
+    "exit": 99,
+    "memcheck_errors": 1000
+  },
+  {
+    "mode": "clear",
+    "native": {
+      "mode": "direct-clear",
+      "zero_output_checks": 1000,
+      "definedness_reports": 0
+    },
+    "instrumented": {
+      "mode": "direct-clear",
+      "zero_output_checks": 1000,
+      "definedness_reports": 0
+    },
+    "exit": 0,
+    "memcheck_errors": 0
+  }
+]

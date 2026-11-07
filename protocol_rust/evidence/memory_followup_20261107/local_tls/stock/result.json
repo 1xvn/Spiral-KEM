@@ -1,0 +1,29 @@
+[
+  {
+    "scope": "isolated rustls/tokio control, no Spiral or C KEM",
+    "mode": "aes128",
+    "cipher": "TLS_AES_128_GCM_SHA256",
+    "exit": 99,
+    "errors": 4,
+    "contexts": 3,
+    "stderr": ""
+  },
+  {
+    "scope": "isolated rustls/tokio control, no Spiral or C KEM",
+    "mode": "aes256",
+    "cipher": "TLS_AES_256_GCM_SHA384",
+    "exit": 99,
+    "errors": 4,
+    "contexts": 3,
+    "stderr": ""
+  },
+  {
+    "scope": "isolated rustls/tokio control, no Spiral or C KEM",
+    "mode": "chacha",
+    "cipher": "TLS_CHACHA20_POLY1305_SHA256",
+    "exit": 0,
+    "errors": 0,
+    "contexts": 0,
+    "stderr": ""
+  }
+]

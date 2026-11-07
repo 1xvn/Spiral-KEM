@@ -2,6 +2,8 @@
 
 This research implementation strengthens signing key ownership and concurrent shutdown. Functional tests passed; full memory checks and constant time validation remain incomplete. See `HARDENING_v0.3.md` for code/execution details and `REGRESSION_MAP.md` for individual requirements.
 
+**11/7 follow-up:** [MEMORY_FOLLOWUP.md](MEMORY_FOLLOWUP.md) adds user OCI/WSL memory checks and local cause controls. OCI passed 6/6 and WSL 2/6. Locally, we reproduced a Valgrind definedness false-positive mechanism involving GHASH copy/branch/XOR operations, but the original WSL failure remains. The 11/6 numbers and verdicts below are the record from that time. The libtest 48-byte entry was not included in this submission.
+
 ## Functional and cleanup results
 
 | Item | Result |

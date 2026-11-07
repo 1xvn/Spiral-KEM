@@ -1,0 +1,59 @@
+--- a/src/lib.rs
++++ b/src/lib.rs
+@@ -177,0 +178,2 @@
++
++mod definedness_probe;
+--- a/src/aead/gcm.rs
++++ b/src/aead/gcm.rs
+@@ -153 +153,4 @@
+-        f(self.Xi.0)
++        crate::definedness_probe::check("GHASH Xi pre tag",&self.Xi.0);
++        let tag=f(self.Xi.0);
++        crate::definedness_probe::check("GCM returned tag",&tag.0);
++        tag
+--- a/src/aead/aes_gcm.rs
++++ b/src/aead/aes_gcm.rs
+@@ -172 +172 @@
+-    gcm::KeyValue::new(aes_key.encrypt_block(ZERO_BLOCK))
++    { let block=aes_key.encrypt_block(ZERO_BLOCK); crate::definedness_probe::check("derive GCM key value",&block); gcm::KeyValue::new(block) }
+--- a/src/aead/aes/hw.rs
++++ b/src/aead/aes/hw.rs
+@@ -87 +87,6 @@
+-        super::encrypt_iv_xor_block_using_ctr32(self, iv, block)
++        crate::definedness_probe::check("AES IV input",&iv);
++        crate::definedness_probe::check("AES xor input",&block);
++        crate::definedness_probe::check("AES used round words",&self.inner.rd_key);
++        let out=super::encrypt_iv_xor_block_using_ctr32(self, iv, block);
++        crate::definedness_probe::check("AES block output",&out);
++        out
+--- a/src/aead/aes/ffi.rs
++++ b/src/aead/aes/ffi.rs
+@@ -55,0 +56,2 @@
++            crate::definedness_probe::check("expanded AES words",&key.rd_key);
++            crate::definedness_probe::check("AES rounds",&key.rounds);
+--- a/src/aead/gcm/ffi.rs
++++ b/src/aead/gcm/ffi.rs
+@@ -93,0 +94 @@
++        crate::definedness_probe::check("GCM H key input",&value.0);
+@@ -94,0 +96 @@
++        crate::definedness_probe::check("GCM H table after init",&r.Htable);
+@@ -135,3 +137,5 @@
+-        unsafe {
+-            f(xi, self, input.as_ptr(), input_len);
+-        }
++        crate::definedness_probe::check("GHASH table before call",&self.Htable);
++        crate::definedness_probe::check("GHASH Xi before call",&xi.0);
++        crate::definedness_probe::check("GHASH input before call",input);
++        unsafe { f(xi, self, input.as_ptr(), input_len); }
++        crate::definedness_probe::check("GHASH Xi after call",&xi.0);
+--- /dev/null
++++ b/src/definedness_probe.rs
+@@ -0,0 +1,8 @@
++// Local definedness instrumentation only. No suppression, writes or declassification.
++extern crate std;
++pub(crate) fn check<T:?Sized>(label:&str,value:&T) {
++ let args=[0x4d43_0005usize,value as *const T as *const () as usize,core::mem::size_of_val(value),0,0,0];
++ let mut result=0usize;
++ unsafe { core::arch::asm!("rol rdi, 3","rol rdi, 13","rol rdi, 61","rol rdi, 51","xchg rbx, rbx",in("rax") args.as_ptr(),inout("rdx") result,lateout("rdi") _,options(nostack)); }
++ if result!=0 { std::eprintln!("DEFINEDNESS CHECK FAILED: {}",label); }
++}

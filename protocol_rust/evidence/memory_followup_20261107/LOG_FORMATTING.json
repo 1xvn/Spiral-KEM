@@ -1,0 +1,401 @@
+[
+  {
+    "path": "oci/driver.log",
+    "original_sha256": "167f14b85d62b6d9cd0ec47fdc805aa3365cb47956571f4a7f1669befb9b08bc",
+    "stored_sha256": "167f14b85d62b6d9cd0ec47fdc805aa3365cb47956571f4a7f1669befb9b08bc",
+    "changed": false,
+    "normalization": "remove trailing spaces/tabs/CR; one final LF"
+  },
+  {
+    "path": "oci/driver_exit.txt",
+    "original_sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+    "stored_sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+    "changed": false,
+    "normalization": "remove trailing spaces/tabs/CR; one final LF"
+  },
+  {
+    "path": "oci/environment.txt",
+    "original_sha256": "6a3c0dd55d45444ba1f486e59b729a3d7e1b06df4e962f1b90db03e243f9859a",
+    "stored_sha256": "6a3c0dd55d45444ba1f486e59b729a3d7e1b06df4e962f1b90db03e243f9859a",
+    "changed": false,
+    "normalization": "remove trailing spaces/tabs/CR; one final LF"
+  },
+  {
+    "path": "oci/finished-failure.log",
+    "original_sha256": "7e9b0e8d5568e733ddd5892ca38c913c28efdc57125eebc08f98c60a405b1770",
+    "stored_sha256": "d5a4b44e62a76722d16aca4b6457873964f7f56ab6498028bcc2dea33cccfd04",
+    "changed": true,
+    "normalization": "remove trailing spaces/tabs/CR; one final LF"
+  },
+  {
+    "path": "oci/result.json",
+    "original_sha256": "d55d8182827aa3b4804f0d85d04e38d11149bbfca9fcc12fec1b8b4a2556212b",
+    "stored_sha256": "d55d8182827aa3b4804f0d85d04e38d11149bbfca9fcc12fec1b8b4a2556212b",
+    "changed": false,
+    "normalization": "remove trailing spaces/tabs/CR; one final LF"
+  },
+  {
+    "path": "oci/success.log",
+    "original_sha256": "9b052acac36b04e797552c0f101d57331102f6c84f42e744cb5a66d89c267233",
+    "stored_sha256": "2880784fd3d8b2a465a815c27c1dd5724e3096e0f7da4f6667b39f0faf13571f",
+    "changed": true,
+    "normalization": "remove trailing spaces/tabs/CR; one final LF"
+  },
+  {
+    "path": "oci/tls-only-aes128.log",
+    "original_sha256": "baf45b8fbe20dda066a2399bc5efd9e20b52f668f3108d6f609bed50eaa56f64",
+    "stored_sha256": "9372de1d318e71c09d0e2bbcb9a93c89e6e5e22cd3b6d155c0812f79ace1e501",
+    "changed": true,
+    "normalization": "remove trailing spaces/tabs/CR; one final LF"
+  },
+  {
+    "path": "oci/tls-only-aes256.log",
+    "original_sha256": "84dcf0a4eb9748e6f320ff09facc10ac2a83115f86fd62573cbfd6784c5231d2",
+    "stored_sha256": "326d61a0b567820c9e1d1c1323bc904762ef68a1e9ea29d31fc7dc8cf4008b7b",
+    "changed": true,
+    "normalization": "remove trailing spaces/tabs/CR; one final LF"
+  },
+  {
+    "path": "oci/tls-only-chacha.log",
+    "original_sha256": "d40c188e80b2c0c239b61c6718f4079066a32b946e415a807a53593879efdf91",
+    "stored_sha256": "e31ead1e2f26ff0e6e31edbe9795c435bc6c654700ecce3eff306b867fc18836",
+    "changed": true,
+    "normalization": "remove trailing spaces/tabs/CR; one final LF"
+  },
+  {
+    "path": "oci/tls-only-default.log",
+    "original_sha256": "1e685e8a6e850e5d77cf40d7d2f0d297bfe6d1f7dff7667ba481624ab96c6f4f",
+    "stored_sha256": "482951e1b2ac91c139be839e2dc3200905e03a65f1086e34c93c9049c734f3ee",
+    "changed": true,
+    "normalization": "remove trailing spaces/tabs/CR; one final LF"
+  },
+  {
+    "path": "wsl/driver.log",
+    "original_sha256": "9569f6026048ca4ad08a8c6fe8221fc7ba0d5255e2a3314f7a223e89bc32bf5c",
+    "stored_sha256": "9569f6026048ca4ad08a8c6fe8221fc7ba0d5255e2a3314f7a223e89bc32bf5c",
+    "changed": false,
+    "normalization": "remove trailing spaces/tabs/CR; one final LF"
+  },
+  {
+    "path": "wsl/driver_exit.txt",
+    "original_sha256": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865",
+    "stored_sha256": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865",
+    "changed": false,
+    "normalization": "remove trailing spaces/tabs/CR; one final LF"
+  },
+  {
+    "path": "wsl/environment.txt",
+    "original_sha256": "6a3c0dd55d45444ba1f486e59b729a3d7e1b06df4e962f1b90db03e243f9859a",
+    "stored_sha256": "6a3c0dd55d45444ba1f486e59b729a3d7e1b06df4e962f1b90db03e243f9859a",
+    "changed": false,
+    "normalization": "remove trailing spaces/tabs/CR; one final LF"
+  },
+  {
+    "path": "wsl/finished-failure.log",
+    "original_sha256": "1c83775c9e943d224994934177e4bd3058f1d4e744956f6875bf78b49dea6575",
+    "stored_sha256": "07f09537cedcff1443733b62678c7660df564ed52cadb7f1a80fd46f61a90f03",
+    "changed": true,
+    "normalization": "remove trailing spaces/tabs/CR; one final LF"
+  },
+  {
+    "path": "wsl/result.json",
+    "original_sha256": "44eed31e5fcb7c1f0c43f7aa43c2a5ca00a399337356523d9851f6558e064e99",
+    "stored_sha256": "44eed31e5fcb7c1f0c43f7aa43c2a5ca00a399337356523d9851f6558e064e99",
+    "changed": false,
+    "normalization": "remove trailing spaces/tabs/CR; one final LF"
+  },
+  {
+    "path": "wsl/success.log",
+    "original_sha256": "a2abb9a9e6d9524b36a273a044d5d1c2e72485b4f9700c12103dcbdb47036c71",
+    "stored_sha256": "1b50b2d016d197f340ee9dbb062a6502084034988f6ca785647ed4fafafd0028",
+    "changed": true,
+    "normalization": "remove trailing spaces/tabs/CR; one final LF"
+  },
+  {
+    "path": "wsl/tls-only-aes128.log",
+    "original_sha256": "6efd9a421b6c6319190cd508f7c878300631359edc3cbbd3d101ea4e85eb4054",
+    "stored_sha256": "8f1b841fd444e3e6db665d5da3932d41a74b32e27d43bd3ac41ae809104be7ec",
+    "changed": true,
+    "normalization": "remove trailing spaces/tabs/CR; one final LF"
+  },
+  {
+    "path": "wsl/tls-only-aes256.log",
+    "original_sha256": "5cea43b65b2dc2ba67aa789b651cc6ea86ffa04d94639ade4779f5bf782eff8b",
+    "stored_sha256": "3004344eb52b146bb31c402617df375ac452d3593544edffe4ef767921313347",
+    "changed": true,
+    "normalization": "remove trailing spaces/tabs/CR; one final LF"
+  },
+  {
+    "path": "wsl/tls-only-chacha.log",
+    "original_sha256": "4efbe360fce0bb649cac291c40eaadd848eb620457101601bacb822027181b43",
+    "stored_sha256": "cba54fa52ac16ca1cf454ea0c2c561c907299825e3d95518db66af39e6a66726",
+    "changed": true,
+    "normalization": "remove trailing spaces/tabs/CR; one final LF"
+  },
+  {
+    "path": "wsl/tls-only-default.log",
+    "original_sha256": "ffd1f67b786333c16169c4e3d6ab6b3c249cefa2c4101cdb4a256eb383332da1",
+    "stored_sha256": "06d179a6f767d98a7f04f0ee38d1f62f842bb5332c116d3bacc782df687d7733",
+    "changed": true,
+    "normalization": "remove trailing spaces/tabs/CR; one final LF"
+  },
+  {
+    "path": "initial_local/submitted_log_verification.json",
+    "original_sha256": "1a559ea0c372649cd4a2eee95209e0d322149f28e09bbafeec4801e2d864fdf2",
+    "stored_sha256": "1a559ea0c372649cd4a2eee95209e0d322149f28e09bbafeec4801e2d864fdf2",
+    "changed": false,
+    "normalization": "remove trailing spaces/tabs/CR; one final LF"
+  },
+  {
+    "path": "initial_local/ring_provenance.json",
+    "original_sha256": "23178e03e261c40aa8f52897085e1055d525d242fc03a20c3e45633b97d6ace0",
+    "stored_sha256": "23178e03e261c40aa8f52897085e1055d525d242fc03a20c3e45633b97d6ace0",
+    "changed": false,
+    "normalization": "remove trailing spaces/tabs/CR; one final LF"
+  },
+  {
+    "path": "initial_local/xor_result.json",
+    "original_sha256": "f921305747dd8b387676107e77ee80f75aecdeceecfbb60700af516174135872",
+    "stored_sha256": "f921305747dd8b387676107e77ee80f75aecdeceecfbb60700af516174135872",
+    "changed": false,
+    "normalization": "remove trailing spaces/tabs/CR; one final LF"
+  },
+  {
+    "path": "initial_local/xor-cancel.log",
+    "original_sha256": "f9b744596581875b1dcc46a6898d6649f7fa45bdaa9f8fac68e2ebee4d407ff5",
+    "stored_sha256": "ba688671b766f421f1b6fc43ef5259079fb63fa3e83be8c7f47b41f88a24d934",
+    "changed": true,
+    "normalization": "remove trailing spaces/tabs/CR; one final LF"
+  },
+  {
+    "path": "initial_local/xor-clear.log",
+    "original_sha256": "f9026f68d53ba8225aa1a837c3ccf68dab2af79ede00f40ba90aebfbdaa50383",
+    "stored_sha256": "a34835702c9062b793932d8dfd7ac7cfc88a6d81adcb2cb5f536e5b99551b676",
+    "changed": true,
+    "normalization": "remove trailing spaces/tabs/CR; one final LF"
+  },
+  {
+    "path": "local_tls/stock/aes128.log",
+    "original_sha256": "d943d68b147508119d0a0934d497c5b88a2e45d55b8d5956e10339e943f52f90",
+    "stored_sha256": "908d7975d3cff7e9b0540cfc9fbb229ab8afc768db196e26a29c5a466846f7b0",
+    "changed": true,
+    "normalization": "remove trailing spaces/tabs/CR; one final LF"
+  },
+  {
+    "path": "local_tls/stock/aes256.log",
+    "original_sha256": "92509476c0a2e3392d02b44a2aa3422ccbfc483ef1811628020363a79cd5a55e",
+    "stored_sha256": "9a9b14b687d351e06d7fad9104fb455fd817f6293951391d680465ab48d1f1d0",
+    "changed": true,
+    "normalization": "remove trailing spaces/tabs/CR; one final LF"
+  },
+  {
+    "path": "local_tls/stock/chacha.log",
+    "original_sha256": "5dad52ee68ae74053e031c3b54f7305cc92ee0a2d3fd7c83a94eb12f58719672",
+    "stored_sha256": "fa84fcfcbbbd271f7366cf6f903ebe979419f323bcd5a9c23865bec55c1eff76",
+    "changed": true,
+    "normalization": "remove trailing spaces/tabs/CR; one final LF"
+  },
+  {
+    "path": "local_tls/stock/result.json",
+    "original_sha256": "f1fbc058a89025bb3d3d81bd534ad35cbd4236844e6ca0c5e277641e0d6cbc99",
+    "stored_sha256": "f1fbc058a89025bb3d3d81bd534ad35cbd4236844e6ca0c5e277641e0d6cbc99",
+    "changed": false,
+    "normalization": "remove trailing spaces/tabs/CR; one final LF"
+  },
+  {
+    "path": "local_tls/instrumented/aes128.log",
+    "original_sha256": "49de9b2712436d225e2a73a987314c99a2ef439187a0c5796fd24f46f01fe81a",
+    "stored_sha256": "606f083b9e11ef95380db045521304d347345b6be243a7a86e12f9d36978ff3c",
+    "changed": true,
+    "normalization": "remove trailing spaces/tabs/CR; one final LF"
+  },
+  {
+    "path": "local_tls/instrumented/aes256.log",
+    "original_sha256": "6cb60754b36b195b4d624302a9824569d2ab8cb85f40070a997058b1994d5f17",
+    "stored_sha256": "47c84880d858b134737f84b32e133e7473352980099cea4e716f92af0c58c6a6",
+    "changed": true,
+    "normalization": "remove trailing spaces/tabs/CR; one final LF"
+  },
+  {
+    "path": "local_tls/instrumented/chacha.log",
+    "original_sha256": "2fc56fa849a8008baa60342ffb9914a6085248bfbbfbc7c93934db11aebd3d40",
+    "stored_sha256": "5fb0b67228997a39572a1eaffc6abb947fb5f37d9e2d81bfb725f3d2bc45a43d",
+    "changed": true,
+    "normalization": "remove trailing spaces/tabs/CR; one final LF"
+  },
+  {
+    "path": "local_tls/instrumented/result.json",
+    "original_sha256": "f86d181b87b61f83d13bd22ccc083ff26e81e042e5f66dc1ed7131a6de0d030c",
+    "stored_sha256": "f86d181b87b61f83d13bd22ccc083ff26e81e042e5f66dc1ed7131a6de0d030c",
+    "changed": false,
+    "normalization": "remove trailing spaces/tabs/CR; one final LF"
+  },
+  {
+    "path": "local_tls/scratch_initialized/aes128.log",
+    "original_sha256": "d3e988b42bd70a583fd87d3dc0cf81b4c6fefb4347f0e179b0ed17d2289ffb0a",
+    "stored_sha256": "cbaf43cf64eacf0b7af0583735d3cf39a6803baa0afaf0b87ce968d542a7315c",
+    "changed": true,
+    "normalization": "remove trailing spaces/tabs/CR; one final LF"
+  },
+  {
+    "path": "local_tls/scratch_initialized/aes256.log",
+    "original_sha256": "16d71a98d4b2272496af20577e6c9b56f070642c916c495d4d8c5ed93338ba89",
+    "stored_sha256": "b3c96dea91e2d25f78ea3bd8379b5ab05371f2ae61e352998d3b37fd5ab8675a",
+    "changed": true,
+    "normalization": "remove trailing spaces/tabs/CR; one final LF"
+  },
+  {
+    "path": "local_tls/scratch_initialized/chacha.log",
+    "original_sha256": "4027ea21eae23c4d4f27dcc91f98ce852212028b5db64eb90bcd8420af6872cf",
+    "stored_sha256": "f54488d45cb654f6946595a468c1485b4804eff5ddb74a31af92d4117b9ac80b",
+    "changed": true,
+    "normalization": "remove trailing spaces/tabs/CR; one final LF"
+  },
+  {
+    "path": "local_tls/scratch_initialized/result.json",
+    "original_sha256": "001b876599f5489887a4374eb835f87cabe97596face86c7c97cf9c57cb94c74",
+    "stored_sha256": "001b876599f5489887a4374eb835f87cabe97596face86c7c97cf9c57cb94c74",
+    "changed": false,
+    "normalization": "remove trailing spaces/tabs/CR; one final LF"
+  },
+  {
+    "path": "local_tls/lab_source/main.rs",
+    "original_sha256": "6e60b35eb4dc82b8e2e6dcbd5dae70a414f79b46c3fbcf161bb5bbc1100f8aaf",
+    "stored_sha256": "6e60b35eb4dc82b8e2e6dcbd5dae70a414f79b46c3fbcf161bb5bbc1100f8aaf",
+    "changed": false,
+    "normalization": "remove trailing spaces/tabs/CR; one final LF"
+  },
+  {
+    "path": "local_tls/lab_source/host_specific_driver.py",
+    "original_sha256": "81d6b67f36a2c29a8d5f4728cb51f3489a30264a6c22c4e9faafef80e0d7e426",
+    "stored_sha256": "81d6b67f36a2c29a8d5f4728cb51f3489a30264a6c22c4e9faafef80e0d7e426",
+    "changed": false,
+    "normalization": "remove trailing spaces/tabs/CR; one final LF"
+  },
+  {
+    "path": "local_tls/lab_source/Cargo.stock.toml",
+    "original_sha256": "37fe82db36e345482c41b34a020f61dc6c4d7389393cbd3de2fe080cd99985e3",
+    "stored_sha256": "37fe82db36e345482c41b34a020f61dc6c4d7389393cbd3de2fe080cd99985e3",
+    "changed": false,
+    "normalization": "remove trailing spaces/tabs/CR; one final LF"
+  },
+  {
+    "path": "xor_runner_validation/cancel-memcheck.stdout",
+    "original_sha256": "13243d9692e3e9a1b573e3c3b8576a2a5292448a42dc5ff2e876d0ef21bd9bd8",
+    "stored_sha256": "13243d9692e3e9a1b573e3c3b8576a2a5292448a42dc5ff2e876d0ef21bd9bd8",
+    "changed": false,
+    "normalization": "remove trailing spaces/tabs/CR; one final LF"
+  },
+  {
+    "path": "xor_runner_validation/clear-native.stderr",
+    "original_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "stored_sha256": "01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+    "changed": true,
+    "normalization": "remove trailing spaces/tabs/CR; one final LF"
+  },
+  {
+    "path": "xor_runner_validation/compiler-version.stdout",
+    "original_sha256": "78fc11ae2c3ff7c235eb18ed90989d18f6cc864fb27027f839368cd0888deebc",
+    "stored_sha256": "0a1abd8dfcb5f88dec98382748c0501e14c3b2637f9bd4e46dbc6b750e08e61b",
+    "changed": true,
+    "normalization": "remove trailing spaces/tabs/CR and trailing blank lines; one final LF"
+  },
+  {
+    "path": "xor_runner_validation/valgrind-version.stdout",
+    "original_sha256": "0e7ec2a5a100277d4184b145d2f21538be25cf4303d7e6f9ecf575cc0ab0113a",
+    "stored_sha256": "0e7ec2a5a100277d4184b145d2f21538be25cf4303d7e6f9ecf575cc0ab0113a",
+    "changed": false,
+    "normalization": "remove trailing spaces/tabs/CR; one final LF"
+  },
+  {
+    "path": "xor_runner_validation/cancel-memcheck.log",
+    "original_sha256": "25aca027e1234ae981dbd5f573240b88cdfe51dc41f8fab8a2407bad87fb7ed5",
+    "stored_sha256": "764bfce7cceac708bbf1f663f3be7f332f473add085ee976ef8c2abd4d5a9bbb",
+    "changed": true,
+    "normalization": "remove trailing spaces/tabs/CR; one final LF"
+  },
+  {
+    "path": "xor_runner_validation/clear-memcheck.log",
+    "original_sha256": "0d75103845402146ee88436f84669c0186b36ec65c539a7ef669733961c7b010",
+    "stored_sha256": "04f4e437f33ff6098281b7936cbd5b7c9a50965a6e4679e8586bc1c1c491a781",
+    "changed": true,
+    "normalization": "remove trailing spaces/tabs/CR; one final LF"
+  },
+  {
+    "path": "xor_runner_validation/clear-memcheck.stderr",
+    "original_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "stored_sha256": "01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+    "changed": true,
+    "normalization": "remove trailing spaces/tabs/CR; one final LF"
+  },
+  {
+    "path": "xor_runner_validation/cancel-native.stdout",
+    "original_sha256": "71e58179ad3f5ae4efe17a1c19ddb3c6f37b55b7b9c2dc08506262f5e3bb387e",
+    "stored_sha256": "71e58179ad3f5ae4efe17a1c19ddb3c6f37b55b7b9c2dc08506262f5e3bb387e",
+    "changed": false,
+    "normalization": "remove trailing spaces/tabs/CR; one final LF"
+  },
+  {
+    "path": "xor_runner_validation/cancel-memcheck.stderr",
+    "original_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "stored_sha256": "01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+    "changed": true,
+    "normalization": "remove trailing spaces/tabs/CR; one final LF"
+  },
+  {
+    "path": "xor_runner_validation/clear-memcheck.stdout",
+    "original_sha256": "fee663ec060eea3612e7a3fd65050045e4e82f04119d39189661ce12c921b19e",
+    "stored_sha256": "fee663ec060eea3612e7a3fd65050045e4e82f04119d39189661ce12c921b19e",
+    "changed": false,
+    "normalization": "remove trailing spaces/tabs/CR; one final LF"
+  },
+  {
+    "path": "xor_runner_validation/clear-native.stdout",
+    "original_sha256": "cc1fc09ec3000f3f7b77d96be9d0ccfdd217b1b78c31ac322509e6e9642eb2b5",
+    "stored_sha256": "cc1fc09ec3000f3f7b77d96be9d0ccfdd217b1b78c31ac322509e6e9642eb2b5",
+    "changed": false,
+    "normalization": "remove trailing spaces/tabs/CR; one final LF"
+  },
+  {
+    "path": "xor_runner_validation/result.json",
+    "original_sha256": "91b61a9f8d20cf8f12f94d050470fd3a49c59b8659b2eeb6ae697c0908f60b68",
+    "stored_sha256": "91b61a9f8d20cf8f12f94d050470fd3a49c59b8659b2eeb6ae697c0908f60b68",
+    "changed": false,
+    "normalization": "remove trailing spaces/tabs/CR; one final LF"
+  },
+  {
+    "path": "xor_runner_validation/valgrind-version.stderr",
+    "original_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "stored_sha256": "01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+    "changed": true,
+    "normalization": "remove trailing spaces/tabs/CR; one final LF"
+  },
+  {
+    "path": "xor_runner_validation/build.stdout",
+    "original_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "stored_sha256": "01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+    "changed": true,
+    "normalization": "remove trailing spaces/tabs/CR; one final LF"
+  },
+  {
+    "path": "xor_runner_validation/cancel-native.stderr",
+    "original_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "stored_sha256": "01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+    "changed": true,
+    "normalization": "remove trailing spaces/tabs/CR; one final LF"
+  },
+  {
+    "path": "xor_runner_validation/build.stderr",
+    "original_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "stored_sha256": "01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+    "changed": true,
+    "normalization": "remove trailing spaces/tabs/CR; one final LF"
+  },
+  {
+    "path": "xor_runner_validation/compiler-version.stderr",
+    "original_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "stored_sha256": "01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+    "changed": true,
+    "normalization": "remove trailing spaces/tabs/CR; one final LF"
+  }
+]

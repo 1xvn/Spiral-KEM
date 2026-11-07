@@ -1,0 +1,89 @@
+[
+  {
+    "case": "success",
+    "binary_sha256": "68a644ab805897d7cd8dd1eada2ec1538b330128c48c29fda6c8ee0771e84497",
+    "process_exit": 0,
+    "expected_exit": 0,
+    "memcheck_errors": 0,
+    "passed": true,
+    "report": {
+      "admission_released": true,
+      "auth_key_closed": true,
+      "connections": 1,
+      "kem": {
+        "executed_jobs": 2,
+        "live_keys": 0,
+        "rejected_jobs": 0
+      },
+      "role": "server",
+      "sessions": [
+        {
+          "authenticated_close": true,
+          "binding_hash": "8354789cf47d5f55267113d0ba4b509b85d54e0ce6ff882ea03703603c7874a8",
+          "messages": 1,
+          "session_id": "d20b6d8ce8d1229776f04706921d5633",
+          "transcript_hash": "7de3a2a1c5c360356e9eaa47e8ede02e49651297d0f2b08da866b542ddfacf36"
+        }
+      ],
+      "status": "passed"
+    },
+    "stderr": ""
+  },
+  {
+    "case": "finished-failure",
+    "binary_sha256": "68a644ab805897d7cd8dd1eada2ec1538b330128c48c29fda6c8ee0771e84497",
+    "process_exit": 1,
+    "expected_exit": 1,
+    "memcheck_errors": 0,
+    "passed": true,
+    "report": {
+      "kem": {
+        "executed_jobs": 2,
+        "live_keys": 0,
+        "rejected_jobs": 0
+      },
+      "status": "failed"
+    },
+    "stderr": "Error: Authentication\n"
+  },
+  {
+    "case": "tls-only-default",
+    "binary_sha256": "11bc84d64f97b0ad5501ee82bac813c2dccd618c3efcb85531a53f603297000a",
+    "process_exit": 0,
+    "expected_exit": 0,
+    "memcheck_errors": 0,
+    "passed": true,
+    "report": null,
+    "stderr": ""
+  },
+  {
+    "case": "tls-only-aes128",
+    "binary_sha256": "11bc84d64f97b0ad5501ee82bac813c2dccd618c3efcb85531a53f603297000a",
+    "process_exit": 0,
+    "expected_exit": 0,
+    "memcheck_errors": 0,
+    "passed": true,
+    "report": null,
+    "stderr": ""
+  },
+  {
+    "case": "tls-only-aes256",
+    "binary_sha256": "11bc84d64f97b0ad5501ee82bac813c2dccd618c3efcb85531a53f603297000a",
+    "process_exit": 0,
+    "expected_exit": 0,
+    "memcheck_errors": 0,
+    "passed": true,
+    "report": null,
+    "stderr": ""
+  },
+  {
+    "case": "tls-only-chacha",
+    "binary_sha256": "11bc84d64f97b0ad5501ee82bac813c2dccd618c3efcb85531a53f603297000a",
+    "process_exit": 0,
+    "expected_exit": 0,
+    "memcheck_errors": 0,
+    "passed": true,
+    "report": null,
+    "stderr": ""
+  }
+]

@@ -1,0 +1,182 @@
+[
+  {
+    "environment": "OCI",
+    "case": "success",
+    "errors": 0,
+    "contexts": 0,
+    "passed": true,
+    "process_exit": 0,
+    "leaks": {
+      "definitely lost": 0,
+      "indirectly lost": 0,
+      "possibly lost": 0,
+      "still reachable": 548
+    },
+    "log_sha256": "9b052acac36b04e797552c0f101d57331102f6c84f42e744cb5a66d89c267233"
+  },
+  {
+    "environment": "OCI",
+    "case": "finished-failure",
+    "errors": 0,
+    "contexts": 0,
+    "passed": true,
+    "process_exit": 1,
+    "leaks": {
+      "definitely lost": 0,
+      "indirectly lost": 0,
+      "possibly lost": 0,
+      "still reachable": 548
+    },
+    "log_sha256": "7e9b0e8d5568e733ddd5892ca38c913c28efdc57125eebc08f98c60a405b1770"
+  },
+  {
+    "environment": "OCI",
+    "case": "tls-only-default",
+    "errors": 0,
+    "contexts": 0,
+    "passed": true,
+    "process_exit": 0,
+    "leaks": {
+      "definitely lost": 0,
+      "indirectly lost": 0,
+      "possibly lost": 0,
+      "still reachable": 548
+    },
+    "log_sha256": "1e685e8a6e850e5d77cf40d7d2f0d297bfe6d1f7dff7667ba481624ab96c6f4f"
+  },
+  {
+    "environment": "OCI",
+    "case": "tls-only-aes128",
+    "errors": 0,
+    "contexts": 0,
+    "passed": true,
+    "process_exit": 0,
+    "leaks": {
+      "definitely lost": 0,
+      "indirectly lost": 0,
+      "possibly lost": 0,
+      "still reachable": 548
+    },
+    "log_sha256": "baf45b8fbe20dda066a2399bc5efd9e20b52f668f3108d6f609bed50eaa56f64"
+  },
+  {
+    "environment": "OCI",
+    "case": "tls-only-aes256",
+    "errors": 0,
+    "contexts": 0,
+    "passed": true,
+    "process_exit": 0,
+    "leaks": {
+      "definitely lost": 0,
+      "indirectly lost": 0,
+      "possibly lost": 0,
+      "still reachable": 548
+    },
+    "log_sha256": "84dcf0a4eb9748e6f320ff09facc10ac2a83115f86fd62573cbfd6784c5231d2"
+  },
+  {
+    "environment": "OCI",
+    "case": "tls-only-chacha",
+    "errors": 0,
+    "contexts": 0,
+    "passed": true,
+    "process_exit": 0,
+    "leaks": {
+      "definitely lost": 0,
+      "indirectly lost": 0,
+      "possibly lost": 0,
+      "still reachable": 548
+    },
+    "log_sha256": "d40c188e80b2c0c239b61c6718f4079066a32b946e415a807a53593879efdf91"
+  },
+  {
+    "environment": "WSL",
+    "case": "success",
+    "errors": 5,
+    "contexts": 2,
+    "passed": false,
+    "process_exit": 99,
+    "leaks": {
+      "definitely lost": 0,
+      "indirectly lost": 0,
+      "possibly lost": 0,
+      "still reachable": 548
+    },
+    "log_sha256": "a2abb9a9e6d9524b36a273a044d5d1c2e72485b4f9700c12103dcbdb47036c71"
+  },
+  {
+    "environment": "WSL",
+    "case": "finished-failure",
+    "errors": 0,
+    "contexts": 0,
+    "passed": true,
+    "process_exit": 1,
+    "leaks": {
+      "definitely lost": 0,
+      "indirectly lost": 0,
+      "possibly lost": 0,
+      "still reachable": 548
+    },
+    "log_sha256": "1c83775c9e943d224994934177e4bd3058f1d4e744956f6875bf78b49dea6575"
+  },
+  {
+    "environment": "WSL",
+    "case": "tls-only-default",
+    "errors": 4,
+    "contexts": 2,
+    "passed": false,
+    "process_exit": 99,
+    "leaks": {
+      "definitely lost": 0,
+      "indirectly lost": 0,
+      "possibly lost": 0,
+      "still reachable": 548
+    },
+    "log_sha256": "ffd1f67b786333c16169c4e3d6ab6b3c249cefa2c4101cdb4a256eb383332da1"
+  },
+  {
+    "environment": "WSL",
+    "case": "tls-only-aes128",
+    "errors": 4,
+    "contexts": 3,
+    "passed": false,
+    "process_exit": 99,
+    "leaks": {
+      "definitely lost": 0,
+      "indirectly lost": 0,
+      "possibly lost": 0,
+      "still reachable": 548
+    },
+    "log_sha256": "6efd9a421b6c6319190cd508f7c878300631359edc3cbbd3d101ea4e85eb4054"
+  },
+  {
+    "environment": "WSL",
+    "case": "tls-only-aes256",
+    "errors": 4,
+    "contexts": 3,
+    "passed": false,
+    "process_exit": 99,
+    "leaks": {
+      "definitely lost": 0,
+      "indirectly lost": 0,
+      "possibly lost": 0,
+      "still reachable": 548
+    },
+    "log_sha256": "5cea43b65b2dc2ba67aa789b651cc6ea86ffa04d94639ade4779f5bf782eff8b"
+  },
+  {
+    "environment": "WSL",
+    "case": "tls-only-chacha",
+    "errors": 0,
+    "contexts": 0,
+    "passed": true,
+    "process_exit": 0,
+    "leaks": {
+      "definitely lost": 0,
+      "indirectly lost": 0,
+      "possibly lost": 0,
+      "still reachable": 548
+    },
+    "log_sha256": "4efbe360fce0bb649cac291c40eaadd848eb620457101601bacb822027181b43"
+  }
+]

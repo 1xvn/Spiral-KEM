@@ -3,4 +3,5 @@
 /local_validation.json
 /local_benchmark.json
 /local_memcheck/
+/local_xor_definedness/
 __pycache__/

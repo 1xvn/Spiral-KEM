@@ -1,0 +1,6 @@
+{"case": "success", "binary_sha256": "19d37869a79c532120b4e8dcb703b7d34f1483143031afe85ae11b8145ca3f8c", "process_exit": 99, "expected_exit": 0, "memcheck_errors": 5, "passed": false}
+{"case": "finished-failure", "binary_sha256": "19d37869a79c532120b4e8dcb703b7d34f1483143031afe85ae11b8145ca3f8c", "process_exit": 1, "expected_exit": 1, "memcheck_errors": 0, "passed": true}
+{"case": "tls-only-default", "binary_sha256": "060129cc485dbbb7054088ff08c7075498f41c351a3e04abe7d8a2c48cfab3e9", "process_exit": 99, "expected_exit": 0, "memcheck_errors": 4, "passed": false}
+{"case": "tls-only-aes128", "binary_sha256": "060129cc485dbbb7054088ff08c7075498f41c351a3e04abe7d8a2c48cfab3e9", "process_exit": 99, "expected_exit": 0, "memcheck_errors": 4, "passed": false}
+{"case": "tls-only-aes256", "binary_sha256": "060129cc485dbbb7054088ff08c7075498f41c351a3e04abe7d8a2c48cfab3e9", "process_exit": 99, "expected_exit": 0, "memcheck_errors": 4, "passed": false}
+{"case": "tls-only-chacha", "binary_sha256": "060129cc485dbbb7054088ff08c7075498f41c351a3e04abe7d8a2c48cfab3e9", "process_exit": 0, "expected_exit": 0, "memcheck_errors": 0, "passed": true}

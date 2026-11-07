@@ -1,0 +1,331 @@
+{
+  "schema": "spiral-memory-followup/v1",
+  "date_utc": "2026-11-07",
+  "base_commit": "700995116928054a8ba488ecaed1a6cf23d5c542",
+  "production_memory_fully_passed": false,
+  "production_changes": false,
+  "original_wsl_verdict_preserved": true,
+  "libtest_48_bytes_retested": false,
+  "users": {
+    "oci": {
+      "passed": 6,
+      "total": 6,
+      "driver_exit": 0,
+      "cases": [
+        {
+          "case": "success",
+          "binary_sha256": "68a644ab805897d7cd8dd1eada2ec1538b330128c48c29fda6c8ee0771e84497",
+          "process_exit": 0,
+          "expected_exit": 0,
+          "memcheck_errors": 0,
+          "passed": true,
+          "report": {
+            "admission_released": true,
+            "auth_key_closed": true,
+            "connections": 1,
+            "kem": {
+              "executed_jobs": 2,
+              "live_keys": 0,
+              "rejected_jobs": 0
+            },
+            "role": "server",
+            "sessions": [
+              {
+                "authenticated_close": true,
+                "binding_hash": "8354789cf47d5f55267113d0ba4b509b85d54e0ce6ff882ea03703603c7874a8",
+                "messages": 1,
+                "session_id": "d20b6d8ce8d1229776f04706921d5633",
+                "transcript_hash": "7de3a2a1c5c360356e9eaa47e8ede02e49651297d0f2b08da866b542ddfacf36"
+              }
+            ],
+            "status": "passed"
+          },
+          "stderr": ""
+        },
+        {
+          "case": "finished-failure",
+          "binary_sha256": "68a644ab805897d7cd8dd1eada2ec1538b330128c48c29fda6c8ee0771e84497",
+          "process_exit": 1,
+          "expected_exit": 1,
+          "memcheck_errors": 0,
+          "passed": true,
+          "report": {
+            "kem": {
+              "executed_jobs": 2,
+              "live_keys": 0,
+              "rejected_jobs": 0
+            },
+            "status": "failed"
+          },
+          "stderr": "Error: Authentication\n"
+        },
+        {
+          "case": "tls-only-default",
+          "binary_sha256": "11bc84d64f97b0ad5501ee82bac813c2dccd618c3efcb85531a53f603297000a",
+          "process_exit": 0,
+          "expected_exit": 0,
+          "memcheck_errors": 0,
+          "passed": true,
+          "report": null,
+          "stderr": ""
+        },
+        {
+          "case": "tls-only-aes128",
+          "binary_sha256": "11bc84d64f97b0ad5501ee82bac813c2dccd618c3efcb85531a53f603297000a",
+          "process_exit": 0,
+          "expected_exit": 0,
+          "memcheck_errors": 0,
+          "passed": true,
+          "report": null,
+          "stderr": ""
+        },
+        {
+          "case": "tls-only-aes256",
+          "binary_sha256": "11bc84d64f97b0ad5501ee82bac813c2dccd618c3efcb85531a53f603297000a",
+          "process_exit": 0,
+          "expected_exit": 0,
+          "memcheck_errors": 0,
+          "passed": true,
+          "report": null,
+          "stderr": ""
+        },
+        {
+          "case": "tls-only-chacha",
+          "binary_sha256": "11bc84d64f97b0ad5501ee82bac813c2dccd618c3efcb85531a53f603297000a",
+          "process_exit": 0,
+          "expected_exit": 0,
+          "memcheck_errors": 0,
+          "passed": true,
+          "report": null,
+          "stderr": ""
+        }
+      ]
+    },
+    "wsl": {
+      "passed": 2,
+      "total": 6,
+      "driver_exit": 1,
+      "cases": [
+        {
+          "case": "success",
+          "binary_sha256": "19d37869a79c532120b4e8dcb703b7d34f1483143031afe85ae11b8145ca3f8c",
+          "process_exit": 99,
+          "expected_exit": 0,
+          "memcheck_errors": 5,
+          "passed": false,
+          "report": {
+            "admission_released": true,
+            "auth_key_closed": true,
+            "connections": 1,
+            "kem": {
+              "executed_jobs": 2,
+              "live_keys": 0,
+              "rejected_jobs": 0
+            },
+            "role": "server",
+            "sessions": [
+              {
+                "authenticated_close": true,
+                "binding_hash": "82b47a5272f7f716a1626efb1677874cc1af2da19897008c7d10c719c2f15240",
+                "messages": 1,
+                "session_id": "f488126bde131750d964eb4cad3ffe2b",
+                "transcript_hash": "2b0273357aa9110a5e0055b74459fefb314e221d619d8953548aeae043996bc9"
+              }
+            ],
+            "status": "passed"
+          },
+          "stderr": ""
+        },
+        {
+          "case": "finished-failure",
+          "binary_sha256": "19d37869a79c532120b4e8dcb703b7d34f1483143031afe85ae11b8145ca3f8c",
+          "process_exit": 1,
+          "expected_exit": 1,
+          "memcheck_errors": 0,
+          "passed": true,
+          "report": {
+            "kem": {
+              "executed_jobs": 2,
+              "live_keys": 0,
+              "rejected_jobs": 0
+            },
+            "status": "failed"
+          },
+          "stderr": "Error: Authentication\n"
+        },
+        {
+          "case": "tls-only-default",
+          "binary_sha256": "060129cc485dbbb7054088ff08c7075498f41c351a3e04abe7d8a2c48cfab3e9",
+          "process_exit": 99,
+          "expected_exit": 0,
+          "memcheck_errors": 4,
+          "passed": false,
+          "report": null,
+          "stderr": ""
+        },
+        {
+          "case": "tls-only-aes128",
+          "binary_sha256": "060129cc485dbbb7054088ff08c7075498f41c351a3e04abe7d8a2c48cfab3e9",
+          "process_exit": 99,
+          "expected_exit": 0,
+          "memcheck_errors": 4,
+          "passed": false,
+          "report": null,
+          "stderr": ""
+        },
+        {
+          "case": "tls-only-aes256",
+          "binary_sha256": "060129cc485dbbb7054088ff08c7075498f41c351a3e04abe7d8a2c48cfab3e9",
+          "process_exit": 99,
+          "expected_exit": 0,
+          "memcheck_errors": 4,
+          "passed": false,
+          "report": null,
+          "stderr": ""
+        },
+        {
+          "case": "tls-only-chacha",
+          "binary_sha256": "060129cc485dbbb7054088ff08c7075498f41c351a3e04abe7d8a2c48cfab3e9",
+          "process_exit": 0,
+          "expected_exit": 0,
+          "memcheck_errors": 0,
+          "passed": true,
+          "report": null,
+          "stderr": ""
+        }
+      ]
+    }
+  },
+  "local_tls": {
+    "stock": [
+      {
+        "scope": "isolated rustls/tokio control, no Spiral or C KEM",
+        "mode": "aes128",
+        "cipher": "TLS_AES_128_GCM_SHA256",
+        "exit": 99,
+        "errors": 4,
+        "contexts": 3,
+        "stderr": ""
+      },
+      {
+        "scope": "isolated rustls/tokio control, no Spiral or C KEM",
+        "mode": "aes256",
+        "cipher": "TLS_AES_256_GCM_SHA384",
+        "exit": 99,
+        "errors": 4,
+        "contexts": 3,
+        "stderr": ""
+      },
+      {
+        "scope": "isolated rustls/tokio control, no Spiral or C KEM",
+        "mode": "chacha",
+        "cipher": "TLS_CHACHA20_POLY1305_SHA256",
+        "exit": 0,
+        "errors": 0,
+        "contexts": 0,
+        "stderr": ""
+      }
+    ],
+    "instrumented": [
+      {
+        "scope": "isolated rustls/tokio control, no Spiral or C KEM",
+        "mode": "aes128",
+        "cipher": "TLS_AES_128_GCM_SHA256",
+        "exit": 99,
+        "errors": 44,
+        "contexts": 25,
+        "stderr": "DEFINEDNESS CHECK FAILED: GHASH Xi after call\nDEFINEDNESS CHECK FAILED: GHASH Xi before call\nDEFINEDNESS CHECK FAILED: GHASH Xi after call\nDEFINEDNESS CHECK FAILED: GHASH Xi before call\nDEFINEDNESS CHECK FAILED: GHASH Xi after call\nDEFINEDNESS CHECK FAILED: GHASH Xi before call\nDEFINEDNESS CHECK FAILED: GHASH Xi after call\nDEFINEDNESS CHECK FAILED: GHASH Xi pre tag\nDEFINEDNESS CHECK FAILED: AES xor input\nDEFINEDNESS CHECK FAILED: AES block output\nDEFINEDNESS CHECK FAILED: GCM returned tag\nDEFINEDNESS CHECK FAILED: GHASH Xi after call\nDEFINEDNESS CHECK FAILED: GHASH Xi before call\nDEFINEDNESS CHECK FAILED: GHASH Xi after call\nDEFINEDNESS CHECK FAILED: GHASH Xi before call\nDEFINEDNESS CHECK FAILED: GHASH Xi after call\nDEFINEDNESS CHECK FAILED: GHASH Xi before call\nDEFINEDNESS CHECK FAILED: GHASH Xi after call\nDEFINEDNESS CHECK FAILED: GHASH Xi pre tag\nDEFINEDNESS CHECK FAILED: AES xor input\nDEFINEDNESS CHECK FAILED: AES block output\nDEFINEDNESS CHECK FAILED: GCM returned tag\nDEFINEDNESS CHECK FAILED: GHASH Xi after call\nDEFINEDNESS CHECK FAILED: GHASH Xi before call\nDEFINEDNESS CHECK FAILED: GHASH Xi after call\nDEFINEDNESS CHECK FAILED: GHASH Xi before call\nDEFINEDNESS CHECK FAILED: GHASH Xi after call\nDEFINEDNESS CHECK FAILED: GHASH Xi pre tag\nDEFINEDNESS CHECK FAILED: AES xor input\nDEFINEDNESS CHECK FAILED: AES block output\nDEFINEDNESS CHECK FAILED: GCM returned tag\nDEFINEDNESS CHECK FAILED: GHASH Xi after call\nDEFINEDNESS CHECK FAILED: GHASH Xi before call\nDEFINEDNESS CHECK FAILED: GHASH Xi after call\nDEFINEDNESS CHECK FAILED: GHASH Xi before call\nDEFINEDNESS CHECK FAILED: GHASH Xi after call\nDEFINEDNESS CHECK FAILED: GHASH Xi pre tag\nDEFINEDNESS CHECK FAILED: AES xor input\nDEFINEDNESS CHECK FAILED: AES block output\nDEFINEDNESS CHECK FAILED: GCM returned tag\n"
+      },
+      {
+        "scope": "isolated rustls/tokio control, no Spiral or C KEM",
+        "mode": "aes256",
+        "cipher": "TLS_AES_256_GCM_SHA384",
+        "exit": 99,
+        "errors": 44,
+        "contexts": 25,
+        "stderr": "DEFINEDNESS CHECK FAILED: GHASH Xi after call\nDEFINEDNESS CHECK FAILED: GHASH Xi before call\nDEFINEDNESS CHECK FAILED: GHASH Xi after call\nDEFINEDNESS CHECK FAILED: GHASH Xi before call\nDEFINEDNESS CHECK FAILED: GHASH Xi after call\nDEFINEDNESS CHECK FAILED: GHASH Xi before call\nDEFINEDNESS CHECK FAILED: GHASH Xi after call\nDEFINEDNESS CHECK FAILED: GHASH Xi pre tag\nDEFINEDNESS CHECK FAILED: AES xor input\nDEFINEDNESS CHECK FAILED: AES block output\nDEFINEDNESS CHECK FAILED: GCM returned tag\nDEFINEDNESS CHECK FAILED: GHASH Xi after call\nDEFINEDNESS CHECK FAILED: GHASH Xi before call\nDEFINEDNESS CHECK FAILED: GHASH Xi after call\nDEFINEDNESS CHECK FAILED: GHASH Xi before call\nDEFINEDNESS CHECK FAILED: GHASH Xi after call\nDEFINEDNESS CHECK FAILED: GHASH Xi before call\nDEFINEDNESS CHECK FAILED: GHASH Xi after call\nDEFINEDNESS CHECK FAILED: GHASH Xi pre tag\nDEFINEDNESS CHECK FAILED: AES xor input\nDEFINEDNESS CHECK FAILED: AES block output\nDEFINEDNESS CHECK FAILED: GCM returned tag\nDEFINEDNESS CHECK FAILED: GHASH Xi after call\nDEFINEDNESS CHECK FAILED: GHASH Xi before call\nDEFINEDNESS CHECK FAILED: GHASH Xi after call\nDEFINEDNESS CHECK FAILED: GHASH Xi before call\nDEFINEDNESS CHECK FAILED: GHASH Xi after call\nDEFINEDNESS CHECK FAILED: GHASH Xi pre tag\nDEFINEDNESS CHECK FAILED: AES xor input\nDEFINEDNESS CHECK FAILED: AES block output\nDEFINEDNESS CHECK FAILED: GCM returned tag\nDEFINEDNESS CHECK FAILED: GHASH Xi after call\nDEFINEDNESS CHECK FAILED: GHASH Xi before call\nDEFINEDNESS CHECK FAILED: GHASH Xi after call\nDEFINEDNESS CHECK FAILED: GHASH Xi before call\nDEFINEDNESS CHECK FAILED: GHASH Xi after call\nDEFINEDNESS CHECK FAILED: GHASH Xi pre tag\nDEFINEDNESS CHECK FAILED: AES xor input\nDEFINEDNESS CHECK FAILED: AES block output\nDEFINEDNESS CHECK FAILED: GCM returned tag\n"
+      },
+      {
+        "scope": "isolated rustls/tokio control, no Spiral or C KEM",
+        "mode": "chacha",
+        "cipher": "TLS_CHACHA20_POLY1305_SHA256",
+        "exit": 0,
+        "errors": 0,
+        "contexts": 0,
+        "stderr": ""
+      }
+    ],
+    "scratch_initialized": [
+      {
+        "scope": "isolated rustls/tokio control, no Spiral or C KEM",
+        "mode": "aes128",
+        "cipher": "TLS_AES_128_GCM_SHA256",
+        "exit": 0,
+        "errors": 0,
+        "contexts": 0,
+        "stderr": ""
+      },
+      {
+        "scope": "isolated rustls/tokio control, no Spiral or C KEM",
+        "mode": "aes256",
+        "cipher": "TLS_AES_256_GCM_SHA384",
+        "exit": 0,
+        "errors": 0,
+        "contexts": 0,
+        "stderr": ""
+      },
+      {
+        "scope": "isolated rustls/tokio control, no Spiral or C KEM",
+        "mode": "chacha",
+        "cipher": "TLS_CHACHA20_POLY1305_SHA256",
+        "exit": 0,
+        "errors": 0,
+        "contexts": 0,
+        "stderr": ""
+      }
+    ]
+  },
+  "xor_runner": {
+    "consistent": true,
+    "production_memory_passed": false,
+    "cases": [
+      {
+        "mode": "cancel",
+        "actual_zero_checks": 1000,
+        "native_exit": 0,
+        "memcheck_exit": 99,
+        "errors": 1000,
+        "observation": "copy_branch_cancellation_false_positive_reproduced"
+      },
+      {
+        "mode": "clear",
+        "actual_zero_checks": 1000,
+        "native_exit": 0,
+        "memcheck_exit": 0,
+        "errors": 0,
+        "observation": "defined_zero"
+      }
+    ]
+  },
+  "verification": {
+    "archive_files_equal_after_documented_whitespace_normalization": true,
+    "submitted_logs_and_json_cases_recomputed": 12,
+    "local_tls_logs_and_json_cases_recomputed": 9,
+    "diagnostic_diffs_reconstruct_tested_ring_copy": true,
+    "cli_rejections": {
+      "unpaired_loader": {
+        "exit": 2,
+        "diagnostic": "xor_definedness.py: error: --loader and --library-path must be supplied together"
+      },
+      "existing_output": {
+        "exit": 2,
+        "diagnostic": "xor_definedness.py: error: --output must be a new directory to preserve earlier evidence"
+      },
+      "invalid_native_mode": {
+        "exit": 2,
+        "diagnostic": "usage: xor_control cancel|clear"
+      }
+    },
+    "full_application_suite_rerun": false
+  }
+}
