@@ -1,0 +1,2 @@
+-r ../protocol_v01/requirements.txt
+atheris==3.1.0

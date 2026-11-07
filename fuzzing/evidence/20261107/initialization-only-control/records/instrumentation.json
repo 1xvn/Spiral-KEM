@@ -1,0 +1,29 @@
+{
+  "target": "records",
+  "instrumented_runtime_functions": [
+    "protocol_v01.wire.parse_header",
+    "protocol_v01.wire.make_header",
+    "protocol_v01.wire.make_frame",
+    "protocol_v01.wire.parse_frame",
+    "protocol_v01.records.RecordLimit.__init__",
+    "protocol_v01.records.RecordState.__init__",
+    "protocol_v01.records.RecordState.closed.get",
+    "protocol_v01.records.RecordState.io_deadline",
+    "protocol_v01.records.RecordState._release",
+    "protocol_v01.records.RecordState.abort",
+    "protocol_v01.records.RecordState._reject",
+    "protocol_v01.records.RecordState._usable",
+    "protocol_v01.records.RecordState._begin_close",
+    "protocol_v01.records.RecordState._encode",
+    "protocol_v01.records.RecordState.encode_data",
+    "protocol_v01.records.RecordState.encode_close",
+    "protocol_v01.records.RecordState.decode"
+  ],
+  "instrumentation_count": 17,
+  "instrumentation": "Atheris3.1 Python bytecode basic blocks/comparisons; named nested functions/lambdas included, generator/comprehension code may be skipped; runtime only",
+  "harness_oracle_instrumented": false,
+  "source_sha256": {
+    "protocol_v01/wire.py": "cf915f84510857814f3722f3d1f3c3358e318a958216fbcdaac292486e40fbaf",
+    "protocol_v01/records.py": "443006d2efb19da0f302a4c29677360a5b848fe39fc183bb4984831f62cfb5dd"
+  }
+}

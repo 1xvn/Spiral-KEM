@@ -1,0 +1,78 @@
+{
+  "started_utc": "2026-11-07T08:29:16.177274+00:00",
+  "status": "failed",
+  "method": "Atheris3.1/libFuzzer coverage feedback on runtime Python bytecode; independent oracles not instrumented",
+  "coverage_scope": "Python frame/ClientHello/KEM codec/record state only; not native C/Rust/OpenSSL machine coverage",
+  "seed": 20261107,
+  "requested_runs_per_target": 100,
+  "seconds_per_target": 10,
+  "targets": [
+    {
+      "name": "records",
+      "status": "failed",
+      "initial_corpus_files": 169,
+      "command": [
+        "/workspace/spiral-protocol-v01/venv/bin/python",
+        "-m",
+        "fuzzing.driver",
+        "--target",
+        "records",
+        "--metadata",
+        "/tmp/atheris-init-only-supervisor-review-20261107/records/instrumentation.json",
+        "/tmp/atheris-init-only-supervisor-review-20261107/records/corpus",
+        "-runs=100",
+        "-max_total_time=10",
+        "-seed=20261107",
+        "-max_len=4096",
+        "-timeout=5",
+        "-rss_limit_mb=1536",
+        "-print_final_stats=1",
+        "-artifact_prefix=/tmp/atheris-init-only-supervisor-review-20261107/records/artifacts/"
+      ],
+      "exit": 0,
+      "reason": "no mutation executions after corpus initialization",
+      "feedback": {
+        "executed": 169,
+        "initialization_executed": 169,
+        "initial_cov": 158,
+        "final_cov": 158,
+        "final_features": 648,
+        "new_corpus_events": 0
+      },
+      "instrumentation_count": 17,
+      "final_corpus_files": 169,
+      "engine_log_sha256": "dd61527df872f020093ac904b81bd3e8ca03032010c6fc3bc2c63affa5950c51",
+      "artifacts": [],
+      "replay": "python -m fuzzing.replay --target records INPUT_FILE"
+    }
+  ],
+  "environment": {
+    "python": "3.12.14 (main, Aug 25 2026, 14:00:49) [Clang 22.1.3 ]",
+    "executable": "/workspace/spiral-protocol-v01/venv/bin/python",
+    "platform": "Linux-6.18.57-x86_64-with-glibc2.41",
+    "atheris": "3.1.0",
+    "cryptography": "50.0.2"
+  },
+  "constant_time_approved": false,
+  "security_approved": false,
+  "elapsed_seconds": 0.23610196000663564,
+  "source_sha256": {
+    "code/opt2/spiral_kem_toy_v031_opt2.py": "74c1ff02669d5b6eea87ccf650bc6930bc1822ffe8568fa68ce79fb29958a118",
+    "fuzzing/__init__.py": "22d9306ed8df37c7ba609bab17cb4d5a208f63d6ae37e9bc2387bd990bbd3276",
+    "fuzzing/campaign.py": "83f6e20b99e8af3df5042c540cd57cc1125099720f089deacef379bc8f3df4ba",
+    "fuzzing/driver.py": "e2c37e30316a803c3f6e0a0ecfb6703aa8e85e0efb90c97420f4a21b23bb678b",
+    "fuzzing/replay.py": "548ce61e0c80fd836910e7879076e4b8cd70c6f1d4675afb017c4f2231da0890",
+    "fuzzing/replay_regressions.py": "e90dd0ded8b123aebbc9fca814d19b12753b3cda1864722a4f1150615a92b6d8",
+    "fuzzing/requirements.txt": "d1ab44d50340be92a01609950361917c3f459253f29b0f6caf548551fab07c50",
+    "fuzzing/targets.py": "687657c14e11a511b0505857f7973b6c1193163a22b625412a092f7bdf5d7a46",
+    "fuzzing/test_campaign.py": "3606388fb65a1f5a8bb777b19bc3d07a04ebed8580d63dbb0a2d17b3058cdb87",
+    "fuzzing/test_targets.py": "2104f7f9a0691409faad1938f18bb9e21a74a8b1b04fe10e20d78ea7c5a361ca",
+    "protocol_v01/handshake.py": "5e86ee9278db82115f953eb06cca1cf54998149c55459d3021ffa9562fd025ce",
+    "protocol_v01/records.py": "443006d2efb19da0f302a4c29677360a5b848fe39fc183bb4984831f62cfb5dd",
+    "protocol_v01/requirements.txt": "5c20730447b13a925e6f8f33948441ccddf719a9067cd0ce9837f6d74445078b",
+    "protocol_v01/tests/fixtures/test_vectors_v0.1.json": "b556ca8741a649dfe3346d2033a2685492470beedbc601dbb36877f4c5881ee8",
+    "protocol_v01/validation/fuzz_campaign.py": "fa182906bb8c0f3c5be4b85f387ec98995ba54dcba758f77426de1bbf60e04a8",
+    "protocol_v01/wire.py": "cf915f84510857814f3722f3d1f3c3358e318a958216fbcdaac292486e40fbaf"
+  },
+  "finished_utc": "2026-11-07T08:29:16.417249+00:00"
+}

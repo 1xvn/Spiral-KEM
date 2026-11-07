@@ -1,0 +1,41 @@
+INFO: Using built-in libfuzzer
+WARNING: Failed to find function "__sanitizer_acquire_crash_state".
+WARNING: Failed to find function "__sanitizer_print_stack_trace".
+WARNING: Failed to find function "__sanitizer_set_death_callback".
+INFO: Running with entropic power schedule (0xFF, 100).
+INFO: Seed: 20261107
+INFO:        9 files found in /workspace/atheris-evidence-20261107/kem_pk/corpus
+INFO: seed corpus: files: 9 min: 807b max: 809b total: 7272b rss: 51Mb
+#10	INITED cov: 35 ft: 42 corp: 3/2423b exec/s: 0 rss: 51Mb
+#27	REDUCE cov: 35 ft: 42 corp: 3/2275b lim: 808 exec/s: 0 rss: 51Mb L: 659/808 MS: 2 ChangeBinInt-EraseBytes-
+#34	REDUCE cov: 35 ft: 42 corp: 3/2229b lim: 808 exec/s: 0 rss: 51Mb L: 613/808 MS: 2 ChangeBinInt-EraseBytes-
+#42	REDUCE cov: 35 ft: 42 corp: 3/2011b lim: 808 exec/s: 0 rss: 51Mb L: 395/808 MS: 3 CrossOver-CopyPart-EraseBytes-
+#63	NEW    cov: 35 ft: 47 corp: 4/2819b lim: 808 exec/s: 0 rss: 51Mb L: 808/808 MS: 1 ChangeByte-
+#73	NEW    cov: 35 ft: 48 corp: 5/3627b lim: 808 exec/s: 0 rss: 51Mb L: 808/808 MS: 5 ChangeBinInt-ChangeBit-ShuffleBytes-ShuffleBytes-CrossOver-
+#106	NEW    cov: 35 ft: 49 corp: 6/4435b lim: 808 exec/s: 0 rss: 51Mb L: 808/808 MS: 3 ShuffleBytes-ShuffleBytes-CrossOver-
+#247	REDUCE cov: 35 ft: 49 corp: 6/4249b lim: 808 exec/s: 0 rss: 51Mb L: 209/808 MS: 1 EraseBytes-
+#276	REDUCE cov: 35 ft: 49 corp: 6/4184b lim: 808 exec/s: 0 rss: 51Mb L: 144/808 MS: 4 ChangeBit-ChangeBinInt-InsertByte-EraseBytes-
+#338	REDUCE cov: 35 ft: 49 corp: 6/4146b lim: 808 exec/s: 0 rss: 51Mb L: 106/808 MS: 2 ChangeBinInt-EraseBytes-
+#790	REDUCE cov: 35 ft: 49 corp: 6/4107b lim: 808 exec/s: 0 rss: 51Mb L: 67/808 MS: 2 ChangeASCIIInt-EraseBytes-
+#791	REDUCE cov: 35 ft: 49 corp: 6/4078b lim: 808 exec/s: 0 rss: 51Mb L: 38/808 MS: 1 EraseBytes-
+#854	NEW    cov: 35 ft: 50 corp: 7/4886b lim: 808 exec/s: 0 rss: 51Mb L: 808/808 MS: 3 ChangeBinInt-ShuffleBytes-ChangeBinInt-
+#998	REDUCE cov: 35 ft: 50 corp: 7/4879b lim: 808 exec/s: 0 rss: 51Mb L: 31/808 MS: 4 ChangeBinInt-ChangeBit-InsertByte-EraseBytes-
+#1955	REDUCE cov: 35 ft: 50 corp: 7/4874b lim: 817 exec/s: 0 rss: 51Mb L: 26/808 MS: 2 ChangeBit-EraseBytes-
+#2006	REDUCE cov: 35 ft: 50 corp: 7/4865b lim: 817 exec/s: 0 rss: 51Mb L: 17/808 MS: 1 EraseBytes-
+#2027	REDUCE cov: 35 ft: 50 corp: 7/4857b lim: 817 exec/s: 0 rss: 51Mb L: 9/808 MS: 1 EraseBytes-
+#2128	REDUCE cov: 35 ft: 50 corp: 7/4856b lim: 817 exec/s: 0 rss: 51Mb L: 8/808 MS: 1 EraseBytes-
+#2164	REDUCE cov: 35 ft: 50 corp: 7/4852b lim: 817 exec/s: 0 rss: 51Mb L: 4/808 MS: 1 EraseBytes-
+#2279	REDUCE cov: 35 ft: 50 corp: 7/4850b lim: 817 exec/s: 0 rss: 51Mb L: 2/808 MS: 5 ChangeByte-CrossOver-ShuffleBytes-CMP-EraseBytes- DE: "\001\000"-
+#3766	REDUCE cov: 35 ft: 50 corp: 7/4849b lim: 826 exec/s: 0 rss: 51Mb L: 1/808 MS: 2 CopyPart-EraseBytes-
+#3767	NEW    cov: 35 ft: 51 corp: 8/5657b lim: 826 exec/s: 0 rss: 51Mb L: 808/808 MS: 1 ShuffleBytes-
+#65536	pulse  cov: 35 ft: 51 corp: 8/5657b lim: 1024 exec/s: 32768 rss: 51Mb
+#100000	DONE   cov: 35 ft: 51 corp: 8/5657b lim: 1024 exec/s: 25000 rss: 51Mb
+###### Recommended dictionary. ######
+"\001\000" # Uses: 8389
+###### End of recommended dictionary. ######
+Done 100000 runs in 4 second(s)
+stat::number_of_executed_units: 100000
+stat::average_exec_per_sec:     25000
+stat::new_units_added:          21
+stat::slowest_unit_time_sec:    0
+stat::peak_rss_mb:              51

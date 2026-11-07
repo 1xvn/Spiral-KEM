@@ -1,0 +1,61 @@
+name: Coverage-guided Python fuzzing
+
+on:
+  pull_request:
+  push:
+  workflow_dispatch:
+  schedule:
+    - cron: '29 4 * * 1'
+
+permissions:
+  contents: read
+
+concurrency:
+  group: coverage-fuzz-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  python-fuzz:
+    name: Python runtime coverage and state invariants
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    env:
+      PYTHONDONTWRITEBYTECODE: '1'
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065 # v5
+        with:
+          python-version: '3.12'
+      - name: Install pinned fuzz dependencies
+        run: |
+          python -m venv .fuzz-venv
+          .fuzz-venv/bin/python -m pip install --only-binary=:all: -r fuzzing/requirements.txt
+          .fuzz-venv/bin/python -m pip check
+      - name: Check target oracles and campaign result classification
+        run: .fuzz-venv/bin/python -m unittest discover -s fuzzing -p 'test_*.py' -v
+      - name: Replay saved regression inputs
+        run: .fuzz-venv/bin/python -m fuzzing.replay_regressions
+      - name: Run bounded coverage-guided campaign
+        env:
+          FUZZ_EVENT: ${{ github.event_name }}
+        run: |
+          if [ "$FUZZ_EVENT" = schedule ] || [ "$FUZZ_EVENT" = workflow_dispatch ]; then
+            .fuzz-venv/bin/python -m fuzzing.campaign --runs 100000 --seconds 60 --output fuzz-results/run
+          else
+            .fuzz-venv/bin/python -m fuzzing.campaign --runs 2000 --seconds 10 --output fuzz-results/run
+          fi
+      - name: Preserve feedback, corpus and crash inputs
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: python-fuzz-${{ github.run_id }}-${{ github.run_attempt }}
+          path: fuzz-results/run/
+          if-no-files-found: warn
+          retention-days: 14
+      - name: State fuzzing scope
+        if: always()
+        run: |
+          echo 'Python runtime bytecode coverage with independent parser/state oracles. See result.json for actual counts and engine.log for feedback.' >> "$GITHUB_STEP_SUMMARY"
+          echo 'This does not measure C/Rust/OpenSSL machine coverage, prove constant time, or approve cryptographic security.' >> "$GITHUB_STEP_SUMMARY"

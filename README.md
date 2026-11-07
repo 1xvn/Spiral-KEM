@@ -54,6 +54,9 @@ Neither the design proposal nor the research implementations indicate completed 
 [Automated checks guide](ci/README.md): provides functional checks on pushes and PRs and separate scheduled memory diagnostics.
 Passing functional checks is not treated as approval of overall memory safety, constant-time behavior, or cryptographic security.
 
+[Coverage-guided fuzzing](fuzzing/README.md): checks Python frames, ClientHello, KEM encoding, and record
+state using Atheris and stores failing inputs and coverage feedback in separate Actions runs.
+
 The 48-byte `possibly lost` item was reproduced without Spiral in the [minimal standard-library/test-runner control](protocol_rust/LIBTEST_MEMORY.md).
 The original failure verdict and incomplete overall memory-safety status are retained.
 
