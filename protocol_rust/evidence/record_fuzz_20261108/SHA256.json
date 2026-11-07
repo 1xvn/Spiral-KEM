@@ -1,5 +1,5 @@
 {
-  "README.md": "cfbceed7258cfcedcae1f428b349677fa07b770ddb1aa632bd5548b442ea062b",
+  "README.md": "2b452b93ce575074ade90e65c9c422295715b18f6013a1332501a668636f03c6",
   "functional/cargo-version.log": "99ef17c8e536a7c7bc486f6f1ab6348874701495ad0a749b36796b7db9659bfe",
   "functional/diagnostic-parser.log": "a7879a593598676a425019c532a897009736f600f7fdc8c4d46f22259501b698",
   "functional/interop.json": "b722bed984079547a96f4e219c0b15ac2fbb90aaf982ab4aea7215764fa13604",
@@ -12,7 +12,8 @@
   "functional/rust-unit.log": "9357f5109140e84b8440c633f83d02648ea07cc0bc2fbfbbd982d4b5cfce2242",
   "functional/rustc-version.log": "a03b7b055fbe7fd69d759022e6bf596d8fed4460d1fd784856075ecd1835d5fb",
   "local-60s.tar.gz": "de55208e1a563445912ae7bb46f32ef0835954e93db1ad697cdf52980b6437e2",
-  "local-result.json": "19358a5186f8d78dde95f1548f02ea0c0963d489e4da8d5f8817c61ca154caf9",
+  "local-result.json": "348acdc887132844fe76be7784d044a43b551e6eaba5ae15a885373f36554450",
   "parser-regression-2k.tar.gz": "648d14a7c75cb27b603b3bbd707ae1998d171eeb7140fc1261486a0c9d8e871d",
+  "platform-review.json": "5b7cb19f11cb02c7ba178386b8cef900d70eb5f3d0a536b9803d654438eadd36",
   "record-feature-doc.log": "5fb91be3ed726fb3108b3c2bf4f2d202630660d9edfba7def1dff9f85f35acf0"
 }

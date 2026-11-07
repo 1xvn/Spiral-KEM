@@ -63,7 +63,7 @@
     "processor": ""
   },
   "nightly_rustc_commit": "c980177d81d16f843a500905ac98c0cf3af1fd8d",
-  "scope": "Finite local DATA/CLOSE Tx/Rx state fuzzing, separate parser regression and existing functional checks. OCI/WSL record runs pending.",
+  "scope": "Finite local DATA/CLOSE Tx/Rx state fuzzing, separate parser regression and existing functional checks. Later submitted OCI/WSL records are reviewed separately in platform-review.json.",
   "stdlib_reference_and_gate_tests": {
     "passed": 67
   },
@@ -249,8 +249,8 @@
       "status": "verified"
     }
   },
-  "oci_record_result": "pending",
-  "wsl_record_result": "pending",
+  "oci_record_result": "passed; see platform-review.json",
+  "wsl_record_result": "passed; see platform-review.json",
   "github_workflow_execution": "not_observed_here",
   "constant_time_approved": false,
   "security_approved": false,

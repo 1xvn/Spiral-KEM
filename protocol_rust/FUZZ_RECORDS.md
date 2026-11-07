@@ -134,8 +134,12 @@ ASan errors, leaks, panics, verdict mismatches, and missing instrumentation evid
 The scope is directional low-level `Tx`/`Rx` record state. Bidirectional channel shutdown coordination,
 timeouts, sockets/partial writes, and the full handshake/TLS state require separate checks.
 Do not interpret this as coverage of native C, OpenSSL, or the prebuilt Rust standard library, or as approval of constant time behavior
-This is not interpreted as cryptographic security approval. These OCI/WSL record results must be newly
-collected; preceding parser results are not used in their place.
+or cryptographic security. OCI/WSL record results were collected and verified separately from the earlier parser
+results. At pinned commit `0516222`, with a 60-second limit,
+OCI ran 17,380 executions and WSL 34,543, and all 702/702 and 718/718 saved inputs
+matched Python reference values on independent rechecking.
+We verified the same 49 source files, pinned Rust version, and preserved instrumentation evidence; details are in
+the [submitted results validation summary](evidence/record_fuzz_20261108/platform-review.json).
 
 ## 6. Transfer result files to Windows
 
