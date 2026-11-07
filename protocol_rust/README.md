@@ -9,6 +9,10 @@ Changes and remaining limitations are in the [v0.3 implementation report](HARDEN
 
 The [2026-11-07 memory follow-up record](MEMORY_FOLLOWUP.md) adds user OCI/WSL results, controls investigating local AES-GCM warnings, and independent reproduction code. Production code and original memory-check verdicts are retained.
 
+The [Rust frame and ClientHello fuzzing guide](FUZZ_PARSERS.md) uses a separately pinned nightly and
+the disabled-by-default `parser-fuzz` entry points to check actual parser coverage and compare saved inputs
+against the Python reference implementation. OCI ARM64 and WSL2 x86-64 results are collected separately.
+
 ## Quick start
 
 Local v0.3 validation used Debian 13 x86-64, glibc 2.41, OpenSSL 3.5.7, Rust 1.99.1, and Python 3.12.14.

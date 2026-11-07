@@ -1,0 +1,12 @@
+
+test_exactly_one_completed_test_is_required (test_libtest_memory.DiagnosticTests.test_exactly_one_completed_test_is_required) ... ok
+test_known_native_output_is_exact (test_libtest_memory.DiagnosticTests.test_known_native_output_is_exact) ... ok
+test_missing_and_duplicate_summaries_rejected (test_libtest_memory.DiagnosticTests.test_missing_and_duplicate_summaries_rejected) ... ok
+test_new_empty_main_is_clean_but_reachable_is_retained (test_libtest_memory.DiagnosticTests.test_new_empty_main_is_clean_but_reachable_is_retained) ... ok
+test_original_runtime_warning_classified_with_stack (test_libtest_memory.DiagnosticTests.test_original_runtime_warning_classified_with_stack) ... ok
+test_zero_tests_does_not_count_as_valid_control (test_libtest_memory.DiagnosticTests.test_zero_tests_does_not_count_as_valid_control) ... ok
+
+----------------------------------------------------------------------
+Ran 6 tests in 0.002s
+
+OK

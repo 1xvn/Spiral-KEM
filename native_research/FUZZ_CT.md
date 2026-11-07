@@ -101,7 +101,12 @@ scp -i "$OciKey" "${OciUser}@${OciHost}:~/Spiral-C-ct-oci-20261107.tar.gz" "$HOM
 If the existing SSH username is not `ubuntu`, also change `$OciUser` to the existing value.
 The two `.tar.gz` files allow verification that both environments used the same commit and options.
 
-OCI/WSL results are not yet available for this C ciphertext check. Earlier PK check results
-are not counted as passes for this target; local results also do not replace runs in both environments.
+In this C ciphertext check submitted on 2026-11-07, OCI ARM64 exited normally after 13,243 executions and WSL2 x86-64 after
+24,723. All 52 final saved inputs in both environments matched the Python reference implementation,
+with no sanitizer errors, crashes, or key lifetime assertion failures.
+We verified identical `0a23e03` commits, 8 source files, Clang 18.1.3, and 69 file hashes in each bundle.
+The 52 outputs in the original rerun JSON were independently rechecked against the reference implementation, and both environments' outputs matched.
+The summary is in the [two-environment validation record](evidence/ct_fuzz_20261107/platform-review.json).
+The earlier PK check and this target, and local versus two-platform runs, are recorded separately.
 Local preparation validation is in the [ct_fuzz_20261107 record](evidence/ct_fuzz_20261107/README.md),
 with 21,253 actual executions within a 60-second budget and successful Python comparisons for 52 final saved inputs.

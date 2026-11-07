@@ -1,8 +1,8 @@
-# Local Validation of the C Decapsulation Fuzzer · 2026-11-07
+# Local·OCI·WSL validation of the C decapsulation fuzzer · 2026-11-07
 
 Ran check code commit `4cdee6c` on Debian 13 x86-64 / Clang 19.1.7 / OpenSSL 3.5.7,
 distinct from OCI/WSL Ubuntu 24.04 / Clang 18 conditions.
-OCI/WSL results are not yet available for the new ciphertext target.
+OCI/WSL results submitted after this local record are summarized separately below.
 
 | Run | Requested maximum count / time | Actual engine executions | Final cov / ft | Saved-input Python comparison | Result |
 | --- | --- | ---: | --- | --- | --- |
@@ -44,4 +44,32 @@ Additional validation:
 
 This is a finite execution record for one public fixed-seed profile. It does not establish Rust transport state,
 constant-time behavior, erasure of every secret copy, cryptographic attack costs, or approval for production service use.
-does not establish this. The same source must be checked in each environment using the [OCI/WSL running instructions](../../FUZZ_CT.md).
+Reproduction procedures are in the [OCI·WSL execution guide](../../FUZZ_CT.md).
+
+## Submitted OCI·WSL results
+
+| Environment | Commit | Actual live engine executions | Final cov / ft | Saved-input Python comparison | Errors·crashes |
+| --- | --- | ---: | --- | --- | ---: |
+| OCI Ubuntu 24.04 ARM64 | 0a23e03 | 13,243 | 98 / 131 | 52/52 matched | 0 |
+| WSL2 Ubuntu 24.04 x86-64 | 0a23e03 | 24,723 | 98 / 131 | 52/52 matched | 0 |
+
+Both report Clang 18.1.3 / OpenSSL 3.0.13 and terminated normally at approximately 61 seconds under the 60-second limit.
+100,000 is the requested cap, not recorded as actual executions.
+Both continued after 53 initialization executions; 0 new corpus entries were added.
+Execution count differences alone do not establish performance superiority or defects.
+
+Both uploaded bundles had valid gzip/tar structure and matching hashes for 69 files each.
+Neither contained links, path traversal, duplicate paths, or build binaries.
+Also compared 8 sources from commit `0a23e038ad0f1610de95f807f5b9b0ae8ca9f2d4` and generated fixture headers,
+confirming agreement. Verified ASan/UBSan/leak options, C-runtime-only coverage
+instrumentation, normal process termination, and absence of error logs.
+
+Both saved the same 52 initial inputs (25 canonical-format·27 malformed-format).
+All uploaded native replay outputs were independently compared again against the pinned Python reference implementation,
+and per-input statuses and 32-byte outputs all matched. The 52 inputs/outputs
+also matched between platforms. These 52 comparisons do not mean differential checking of all live engine
+executions.
+
+`platform-review.json` records original uploaded archive SHA-256 hashes, environments, verified metrics,
+and source hashes. These passing results cover this finite execution of one fixed public seed profile,
+not approval of Rust transport state, overall cryptographic security, or constant-time behavior.

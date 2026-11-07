@@ -1,0 +1,162 @@
+{
+  "scope": "Rust frame/ClientHello finite campaigns and saved-corpus replay only",
+  "commit": "fe2cdc18c99a8b49db3b3e2b6ceaac813e7cef9c",
+  "two_platform_runs_verified": true,
+  "platforms": {
+    "oci": {
+      "machine": "aarch64",
+      "kernel": "7.0.0-1013-oracle",
+      "archive_bytes": 386133,
+      "archive_sha256": "45151e46c984db25a09d65b560f4afe5c2414723beab992719b4da6bb03994db",
+      "verified_file_hashes": 272,
+      "source_files_verified": 39,
+      "rustc_release": "1.101.0-nightly",
+      "rustc_commit": "c980177d81d16f843a500905ac98c0cf3af1fd8d",
+      "cargo_version": "cargo 1.101.0-nightly (111443f3d 2026-11-05)",
+      "compiler_audit_invocations": 131,
+      "instrumented_crates": [
+        "spiral_protocol"
+      ],
+      "coverage_status": "consistent_with_saved_evidence",
+      "targets": [
+        {
+          "name": "frame",
+          "status": "passed_for_submitted_scope",
+          "feedback": {
+            "initialization_executed": 42,
+            "executed": 100000,
+            "initial_cov": 69,
+            "final_cov": 69,
+            "final_features": 99,
+            "new_corpus_events": 5
+          },
+          "differential_inputs_independently_verified": 125,
+          "accepted": 13,
+          "rejected": 112,
+          "sanitizer_errors_detected_in_logs": 0,
+          "crash_artifacts": 0
+        },
+        {
+          "name": "hello",
+          "status": "passed_for_submitted_scope",
+          "feedback": {
+            "initialization_executed": 54,
+            "executed": 100000,
+            "initial_cov": 169,
+            "final_cov": 180,
+            "final_features": 300,
+            "new_corpus_events": 30
+          },
+          "differential_inputs_independently_verified": 108,
+          "accepted": 15,
+          "rejected": 93,
+          "sanitizer_errors_detected_in_logs": 0,
+          "crash_artifacts": 0
+        }
+      ]
+    },
+    "wsl": {
+      "machine": "x86_64",
+      "kernel": "6.18.54.1-microsoft-standard-WSL2",
+      "archive_bytes": 326912,
+      "archive_sha256": "d11a29fd2ce9a85a416dd976c1ab51835530adb15c1b96e6d6dc879f068ed39b",
+      "verified_file_hashes": 289,
+      "source_files_verified": 39,
+      "rustc_release": "1.101.0-nightly",
+      "rustc_commit": "c980177d81d16f843a500905ac98c0cf3af1fd8d",
+      "cargo_version": "cargo 1.101.0-nightly (111443f3d 2026-11-05)",
+      "compiler_audit_invocations": 132,
+      "instrumented_crates": [
+        "spiral_protocol"
+      ],
+      "coverage_status": "consistent_with_saved_evidence",
+      "targets": [
+        {
+          "name": "frame",
+          "status": "passed_for_submitted_scope",
+          "feedback": {
+            "initialization_executed": 42,
+            "executed": 100000,
+            "initial_cov": 69,
+            "final_cov": 69,
+            "final_features": 99,
+            "new_corpus_events": 5
+          },
+          "differential_inputs_independently_verified": 142,
+          "accepted": 13,
+          "rejected": 129,
+          "sanitizer_errors_detected_in_logs": 0,
+          "crash_artifacts": 0
+        },
+        {
+          "name": "hello",
+          "status": "passed_for_submitted_scope",
+          "feedback": {
+            "initialization_executed": 54,
+            "executed": 100000,
+            "initial_cov": 139,
+            "final_cov": 150,
+            "final_features": 264,
+            "new_corpus_events": 26
+          },
+          "differential_inputs_independently_verified": 106,
+          "accepted": 10,
+          "rejected": 96,
+          "sanitizer_errors_detected_in_logs": 0,
+          "crash_artifacts": 0
+        }
+      ]
+    }
+  },
+  "matching_source_sha256": {
+    "native_research/spiral_native.c": "ccb29fe8b1f428c25a93c8cb967f1090eea619ad36dcba7d53dc9bfaedc1cd0f",
+    "native_research/spiral_native.h": "85f0454ee626cc0c38cdd6b60b12453f90276b6681dd91ab634d48c20bb1597b",
+    "protocol_rust/Cargo.lock": "19eb708fbf0c56f42704bd0a699c0f687f2b1516fc38e52c4c5d721a81889aca",
+    "protocol_rust/Cargo.toml": "be3f9a428c42ab68a357d2fee843d9089f52ad689caa87957dc06e1271752aea",
+    "protocol_rust/build.rs": "9124a4764196d3147fed056dc9d18d29f3e1e775334c234848fc9728554ad6a8",
+    "protocol_rust/fuzz/Cargo.lock": "e06ad0ffc01eb1a8def0eb99355558b96951992053b04bb6e955ff7da8a9f0cf",
+    "protocol_rust/fuzz/Cargo.toml": "12eadfbbb5f4e4f57323b9e8c76a3f046d3cddc9ba0764f5031b4981192f6626",
+    "protocol_rust/fuzz/checks.rs": "133c702379d2ca87cabb810f15c486078902df24c35e51260eac27787b9e06e4",
+    "protocol_rust/fuzz/frame_target.rs": "2ff98f099e84b62f70e0d7d92d4da635fb6a6da526fd8de86c3c8e710d8fff07",
+    "protocol_rust/fuzz/hello_target.rs": "7e2f2a7ccd7e9ae383c2c3ff63dce7b61e61e7bca8725c883e63cf58d1a4c223",
+    "protocol_rust/fuzz/oracles.rs": "c01304ae9390a6809f7c5d7335b02837c2739b4cc88a18a63dfb0c66c4eb8200",
+    "protocol_rust/fuzz/replay_target.rs": "f7b88ff783d24ce45cfff12c5cca0df5ea73a935a7248c1964b980a89f4e3b62",
+    "protocol_rust/fuzzing/campaign.py": "51c9133f001d031c5b1c50a88ef2d3799f6a6b25fb822918a75b138eb1706c93",
+    "protocol_rust/fuzzing/coverage_evidence.py": "c010696cab9621c97f076985addbdb1573f64b7d9cf2df3df66ef6eebf1d3898",
+    "protocol_rust/fuzzing/inputs.py": "4d9d6693071d63077301f7f9d3e83a92d6a9e448efe3eae2aa7f6ae8e088633a",
+    "protocol_rust/fuzzing/install_toolchain.py": "a61ec0217cd5c789c3b4af0d2410fe638bb54ac0951bfd69a89faea9bedf819c",
+    "protocol_rust/fuzzing/rustc_wrapper.py": "867f63077fb407a5110eb07aa2727a5a891540e7b56580c7fd824689e2f1d4d4",
+    "protocol_rust/fuzzing/test_campaign.py": "dfcee3970472be13030634a738eabb053bbfa74fad250eb50af128f27eb6cd16",
+    "protocol_rust/fuzzing/test_coverage_evidence.py": "d3769e7eff1b6efe902d3ceff5581b6afc084cf3e8c7bde92d0a5d970f34bba3",
+    "protocol_rust/fuzzing/test_inputs.py": "f6b8074ace4cdfaba3455ae234e6bfa447f1226f6d4741938a976f090c37cb76",
+    "protocol_rust/fuzzing/test_install_toolchain.py": "505349f79ad96ad76ace3c401c58b85185dfc80c9587dddf06247a0369b1159e",
+    "protocol_rust/src/admission.rs": "07fe88b8f3985cfb082445e50ab0c96f12ba7d60c06fa10f87ad5b0756f7513a",
+    "protocol_rust/src/buffer.rs": "5365ce69f805e05eec1ed7fc6530a71cd384b40ac67c685302dd32ea83b94626",
+    "protocol_rust/src/channel.rs": "b2499e4f35f5d281540032de6bb30f22524b460bced7550151105b218e623be1",
+    "protocol_rust/src/error.rs": "cad570f7b7bbd2d4e3413648298679fd7218285a6f188e455a778a2f72e754ab",
+    "protocol_rust/src/ffi.rs": "92b7dd0c32c18a7f88b1447490c938eca4964b20d6c23a0a7506d93c6f148791",
+    "protocol_rust/src/handshake.rs": "731d5d4d048ab56c9e386340ee96929e46a2f4876569d0503bd5dc4c2c463492",
+    "protocol_rust/src/identity.rs": "f8de104ec385fa1b15ee00e13cb77f3157d6d34c8e79b2b005893220e877f0b7",
+    "protocol_rust/src/lib.rs": "d0c81fe74030e13ea04e81fac215615755474aa9895021a1eabc63a50f2554c8",
+    "protocol_rust/src/main.rs": "6fd34f294352fbe4257577be8281be3c59d816d941e9f9eabd324117acd7701b",
+    "protocol_rust/src/records.rs": "fcaabedd4e0a66db71fc1272996a2bbbd561bd00b2256461808e635ad90c80c2",
+    "protocol_rust/src/schedule.rs": "d3e5b57d293cfb5129c638912dda74c4f704548ff5a6de0cf0073d1e7a5049ea",
+    "protocol_rust/src/secret.rs": "b24ab189e8688951e2bf000bf0c7d14ed5e4d688cbcdc4b0926182bb5582765e",
+    "protocol_rust/src/test_support.rs": "4748cbadd46d66c4e2a9c38d222f1401955073275a8f99b57fecb348694383ed",
+    "protocol_rust/src/transport.rs": "d7cc8e1527f7065bf7ec6ea3b18d095d0170f94ae32e958ee859a798f871a0e7",
+    "protocol_rust/src/wire.rs": "4cb125a7e84f488864763825f9f2662ea2a1feb936113bcb405aed9b80409d21",
+    "protocol_rust/src/worker.rs": "eed5c4f026ab4944a704e4a32eed0600f29b7378f466af5f459e7720f35799fb",
+    "protocol_v01/tests/fixtures/test_vectors_v0.1.json": "b556ca8741a649dfe3346d2033a2685492470beedbc601dbb36877f4c5881ee8",
+    "rust-toolchain.toml": "ca67e66659a82661386e5a08471c913cb8b3f7c7ce37592207d3f513589a41c2"
+  },
+  "shared_saved_inputs_consistent": 99,
+  "independently_verified_replay_cases": 481,
+  "saved_coverage_evidence_review": {
+    "compiler_audits_reparsed": true,
+    "only_protocol_library_has_sancov": true,
+    "retained_parser_function_definitions_verified": 6,
+    "retained_symbol_and_disassembly_records_consistent": true,
+    "full_ir_and_executable_hashes_independently_recomputed": false,
+    "limit": "Build artifacts were excluded; full-IR token counts and binary hashes are consistent reported metadata, not independently recomputed here."
+  }
+}
