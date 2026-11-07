@@ -103,3 +103,5 @@ The two `.tar.gz` files allow verification that both environments used the same 
 
 OCI/WSL results are not yet available for this C ciphertext check. Earlier PK check results
 are not counted as passes for this target; local results also do not replace runs in both environments.
+Local preparation validation is in the [ct_fuzz_20261107 record](evidence/ct_fuzz_20261107/README.md),
+with 21,253 actual executions within a 60-second budget and successful Python comparisons for 52 final saved inputs.
