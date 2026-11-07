@@ -1,12 +1,16 @@
-# Spiral OPT2 Rust–C Communication Implementation v0.2
+# Spiral OPT2 Rust–C Communication Implementation v0.3
 
 An executable research implementation connecting the Rust/Tokio/rustls communication layer to the existing C KEM.
 The wire format is v0.1, identical to the existing Python `protocol_v01`; tests exercise actual TLS communication with Rust↔Python in both roles.
 v0.2 in the design document does not indicate a wire version change.
 
+Added opaque signing-key ownership, a simultaneous-shutdown bug fix, negative-test coverage, and secret-branch instrumentation.
+Changes and remaining limitations are in the [v0.3 implementation report](HARDENING_v0.3.md), actual results in the [validation record](VALIDATION.md), and remeasurement commands in the [Ubuntu/WSL guide](RUN_UBUNTU_WSL.md).
+
 ## Quick start
 
-The initial validation environment is Linux x86-64, glibc 2.39, OpenSSL 3, Rust 1.99.1, and Python 3.12.
+Local v0.3 validation used Debian 13 x86-64, glibc 2.41, OpenSSL 3.5.7, Rust 1.99.1, and Python 3.12.14.
+Remeasure after building sources in the target environments: Ubuntu 24.04, WSL2/Ubuntu on Windows 11, and OCI ARM.
 On Windows, use Ubuntu 24.04 under WSL. Native Windows builds have not been validated.
 Source builds require Rust 1.99 or later, a C11 compiler, OpenSSL development packages, and a Python venv.
 
@@ -26,7 +30,8 @@ The executable bundle ZIP includes the tested Linux x86-64 binary. To skip the s
 bash protocol_rust/run_local.sh --prebuilt
 ```
 
-Prebuilt files are in `bin/linux-x86_64/spiral-lab` and require glibc 2.39 and `libcrypto.so.3`.
+The prebuilt file is `bin/linux-x86_64/spiral-lab`. It was built on Debian 13 x86-64; ELF symbol requirements are at most GLIBC_2.34 and OPENSSL_3.0.0.
+This file cannot be used on ARM. A normal source build is recommended on target Ubuntu/WSL systems; this binary has not completed full OS compatibility validation.
 Build outputs are not committed to the Git repository. Use normal build commands for source checkouts without binaries.
 
 The script installs pinned Python dependencies in a separate venv and runs tests.
@@ -40,6 +45,7 @@ No actual service addresses or accounts are used.
 |---|---|
 | `src/ffi.rs` | Sole direct-call boundary for the four reviewed C APIs. Key pointers cannot implement Send/Sync/Copy/Clone |
 | `src/worker.rs` | Fixed workers, 32 running plus queued jobs, 32 stored keys, cancellation/deadline/lease management |
+| `src/identity.rs` | Server signing-key owner exporting only the public key; revocation of shared references and serialization of signing/close |
 | `src/secret.rs` | Fixed-size secret buffers, unexposed key bytes, explicit Drop zeroization |
 | `src/buffer.rs` | At most 18 buffers per connection, 16,440 bytes each; waiting, reuse, and full-capacity zeroization before return |
 | `src/wire.rs` | 40-byte header and canonical frames; length/role/session/sequence checks before reading payload |
@@ -79,7 +85,9 @@ Keys and plaintext are not logged. Output consists of local test aggregates such
 
 ## Key lifetimes and cryptographic implementation
 
+- The server Ed25519 authentication key is owned by `ServerIdentity`. `Arc` shares the original owner; `close()` revokes all shared references after in-progress signing completes. Raw-key and arbitrary-signing APIs are not exposed externally.
 - C KEM secret keys are zeroized and freed during success, failure, and cancellation cleanup.
+- All callers of `KemPool::shutdown()` await the same worker join result. Cancellation of the first waiter does not cause other callers to return early.
 - `ss` is output directly into a Rust heap secret buffer and zeroized after PRK derivation.
 - PRK, Finished keys, and application master are zeroized by Drop after their final use.
 - Directional data keys are tied to the corresponding record-state lifetime. The ChaCha20Poly1305 key state also provides Drop zeroization.
@@ -101,7 +109,7 @@ cargo clippy --all-targets --locked --manifest-path protocol_rust/Cargo.toml -- 
 cargo build --release --locked --manifest-path protocol_rust/Cargo.toml
 
 # In an environment with Python dependencies installed
-python3 protocol_rust/interop.py --binary protocol_rust/target/release/spiral-lab --json protocol_rust/local_validation.json
+python3 protocol_rust/adversarial.py --binary protocol_rust/target/release/spiral-lab --json protocol_rust/local_validation.json
 python3 protocol_rust/benchmark.py --binary protocol_rust/target/release/spiral-lab --output protocol_rust/local_benchmark.json
 ```
 
@@ -115,13 +123,15 @@ Interoperability tests use four connections each for Python→Rust and Rust→Py
 eight senders, and 32 messages. They check actual exporters/transcripts at both ends, session independence, and normal/abnormal shutdown.
 Bursts of 16/64 connections from the same IP are rejection/cleanup tests, not capacity tests of 16/64 successful connections.
 
-Rust checks are not results from running Python's existing 69 methods unchanged. They validate common vectors, selected negative behavior, and the new execution structure.
+The current main Python baseline is 85 tests, passed separately. These are not combined with Rust unit 52 + compile-fail 4 or 35 actual TLS negative/interoperability tests.
+The [mapping](REGRESSION_MAP.md) distinguishes 72 requirements with execution tests, 8 addressed structurally, and 5 with different API/test scope.
 See `VALIDATION.json` and `evidence/` for final environments, counts, check logs, and performance figures.
 Coverage-based fuzzing, long-duration soak, other OS/CPU validation, and independent code audits are outside the scope performed.
 
 `examples/tls_control.rs` is TLS-only diagnostic code for distinguishing memory-check warnings. It does not run Spiral or C KEM and is not used as a runtime algorithm fallback.
 
-**Unresolved validation item:** Under Valgrind 3.22.0 and 3.28.0, normal communication produces uninitialized-value warnings in the rustls/ring TLS AES-GCM path. TLS-only default control experiments reproduce them; TLS-only ChaCha experiments have no warnings. We do not consider these false positives or proven safe. The Finished rejection path has 0 errors under 3.28.0, and the inspected final run had 0 bytes of definite/indirect/possible leaks. These results do not guarantee all execution paths or secret erasure. Default TLS cipher selection was not changed to avoid warnings, and warnings were not suppressed.
+**Unresolved validation item:** Normal TLS communication in the v0.3 release fails with 6 uninitialized-value errors under Valgrind 3.28. TLS-only controls preserving optimization/debug symbols also produce 4 errors each for default/AES128/AES256, and 0 for ChaCha. A separate 6,102 public AEAD/offset-buffer/hash/HKDF/signature vectors matched OpenSSL/Python with 0 warnings, but did not establish the cause or whether these are false positives.
+Rust secret-branch instrumentation produced 0 secret-dependent branch/address warnings in inspected operations, but a 48-byte possibly-lost entry points to libtest thread state, so the full memory check remains failed. C branch instrumentation and memory checks passed. See `VALIDATION.md` for detailed scope and logs. The default cipher was not changed and warnings were not suppressed.
 
 To reproduce optional memory checks, install Valgrind and Python test dependencies, then run. The script exits with failure if the unresolved warnings above recur.
 
@@ -155,4 +165,4 @@ protocol_rust/target/release/spiral-lab client --name spiral-lab.example --servi
 
 The previous original design is preserved in `ARCHITECTURE_v0.2.md`. Its 'before implementation' status describes that time; this README describes the current implementation scope.
 
-Published check logs had only trailing whitespace and blank lines at end of file cleaned up. Before/after hashes are recorded in `evidence/LOG_FORMATTING.json`.
+v0.2 evidence is preserved in `evidence/`. New v0.3 evidence is in `evidence/v03/`; hashes before and after removing trailing whitespace from logs are recorded in that folder's `LOG_FORMATTING.json`.

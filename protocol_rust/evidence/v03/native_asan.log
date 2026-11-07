@@ -1,0 +1,7 @@
+make: Entering directory '/workspace/scratch/c6a558db7e9f/spiral_hardening_v03/native_research'
+ASAN_OPTIONS=detect_leaks=0 ./build/check_sanitize
+native failure injection and 20000 public-input corpus cases passed
+cc -O2 -g -std=c11 -Wall -Wextra -Werror -I/workspace/scratch/c6a558db7e9f/rust_setup/vg328/include check_native.c -Wl,--wrap=RAND_priv_bytes -Wl,--wrap=EVP_MD_CTX_new -lcrypto -o build/check_memcheck
+cc -O2 -g -std=c11 -Wall -Wextra -Werror -I/workspace/scratch/c6a558db7e9f/rust_setup/vg328/include timing_native.c -lcrypto -lm -o build/timing
+cc -O2 -g -std=c11 -Wall -Wextra -Werror -I/workspace/scratch/c6a558db7e9f/rust_setup/vg328/include taint_native.c -lcrypto -o build/taint
+make: Leaving directory '/workspace/scratch/c6a558db7e9f/spiral_hardening_v03/native_research'

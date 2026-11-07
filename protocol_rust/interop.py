@@ -40,7 +40,7 @@ def private_write(path, data):
     path.write_bytes(data)
 
 
-def identities(folder):
+def identities(folder, *, leaf_validity=None):
     now = datetime.now(timezone.utc)
     ca = Ed25519PrivateKey.generate()
     leaf = Ed25519PrivateKey.generate()
@@ -68,8 +68,12 @@ def identities(folder):
         .issuer_name(ca_name)
         .public_key(leaf.public_key())
         .serial_number(x509.random_serial_number())
-        .not_valid_before(now - timedelta(minutes=1))
-        .not_valid_after(now + timedelta(hours=1))
+        .not_valid_before(
+            leaf_validity[0] if leaf_validity else now - timedelta(minutes=1)
+        )
+        .not_valid_after(
+            leaf_validity[1] if leaf_validity else now + timedelta(hours=1)
+        )
         .add_extension(x509.BasicConstraints(ca=False, path_length=None), critical=True)
         .add_extension(
             x509.SubjectAlternativeName([x509.DNSName(NAME)]), critical=False
@@ -181,6 +185,8 @@ class Interop(unittest.TestCase):
         report = json.loads(out.strip().splitlines()[-1])
         self.assertEqual(report["status"], "passed")
         self.assertEqual(report["kem"]["live_keys"], 0)
+        if report["role"] == "server":
+            self.assertTrue(report["auth_key_closed"])
         self.observations.append(report)
         return report
 
@@ -249,7 +255,7 @@ class Interop(unittest.TestCase):
                     original = t.send
 
                     def send(raw, deadline):
-                        if raw[6] == 4:
+                        if raw[6] == (2 if tamper == "signature" else 4):
                             raw = raw[:-1] + bytes([raw[-1] ^ 1])
                         original(raw, deadline)
 

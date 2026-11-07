@@ -11,6 +11,7 @@ pub mod channel;
 pub mod error;
 mod ffi;
 pub mod handshake;
+pub mod identity;
 pub mod records;
 mod schedule;
 pub mod secret;

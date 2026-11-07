@@ -1,0 +1,16 @@
+{
+  "command": "bash protocol_rust/run_local.sh --prebuilt",
+  "fresh_venv": true,
+  "dependency_versions": {
+    "cryptography": "50.0.2",
+    "pyOpenSSL": "26.4.0",
+    "cffi": "2.1.1",
+    "pycparser": "3.12",
+    "typing_extensions": "4.16.0"
+  },
+  "tests": 35,
+  "failures": 0,
+  "errors": 0,
+  "binary_sha256": "d9371d7faa3643e1f06dc7879b0d688eb0e5bb6985245ef65c43660ac113181a",
+  "raw_log_sha256": "901ee2e3bec6efd813cea6a20cf86af93e8f2c6ca990d23827c7ebc9575d21a1"
+}

@@ -1,0 +1,57 @@
+[
+  {
+    "case": "rust-positive",
+    "process_exit": 99,
+    "expected_exit": 99,
+    "memcheck_errors": 2,
+    "branch_address_contexts": 1,
+    "possibly_lost_bytes": 48,
+    "scoped_secret_branch_check_passed": false,
+    "passed": true,
+    "binary_sha256": "7aea7aada4ee60900f8d6ed3a1a495e79faedcb9b6bec4811b81bf00b011f7ae"
+  },
+  {
+    "case": "rust-secret-path",
+    "process_exit": 99,
+    "expected_exit": 0,
+    "memcheck_errors": 1,
+    "branch_address_contexts": 0,
+    "possibly_lost_bytes": 48,
+    "scoped_secret_branch_check_passed": true,
+    "passed": false,
+    "binary_sha256": "7aea7aada4ee60900f8d6ed3a1a495e79faedcb9b6bec4811b81bf00b011f7ae"
+  },
+  {
+    "case": "native-positive",
+    "process_exit": 99,
+    "expected_exit": 99,
+    "memcheck_errors": 1,
+    "branch_address_contexts": 1,
+    "possibly_lost_bytes": null,
+    "scoped_secret_branch_check_passed": false,
+    "passed": true,
+    "binary_sha256": "6f7ef3c6f075fcb60cdb3331d9bca2dba992a6f53bcb6d769b03ca553035d2e0"
+  },
+  {
+    "case": "native-secret-path",
+    "process_exit": 0,
+    "expected_exit": 0,
+    "memcheck_errors": 0,
+    "branch_address_contexts": 0,
+    "possibly_lost_bytes": null,
+    "scoped_secret_branch_check_passed": true,
+    "passed": true,
+    "binary_sha256": "6f7ef3c6f075fcb60cdb3331d9bca2dba992a6f53bcb6d769b03ca553035d2e0"
+  },
+  {
+    "case": "native-memory",
+    "process_exit": 0,
+    "expected_exit": 0,
+    "memcheck_errors": 0,
+    "branch_address_contexts": 0,
+    "possibly_lost_bytes": null,
+    "scoped_secret_branch_check_passed": false,
+    "passed": true,
+    "binary_sha256": "8e3e7e317af850ea7982e2796eaac4ce6449065f9a1e7f4ab6d28a10f38c595c"
+  }
+]

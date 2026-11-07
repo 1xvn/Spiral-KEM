@@ -1,0 +1,23 @@
+{
+  "os_release": {
+    "NAME": "Debian GNU/Linux",
+    "ID": "debian",
+    "PRETTY_NAME": "Debian GNU/Linux 13 (trixie)",
+    "VERSION_ID": "13",
+    "VERSION": "13 (trixie)",
+    "VERSION_CODENAME": "trixie",
+    "DEBIAN_VERSION_FULL": "13.6",
+    "HOME_URL": "https://www.debian.org/",
+    "SUPPORT_URL": "https://www.debian.org/support",
+    "BUG_REPORT_URL": "https://bugs.debian.org/"
+  },
+  "platform": "Linux-6.18.57-x86_64-with-glibc2.41",
+  "python": "3.12.14",
+  "cpu_affinity_count": 9,
+  "compiler": "cc (Debian 14.2.0-19) 14.2.0",
+  "openssl": "OpenSSL 3.5.7 9 Jun 2026 (Library: OpenSSL 3.5.7 9 Jun 2026)",
+  "instrumentation_loader": "Ubuntu glibc 2.39-0ubuntu8.8 staged loader/libc; host libcrypto 3.5.7",
+  "rust": "1.99.1 (58cf8f9c3 2026-10-13)",
+  "valgrind": "3.28.0",
+  "binary_sha256": "d9371d7faa3643e1f06dc7879b0d688eb0e5bb6985245ef65c43660ac113181a"
+}

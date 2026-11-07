@@ -1,6 +1,7 @@
 """Small real-TLS Rust/Rust matrix; not a capacity or constant-time claim."""
 
 import argparse
+import hashlib
 from datetime import datetime, timezone
 import json
 import math
@@ -133,6 +134,10 @@ def main():
     data = {
         "schema": "spiral-rust-c-loopback-benchmark/v1",
         "date_utc": datetime.now(timezone.utc).date().isoformat(),
+        "binary_sha256": hashlib.sha256(args.binary.read_bytes()).hexdigest(),
+        "cargo_lock_sha256": hashlib.sha256(
+            (ROOT / "protocol_rust/Cargo.lock").read_bytes()
+        ).hexdigest(),
         "platform": platform.platform(),
         "cpu_affinity_count": len(os.sched_getaffinity(0)),
         "scope": "Fresh server/client processes per trial, four loopback sessions, TLS1.3 plus inner Spiral AEAD, 32 echoed records per session, eight send producers, two warmup trials per profile. Wall time includes client startup and authenticated close. Small sample; no production capacity or language comparison.",

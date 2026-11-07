@@ -51,6 +51,6 @@ Neither the design proposal nor the research implementations indicate completed 
 
 ## Archive Status
 
-The Rust–C communication implementation provides [running instructions](protocol_rust/README.md) and [validation results](protocol_rust/VALIDATION.md). It passed 31 unit/compile tests and 15 real TLS interoperability tests. The Valgrind uninitialized-value warning in the TLS AES-GCM path also reproduces in TLS-only control code and remains unresolved. These results do not establish production-service security validation or Spiral's own security.
+Rust–C v0.3 provides [running instructions](protocol_rust/README.md), an [implementation report](protocol_rust/HARDENING_v0.3.md), and a [validation record](protocol_rust/VALIDATION.md). It strengthens signing-key ownership and cancellable concurrent shutdown and passed 52 unit, 4 compile-rejection, and 35 real TLS tests. The TLS AES-GCM memory warning and the 48-byte possibly-lost item in Rust instrumentation tests remain unresolved. These results do not establish production-service security validation or Spiral's own security.
 
 `results/results.zip` is a previously uploaded result bundle and does not imply that all measurement results are included. Only some fragments of the large original design files are retained, so they cannot be reconstructed from this repository alone. See the [temporary upload guide](imports/README.md).

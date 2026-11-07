@@ -15,5 +15,5 @@ else
 fi
 python3 -m venv protocol_rust/.venv
 protocol_rust/.venv/bin/python -m pip install -r protocol_v01/requirements.txt
-PYTHONDONTWRITEBYTECODE=1 protocol_rust/.venv/bin/python protocol_rust/interop.py \
+PYTHONDONTWRITEBYTECODE=1 protocol_rust/.venv/bin/python protocol_rust/adversarial.py \
     --binary "$binary" --json protocol_rust/local_validation.json

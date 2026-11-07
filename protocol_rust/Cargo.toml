@@ -1,6 +1,6 @@
 [package]
 name = "spiral-protocol"
-version = "0.2.0"
+version = "0.3.0"
 edition = "2021"
 rust-version = "1.99"
 publish = false
@@ -30,11 +30,17 @@ sha2 = "0.10"
 
 [dev-dependencies]
 static_assertions = "1.1"
+ring = { version = "=0.17.14", default-features = false, features = ["alloc"] }
 
 [profile.release]
 lto = "thin"
 codegen-units = 1
 strip = "debuginfo"
+
+[profile.audit]
+inherits = "release"
+debug = 2
+strip = "none"
 
 [[bin]]
 name = "spiral-lab"

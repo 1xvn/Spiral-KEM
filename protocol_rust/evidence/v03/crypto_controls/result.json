@@ -1,0 +1,131 @@
+[
+  {
+    "mode": "aes128",
+    "binary_sha256": "39858f57eaa87ea3a44cbf543f8858edeae14f3d9c85f8abf002cefe218f0b11",
+    "process_exit": 0,
+    "memcheck_errors": 0,
+    "actual": {
+      "algorithm": "aes128",
+      "cases": 196,
+      "ciphertext_sha256": "b8f44c322e6973f2eb2d0aa9168ab33482fde722b79d9613a27695b3a1632fb6",
+      "roundtrip_and_append_vs_separate": true
+    },
+    "oracle": {
+      "cases": 196,
+      "ciphertext_sha256": "b8f44c322e6973f2eb2d0aa9168ab33482fde722b79d9613a27695b3a1632fb6"
+    },
+    "oracle_matches": true,
+    "stderr": "",
+    "passed": true
+  },
+  {
+    "mode": "aes256",
+    "binary_sha256": "39858f57eaa87ea3a44cbf543f8858edeae14f3d9c85f8abf002cefe218f0b11",
+    "process_exit": 0,
+    "memcheck_errors": 0,
+    "actual": {
+      "algorithm": "aes256",
+      "cases": 196,
+      "ciphertext_sha256": "3334189346b7865a505a80d9d31af338858fedbfe9d118abd2d41138778d70f8",
+      "roundtrip_and_append_vs_separate": true
+    },
+    "oracle": {
+      "cases": 196,
+      "ciphertext_sha256": "3334189346b7865a505a80d9d31af338858fedbfe9d118abd2d41138778d70f8"
+    },
+    "oracle_matches": true,
+    "stderr": "",
+    "passed": true
+  },
+  {
+    "mode": "chacha",
+    "binary_sha256": "39858f57eaa87ea3a44cbf543f8858edeae14f3d9c85f8abf002cefe218f0b11",
+    "process_exit": 0,
+    "memcheck_errors": 0,
+    "actual": {
+      "algorithm": "chacha",
+      "cases": 196,
+      "ciphertext_sha256": "23cd8246508925561a4ea2c71cb5dc173153c160d97e6ded19ee6418b21192b7",
+      "roundtrip_and_append_vs_separate": true
+    },
+    "oracle": {
+      "cases": 196,
+      "ciphertext_sha256": "23cd8246508925561a4ea2c71cb5dc173153c160d97e6ded19ee6418b21192b7"
+    },
+    "oracle_matches": true,
+    "stderr": "",
+    "passed": true
+  },
+  {
+    "mode": "hash-hkdf-ed25519",
+    "binary_sha256": "73702639a7389273a221e69c0ecf806e2477b2084d5d6ad6818f47bcede14bb2",
+    "process_exit": 0,
+    "memcheck_errors": 0,
+    "actual": {
+      "algorithms": "SHA256/SHA384/SHA512, HKDF, Ed25519, five streaming chunk sizes",
+      "cases": 798,
+      "sha256": "002600ab9223a3d0bc1e13322f5d853ec7acd84dab222fe17f991b6dd0044a7f"
+    },
+    "oracle": {
+      "cases": 798,
+      "sha256": "002600ab9223a3d0bc1e13322f5d853ec7acd84dab222fe17f991b6dd0044a7f"
+    },
+    "oracle_matches": true,
+    "stderr": "",
+    "passed": true
+  },
+  {
+    "mode": "prefixed-aes128",
+    "binary_sha256": "b8289e4cb268bacf4395e3ef432524e28efcf8c0cc5fa88de483e3e7f13ef3b2",
+    "process_exit": 0,
+    "memcheck_errors": 0,
+    "actual": {
+      "algorithm": "aes128",
+      "cases": 1572,
+      "ciphertext_sha256": "e2729773ab005e71e22ac23efb89cf72b9beaef192138309b6e251f3aa02aae0"
+    },
+    "oracle": {
+      "cases": 1572,
+      "ciphertext_sha256": "e2729773ab005e71e22ac23efb89cf72b9beaef192138309b6e251f3aa02aae0"
+    },
+    "oracle_matches": true,
+    "stderr": "",
+    "passed": true
+  },
+  {
+    "mode": "prefixed-aes256",
+    "binary_sha256": "b8289e4cb268bacf4395e3ef432524e28efcf8c0cc5fa88de483e3e7f13ef3b2",
+    "process_exit": 0,
+    "memcheck_errors": 0,
+    "actual": {
+      "algorithm": "aes256",
+      "cases": 1572,
+      "ciphertext_sha256": "2f9aa3ea4e94ab70881019d0a0c32dd04000a0dfff7796d400a26c9e144c7150"
+    },
+    "oracle": {
+      "cases": 1572,
+      "ciphertext_sha256": "2f9aa3ea4e94ab70881019d0a0c32dd04000a0dfff7796d400a26c9e144c7150"
+    },
+    "oracle_matches": true,
+    "stderr": "",
+    "passed": true
+  },
+  {
+    "mode": "prefixed-chacha",
+    "binary_sha256": "b8289e4cb268bacf4395e3ef432524e28efcf8c0cc5fa88de483e3e7f13ef3b2",
+    "process_exit": 0,
+    "memcheck_errors": 0,
+    "actual": {
+      "algorithm": "chacha",
+      "cases": 1572,
+      "ciphertext_sha256": "810492e51b440b38bf05e521155e18daf7a861c01f6f0f377c1aea4b025409a2"
+    },
+    "oracle": {
+      "cases": 1572,
+      "ciphertext_sha256": "810492e51b440b38bf05e521155e18daf7a861c01f6f0f377c1aea4b025409a2"
+    },
+    "oracle_matches": true,
+    "stderr": "",
+    "passed": true
+  }
+]

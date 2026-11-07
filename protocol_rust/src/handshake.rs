@@ -1,13 +1,13 @@
 #![forbid(unsafe_code)]
 use crate::{
+    identity::ServerIdentity,
     schedule::{self, SessionKeys},
-    secret::Secret,
     transport::{FrameIo, Transport},
     wire::{self, Header, HEADER, SUITE},
     worker::KemPool,
     Error, Result,
 };
-use ed25519_dalek::{Signature, Signer, SigningKey, VerifyingKey};
+use ed25519_dalek::{Signature, VerifyingKey};
 use std::{
     collections::HashSet,
     net::IpAddr,
@@ -55,9 +55,28 @@ fn equal(a: &[u8], b: &[u8]) -> bool {
     a.len() == b.len() && bool::from(a.ct_eq(b))
 }
 fn random<const N: usize>() -> Result<[u8; N]> {
+    #[cfg(test)]
+    if RANDOM_FAILURE.with(|counter| match counter.get() {
+        Some(0) => {
+            counter.set(None);
+            true
+        }
+        Some(n) => {
+            counter.set(Some(n - 1));
+            false
+        }
+        None => false,
+    }) {
+        return Err(Error::Crypto);
+    }
     let mut b = [0; N];
     getrandom::getrandom(&mut b).map_err(|_| Error::Crypto)?;
     Ok(b)
+}
+#[cfg(test)]
+thread_local! {
+    // Failure injection only; production has no deterministic RNG or fallback.
+    static RANDOM_FAILURE: std::cell::Cell<Option<usize>> = const { std::cell::Cell::new(None) };
 }
 fn v32(v: &[u8]) -> Vec<u8> {
     let mut r = (v.len() as u32).to_be_bytes().to_vec();
@@ -203,7 +222,7 @@ pub async fn server(
     io: Transport,
     name: &str,
     service: &str,
-    signing: Arc<SigningKey>,
+    signing: Arc<ServerIdentity>,
     pool: &KemPool,
     lease: crate::admission::Lease,
 ) -> Result<Established> {
@@ -287,10 +306,13 @@ async fn server_inner<I: FrameIo>(
     io: &mut I,
     name: &str,
     service: &str,
-    signing: &SigningKey,
+    signing: &ServerIdentity,
     pool: &KemPool,
 ) -> Result<(SessionKeys, SessionId)> {
     validate_identity(name, service)?;
+    if signing.is_closed()? {
+        return Err(Error::Closed);
+    }
     if io.name() != name {
         return Err(Error::Authentication);
     }
@@ -303,7 +325,7 @@ async fn server_inner<I: FrameIo>(
     }
     let id = SessionId::reserve()?;
     let (pk, lease) = pool.generate(end).await?;
-    let auth = signing.verifying_key().to_bytes();
+    let auth = signing.public_key();
     let mut body = vec![0, 1, 0xf0, 1];
     body.extend_from_slice(&random::<32>()?);
     body.extend_from_slice(&schedule::digest(&auth));
@@ -318,7 +340,7 @@ async fn server_inner<I: FrameIo>(
     .encode()?
     .to_vec();
     sh.extend_from_slice(&body);
-    let sig = signing.sign(&signature_input(&ch, &sh));
+    let sig = signing.sign(&signature_input(&ch, &sh))?;
     sh.extend_from_slice(&sig.to_bytes());
     io.send(&sh, end).await?;
     let ck_end = end.min(Instant::now() + Duration::from_secs(5));
@@ -353,16 +375,8 @@ async fn server_inner<I: FrameIo>(
     Ok((keys, id))
 }
 
-pub fn load_signing_key(path: &std::path::Path) -> Result<Arc<SigningKey>> {
-    use std::io::Read;
-    let mut key = Secret::<32>::zeros();
-    let mut file = std::fs::File::open(path)?;
-    file.read_exact(key.bytes_mut())?;
-    let mut extra = [0; 1];
-    if file.read(&mut extra)? != 0 {
-        return Err(Error::Input);
-    }
-    Ok(Arc::new(SigningKey::from_bytes(key.bytes())))
+pub fn load_signing_key(path: &std::path::Path) -> Result<Arc<ServerIdentity>> {
+    ServerIdentity::load(path)
 }
 
 #[cfg(test)]
@@ -420,9 +434,9 @@ mod tests {
         let input = signature_input(&ch, &sh[..sh.len() - 64]);
         assert_eq!(input, raw("expected", "signature_input"));
         let seed: [u8; 32] = raw("inputs", "server_auth_seed").try_into().unwrap();
-        let key = SigningKey::from_bytes(&seed);
+        let key = ServerIdentity::fixture(&seed);
         assert_eq!(
-            key.sign(&input).to_bytes().as_slice(),
+            key.sign(&input).unwrap().to_bytes().as_slice(),
             raw("expected", "server_signature")
         );
         let random = raw("inputs", "client_random").try_into().unwrap();
@@ -439,6 +453,8 @@ mod tests {
         pool: KemPool,
         bad_finished: Option<usize>,
         bad_ct: bool,
+        fail_send: Option<u8>,
+        hold_client_key: bool,
         bind: [u8; 32],
         end: Instant,
     }
@@ -455,6 +471,9 @@ mod tests {
         }
         async fn send(&mut self, raw: &[u8], _: Instant) -> Result<()> {
             self.sent.push(raw[6]);
+            if self.fail_send == Some(raw[6]) {
+                return Err(Error::Transport);
+            }
             if raw[6] == 2 {
                 self.sh = Some(raw.to_vec());
             }
@@ -470,6 +489,9 @@ mod tests {
         ) -> Result<Vec<u8>> {
             if kind == 1 {
                 return Ok(self.ch.clone());
+            }
+            if self.hold_client_key {
+                return std::future::pending().await;
             }
             let sh = self.sh.as_ref().ok_or(Error::Internal)?;
             let (h, p) = wire::parse(sh)?;
@@ -518,6 +540,8 @@ mod tests {
             pool: pool.clone(),
             bad_finished: None,
             bad_ct: false,
+            fail_send: None,
+            hold_client_key: false,
             bind,
             end: Instant::now() + Duration::from_secs(5),
         }
@@ -525,7 +549,7 @@ mod tests {
     #[tokio::test]
     async fn finished_each_byte_and_changed_ct_rejected() {
         let pool = KemPool::new(2).unwrap();
-        let key = SigningKey::from_bytes(&[42; 32]);
+        let key = ServerIdentity::fixture(&[42; 32]);
         for i in 0..32 {
             let mut io = script(&pool);
             io.bad_finished = Some(i);
@@ -558,7 +582,7 @@ mod tests {
     #[tokio::test]
     async fn valid_server_state_and_exporter_mismatch() {
         let pool = KemPool::new(2).unwrap();
-        let key = SigningKey::from_bytes(&[42; 32]);
+        let key = ServerIdentity::fixture(&[42; 32]);
         let mut io = script(&pool);
         let (_, id) = server_inner(
             &mut io,
@@ -570,7 +594,10 @@ mod tests {
         .await
         .unwrap();
         assert_eq!(io.sent, vec![2, 4]);
+        let reserved = id.0;
+        assert!(LIVE.get().unwrap().lock().unwrap().contains(&reserved));
         drop(id);
+        assert!(!LIVE.get().unwrap().lock().unwrap().contains(&reserved));
         let mut io = script(&pool);
         io.bind[0] ^= 1;
         assert!(server_inner(
@@ -584,5 +611,100 @@ mod tests {
         .is_err());
         assert!(io.sent.is_empty());
         pool.shutdown().await.unwrap();
+    }
+
+    #[tokio::test]
+    async fn closed_signing_owner_rejects_before_native_work() {
+        let pool = KemPool::new(1).unwrap();
+        let key = ServerIdentity::fixture(&[42; 32]);
+        key.close().unwrap();
+        let mut io = script(&pool);
+        assert!(matches!(
+            server_inner(
+                &mut io,
+                "spiral-lab.example",
+                "spiral-research",
+                &key,
+                &pool
+            )
+            .await,
+            Err(Error::Closed)
+        ));
+        assert!(io.sent.is_empty());
+        assert_eq!(pool.metrics().executed, 0);
+        pool.shutdown().await.unwrap();
+    }
+
+    #[tokio::test]
+    async fn transport_failure_and_canceled_handshake_release_native_key() {
+        for failure in [2, 4, 0] {
+            let pool = KemPool::new(1).unwrap();
+            let key = ServerIdentity::fixture(&[42; 32]);
+            let mut io = script(&pool);
+            if failure == 0 {
+                io.hold_client_key = true;
+                assert!(tokio::time::timeout(
+                    Duration::from_millis(20),
+                    server_inner(
+                        &mut io,
+                        "spiral-lab.example",
+                        "spiral-research",
+                        &key,
+                        &pool
+                    )
+                )
+                .await
+                .is_err());
+                assert_eq!(io.sent, vec![2]);
+            } else {
+                io.fail_send = Some(failure);
+                assert!(matches!(
+                    server_inner(
+                        &mut io,
+                        "spiral-lab.example",
+                        "spiral-research",
+                        &key,
+                        &pool
+                    )
+                    .await,
+                    Err(Error::Transport)
+                ));
+            }
+            pool.shutdown().await.unwrap();
+            assert_eq!(pool.metrics().live_keys, 0);
+            assert_eq!(pool.metrics().executed, if failure == 4 { 3 } else { 1 });
+        }
+    }
+
+    #[tokio::test]
+    async fn random_failure_before_and_after_keygen_has_no_fallback() {
+        struct Reset;
+        impl Drop for Reset {
+            fn drop(&mut self) {
+                RANDOM_FAILURE.with(|x| x.set(None));
+            }
+        }
+        let _reset = Reset;
+        for after in [0, 1] {
+            let pool = KemPool::new(1).unwrap();
+            let key = ServerIdentity::fixture(&[42; 32]);
+            let mut io = script(&pool);
+            RANDOM_FAILURE.with(|x| x.set(Some(after)));
+            assert!(matches!(
+                server_inner(
+                    &mut io,
+                    "spiral-lab.example",
+                    "spiral-research",
+                    &key,
+                    &pool
+                )
+                .await,
+                Err(Error::Crypto)
+            ));
+            assert!(io.sent.is_empty());
+            pool.shutdown().await.unwrap();
+            assert_eq!(pool.metrics().live_keys, 0);
+            assert_eq!(pool.metrics().executed, after as u64);
+        }
     }
 }

@@ -555,4 +555,199 @@ mod tests {
         l.fail();
         assert!(l.deadline().is_err());
     }
+
+    #[test]
+    fn age_idle_and_close_deadlines_remain_independent() {
+        let mut owner = life();
+        Arc::get_mut(&mut owner).unwrap().started = Instant::now() - Duration::from_secs(601);
+        owner.active();
+        assert!(owner.deadline().unwrap() < Instant::now());
+        let owner = life();
+        *owner.last.lock().unwrap() = Instant::now() - Duration::from_secs(61);
+        assert!(owner.deadline().unwrap() < Instant::now());
+        owner.close(1);
+        *owner.closing.lock().unwrap() = Some(Instant::now() - Duration::from_secs(3));
+        owner.active();
+        assert!(owner.deadline().unwrap() < Instant::now());
+    }
+
+    #[tokio::test]
+    async fn failed_session_does_not_release_queued_plaintext_to_application() {
+        let life = life();
+        let pool = Pool::new();
+        let (tx, rx) = mpsc::channel(8);
+        tx.send(plain(&pool, b"queued authenticated data"))
+            .await
+            .ok()
+            .unwrap();
+        drop(tx);
+        let (send, _) = mpsc::channel(8);
+        let mut session = Session {
+            sender: Sender {
+                tx: send,
+                life: life.clone(),
+                pool: pool.clone(),
+            },
+            rx,
+            life: life.clone(),
+            tasks: Vec::new(),
+        };
+        life.fail();
+        assert!(matches!(session.receive().await, Err(Error::Closed)));
+        let held: Vec<_> = (0..17).map(|_| pool.take().unwrap()).collect();
+        assert!(pool.take().is_err());
+        drop(session);
+        let returned = pool.take().unwrap();
+        assert!(returned.data.is_empty());
+        drop(returned);
+        drop(held);
+    }
+
+    #[tokio::test]
+    async fn failed_partial_transport_cannot_retry_or_roll_back_nonce() {
+        let life = life();
+        let pool = Pool::new();
+        let (writer, mut peer) = tokio::io::duplex(1);
+        let (commands, pending) = mpsc::channel(8);
+        let (ack, result) = oneshot::channel();
+        commands
+            .send(SendRequest {
+                plaintext: plain(&pool, b"message"),
+                ack,
+                deadline: Instant::now() + Duration::from_millis(20),
+            })
+            .await
+            .ok()
+            .unwrap();
+        let tx = Tx::new(Secret::zeros(), [0; 4], [1; 16], 0).unwrap();
+        assert!(matches!(
+            write_loop(writer, tx, pending, life.clone()).await,
+            Err(Error::Transport)
+        ));
+        assert!(matches!(result.await.unwrap(), Err(Error::Deadline)));
+        assert!(commands.is_closed());
+        let mut bytes = Vec::new();
+        peer.read_to_end(&mut bytes).await.unwrap();
+        assert_eq!(bytes.len(), 1);
+        // The writer and its Tx owner have gone away; retry cannot access them.
+        assert!(commands
+            .send(SendRequest {
+                plaintext: plain(&pool, b"retry"),
+                ack: oneshot::channel().0,
+                deadline: Instant::now() + Duration::from_secs(1)
+            })
+            .await
+            .is_err());
+    }
+
+    #[tokio::test]
+    async fn authenticated_close_finishes_before_transport_shutdown() {
+        struct Writer {
+            observed: Arc<Mutex<(Vec<u8>, bool)>>,
+            limit: usize,
+        }
+        impl AsyncWrite for Writer {
+            fn poll_write(
+                self: std::pin::Pin<&mut Self>,
+                _: &mut std::task::Context<'_>,
+                bytes: &[u8],
+            ) -> std::task::Poll<std::io::Result<usize>> {
+                let mut state = self.observed.lock().unwrap();
+                let n = bytes.len().min(7).min(self.limit - state.0.len());
+                if n == 0 {
+                    return std::task::Poll::Pending;
+                }
+                state.0.extend_from_slice(&bytes[..n]);
+                std::task::Poll::Ready(Ok(n))
+            }
+            fn poll_flush(
+                self: std::pin::Pin<&mut Self>,
+                _: &mut std::task::Context<'_>,
+            ) -> std::task::Poll<std::io::Result<()>> {
+                std::task::Poll::Ready(Ok(()))
+            }
+            fn poll_shutdown(
+                self: std::pin::Pin<&mut Self>,
+                _: &mut std::task::Context<'_>,
+            ) -> std::task::Poll<std::io::Result<()>> {
+                let mut state = self.observed.lock().unwrap();
+                assert_eq!(
+                    state.0.len(),
+                    57,
+                    "shutdown before authenticated CLOSE finished"
+                );
+                state.1 = true;
+                std::task::Poll::Ready(Ok(()))
+            }
+        }
+        for limit in [56, 57] {
+            let life = life();
+            life.close(0);
+            *life.closing.lock().unwrap() = Some(Instant::now() - Duration::from_millis(1970));
+            let observed = Arc::new(Mutex::new((Vec::new(), false)));
+            let writer = Writer {
+                observed: observed.clone(),
+                limit,
+            };
+            let tx = Tx::new(Secret::zeros(), [0; 4], [1; 16], 0).unwrap();
+            let (_send, commands) = mpsc::channel(8);
+            let result = write_loop(writer, tx, commands, life).await;
+            let state = observed.lock().unwrap();
+            assert_eq!(state.0.len(), limit);
+            assert_eq!(state.1, limit == 57);
+            if limit == 57 {
+                result.unwrap();
+            } else {
+                assert!(matches!(result, Err(Error::Deadline)));
+            }
+        }
+    }
+
+    #[tokio::test]
+    async fn slow_header_cannot_extend_deadline_or_deliver_after_expiry() {
+        let life = life();
+        *life.last.lock().unwrap() = Instant::now() - Duration::from_millis(59980);
+        let pool = Pool::new();
+        let mut tx = Tx::new(Secret::zeros(), [0; 4], [1; 16], 0).unwrap();
+        let raw = tx.data(plain(&pool, b"late")).unwrap();
+        let rx = Rx::new(Secret::zeros(), [0; 4], [1; 16], 1).unwrap();
+        let (mut peer, reader) = tokio::io::duplex(1024);
+        let (app, mut received) = mpsc::channel(8);
+        let l = life.clone();
+        let read_pool = pool.clone();
+        let task =
+            tokio::spawn(async move { read_loop(reader, rx, app, l, read_pool, 1, [1; 16]).await });
+        let activity = life.clone();
+        let dribble = tokio::spawn(async move {
+            // Let read_loop capture its original absolute deadline first.
+            tokio::task::yield_now().await;
+            for byte in &raw.data {
+                peer.write_all(&[*byte]).await.unwrap();
+                activity.active();
+                tokio::time::sleep(Duration::from_millis(2)).await;
+            }
+            peer
+        });
+        tokio::time::timeout(Duration::from_secs(1), async {
+            while life.state() == OPEN {
+                tokio::time::sleep(Duration::from_millis(1)).await;
+            }
+        })
+        .await
+        .unwrap();
+        assert_eq!(life.state(), CLOSING);
+        let peer = dribble.await.unwrap();
+        assert!(received.try_recv().is_err());
+        *life.closing.lock().unwrap() = Some(Instant::now() - Duration::from_secs(3));
+        life.signal();
+        assert!(matches!(
+            tokio::time::timeout(Duration::from_secs(1), task)
+                .await
+                .unwrap()
+                .unwrap(),
+            Err(Error::Deadline)
+        ));
+        assert!(received.try_recv().is_err());
+        drop(peer);
+    }
 }

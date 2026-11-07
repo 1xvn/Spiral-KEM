@@ -4,6 +4,7 @@ use serde_json::{json, Value};
 use spiral_protocol::{
     admission::Admission,
     handshake::{self, Pin},
+    identity::ServerIdentity,
     transport::{self, Transport},
     worker::KemPool,
     Error, Result,
@@ -12,9 +13,16 @@ use std::{
     collections::BTreeMap,
     io::Write,
     path::Path,
+    sync::Arc,
     time::{Duration, Instant},
 };
 use tokio::net::{TcpListener, TcpStream};
+struct CloseIdentityOnDrop(Arc<ServerIdentity>);
+impl Drop for CloseIdentityOnDrop {
+    fn drop(&mut self) {
+        let _ = self.0.close();
+    }
+}
 struct Args {
     mode: String,
     values: BTreeMap<String, String>,
@@ -166,6 +174,7 @@ async fn run(a: &Args, pool: &KemPool) -> Result<Value> {
             let cfg =
                 transport::server_config(Path::new(a.get("--cert")?), Path::new(a.get("--key")?))?;
             let signing = handshake::load_signing_key(Path::new(a.get("--auth")?))?;
+            let _auth_close = CloseIdentityOnDrop(signing.clone());
             let messages = a.number("--messages", 1)?;
             if !(1..=1024).contains(&messages) {
                 return Err(Error::Input);
@@ -211,8 +220,9 @@ async fn run(a: &Args, pool: &KemPool) -> Result<Value> {
             if admission.counts()? != (0, 0) {
                 return Err(Error::Internal);
             }
+            signing.close()?;
             Ok(
-                json!({"status":"passed","role":"server","connections":count,"sessions":results,"admission_released":true}),
+                json!({"status":"passed","role":"server","connections":count,"sessions":results,"admission_released":true,"auth_key_closed":signing.is_closed()?}),
             )
         }
         "client" => {
