@@ -1,0 +1,178 @@
+{
+  "started_utc": "2026-11-07T16:07:03.650940+00:00",
+  "status": "passed",
+  "scope": "functional checks only; not memory or constant-time approval",
+  "checks": [
+    {
+      "name": "python-protocol",
+      "command": [
+        "/workspace/spiral-protocol-v01/venv/bin/python",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "protocol_v01/tests",
+        "-v"
+      ],
+      "timeout_seconds": 300,
+      "passed": true,
+      "exit": 0,
+      "log": "python-protocol.log",
+      "tests_run": 85
+    },
+    {
+      "name": "diagnostic-parser",
+      "command": [
+        "/workspace/spiral-protocol-v01/venv/bin/python",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "protocol_rust/diagnostics",
+        "-p",
+        "test_libtest_memory.py",
+        "-v"
+      ],
+      "timeout_seconds": 60,
+      "passed": true,
+      "exit": 0,
+      "log": "diagnostic-parser.log",
+      "tests_run": 6
+    },
+    {
+      "name": "native-kem",
+      "command": [
+        "make",
+        "-C",
+        "native_research",
+        "check",
+        "PYTHON=/workspace/spiral-protocol-v01/venv/bin/python"
+      ],
+      "timeout_seconds": 300,
+      "passed": true,
+      "exit": 0,
+      "log": "native-kem.log",
+      "tests_run": 9
+    },
+    {
+      "name": "rustc-version",
+      "command": [
+        "/workspace/rust48-tools/rust/bin/rustc",
+        "-Vv"
+      ],
+      "timeout_seconds": 30,
+      "passed": true,
+      "exit": 0,
+      "log": "rustc-version.log"
+    },
+    {
+      "name": "cargo-version",
+      "command": [
+        "/workspace/rust48-tools/rust/bin/cargo",
+        "-V"
+      ],
+      "timeout_seconds": 30,
+      "passed": true,
+      "exit": 0,
+      "log": "cargo-version.log"
+    },
+    {
+      "name": "rust-unit",
+      "command": [
+        "/workspace/rust48-tools/rust/bin/cargo",
+        "test",
+        "--lib",
+        "--locked",
+        "--manifest-path",
+        "/workspace/Spiral-KEM/protocol_rust/Cargo.toml",
+        "--target-dir",
+        "/workspace/Spiral-KEM/protocol_rust/target",
+        "-j",
+        "2"
+      ],
+      "timeout_seconds": 1200,
+      "passed": true,
+      "exit": 0,
+      "log": "rust-unit.log",
+      "test_groups": [
+        {
+          "passed": 52,
+          "failed": 0,
+          "ignored": 2
+        }
+      ]
+    },
+    {
+      "name": "rust-doc",
+      "command": [
+        "/workspace/rust48-tools/rust/bin/cargo",
+        "test",
+        "--doc",
+        "--locked",
+        "--manifest-path",
+        "/workspace/Spiral-KEM/protocol_rust/Cargo.toml",
+        "--target-dir",
+        "/workspace/Spiral-KEM/protocol_rust/target",
+        "-j",
+        "2"
+      ],
+      "timeout_seconds": 300,
+      "passed": true,
+      "exit": 0,
+      "log": "rust-doc.log",
+      "test_groups": [
+        {
+          "passed": 6,
+          "failed": 0,
+          "ignored": 0
+        }
+      ]
+    },
+    {
+      "name": "rust-release",
+      "command": [
+        "/workspace/rust48-tools/rust/bin/cargo",
+        "build",
+        "--release",
+        "--locked",
+        "--manifest-path",
+        "/workspace/Spiral-KEM/protocol_rust/Cargo.toml",
+        "--target-dir",
+        "/workspace/Spiral-KEM/protocol_rust/target",
+        "-j",
+        "2"
+      ],
+      "timeout_seconds": 1200,
+      "passed": true,
+      "exit": 0,
+      "log": "rust-release.log"
+    },
+    {
+      "name": "rust-tls",
+      "command": [
+        "/workspace/spiral-protocol-v01/venv/bin/python",
+        "/workspace/Spiral-KEM/protocol_rust/adversarial.py",
+        "--binary",
+        "/workspace/Spiral-KEM/protocol_rust/target/release/spiral-lab",
+        "--json",
+        "/workspace/rust-record-functional-20261108/interop.json"
+      ],
+      "timeout_seconds": 600,
+      "passed": true,
+      "exit": 0,
+      "log": "rust-tls.log",
+      "tests_run": 35,
+      "structured_tests": {
+        "tests": 35,
+        "failures": 0,
+        "errors": 0
+      }
+    }
+  ],
+  "memory_checked": false,
+  "constant_time_approved": false,
+  "runner_sha256": "ecff1569d2e59e7750fe99f0484b5703295bbf51d1a2e4597e696b13ec4ee0e0",
+  "binary_sha256": "346ba550cded6ece41d5644236682054b35ceb6b3d0879eae96372afd843b9fd",
+  "cargo_lock_sha256": "19eb708fbf0c56f42704bd0a699c0f687f2b1516fc38e52c4c5d721a81889aca",
+  "finished_utc": "2026-11-07T16:07:34.714398+00:00"
+}

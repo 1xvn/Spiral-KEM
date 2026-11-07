@@ -159,3 +159,7 @@ scp -i "$OciKey" "${OciUser}@${OciHost}:~/Spiral-Rust-record-oci-20261108.tar.gz
 
 Submitting both `.tar.gz` files allows verification of matching source/tools/options, actual execution counts,
 saved input comparisons, and instrumentation evidence together.
+
+Locally, the same runner with a 60-second limit completed 35,054 actual executions and passed comparisons for
+717/717 final saved inputs. Existing parser/functional regressions also passed; detailed evidence is in
+the [local record](evidence/record_fuzz_20261108/README.md).

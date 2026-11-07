@@ -1,0 +1,19 @@
+   Compiling cc v1.11.0
+   Compiling static_assertions v1.1.0
+   Compiling ring v0.17.14
+   Compiling spiral-protocol v0.3.0 (/workspace/Spiral-KEM/protocol_rust)
+   Compiling rustls v0.23.46
+   Compiling rustls-webpki v0.103.16
+   Compiling tokio-rustls v0.26.6
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 14.09s
+   Doc-tests spiral_protocol
+
+running 5 tests
+test src/identity.rs - identity::ServerIdentity (line 20) - compile fail ... ok
+test src/identity.rs - identity::ServerIdentity (line 24) - compile fail ... ok
+test src/lib.rs - (line 4) - compile fail ... ok
+test src/identity.rs - identity::ServerIdentity (line 16) - compile fail ... ok
+test src/lib.rs - (line 9) - compile fail ... ok
+
+test result: ok. 5 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.15s
+
