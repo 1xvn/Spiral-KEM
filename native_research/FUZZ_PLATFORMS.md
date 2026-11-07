@@ -34,7 +34,7 @@ Run separately in OCI and WSL Ubuntu terminals.
 
 ```bash
 sudo apt-get update
-sudo apt-get install -y git python3 build-essential clang-18 llvm-18 libclang-rt-18-dev libssl-dev
+sudo apt-get install -y git python3 build-essential clang-18 llvm-18 libclang-rt-18-dev libssl-dev openssl
 uname -m
 clang-18 --version
 openssl version

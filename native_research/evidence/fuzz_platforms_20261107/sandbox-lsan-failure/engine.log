@@ -1,0 +1,74 @@
+INFO: Running with entropic power schedule (0xFF, 100).
+INFO: Seed: 20261107
+INFO: Loaded 1 modules   (288 inline 8-bit counters): 288 [0x55881ca8de90, 0x55881ca8dfb0), 
+INFO: Loaded 1 PC tables (288 PCs): 288 [0x55881ca8dfb0,0x55881ca8f1b0), 
+INFO:        8 files found in /workspace/native-fuzz-local-first-20261107/corpus
+INFO: seed corpus: files: 8 min: 807b max: 809b total: 6464b rss: 31Mb
+#10	INITED cov: 73 ft: 76 corp: 4/3231b exec/s: 0 rss: 34Mb
+#42	REDUCE cov: 73 ft: 76 corp: 4/3162b lim: 808 exec/s: 0 rss: 34Mb L: 738/808 MS: 2 ChangeASCIIInt-CrossOver-
+#101	REDUCE cov: 73 ft: 76 corp: 4/2964b lim: 808 exec/s: 0 rss: 35Mb L: 540/808 MS: 4 ShuffleBytes-InsertRepeatedBytes-CrossOver-EraseBytes-
+#142	REDUCE cov: 73 ft: 76 corp: 4/2705b lim: 808 exec/s: 0 rss: 35Mb L: 281/808 MS: 1 EraseBytes-
+#232	REDUCE cov: 73 ft: 76 corp: 4/2664b lim: 808 exec/s: 0 rss: 36Mb L: 240/808 MS: 5 InsertRepeatedBytes-ChangeByte-ChangeASCIIInt-CMP-EraseBytes- DE: ".pragma"-
+#300	REDUCE cov: 73 ft: 76 corp: 4/2618b lim: 808 exec/s: 0 rss: 37Mb L: 194/808 MS: 3 CMP-PersAutoDict-EraseBytes- DE: "RKW1P\006\000\000"-".pragma"-
+#306	NEW    cov: 73 ft: 78 corp: 5/3426b lim: 808 exec/s: 0 rss: 37Mb L: 808/808 MS: 1 ChangeBinInt-
+#632	REDUCE cov: 73 ft: 78 corp: 5/3408b lim: 808 exec/s: 0 rss: 40Mb L: 176/808 MS: 1 EraseBytes-
+#664	REDUCE cov: 73 ft: 78 corp: 5/3365b lim: 808 exec/s: 0 rss: 40Mb L: 133/808 MS: 2 ShuffleBytes-EraseBytes-
+#1182	REDUCE cov: 73 ft: 78 corp: 5/3313b lim: 808 exec/s: 0 rss: 42Mb L: 81/808 MS: 3 InsertByte-InsertByte-EraseBytes-
+#1274	REDUCE cov: 73 ft: 78 corp: 5/3274b lim: 808 exec/s: 0 rss: 43Mb L: 42/808 MS: 2 ChangeBit-EraseBytes-
+#1502	REDUCE cov: 73 ft: 78 corp: 5/3254b lim: 808 exec/s: 0 rss: 44Mb L: 22/808 MS: 3 ShuffleBytes-ChangeByte-EraseBytes-
+#1806	RELOAD cov: 73 ft: 79 corp: 6/3494b lim: 808 exec/s: 1806 rss: 45Mb
+#1932	REDUCE cov: 73 ft: 79 corp: 6/3484b lim: 808 exec/s: 1932 rss: 46Mb L: 12/808 MS: 1 EraseBytes-
+#2000	DONE   cov: 73 ft: 79 corp: 6/3484b lim: 808 exec/s: 2000 rss: 46Mb
+###### Recommended dictionary. ######
+".pragma" # Uses: 59
+"RKW1P\006\000\000" # Uses: 49
+###### End of recommended dictionary. ######
+Done 2000 runs in 1 second(s)
+stat::number_of_executed_units: 2000
+stat::average_exec_per_sec:     2000
+stat::new_units_added:          12
+stat::slowest_unit_time_sec:    0
+stat::peak_rss_mb:              46
+==140500==LeakSanitizer has encountered a fatal error.
+==140500==HINT: For debugging, try setting environment variable LSAN_OPTIONS=verbosity=1:log_threads=1
+==140500==HINT: LeakSanitizer does not work under ptrace (strace, gdb, etc)
+MS: 3 ChangeBit-EraseBytes-InsertByte-; base unit: bf6841d81ce6ed3ecd8b09e5dc1f0d9bbd3fee68
+
+
+artifact_prefix='/workspace/native-fuzz-local-first-20261107/artifacts/'; Test unit written to /workspace/native-fuzz-local-first-20261107/artifacts/crash-da39a3ee5e6b4b0d3255bfef95601890afd80709
+Base64: 
+stat::number_of_executed_units: 2000
+stat::average_exec_per_sec:     2000
+stat::new_units_added:          12
+stat::slowest_unit_time_sec:    0
+stat::peak_rss_mb:              47
+==140500== ERROR: libFuzzer: deadly signal
+==140500==WARNING: invalid path to external symbolizer!
+==140500==WARNING: Failed to use and restart external symbolizer!
+    #0 0x55881ca09fd5  (/workspace/native-fuzz-local-first-20261107/fuzz-pk+0x116fd5) (BuildId: 357a59103f679876173e19a4dd0faf41dbbef02b)
+    #1 0x55881c95df1c  (/workspace/native-fuzz-local-first-20261107/fuzz-pk+0x6af1c) (BuildId: 357a59103f679876173e19a4dd0faf41dbbef02b)
+    #2 0x55881c942e97  (/workspace/native-fuzz-local-first-20261107/fuzz-pk+0x4fe97) (BuildId: 357a59103f679876173e19a4dd0faf41dbbef02b)
+    #3 0x7f615dd6ed6f  (/lib/x86_64-linux-gnu/libc.so.6+0x3fd6f) (BuildId: 5e5b51f4c39af9ac589408c1dc432ba390a273cc)
+    #4 0x7f615ddc369b  (/lib/x86_64-linux-gnu/libc.so.6+0x9469b) (BuildId: 5e5b51f4c39af9ac589408c1dc432ba390a273cc)
+    #5 0x7f615dd6ec41  (/lib/x86_64-linux-gnu/libc.so.6+0x3fc41) (BuildId: 5e5b51f4c39af9ac589408c1dc432ba390a273cc)
+    #6 0x7f615dd574ab  (/lib/x86_64-linux-gnu/libc.so.6+0x284ab) (BuildId: 5e5b51f4c39af9ac589408c1dc432ba390a273cc)
+    #7 0x55881ca26b1f  (/workspace/native-fuzz-local-first-20261107/fuzz-pk+0x133b1f) (BuildId: 357a59103f679876173e19a4dd0faf41dbbef02b)
+    #8 0x55881ca24951  (/workspace/native-fuzz-local-first-20261107/fuzz-pk+0x131951) (BuildId: 357a59103f679876173e19a4dd0faf41dbbef02b)
+    #9 0x55881ca35bc6  (/workspace/native-fuzz-local-first-20261107/fuzz-pk+0x142bc6) (BuildId: 357a59103f679876173e19a4dd0faf41dbbef02b)
+    #10 0x55881ca356fa  (/workspace/native-fuzz-local-first-20261107/fuzz-pk+0x1426fa) (BuildId: 357a59103f679876173e19a4dd0faf41dbbef02b)
+    #11 0x7f615dd70cf0  (/lib/x86_64-linux-gnu/libc.so.6+0x41cf0) (BuildId: 5e5b51f4c39af9ac589408c1dc432ba390a273cc)
+    #12 0x55881c926b26  (/workspace/native-fuzz-local-first-20261107/fuzz-pk+0x33b26) (BuildId: 357a59103f679876173e19a4dd0faf41dbbef02b)
+
+NOTE: libFuzzer has rudimentary signal handlers.
+      Combine libFuzzer with AddressSanitizer or similar for better crash reports.
+SUMMARY: libFuzzer: deadly signal
+MS: 3 ChangeBit-EraseBytes-InsertByte-; base unit: bf6841d81ce6ed3ecd8b09e5dc1f0d9bbd3fee68
+
+
+artifact_prefix='/workspace/native-fuzz-local-first-20261107/artifacts/'; Test unit written to /workspace/native-fuzz-local-first-20261107/artifacts/crash-da39a3ee5e6b4b0d3255bfef95601890afd80709
+Base64: 
+stat::number_of_executed_units: 2000
+stat::average_exec_per_sec:     2000
+stat::new_units_added:          12
+stat::slowest_unit_time_sec:    0
+stat::peak_rss_mb:              47

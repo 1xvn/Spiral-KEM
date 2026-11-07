@@ -1,0 +1,44 @@
+INFO: Running with entropic power schedule (0xFF, 100).
+INFO: Seed: 20261107
+INFO: Loaded 1 modules   (288 inline 8-bit counters): 288 [0x5619d941de90, 0x5619d941dfb0), 
+INFO: Loaded 1 PC tables (288 PCs): 288 [0x5619d941dfb0,0x5619d941f1b0), 
+INFO:        8 files found in /workspace/native-fuzz-local-final-20261107/corpus
+INFO: seed corpus: files: 8 min: 807b max: 809b total: 6464b rss: 31Mb
+#10	INITED cov: 73 ft: 76 corp: 4/3231b exec/s: 0 rss: 34Mb
+#42	REDUCE cov: 73 ft: 76 corp: 4/3162b lim: 808 exec/s: 0 rss: 34Mb L: 738/808 MS: 2 ChangeASCIIInt-CrossOver-
+#101	REDUCE cov: 73 ft: 76 corp: 4/2964b lim: 808 exec/s: 0 rss: 35Mb L: 540/808 MS: 4 ShuffleBytes-InsertRepeatedBytes-CrossOver-EraseBytes-
+#142	REDUCE cov: 73 ft: 76 corp: 4/2705b lim: 808 exec/s: 0 rss: 35Mb L: 281/808 MS: 1 EraseBytes-
+#232	REDUCE cov: 73 ft: 76 corp: 4/2664b lim: 808 exec/s: 0 rss: 36Mb L: 240/808 MS: 5 InsertRepeatedBytes-ChangeByte-ChangeASCIIInt-CMP-EraseBytes- DE: ".pragma"-
+#300	REDUCE cov: 73 ft: 76 corp: 4/2618b lim: 808 exec/s: 0 rss: 37Mb L: 194/808 MS: 3 CMP-PersAutoDict-EraseBytes- DE: "RKW1P\006\000\000"-".pragma"-
+#306	NEW    cov: 73 ft: 78 corp: 5/3426b lim: 808 exec/s: 0 rss: 37Mb L: 808/808 MS: 1 ChangeBinInt-
+#632	REDUCE cov: 73 ft: 78 corp: 5/3408b lim: 808 exec/s: 0 rss: 40Mb L: 176/808 MS: 1 EraseBytes-
+#664	REDUCE cov: 73 ft: 78 corp: 5/3365b lim: 808 exec/s: 0 rss: 40Mb L: 133/808 MS: 2 ShuffleBytes-EraseBytes-
+#1182	REDUCE cov: 73 ft: 78 corp: 5/3313b lim: 808 exec/s: 0 rss: 42Mb L: 81/808 MS: 3 InsertByte-InsertByte-EraseBytes-
+#1274	REDUCE cov: 73 ft: 78 corp: 5/3274b lim: 808 exec/s: 0 rss: 43Mb L: 42/808 MS: 2 ChangeBit-EraseBytes-
+#1502	REDUCE cov: 73 ft: 78 corp: 5/3254b lim: 808 exec/s: 0 rss: 44Mb L: 22/808 MS: 3 ShuffleBytes-ChangeByte-EraseBytes-
+#1771	RELOAD cov: 73 ft: 79 corp: 6/3494b lim: 808 exec/s: 1771 rss: 45Mb
+#1932	REDUCE cov: 73 ft: 79 corp: 6/3484b lim: 808 exec/s: 1932 rss: 46Mb L: 12/808 MS: 1 EraseBytes-
+#2023	REDUCE cov: 73 ft: 79 corp: 6/3483b lim: 808 exec/s: 2023 rss: 46Mb L: 11/808 MS: 1 EraseBytes-
+#2220	REDUCE cov: 73 ft: 79 corp: 6/3481b lim: 808 exec/s: 2220 rss: 47Mb L: 9/808 MS: 2 CMP-EraseBytes- DE: ".include"-
+#2296	REDUCE cov: 73 ft: 79 corp: 6/3478b lim: 808 exec/s: 2296 rss: 47Mb L: 6/808 MS: 1 EraseBytes-
+#3004	REDUCE cov: 73 ft: 79 corp: 6/3477b lim: 808 exec/s: 3004 rss: 49Mb L: 5/808 MS: 3 ChangeByte-ChangeByte-EraseBytes-
+#3105	REDUCE cov: 73 ft: 79 corp: 6/3475b lim: 808 exec/s: 3105 rss: 49Mb L: 3/808 MS: 1 EraseBytes-
+#3461	REDUCE cov: 73 ft: 79 corp: 6/3474b lim: 808 exec/s: 3461 rss: 50Mb L: 2/808 MS: 1 EraseBytes-
+#4018	REDUCE cov: 73 ft: 79 corp: 6/3473b lim: 808 exec/s: 2009 rss: 53Mb L: 1/808 MS: 3 ChangeBit-ChangeBit-EraseBytes-
+#4096	pulse  cov: 73 ft: 79 corp: 6/3473b lim: 808 exec/s: 2048 rss: 53Mb
+#8192	pulse  cov: 73 ft: 79 corp: 6/3473b lim: 844 exec/s: 2730 rss: 63Mb
+#16384	pulse  cov: 73 ft: 79 corp: 6/3473b lim: 925 exec/s: 2730 rss: 80Mb
+#32768	pulse  cov: 73 ft: 79 corp: 6/3473b lim: 1024 exec/s: 2978 rss: 115Mb
+#65536	pulse  cov: 73 ft: 79 corp: 6/3473b lim: 1024 exec/s: 3276 rss: 182Mb
+#100000	DONE   cov: 73 ft: 79 corp: 6/3473b lim: 1024 exec/s: 3333 rss: 252Mb
+###### Recommended dictionary. ######
+".pragma" # Uses: 2761
+"RKW1P\006\000\000" # Uses: 2743
+".include" # Uses: 2594
+###### End of recommended dictionary. ######
+Done 100000 runs in 30 second(s)
+stat::number_of_executed_units: 100000
+stat::average_exec_per_sec:     3333
+stat::new_units_added:          19
+stat::slowest_unit_time_sec:    0
+stat::peak_rss_mb:              252
