@@ -1,0 +1,12 @@
+test_fake_success_flag_does_not_hide_child_99 (test_checks.MemoryGateTests.test_fake_success_flag_does_not_hide_child_99) ... ok
+test_missing_json_cli_is_nonzero (test_checks.MemoryGateTests.test_missing_json_cli_is_nonzero) ... ok
+test_missing_or_duplicate_case_fails (test_checks.MemoryGateTests.test_missing_or_duplicate_case_fails) ... ok
+test_production_or_original_approval_rejected (test_checks.MemoryGateTests.test_production_or_original_approval_rejected) ... ok
+test_real_completed_diagnostic_still_fails_memory (test_checks.MemoryGateTests.test_real_completed_diagnostic_still_fails_memory) ... ok
+test_suppression_and_native_failure_fail (test_checks.MemoryGateTests.test_suppression_and_native_failure_fail) ... ok
+test_synthetic_clean_controls_do_not_approve_production (test_checks.MemoryGateTests.test_synthetic_clean_controls_do_not_approve_production) ... ok
+
+----------------------------------------------------------------------
+Ran 7 tests in 0.023s
+
+OK

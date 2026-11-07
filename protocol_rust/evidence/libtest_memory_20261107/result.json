@@ -1,0 +1,682 @@
+{
+  "schema": "spiral-rust-libtest-memory-controls/v1",
+  "date_utc": "2026-11-07T07:06:39.124328+00:00",
+  "scope": "public std/libtest fixtures only; no Spiral, cryptography, secrets or network",
+  "platform": "Linux-6.18.57-x86_64-with-glibc2.41",
+  "machine": "x86_64",
+  "python": "3.12.14",
+  "runner_sha256": "0dfa8b7c4bed792afd932860d65036c22430a99dbb6bf100ca8dd318e82de654",
+  "timeout_seconds_per_command": 120,
+  "production_memory_passed": false,
+  "original_finding_resolved": false,
+  "diagnostic_complete": true,
+  "errors": [],
+  "cases": [
+    {
+      "name": "empty-main",
+      "rust_test_nocapture": null,
+      "diagnostic_complete": true,
+      "production_memory_passed": false,
+      "errors": [],
+      "native": {
+        "command": [
+          "/workspace/rust48-tools/runtime/ld-linux-x86-64.so.2",
+          "--library-path",
+          "/workspace/rust48-tools/debian/usr/lib/x86_64-linux-gnu",
+          "/workspace/rust48-local-run/std-control",
+          "empty-main"
+        ],
+        "timeout_seconds": 120,
+        "exit": 0,
+        "timed_out": false,
+        "stdout_file": "empty-main-native.stdout",
+        "stderr_file": "empty-main-native.stderr",
+        "stdout_sha256": "2a689505ddf67acc6edd3d970551121ed4f1e76bca814e9e916bd3edb1a1a3a6",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout": "CONTROL_COMPLETED empty-main\n",
+        "stderr": "",
+        "expected_output": true
+      },
+      "memcheck": {
+        "command": [
+          "/workspace/rust48-tools/debian/usr/bin/valgrind",
+          "--command-line-only=yes",
+          "--tool=memcheck",
+          "--leak-check=full",
+          "--show-leak-kinds=all",
+          "--errors-for-leak-kinds=definite,indirect,possible",
+          "--error-exitcode=99",
+          "--track-origins=yes",
+          "--log-file=/workspace/rust48-local-run/empty-main-memcheck.log",
+          "/workspace/rust48-tools/runtime/ld-linux-x86-64.so.2",
+          "--library-path",
+          "/workspace/rust48-tools/debian/usr/lib/x86_64-linux-gnu",
+          "/workspace/rust48-local-run/std-control",
+          "empty-main"
+        ],
+        "timeout_seconds": 120,
+        "exit": 0,
+        "timed_out": false,
+        "stdout_file": "empty-main-memcheck.stdout",
+        "stderr_file": "empty-main-memcheck.stderr",
+        "stdout_sha256": "2a689505ddf67acc6edd3d970551121ed4f1e76bca814e9e916bd3edb1a1a3a6",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout": "CONTROL_COMPLETED empty-main\n",
+        "stderr": "",
+        "expected_output": true,
+        "log_file": "empty-main-memcheck.log",
+        "log_sha256": "7817071346176098fc3460b1605a26416c99eb70e7566f8c504f4fbd95f58ef4"
+      },
+      "summary": {
+        "errors": 0,
+        "contexts": 0,
+        "suppressed_errors": 0,
+        "suppressed_contexts": 0
+      },
+      "leaks": {
+        "definitely lost": {
+          "bytes": 0,
+          "blocks": 0
+        },
+        "indirectly lost": {
+          "bytes": 0,
+          "blocks": 0
+        },
+        "possibly lost": {
+          "bytes": 0,
+          "blocks": 0
+        },
+        "still reachable": {
+          "bytes": 548,
+          "blocks": 2
+        },
+        "suppressed": {
+          "bytes": 0,
+          "blocks": 0
+        }
+      },
+      "possibly_lost_48_records": [],
+      "observation": "no_errors_observed",
+      "only_scoped_runtime_48_errors": false,
+      "memory_measurement_passed": true
+    },
+    {
+      "name": "thread-current",
+      "rust_test_nocapture": null,
+      "diagnostic_complete": true,
+      "production_memory_passed": false,
+      "errors": [],
+      "native": {
+        "command": [
+          "/workspace/rust48-tools/runtime/ld-linux-x86-64.so.2",
+          "--library-path",
+          "/workspace/rust48-tools/debian/usr/lib/x86_64-linux-gnu",
+          "/workspace/rust48-local-run/std-control",
+          "thread-current"
+        ],
+        "timeout_seconds": 120,
+        "exit": 0,
+        "timed_out": false,
+        "stdout_file": "thread-current-native.stdout",
+        "stderr_file": "thread-current-native.stderr",
+        "stdout_sha256": "4771ba9537c0181c10c031258799d9784032a3b5127c844564bd88fa2e24073b",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout": "CONTROL_COMPLETED thread-current\n",
+        "stderr": "",
+        "expected_output": true
+      },
+      "memcheck": {
+        "command": [
+          "/workspace/rust48-tools/debian/usr/bin/valgrind",
+          "--command-line-only=yes",
+          "--tool=memcheck",
+          "--leak-check=full",
+          "--show-leak-kinds=all",
+          "--errors-for-leak-kinds=definite,indirect,possible",
+          "--error-exitcode=99",
+          "--track-origins=yes",
+          "--log-file=/workspace/rust48-local-run/thread-current-memcheck.log",
+          "/workspace/rust48-tools/runtime/ld-linux-x86-64.so.2",
+          "--library-path",
+          "/workspace/rust48-tools/debian/usr/lib/x86_64-linux-gnu",
+          "/workspace/rust48-local-run/std-control",
+          "thread-current"
+        ],
+        "timeout_seconds": 120,
+        "exit": 99,
+        "timed_out": false,
+        "stdout_file": "thread-current-memcheck.stdout",
+        "stderr_file": "thread-current-memcheck.stderr",
+        "stdout_sha256": "4771ba9537c0181c10c031258799d9784032a3b5127c844564bd88fa2e24073b",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout": "CONTROL_COMPLETED thread-current\n",
+        "stderr": "",
+        "expected_output": true,
+        "log_file": "thread-current-memcheck.log",
+        "log_sha256": "5c6b199e79dc7b4b9ad00558f30f5f585656c7cb061c0ad702b62d6985499579"
+      },
+      "summary": {
+        "errors": 1,
+        "contexts": 1,
+        "suppressed_errors": 0,
+        "suppressed_contexts": 0
+      },
+      "leaks": {
+        "definitely lost": {
+          "bytes": 0,
+          "blocks": 0
+        },
+        "indirectly lost": {
+          "bytes": 0,
+          "blocks": 0
+        },
+        "possibly lost": {
+          "bytes": 48,
+          "blocks": 1
+        },
+        "still reachable": {
+          "bytes": 548,
+          "blocks": 2
+        },
+        "suppressed": {
+          "bytes": 0,
+          "blocks": 0
+        }
+      },
+      "possibly_lost_48_records": [
+        {
+          "stack": "==119152== 48 bytes in 1 blocks are possibly lost in loss record 2 of 3\n==119152==    at 0x4876818: malloc (vg_replace_malloc.c:446)\n==119152==    by 0x48405EE: alloc (unix.rs:31)\n==119152==    by 0x48405EE: alloc_impl (alloc.rs:161)\n==119152==    by 0x48405EE: allocate (alloc.rs:223)\n==119152==    by 0x48405EE: {closure#0}<std::thread::thread::Inner, std::alloc::System> (sync.rs:823)\n==119152==    by 0x48405EE: allocate_for_layout<core::mem::maybe_uninit::MaybeUninit<std::thread::thread::Inner>, alloc::sync::{impl#17}::new_uninit_in::{closure_env#0}<std::thread::thread::Inner, std::alloc::System>, fn(*mut u8) -> *mut alloc::sync::ArcInner<core::mem::maybe_uninit::MaybeUninit<std::thread::thread::Inner>>> (sync.rs:2191)\n==119152==    by 0x48405EE: new_uninit_in<std::thread::thread::Inner, std::alloc::System> (sync.rs:821)\n==119152==    by 0x48405EE: <std::thread::thread::Thread>::new (thread.rs:102)\n==119152==    by 0x484B1E9: std::thread::current::init_current (current.rs:294)\n==119152==    by 0x481D823: std_libtest_control::main (std_libtest_control.rs:10)\n==119152==    by 0x4821262: call_once<fn(), ()> (library/core/src/ops/function.rs:250)\n==119152==    by 0x4821262: std::sys::backtrace::__rust_begin_short_backtrace::<fn(), ()> (library/std/src/sys/backtrace.rs:166)\n==119152==    by 0x48213F8: std::rt::lang_start::<()>::{closure#0} (library/std/src/rt.rs:206)\n==119152==    by 0x4849CF8: call_once<(), (dyn core::ops::function::Fn<(), Output=i32> + core::marker::Sync + core::panic::unwind_safe::RefUnwindSafe)> (function.rs:287)\n==119152==    by 0x4849CF8: do_call<&(dyn core::ops::function::Fn<(), Output=i32> + core::marker::Sync + core::panic::unwind_safe::RefUnwindSafe), i32> (panicking.rs:576)\n==119152==    by 0x4849CF8: catch_unwind<i32, &(dyn core::ops::function::Fn<(), Output=i32> + core::marker::Sync + core::panic::unwind_safe::RefUnwindSafe)> (panicking.rs:544)\n==119152==    by 0x4849CF8: catch_unwind<&(dyn core::ops::function::Fn<(), Output=i32> + core::marker::Sync + core::panic::unwind_safe::RefUnwindSafe), i32> (panic.rs:359)\n==119152==    by 0x4849CF8: {closure#0} (rt.rs:175)\n==119152==    by 0x4849CF8: do_call<std::rt::lang_start_internal::{closure_env#0}, isize> (panicking.rs:576)\n==119152==    by 0x4849CF8: catch_unwind<isize, std::rt::lang_start_internal::{closure_env#0}> (panicking.rs:544)\n==119152==    by 0x4849CF8: catch_unwind<std::rt::lang_start_internal::{closure_env#0}, isize> (panic.rs:359)\n==119152==    by 0x4849CF8: std::rt::lang_start_internal (rt.rs:171)\n==119152==    by 0x481E85B: main (in /workspace/rust48-local-run/std-control)",
+          "std_thread_frame": true,
+          "std_channel_frame": false,
+          "libtest_frame": false,
+          "classification": "std_thread_or_channel"
+        }
+      ],
+      "observation": "measurement_failed_with_errors",
+      "only_scoped_runtime_48_errors": true,
+      "memory_measurement_passed": false
+    },
+    {
+      "name": "thread-join",
+      "rust_test_nocapture": null,
+      "diagnostic_complete": true,
+      "production_memory_passed": false,
+      "errors": [],
+      "native": {
+        "command": [
+          "/workspace/rust48-tools/runtime/ld-linux-x86-64.so.2",
+          "--library-path",
+          "/workspace/rust48-tools/debian/usr/lib/x86_64-linux-gnu",
+          "/workspace/rust48-local-run/std-control",
+          "thread-join"
+        ],
+        "timeout_seconds": 120,
+        "exit": 0,
+        "timed_out": false,
+        "stdout_file": "thread-join-native.stdout",
+        "stderr_file": "thread-join-native.stderr",
+        "stdout_sha256": "a7b5675ca2dbaa74f59258121ea713ed8fc19315b9ceed2a23bc48e839875dbf",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout": "CONTROL_COMPLETED thread-join\n",
+        "stderr": "",
+        "expected_output": true
+      },
+      "memcheck": {
+        "command": [
+          "/workspace/rust48-tools/debian/usr/bin/valgrind",
+          "--command-line-only=yes",
+          "--tool=memcheck",
+          "--leak-check=full",
+          "--show-leak-kinds=all",
+          "--errors-for-leak-kinds=definite,indirect,possible",
+          "--error-exitcode=99",
+          "--track-origins=yes",
+          "--log-file=/workspace/rust48-local-run/thread-join-memcheck.log",
+          "/workspace/rust48-tools/runtime/ld-linux-x86-64.so.2",
+          "--library-path",
+          "/workspace/rust48-tools/debian/usr/lib/x86_64-linux-gnu",
+          "/workspace/rust48-local-run/std-control",
+          "thread-join"
+        ],
+        "timeout_seconds": 120,
+        "exit": 0,
+        "timed_out": false,
+        "stdout_file": "thread-join-memcheck.stdout",
+        "stderr_file": "thread-join-memcheck.stderr",
+        "stdout_sha256": "a7b5675ca2dbaa74f59258121ea713ed8fc19315b9ceed2a23bc48e839875dbf",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout": "CONTROL_COMPLETED thread-join\n",
+        "stderr": "",
+        "expected_output": true,
+        "log_file": "thread-join-memcheck.log",
+        "log_sha256": "e0d1cd8c7938df5fc6232b8b7d281f97023fc546e6ff5c586a219395a5bf678c"
+      },
+      "summary": {
+        "errors": 0,
+        "contexts": 0,
+        "suppressed_errors": 0,
+        "suppressed_contexts": 0
+      },
+      "leaks": {
+        "definitely lost": {
+          "bytes": 0,
+          "blocks": 0
+        },
+        "indirectly lost": {
+          "bytes": 0,
+          "blocks": 0
+        },
+        "possibly lost": {
+          "bytes": 0,
+          "blocks": 0
+        },
+        "still reachable": {
+          "bytes": 548,
+          "blocks": 2
+        },
+        "suppressed": {
+          "bytes": 0,
+          "blocks": 0
+        }
+      },
+      "possibly_lost_48_records": [],
+      "observation": "no_errors_observed",
+      "only_scoped_runtime_48_errors": false,
+      "memory_measurement_passed": true
+    },
+    {
+      "name": "channel-roundtrip",
+      "rust_test_nocapture": null,
+      "diagnostic_complete": true,
+      "production_memory_passed": false,
+      "errors": [],
+      "native": {
+        "command": [
+          "/workspace/rust48-tools/runtime/ld-linux-x86-64.so.2",
+          "--library-path",
+          "/workspace/rust48-tools/debian/usr/lib/x86_64-linux-gnu",
+          "/workspace/rust48-local-run/std-control",
+          "channel-roundtrip"
+        ],
+        "timeout_seconds": 120,
+        "exit": 0,
+        "timed_out": false,
+        "stdout_file": "channel-roundtrip-native.stdout",
+        "stderr_file": "channel-roundtrip-native.stderr",
+        "stdout_sha256": "0abbd69d60a77a7c36a8f9a72182e0fcfcd6e79db188ab67e74bdbb251b7c05f",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout": "CONTROL_COMPLETED channel-roundtrip\n",
+        "stderr": "",
+        "expected_output": true
+      },
+      "memcheck": {
+        "command": [
+          "/workspace/rust48-tools/debian/usr/bin/valgrind",
+          "--command-line-only=yes",
+          "--tool=memcheck",
+          "--leak-check=full",
+          "--show-leak-kinds=all",
+          "--errors-for-leak-kinds=definite,indirect,possible",
+          "--error-exitcode=99",
+          "--track-origins=yes",
+          "--log-file=/workspace/rust48-local-run/channel-roundtrip-memcheck.log",
+          "/workspace/rust48-tools/runtime/ld-linux-x86-64.so.2",
+          "--library-path",
+          "/workspace/rust48-tools/debian/usr/lib/x86_64-linux-gnu",
+          "/workspace/rust48-local-run/std-control",
+          "channel-roundtrip"
+        ],
+        "timeout_seconds": 120,
+        "exit": 99,
+        "timed_out": false,
+        "stdout_file": "channel-roundtrip-memcheck.stdout",
+        "stderr_file": "channel-roundtrip-memcheck.stderr",
+        "stdout_sha256": "0abbd69d60a77a7c36a8f9a72182e0fcfcd6e79db188ab67e74bdbb251b7c05f",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout": "CONTROL_COMPLETED channel-roundtrip\n",
+        "stderr": "",
+        "expected_output": true,
+        "log_file": "channel-roundtrip-memcheck.log",
+        "log_sha256": "3cb70fea2445f7df3b3a6a8e6bfb307cd9ac4d2ecab4a896099ed7ab1e8b2a76"
+      },
+      "summary": {
+        "errors": 1,
+        "contexts": 1,
+        "suppressed_errors": 0,
+        "suppressed_contexts": 0
+      },
+      "leaks": {
+        "definitely lost": {
+          "bytes": 0,
+          "blocks": 0
+        },
+        "indirectly lost": {
+          "bytes": 0,
+          "blocks": 0
+        },
+        "possibly lost": {
+          "bytes": 48,
+          "blocks": 1
+        },
+        "still reachable": {
+          "bytes": 548,
+          "blocks": 2
+        },
+        "suppressed": {
+          "bytes": 0,
+          "blocks": 0
+        }
+      },
+      "possibly_lost_48_records": [
+        {
+          "stack": "==119159== 48 bytes in 1 blocks are possibly lost in loss record 2 of 3\n==119159==    at 0x4876818: malloc (vg_replace_malloc.c:446)\n==119159==    by 0x48405EE: alloc (unix.rs:31)\n==119159==    by 0x48405EE: alloc_impl (alloc.rs:161)\n==119159==    by 0x48405EE: allocate (alloc.rs:223)\n==119159==    by 0x48405EE: {closure#0}<std::thread::thread::Inner, std::alloc::System> (sync.rs:823)\n==119159==    by 0x48405EE: allocate_for_layout<core::mem::maybe_uninit::MaybeUninit<std::thread::thread::Inner>, alloc::sync::{impl#17}::new_uninit_in::{closure_env#0}<std::thread::thread::Inner, std::alloc::System>, fn(*mut u8) -> *mut alloc::sync::ArcInner<core::mem::maybe_uninit::MaybeUninit<std::thread::thread::Inner>>> (sync.rs:2191)\n==119159==    by 0x48405EE: new_uninit_in<std::thread::thread::Inner, std::alloc::System> (sync.rs:821)\n==119159==    by 0x48405EE: <std::thread::thread::Thread>::new (thread.rs:102)\n==119159==    by 0x484B1E9: std::thread::current::init_current (current.rs:294)\n==119159==    by 0x4837D1F: current_or_unnamed (current.rs:251)\n==119159==    by 0x4837D1F: <std::sync::mpmc::context::Context>::new (context.rs:72)\n==119159==    by 0x481CC48: __rust_std_internal_init_fn (library/std/src/sync/mpmc/context.rs:43)\n==119159==    by 0x481CC48: call_once<fn() -> core::cell::Cell<core::option::Option<std::sync::mpmc::context::Context>>, ()> (library/core/src/ops/function.rs:250)\n==119159==    by 0x481CC48: unwrap_or_else<core::cell::Cell<core::option::Option<std::sync::mpmc::context::Context>>, fn() -> core::cell::Cell<core::option::Option<std::sync::mpmc::context::Context>>> (library/core/src/option.rs:1065)\n==119159==    by 0x481CC48: <std::sys::thread_local::native::lazy::Storage<core::cell::Cell<core::option::Option<std::sync::mpmc::context::Context>>, ()>>::get_or_init_slow::<<std::sync::mpmc::context::Context>::with::CONTEXT::__rust_std_internal_init_fn> (library/std/src/sys/thread_local/native/lazy.rs:80)\n==119159==    by 0x481BA42: get_or_init<core::cell::Cell<core::option::Option<std::sync::mpmc::context::Context>>, (), fn() -> core::cell::Cell<core::option::Option<std::sync::mpmc::context::Context>>> (library/std/src/sys/thread_local/native/lazy.rs:62)\n==119159==    by 0x481BA42: {closure#0} (library/std/src/sys/thread_local/native/mod.rs:97)\n==119159==    by 0x481BA42: call_once<std::sync::mpmc::context::{impl#0}::with::CONTEXT::{constant#0}::{closure_env#0}, (core::option::Option<&mut core::option::Option<core::cell::Cell<core::option::Option<std::sync::mpmc::context::Context>>>>)> (library/core/src/ops/function.rs:250)\n==119159==    by 0x481BA42: try_with<core::cell::Cell<core::option::Option<std::sync::mpmc::context::Context>>, std::sync::mpmc::context::{impl#0}::with::{closure_env#1}<std::sync::mpmc::list::{impl#3}::recv::{closure_env#1}<u32>, ()>, ()> (library/std/src/thread/local.rs:462)\n==119159==    by 0x481BA42: with<std::sync::mpmc::list::{impl#3}::recv::{closure_env#1}<u32>, ()> (library/std/src/sync/mpmc/context.rs:53)\n==119159==    by 0x481BA42: <std::sync::mpmc::list::Channel<u32>>::recv (library/std/src/sync/mpmc/list.rs:442)\n==119159==    by 0x481DC01: recv_deadline<u32> (library/std/src/sync/mpmc/mod.rs:1160)\n==119159==    by 0x481DC01: recv_timeout<u32> (library/std/src/sync/mpmc/mod.rs:1092)\n==119159==    by 0x481DC01: recv_timeout<u32> (library/std/src/sync/mpsc.rs:950)\n==119159==    by 0x481DC01: std_libtest_control::main (std_libtest_control.rs:26)\n==119159==    by 0x4821262: call_once<fn(), ()> (library/core/src/ops/function.rs:250)\n==119159==    by 0x4821262: std::sys::backtrace::__rust_begin_short_backtrace::<fn(), ()> (library/std/src/sys/backtrace.rs:166)\n==119159==    by 0x48213F8: std::rt::lang_start::<()>::{closure#0} (library/std/src/rt.rs:206)\n==119159==    by 0x4849CF8: call_once<(), (dyn core::ops::function::Fn<(), Output=i32> + core::marker::Sync + core::panic::unwind_safe::RefUnwindSafe)> (function.rs:287)\n==119159==    by 0x4849CF8: do_call<&(dyn core::ops::function::Fn<(), Output=i32> + core::marker::Sync + core::panic::unwind_safe::RefUnwindSafe), i32> (panicking.rs:576)\n==119159==    by 0x4849CF8: catch_unwind<i32, &(dyn core::ops::function::Fn<(), Output=i32> + core::marker::Sync + core::panic::unwind_safe::RefUnwindSafe)> (panicking.rs:544)\n==119159==    by 0x4849CF8: catch_unwind<&(dyn core::ops::function::Fn<(), Output=i32> + core::marker::Sync + core::panic::unwind_safe::RefUnwindSafe), i32> (panic.rs:359)\n==119159==    by 0x4849CF8: {closure#0} (rt.rs:175)\n==119159==    by 0x4849CF8: do_call<std::rt::lang_start_internal::{closure_env#0}, isize> (panicking.rs:576)\n==119159==    by 0x4849CF8: catch_unwind<isize, std::rt::lang_start_internal::{closure_env#0}> (panicking.rs:544)\n==119159==    by 0x4849CF8: catch_unwind<std::rt::lang_start_internal::{closure_env#0}, isize> (panic.rs:359)\n==119159==    by 0x4849CF8: std::rt::lang_start_internal (rt.rs:171)\n==119159==    by 0x481E85B: main (in /workspace/rust48-local-run/std-control)",
+          "std_thread_frame": true,
+          "std_channel_frame": true,
+          "libtest_frame": false,
+          "classification": "std_thread_or_channel"
+        }
+      ],
+      "observation": "measurement_failed_with_errors",
+      "only_scoped_runtime_48_errors": true,
+      "memory_measurement_passed": false
+    },
+    {
+      "name": "libtest-default",
+      "rust_test_nocapture": null,
+      "diagnostic_complete": true,
+      "production_memory_passed": false,
+      "errors": [],
+      "native": {
+        "command": [
+          "/workspace/rust48-tools/runtime/ld-linux-x86-64.so.2",
+          "--library-path",
+          "/workspace/rust48-tools/debian/usr/lib/x86_64-linux-gnu",
+          "/workspace/rust48-local-run/libtest-control",
+          "--exact",
+          "control::empty",
+          "--test-threads=1"
+        ],
+        "timeout_seconds": 120,
+        "exit": 0,
+        "timed_out": false,
+        "stdout_file": "libtest-default-native.stdout",
+        "stderr_file": "libtest-default-native.stderr",
+        "stdout_sha256": "4e77f762f8abd323fb2fc158b0bc84fde42c3453d38793361ae6a61636efe501",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout": "\nrunning 1 test\ntest control::empty ... ok\n\ntest result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s\n\n",
+        "stderr": "",
+        "expected_output": true
+      },
+      "memcheck": {
+        "command": [
+          "/workspace/rust48-tools/debian/usr/bin/valgrind",
+          "--command-line-only=yes",
+          "--tool=memcheck",
+          "--leak-check=full",
+          "--show-leak-kinds=all",
+          "--errors-for-leak-kinds=definite,indirect,possible",
+          "--error-exitcode=99",
+          "--track-origins=yes",
+          "--log-file=/workspace/rust48-local-run/libtest-default-memcheck.log",
+          "/workspace/rust48-tools/runtime/ld-linux-x86-64.so.2",
+          "--library-path",
+          "/workspace/rust48-tools/debian/usr/lib/x86_64-linux-gnu",
+          "/workspace/rust48-local-run/libtest-control",
+          "--exact",
+          "control::empty",
+          "--test-threads=1"
+        ],
+        "timeout_seconds": 120,
+        "exit": 99,
+        "timed_out": false,
+        "stdout_file": "libtest-default-memcheck.stdout",
+        "stderr_file": "libtest-default-memcheck.stderr",
+        "stdout_sha256": "425d2f3ea9b3f47b6c8145acbdfef4ca1432e264e6be87b418d391a4fdbea4e0",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout": "\nrunning 1 test\ntest control::empty ... ok\n\ntest result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.08s\n\n",
+        "stderr": "",
+        "expected_output": true,
+        "log_file": "libtest-default-memcheck.log",
+        "log_sha256": "f3c0098b076b437eae0ca68eee18bd96a6550127cf156fd8cee568436af7338a"
+      },
+      "summary": {
+        "errors": 1,
+        "contexts": 1,
+        "suppressed_errors": 0,
+        "suppressed_contexts": 0
+      },
+      "leaks": {
+        "definitely lost": {
+          "bytes": 0,
+          "blocks": 0
+        },
+        "indirectly lost": {
+          "bytes": 0,
+          "blocks": 0
+        },
+        "possibly lost": {
+          "bytes": 48,
+          "blocks": 1
+        },
+        "still reachable": {
+          "bytes": 548,
+          "blocks": 2
+        },
+        "suppressed": {
+          "bytes": 0,
+          "blocks": 0
+        }
+      },
+      "possibly_lost_48_records": [
+        {
+          "stack": "==119163== 48 bytes in 1 blocks are possibly lost in loss record 2 of 3\n==119163==    at 0x48DF818: malloc (vg_replace_malloc.c:446)\n==119163==    by 0x489419E: alloc (unix.rs:31)\n==119163==    by 0x489419E: alloc_impl (alloc.rs:161)\n==119163==    by 0x489419E: allocate (alloc.rs:223)\n==119163==    by 0x489419E: {closure#0}<std::thread::thread::Inner, std::alloc::System> (sync.rs:823)\n==119163==    by 0x489419E: allocate_for_layout<core::mem::maybe_uninit::MaybeUninit<std::thread::thread::Inner>, alloc::sync::{impl#17}::new_uninit_in::{closure_env#0}<std::thread::thread::Inner, std::alloc::System>, fn(*mut u8) -> *mut alloc::sync::ArcInner<core::mem::maybe_uninit::MaybeUninit<std::thread::thread::Inner>>> (sync.rs:2191)\n==119163==    by 0x489419E: new_uninit_in<std::thread::thread::Inner, std::alloc::System> (sync.rs:821)\n==119163==    by 0x489419E: <std::thread::thread::Thread>::new (thread.rs:102)\n==119163==    by 0x48A41A9: std::thread::current::init_current (current.rs:294)\n==119163==    by 0x4888B6F: current_or_unnamed (current.rs:251)\n==119163==    by 0x4888B6F: <std::sync::mpmc::context::Context>::new (context.rs:72)\n==119163==    by 0x48331AD: __rust_std_internal_init_fn (context.rs:43)\n==119163==    by 0x48331AD: call_once<fn() -> core::cell::Cell<core::option::Option<std::sync::mpmc::context::Context>>, ()> (function.rs:250)\n==119163==    by 0x48331AD: unwrap_or_else<core::cell::Cell<core::option::Option<std::sync::mpmc::context::Context>>, fn() -> core::cell::Cell<core::option::Option<std::sync::mpmc::context::Context>>> (option.rs:1065)\n==119163==    by 0x48331AD: <std::sys::thread_local::native::lazy::Storage<core::cell::Cell<core::option::Option<std::sync::mpmc::context::Context>>, ()>>::get_or_init_slow::<<std::sync::mpmc::context::Context>::with::CONTEXT::__rust_std_internal_init_fn> (lazy.rs:80)\n==119163==    by 0x484C2CB: get_or_init<core::cell::Cell<core::option::Option<std::sync::mpmc::context::Context>>, (), fn() -> core::cell::Cell<core::option::Option<std::sync::mpmc::context::Context>>> (lazy.rs:62)\n==119163==    by 0x484C2CB: {closure#0} (mod.rs:97)\n==119163==    by 0x484C2CB: call_once<std::sync::mpmc::context::{impl#0}::with::CONTEXT::{constant#0}::{closure_env#0}, (core::option::Option<&mut core::option::Option<core::cell::Cell<core::option::Option<std::sync::mpmc::context::Context>>>>)> (function.rs:250)\n==119163==    by 0x484C2CB: try_with<core::cell::Cell<core::option::Option<std::sync::mpmc::context::Context>>, std::sync::mpmc::context::{impl#0}::with::{closure_env#1}<std::sync::mpmc::list::{impl#3}::recv::{closure_env#1}<test::event::CompletedTest>, ()>, ()> (local.rs:462)\n==119163==    by 0x484C2CB: with<std::sync::mpmc::list::{impl#3}::recv::{closure_env#1}<test::event::CompletedTest>, ()> (context.rs:53)\n==119163==    by 0x484C2CB: <std::sync::mpmc::list::Channel<test::event::CompletedTest>>::recv (list.rs:442)\n==119163==    by 0x4858ED9: recv<test::event::CompletedTest> (mod.rs:1025)\n==119163==    by 0x4858ED9: recv<test::event::CompletedTest> (mpsc.rs:890)\n==119163==    by 0x4858ED9: run_tests<test::console::run_tests_console::{closure_env#2}> (lib.rs:445)\n==119163==    by 0x4858ED9: test::console::run_tests_console (console.rs:328)\n==119163==    by 0x4844CBC: test_main_inner<test::test_main_static::{closure_env#0}> (lib.rs:170)\n==119163==    by 0x4844CBC: test::test_main_static (lib.rs:195)\n==119163==    by 0x4832912: call_once<fn(), ()> (library/core/src/ops/function.rs:250)\n==119163==    by 0x4832912: std::sys::backtrace::__rust_begin_short_backtrace::<fn(), ()> (library/std/src/sys/backtrace.rs:166)\n==119163==    by 0x4832928: std::rt::lang_start::<()>::{closure#0} (library/std/src/rt.rs:206)\n==119163==    by 0x48A2178: call_once<(), (dyn core::ops::function::Fn<(), Output=i32> + core::marker::Sync + core::panic::unwind_safe::RefUnwindSafe)> (function.rs:287)\n==119163==    by 0x48A2178: do_call<&(dyn core::ops::function::Fn<(), Output=i32> + core::marker::Sync + core::panic::unwind_safe::RefUnwindSafe), i32> (panicking.rs:576)\n==119163==    by 0x48A2178: catch_unwind<i32, &(dyn core::ops::function::Fn<(), Output=i32> + core::marker::Sync + core::panic::unwind_safe::RefUnwindSafe)> (panicking.rs:544)\n==119163==    by 0x48A2178: catch_unwind<&(dyn core::ops::function::Fn<(), Output=i32> + core::marker::Sync + core::panic::unwind_safe::RefUnwindSafe), i32> (panic.rs:359)\n==119163==    by 0x48A2178: {closure#0} (rt.rs:175)\n==119163==    by 0x48A2178: do_call<std::rt::lang_start_internal::{closure_env#0}, isize> (panicking.rs:576)\n==119163==    by 0x48A2178: catch_unwind<isize, std::rt::lang_start_internal::{closure_env#0}> (panicking.rs:544)\n==119163==    by 0x48A2178: catch_unwind<std::rt::lang_start_internal::{closure_env#0}, isize> (panic.rs:359)\n==119163==    by 0x48A2178: std::rt::lang_start_internal (rt.rs:171)\n==119163==    by 0x483299B: main (in /workspace/rust48-local-run/libtest-control)",
+          "std_thread_frame": true,
+          "std_channel_frame": true,
+          "libtest_frame": true,
+          "classification": "std_thread_and_libtest"
+        }
+      ],
+      "observation": "measurement_failed_with_errors",
+      "only_scoped_runtime_48_errors": true,
+      "memory_measurement_passed": false
+    },
+    {
+      "name": "libtest-nocapture",
+      "rust_test_nocapture": "1",
+      "diagnostic_complete": true,
+      "production_memory_passed": false,
+      "errors": [],
+      "native": {
+        "command": [
+          "/workspace/rust48-tools/runtime/ld-linux-x86-64.so.2",
+          "--library-path",
+          "/workspace/rust48-tools/debian/usr/lib/x86_64-linux-gnu",
+          "/workspace/rust48-local-run/libtest-control",
+          "--exact",
+          "control::empty",
+          "--test-threads=1"
+        ],
+        "timeout_seconds": 120,
+        "exit": 0,
+        "timed_out": false,
+        "stdout_file": "libtest-nocapture-native.stdout",
+        "stderr_file": "libtest-nocapture-native.stderr",
+        "stdout_sha256": "4e77f762f8abd323fb2fc158b0bc84fde42c3453d38793361ae6a61636efe501",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout": "\nrunning 1 test\ntest control::empty ... ok\n\ntest result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s\n\n",
+        "stderr": "",
+        "expected_output": true
+      },
+      "memcheck": {
+        "command": [
+          "/workspace/rust48-tools/debian/usr/bin/valgrind",
+          "--command-line-only=yes",
+          "--tool=memcheck",
+          "--leak-check=full",
+          "--show-leak-kinds=all",
+          "--errors-for-leak-kinds=definite,indirect,possible",
+          "--error-exitcode=99",
+          "--track-origins=yes",
+          "--log-file=/workspace/rust48-local-run/libtest-nocapture-memcheck.log",
+          "/workspace/rust48-tools/runtime/ld-linux-x86-64.so.2",
+          "--library-path",
+          "/workspace/rust48-tools/debian/usr/lib/x86_64-linux-gnu",
+          "/workspace/rust48-local-run/libtest-control",
+          "--exact",
+          "control::empty",
+          "--test-threads=1"
+        ],
+        "timeout_seconds": 120,
+        "exit": 99,
+        "timed_out": false,
+        "stdout_file": "libtest-nocapture-memcheck.stdout",
+        "stderr_file": "libtest-nocapture-memcheck.stderr",
+        "stdout_sha256": "425d2f3ea9b3f47b6c8145acbdfef4ca1432e264e6be87b418d391a4fdbea4e0",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout": "\nrunning 1 test\ntest control::empty ... ok\n\ntest result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.08s\n\n",
+        "stderr": "",
+        "expected_output": true,
+        "log_file": "libtest-nocapture-memcheck.log",
+        "log_sha256": "d11d2ca9641d1de107c3001315db4a654732527a38e6fda7b5829fb7e4ed3206"
+      },
+      "summary": {
+        "errors": 1,
+        "contexts": 1,
+        "suppressed_errors": 0,
+        "suppressed_contexts": 0
+      },
+      "leaks": {
+        "definitely lost": {
+          "bytes": 0,
+          "blocks": 0
+        },
+        "indirectly lost": {
+          "bytes": 0,
+          "blocks": 0
+        },
+        "possibly lost": {
+          "bytes": 48,
+          "blocks": 1
+        },
+        "still reachable": {
+          "bytes": 548,
+          "blocks": 2
+        },
+        "suppressed": {
+          "bytes": 0,
+          "blocks": 0
+        }
+      },
+      "possibly_lost_48_records": [
+        {
+          "stack": "==119167== 48 bytes in 1 blocks are possibly lost in loss record 2 of 3\n==119167==    at 0x48DF818: malloc (vg_replace_malloc.c:446)\n==119167==    by 0x489419E: alloc (unix.rs:31)\n==119167==    by 0x489419E: alloc_impl (alloc.rs:161)\n==119167==    by 0x489419E: allocate (alloc.rs:223)\n==119167==    by 0x489419E: {closure#0}<std::thread::thread::Inner, std::alloc::System> (sync.rs:823)\n==119167==    by 0x489419E: allocate_for_layout<core::mem::maybe_uninit::MaybeUninit<std::thread::thread::Inner>, alloc::sync::{impl#17}::new_uninit_in::{closure_env#0}<std::thread::thread::Inner, std::alloc::System>, fn(*mut u8) -> *mut alloc::sync::ArcInner<core::mem::maybe_uninit::MaybeUninit<std::thread::thread::Inner>>> (sync.rs:2191)\n==119167==    by 0x489419E: new_uninit_in<std::thread::thread::Inner, std::alloc::System> (sync.rs:821)\n==119167==    by 0x489419E: <std::thread::thread::Thread>::new (thread.rs:102)\n==119167==    by 0x48A41A9: std::thread::current::init_current (current.rs:294)\n==119167==    by 0x4888B6F: current_or_unnamed (current.rs:251)\n==119167==    by 0x4888B6F: <std::sync::mpmc::context::Context>::new (context.rs:72)\n==119167==    by 0x48331AD: __rust_std_internal_init_fn (context.rs:43)\n==119167==    by 0x48331AD: call_once<fn() -> core::cell::Cell<core::option::Option<std::sync::mpmc::context::Context>>, ()> (function.rs:250)\n==119167==    by 0x48331AD: unwrap_or_else<core::cell::Cell<core::option::Option<std::sync::mpmc::context::Context>>, fn() -> core::cell::Cell<core::option::Option<std::sync::mpmc::context::Context>>> (option.rs:1065)\n==119167==    by 0x48331AD: <std::sys::thread_local::native::lazy::Storage<core::cell::Cell<core::option::Option<std::sync::mpmc::context::Context>>, ()>>::get_or_init_slow::<<std::sync::mpmc::context::Context>::with::CONTEXT::__rust_std_internal_init_fn> (lazy.rs:80)\n==119167==    by 0x484C2CB: get_or_init<core::cell::Cell<core::option::Option<std::sync::mpmc::context::Context>>, (), fn() -> core::cell::Cell<core::option::Option<std::sync::mpmc::context::Context>>> (lazy.rs:62)\n==119167==    by 0x484C2CB: {closure#0} (mod.rs:97)\n==119167==    by 0x484C2CB: call_once<std::sync::mpmc::context::{impl#0}::with::CONTEXT::{constant#0}::{closure_env#0}, (core::option::Option<&mut core::option::Option<core::cell::Cell<core::option::Option<std::sync::mpmc::context::Context>>>>)> (function.rs:250)\n==119167==    by 0x484C2CB: try_with<core::cell::Cell<core::option::Option<std::sync::mpmc::context::Context>>, std::sync::mpmc::context::{impl#0}::with::{closure_env#1}<std::sync::mpmc::list::{impl#3}::recv::{closure_env#1}<test::event::CompletedTest>, ()>, ()> (local.rs:462)\n==119167==    by 0x484C2CB: with<std::sync::mpmc::list::{impl#3}::recv::{closure_env#1}<test::event::CompletedTest>, ()> (context.rs:53)\n==119167==    by 0x484C2CB: <std::sync::mpmc::list::Channel<test::event::CompletedTest>>::recv (list.rs:442)\n==119167==    by 0x4858ED9: recv<test::event::CompletedTest> (mod.rs:1025)\n==119167==    by 0x4858ED9: recv<test::event::CompletedTest> (mpsc.rs:890)\n==119167==    by 0x4858ED9: run_tests<test::console::run_tests_console::{closure_env#2}> (lib.rs:445)\n==119167==    by 0x4858ED9: test::console::run_tests_console (console.rs:328)\n==119167==    by 0x4844CBC: test_main_inner<test::test_main_static::{closure_env#0}> (lib.rs:170)\n==119167==    by 0x4844CBC: test::test_main_static (lib.rs:195)\n==119167==    by 0x4832912: call_once<fn(), ()> (library/core/src/ops/function.rs:250)\n==119167==    by 0x4832912: std::sys::backtrace::__rust_begin_short_backtrace::<fn(), ()> (library/std/src/sys/backtrace.rs:166)\n==119167==    by 0x4832928: std::rt::lang_start::<()>::{closure#0} (library/std/src/rt.rs:206)\n==119167==    by 0x48A2178: call_once<(), (dyn core::ops::function::Fn<(), Output=i32> + core::marker::Sync + core::panic::unwind_safe::RefUnwindSafe)> (function.rs:287)\n==119167==    by 0x48A2178: do_call<&(dyn core::ops::function::Fn<(), Output=i32> + core::marker::Sync + core::panic::unwind_safe::RefUnwindSafe), i32> (panicking.rs:576)\n==119167==    by 0x48A2178: catch_unwind<i32, &(dyn core::ops::function::Fn<(), Output=i32> + core::marker::Sync + core::panic::unwind_safe::RefUnwindSafe)> (panicking.rs:544)\n==119167==    by 0x48A2178: catch_unwind<&(dyn core::ops::function::Fn<(), Output=i32> + core::marker::Sync + core::panic::unwind_safe::RefUnwindSafe), i32> (panic.rs:359)\n==119167==    by 0x48A2178: {closure#0} (rt.rs:175)\n==119167==    by 0x48A2178: do_call<std::rt::lang_start_internal::{closure_env#0}, isize> (panicking.rs:576)\n==119167==    by 0x48A2178: catch_unwind<isize, std::rt::lang_start_internal::{closure_env#0}> (panicking.rs:544)\n==119167==    by 0x48A2178: catch_unwind<std::rt::lang_start_internal::{closure_env#0}, isize> (panic.rs:359)\n==119167==    by 0x48A2178: std::rt::lang_start_internal (rt.rs:171)\n==119167==    by 0x483299B: main (in /workspace/rust48-local-run/libtest-control)",
+          "std_thread_frame": true,
+          "std_channel_frame": true,
+          "libtest_frame": true,
+          "classification": "std_thread_and_libtest"
+        }
+      ],
+      "observation": "measurement_failed_with_errors",
+      "only_scoped_runtime_48_errors": true,
+      "memory_measurement_passed": false
+    }
+  ],
+  "interpretation": "A 48-byte possibly-lost allocation with std thread/channel or libtest frames was reproduced without Spiral. This supports a runtime attribution hypothesis; it does not establish the cause of the original finding, prove harmlessness, or make the production memory check pass.",
+  "source": {
+    "file": "std_libtest_control.rs",
+    "sha256": "93a8cbc8cc3083c059d882914e70d31c38fd73c1ae69389661be68f2e2b862b1"
+  },
+  "tools": {
+    "rustc": {
+      "command": [
+        "/workspace/rust48-tools/rust/bin/rustc",
+        "-Vv"
+      ],
+      "timeout_seconds": 120,
+      "exit": 0,
+      "timed_out": false,
+      "stdout_file": "rustc-version.stdout",
+      "stderr_file": "rustc-version.stderr",
+      "stdout_sha256": "f22d5e4e9ced367e774ce5bc140d9e6b1235c1882fec80d011044851f3ae6369",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout": "rustc 1.99.1 (58cf8f9c3 2026-10-13)\nbinary: rustc\ncommit-hash: 58cf8f9c35b355199727627d07ae34a4e2846d67\ncommit-date: 2026-10-13\nhost: x86_64-unknown-linux-gnu\nrelease: 1.99.1\nLLVM version: 23.1.1\n",
+      "stderr": "",
+      "executable_sha256": "b53b780f77f952062f8ca8a3b70aef2390b1e45ad91939be94afdc9543026853"
+    },
+    "valgrind": {
+      "command": [
+        "/workspace/rust48-tools/debian/usr/bin/valgrind",
+        "--version"
+      ],
+      "timeout_seconds": 120,
+      "exit": 0,
+      "timed_out": false,
+      "stdout_file": "valgrind-version.stdout",
+      "stderr_file": "valgrind-version.stderr",
+      "stdout_sha256": "c56d93e4fc5c2d5ba06a9e396d824aeab4521f7d4f6ffc72962be8dfd9399de4",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout": "valgrind-3.24.0\n",
+      "stderr": "",
+      "executable_sha256": "4652774bd116cb49951ef74115ad4237cad5021b2bd4d80002f09d986ec438b9"
+    }
+  },
+  "loader": {
+    "path": "/workspace/rust48-tools/runtime/ld-linux-x86-64.so.2",
+    "sha256": "c8438e4fde1934e61c88311633f00949ff645d5c04cdb8671fa3d78164d2f307",
+    "library_path": "/workspace/rust48-tools/debian/usr/lib/x86_64-linux-gnu",
+    "applies_to": "both native and Memcheck fixture executions"
+  },
+  "builds": {
+    "main": {
+      "command": [
+        "/workspace/rust48-tools/rust/bin/rustc",
+        "-g",
+        "-C",
+        "opt-level=2",
+        "/workspace/rust48-local-run/std_libtest_control.rs",
+        "-o",
+        "/workspace/rust48-local-run/std-control"
+      ],
+      "timeout_seconds": 120,
+      "exit": 0,
+      "timed_out": false,
+      "stdout_file": "build-main.stdout",
+      "stderr_file": "build-main.stderr",
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout": "",
+      "stderr": "",
+      "binary": "std-control",
+      "binary_sha256": "20f724870d5c88c94570d9255317fc05da5dbe011668781eb13df6f245803b2a"
+    },
+    "libtest": {
+      "command": [
+        "/workspace/rust48-tools/rust/bin/rustc",
+        "-g",
+        "-C",
+        "opt-level=2",
+        "--test",
+        "/workspace/rust48-local-run/std_libtest_control.rs",
+        "-o",
+        "/workspace/rust48-local-run/libtest-control"
+      ],
+      "timeout_seconds": 120,
+      "exit": 0,
+      "timed_out": false,
+      "stdout_file": "build-libtest.stdout",
+      "stderr_file": "build-libtest.stderr",
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout": "",
+      "stderr": "",
+      "binary": "libtest-control",
+      "binary_sha256": "27ad78fd0f75f32d5dfc6a995673e24c0f769f187e3ba3e9e003890502410176"
+    }
+  },
+  "runtime_48_byte_warning_reproduced_in": [
+    "thread-current",
+    "channel-roundtrip",
+    "libtest-default",
+    "libtest-nocapture"
+  ]
+}

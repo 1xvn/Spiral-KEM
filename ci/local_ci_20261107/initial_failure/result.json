@@ -1,0 +1,28 @@
+{
+  "started_utc": "2026-11-07T07:15:02.902699+00:00",
+  "status": "failed",
+  "scope": "functional checks only; not memory or constant-time approval",
+  "checks": [
+    {
+      "name": "python-protocol",
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3.12",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "protocol_v01/tests",
+        "-v"
+      ],
+      "timeout_seconds": 300,
+      "passed": false,
+      "exit": 1,
+      "log": "python-protocol.log",
+      "tests_run": 47
+    }
+  ],
+  "memory_checked": false,
+  "constant_time_approved": false,
+  "error": "python-protocol",
+  "finished_utc": "2026-11-07T07:15:03.230722+00:00"
+}
