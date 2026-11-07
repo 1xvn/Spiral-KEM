@@ -6,6 +6,10 @@ rust-version = "1.99"
 publish = false
 build = "build.rs"
 
+[features]
+default = []
+parser-fuzz = []
+
 [dependencies]
 tokio = { version = "=1.54.1", features = ["rt-multi-thread", "macros", "net", "io-util", "sync", "time"] }
 rustls = { version = "=0.23.46", default-features = false, features = ["ring", "std"] }

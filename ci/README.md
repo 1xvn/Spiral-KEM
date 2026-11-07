@@ -10,6 +10,7 @@ Successful functionality checks do not mean overall memory, constant-time, or cr
 | Functional validation | push, Pull Request, manual | Python/C/Rust functionality and real TLS. Failures, 0 tests, and unexpected skips fail |
 | Coverage-guided Python fuzzing | push, Pull Request, manual, every Monday 04:29 UTC | Fuzz 5 targets using Python runtime feedback. Exceptions, verdict mismatches, 0 executions, and initialization-only runs fail |
 | Native C ciphertext fuzzing | push, Pull Request, manual | C ciphertext/key lifetime checks and Python differential checks of saved corpus. Uses ASan/UBSan/leak checks; OCI/WSL runs are separate |
+| Rust parser coverage fuzzing | push, Pull Request, manual | Validate frame/ClientHello parser instrumentation with a separately pinned nightly, then fuzz and recheck with Python. OCI/WSL runs are separate |
 | Runtime memory diagnostics | Manual, every Monday 02:17 UTC on default branch | Minimal std/libtest controls. Separate diagnostic completion from memory approval; reproduced warnings are failures |
 
 For PRs, see **Checks** for functional results. Repository **Actions** provides per-run logs and
@@ -24,7 +25,7 @@ TLS AES-GCM, full Rust taint/memory checks, and long-running fuzzing are outside
 
 ## Reproducible conditions
 
-- The root `rust-toolchain.toml` and CI use Rust **1.99.1**. Cargo dependencies are installed with `--locked`.
+- The root `rust-toolchain.toml` and functional CI use Rust **1.99.1**. Only Rust parser fuzzing uses **nightly-2026-11-07** in a separate directory. Cargo dependencies are installed with `--locked`.
 - Use Python **3.12** and existing exact-pin requirements.
 - Actions checkout/setup-python/upload-artifact are pinned to commit SHAs verified in official repositories.
 - Workflow permissions are `contents: read`; checkout credential persistence is disabled. `pull_request_target` is not used.

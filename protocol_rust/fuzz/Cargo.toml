@@ -1,0 +1,39 @@
+[package]
+name = "spiral-parser-fuzz"
+version = "0.0.0"
+edition = "2021"
+publish = false
+
+[workspace]
+members = ["."]
+
+[dependencies]
+libfuzzer-sys = "=0.4.10"
+spiral-protocol = { path = "..", features = ["parser-fuzz"] }
+serde_json = "1.0"
+hex = "0.4"
+
+[profile.release]
+opt-level = 1
+debug = 1
+codegen-units = 1
+lto = false
+panic = "abort"
+
+[[bin]]
+name = "frame_target"
+path = "frame_target.rs"
+test = false
+doc = false
+
+[[bin]]
+name = "hello_target"
+path = "hello_target.rs"
+test = false
+doc = false
+
+[[bin]]
+name = "replay_target"
+path = "replay_target.rs"
+test = false
+doc = false
