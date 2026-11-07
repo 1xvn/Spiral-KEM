@@ -1,4 +1,4 @@
-"""Instrumented Rust frame/ClientHello campaigns with saved-corpus replay."""
+"""Instrumented Rust parser or DATA/CLOSE state campaigns with saved-corpus replay."""
 import argparse
 from datetime import datetime, timezone
 import hashlib
@@ -83,7 +83,7 @@ def source_names():
              ROOT/'native_research/spiral_native.c', ROOT/'native_research/spiral_native.h',
              ROOT/'protocol_v01/tests/fixtures/test_vectors_v0.1.json']
     paths += list((ROOT/'protocol_rust/src').rglob('*.rs'))
-    paths += list((ROOT/'protocol_rust/fuzz').glob('*.rs'))
+    paths += list((ROOT/'protocol_rust/fuzz').rglob('*.rs'))
     paths += list((ROOT/'protocol_rust/fuzzing').glob('*.py'))
     return sorted(str(path.relative_to(ROOT)) for path in set(paths))
 
@@ -135,8 +135,33 @@ def build_environment(toolchain, trace):
     return env
 
 
+def suite_configuration(suite):
+    """Keep target selection explicit so an incomplete suite cannot pass."""
+    if suite == 'parsers':
+        return inputs, ('frame','hello'), ('frame_target','hello_target','replay_target'), 'replay_target'
+    if suite == 'records':
+        from protocol_rust.fuzzing import record_inputs
+        return record_inputs, ('record',), ('record_target','record_replay'), 'record_replay'
+    raise ValueError('unknown fuzz suite: '+str(suite))
+
+
+def model_test_environment(env):
+    """Run independent model tests separately from the audited release build."""
+    result = dict(env)
+    for key in ('RUSTC_WRAPPER','RUSTC_WORKSPACE_WRAPPER','SPIRAL_RUSTC_TRACE',
+                'RUSTFLAGS','CARGO_ENCODED_RUSTFLAGS'):
+        result.pop(key,None)
+    return result
+
+
+def model_tests_completed(log):
+    counts = re.findall(r'test result: ok\.\s+(\d+) passed;', log)
+    return bool(counts) and sum(map(int, counts)) > 0
+
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument('--suite',choices=['parsers','records'],default='parsers')
     parser.add_argument('--label',choices=['oci','wsl','local'],required=True)
     parser.add_argument('--toolchain-dir',type=Path,required=True)
     parser.add_argument('--runs',type=int,default=100000)
@@ -144,6 +169,7 @@ def main():
     parser.add_argument('--jobs',type=int,default=2)
     parser.add_argument('--output',type=Path,required=True)
     args = parser.parse_args()
+    references, required_targets, binary_names, replay_binary = suite_configuration(args.suite)
     if not __debug__:
         parser.error('Python -O disables oracle assertions')
     if not 100 <= args.runs <= 10000000 or not 1 <= args.seconds <= 3600 or not 1 <= args.jobs <= 4:
@@ -162,10 +188,10 @@ def main():
     out.mkdir(parents=True)
     print('Output:',out,flush=True)
     build = out/'build'; build.mkdir()
-    report = {'status':'incomplete','label':args.label,'started_utc':datetime.now(timezone.utc).isoformat(),
+    report = {'status':'incomplete','label':args.label,'suite':args.suite,'started_utc':datetime.now(timezone.utc).isoformat(),
               'platform':platform.uname()._asdict(),'python':sys.version,'commands':[], 'targets':[],
               'requested_runs_per_target':args.runs,'seconds_per_target':args.seconds,
-              'scope':'Reachable Rust frame/ClientHello protocol code; Rust driver/oracles lack sancov; no C/OpenSSL/prebuilt-std coverage claim; saved-corpus replay is finite',
+              'scope':coverage_evidence.profile_for(args.suite).scope+' Saved-corpus Python replay is finite; prebuilt-std coverage is not claimed.',
               'constant_time_approved':False,'security_approved':False}
     started = time.monotonic()
     toolchain = args.toolchain_dir.expanduser().resolve()
@@ -189,8 +215,8 @@ def main():
         return text
 
     try:
-        if tuple(inputs.TARGETS) != ('frame','hello'):
-            raise RuntimeError('both frame and hello targets are required')
+        if tuple(references.TARGETS) != required_targets:
+            raise RuntimeError('all suite targets are required: '+repr(required_targets))
         names = source_names()
         report['source_sha256'] = {name:digest(ROOT/name) for name in names}
         report['commit'] = run('git-head',['git','rev-parse','HEAD'],30).strip()
@@ -219,24 +245,37 @@ def main():
             (out/'os-release.txt').write_bytes(Path('/etc/os-release').read_bytes())
         if shutil.which('openssl'):
             run('openssl',['openssl','version','-a'],30)
-        # Rust std-only oracle tests exercise our independent decisions too.
-        oracle_tests = build/'oracle-tests'
-        run('compile-oracle-tests',[str(toolchain/'bin/rustc'),'--edition','2021','--test',
-            str(ROOT/'protocol_rust/fuzz/oracles.rs'),'-o',str(oracle_tests)],120)
-        run('oracle-tests',[str(oracle_tests)],120)
+        if args.suite == 'parsers':
+            # Parser references are std-only and do not link production code.
+            oracle_tests = build/'oracle-tests'
+            run('compile-oracle-tests',[str(toolchain/'bin/rustc'),'--edition','2021','--test',
+                str(ROOT/'protocol_rust/fuzz/oracles.rs'),'-o',str(oracle_tests)],120)
+            run('oracle-tests',[str(oracle_tests)],120)
+        else:
+            # The independent record model uses ring rather than the production
+            # ChaCha20Poly1305 crate. Keep these tests out of the compiler audit.
+            print('Testing the independent Rust record model.',flush=True)
+            model_log = run('record-model-tests',[str(toolchain/'bin/cargo'),'test','--locked','--manifest-path',
+                str(ROOT/'protocol_rust/fuzz/Cargo.toml'),'--bin','record_replay','--target',target,
+                '--target-dir',str(build/'model-test-target'),'-j',str(args.jobs)],1800,model_test_environment(env))
+            if not model_tests_completed(model_log):
+                raise RuntimeError('independent Rust record model tests did not execute')
         cargo_target = build/'cargo-target'
         print('Building Rust targets; first build can take several minutes. Log:',out/'cargo-build.log',flush=True)
-        run('cargo-build',[str(toolchain/'bin/cargo'),'build','--locked','--manifest-path',
+        build_command = [str(toolchain/'bin/cargo'),'build','--locked','--manifest-path',
             str(ROOT/'protocol_rust/fuzz/Cargo.toml'),'--release','--target',target,
-            '--target-dir',str(cargo_target),'-j',str(args.jobs)],1800,env)
-        binaries = {name:cargo_target/target/'release'/name for name in ('frame_target','hello_target','replay_target')}
+            '--target-dir',str(cargo_target),'-j',str(args.jobs)]
+        for name in binary_names:
+            build_command += ['--bin',name]
+        run('cargo-build',build_command,1800,env)
+        binaries = {name:cargo_target/target/'release'/name for name in binary_names}
         coverage_dir = out/'coverage'; coverage_dir.mkdir()
-        report['coverage'] = coverage_evidence.verify(cargo_target,trace,binaries,coverage_dir)
+        report['coverage'] = coverage_evidence.verify(cargo_target,trace,binaries,coverage_dir,suite=args.suite)
         if report['coverage'].get('status') != 'verified':
             raise RuntimeError('runtime-only coverage evidence was not verified')
-        print('Rust parser coverage verified; harness/oracles excluded.',flush=True)
-        corpus_seeds = inputs.seeds()
-        for name in inputs.TARGETS:
+        print('Rust',args.suite,'coverage verified; harness/oracles excluded.',flush=True)
+        corpus_seeds = references.seeds()
+        for name in references.TARGETS:
             work = out/name; corpus = work/'corpus'; artifacts = work/'artifacts'
             corpus.mkdir(parents=True); artifacts.mkdir(); (work/'replay').mkdir()
             entry = {'name':name,'status':'incomplete','differential':{'status':'incomplete','expected_files':0,
@@ -244,12 +283,12 @@ def main():
             report['targets'].append(entry)
             differential = entry['differential']
             for data in corpus_seeds[name]:
-                if len(data) > inputs.MAX_LEN[name]:
+                if len(data) > references.MAX_LEN[name]:
                     raise RuntimeError('initial seed exceeds target bound')
                 (corpus/hashlib.sha256(data).hexdigest()).write_bytes(data)
             entry['initial_corpus_files'] = len(list(corpus.iterdir()))
             command = [str(binaries[name+'_target']),str(corpus),'-runs='+str(args.runs),
-                '-max_total_time='+str(args.seconds),'-seed=20261107','-max_len='+str(inputs.MAX_LEN[name]),
+                '-max_total_time='+str(args.seconds),'-seed=20261107','-max_len='+str(references.MAX_LEN[name]),
                 '-timeout=5','-rss_limit_mb=1536','-print_final_stats=1','-artifact_prefix='+str(artifacts)+'/']
             report['commands'].append({'name':name+'/engine','argv':command,'timeout_seconds':args.seconds+60})
             print('Starting',name,'with at most',args.runs,'runs or',args.seconds,'seconds',flush=True)
@@ -261,18 +300,18 @@ def main():
                 raise RuntimeError(name+' engine failed or lacked search feedback')
             corpus_files = sorted(corpus.iterdir()); manifest = []
             for path in corpus_files:
-                if path.is_symlink() or not path.is_file() or path.stat().st_size > inputs.MAX_LEN[name]:
+                if path.is_symlink() or not path.is_file() or path.stat().st_size > references.MAX_LEN[name]:
                     raise RuntimeError('unexpected saved corpus file')
                 data = path.read_bytes()
                 manifest.append({'file':str(path.relative_to(out)),'sha256':hashlib.sha256(data).hexdigest(),
-                                 'bytes':len(data),'accepted':inputs.expected(name,data)['accepted']})
+                                 'bytes':len(data),'accepted':references.expected(name,data)['accepted']})
             (work/'corpus-manifest.json').write_text(json.dumps(manifest,indent=2)+'\n')
             entry['final_corpus_files'] = len(corpus_files)
             differential['expected_files'] = len(corpus_files)
             for at in range(0,len(corpus_files),32):
                 batch = corpus_files[at:at+32]
                 raw = run(name+'/replay/batch-'+str(at//32).zfill(4),
-                    [str(binaries['replay_target']),name,*map(str,batch)],180,env,True)
+                    [str(binaries[replay_binary]),name,*map(str,batch)],180,env,True)
                 rows = [decode_row(line) for line in raw.splitlines() if line.strip()]
                 if len(rows) != len(batch):
                     raise RuntimeError('native replay did not return every input')
@@ -280,7 +319,7 @@ def main():
                     data = path.read_bytes()
                     if hashlib.sha256(data).hexdigest()!=manifest[at+offset]['sha256']:
                         raise RuntimeError('input changed during replay')
-                    expected = inputs.expected(name,data)
+                    expected = references.expected(name,data)
                     if not matches_reference(row,path,expected):
                         artifact = artifacts/('differential-'+hashlib.sha256(data).hexdigest())
                         artifact.write_bytes(data)

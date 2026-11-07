@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Add parser-crate feedback and record every rustc invocation.
+"""Add protocol-crate feedback and record every rustc invocation.
 
 The runner supplies ASan flags separately.  Only the exact production library
 crate receives libFuzzer feedback; the targets and independent oracles do not.
@@ -18,7 +18,8 @@ COVERAGE_FLAGS = (
     "-Cllvm-args=-sanitizer-coverage-trace-compares",
 )
 IR_CRATES = frozenset(
-    {"spiral_protocol", "frame_target", "hello_target", "replay_target"}
+    {"spiral_protocol", "frame_target", "hello_target", "replay_target",
+     "record_target", "record_replay"}
 )
 
 

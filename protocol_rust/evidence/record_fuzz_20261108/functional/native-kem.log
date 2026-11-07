@@ -1,0 +1,18 @@
+make: Entering directory '/workspace/Spiral-KEM/native_research'
+cd .. && /workspace/spiral-protocol-v01/venv/bin/python -m unittest native_research.test_native -v
+make: Leaving directory '/workspace/Spiral-KEM/native_research'
+
+test_32_seeded_cross_implementation_roundtrips (native_research.test_native.NativeTests.test_32_seeded_cross_implementation_roundtrips) ... ok
+test_malformed_ciphertexts_consume_and_clear_key (native_research.test_native.NativeTests.test_malformed_ciphertexts_consume_and_clear_key) ... ok
+test_malformed_public_key_never_outputs_material (native_research.test_native.NativeTests.test_malformed_public_key_never_outputs_material) ... ok
+test_parallel_calls_claim_key_once (native_research.test_native.NativeTests.test_parallel_calls_claim_key_once) ... ok
+test_pinned_protocol_vector (native_research.test_native.NativeTests.test_pinned_protocol_vector) ... ok
+test_polynomial_boundary_and_random_inputs (native_research.test_native.NativeTests.test_polynomial_boundary_and_random_inputs) ... ok
+test_production_has_no_diagnostic_exports (native_research.test_native.NativeTests.test_production_has_no_diagnostic_exports) ... ok
+test_production_rng_and_cross_decapsulation (native_research.test_native.NativeTests.test_production_rng_and_cross_decapsulation) ... ok
+test_valid_format_tampering_matches_python_fallback (native_research.test_native.NativeTests.test_valid_format_tampering_matches_python_fallback) ... ok
+
+----------------------------------------------------------------------
+Ran 9 tests in 0.882s
+
+OK

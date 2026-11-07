@@ -13,6 +13,11 @@ The [Rust frame and ClientHello fuzzing guide](FUZZ_PARSERS.md) uses a separatel
 the disabled-by-default `parser-fuzz` entry points to check actual parser coverage and compare saved inputs
 against the Python reference implementation. OCI ARM64 and WSL2 x86-64 results are collected separately.
 
+The [Rust DATA/CLOSE state fuzzing guide](FUZZ_RECORDS.md) uses the disabled-by-default
+`record-fuzz` entry points to compare sequence numbers, limits, tampering rejection, and post-shutdown state of actual `Tx`/`Rx`
+against an independent model. It uses the same pinned nightly, and OCI/WSL execution results are
+Collected separately from the preceding parser checks.
+
 ## Quick start
 
 Local v0.3 validation used Debian 13 x86-64, glibc 2.41, OpenSSL 3.5.7, Rust 1.99.1, and Python 3.12.14.
@@ -129,10 +134,10 @@ Interoperability tests use four connections each for Python→Rust and Rust→Py
 eight senders, and 32 messages. They check actual exporters/transcripts at both ends, session independence, and normal/abnormal shutdown.
 Bursts of 16/64 connections from the same IP are rejection/cleanup tests, not capacity tests of 16/64 successful connections.
 
-The current main Python baseline is 85 tests, passed separately. These are not combined with Rust unit 52 + compile-fail 4 or 35 actual TLS negative/interoperability tests.
+The Python baseline for basic functional regression is 85 tests. Rust unit 52 + compile-fail 6 and 35 actual TLS negative/interoperability tests are recorded separately. See the separate guidance and evidence above for the latest subsequent fuzzing results.
 The [mapping](REGRESSION_MAP.md) distinguishes 72 requirements with execution tests, 8 addressed structurally, and 5 with different API/test scope.
 See `VALIDATION.json` and `evidence/` for final environments, counts, check logs, and performance figures.
-Coverage-based fuzzing, long-duration soak, other OS/CPU validation, and independent code audits are outside the scope performed.
+The initial v0.3 validation bundle excludes coverage-guided fuzzing, long soaks, validation on other OS/CPU combinations, and independent code audits. Follow-up fuzzing and platform validation are recorded separately at the links above.
 
 `examples/tls_control.rs` is TLS-only diagnostic code for distinguishing memory-check warnings. It does not run Spiral or C KEM and is not used as a runtime algorithm fallback.
 

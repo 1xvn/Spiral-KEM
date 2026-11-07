@@ -14,6 +14,15 @@ use spiral_protocol::test_support;
 ```
 "#
 )]
+#![cfg_attr(
+    not(feature = "record-fuzz"),
+    doc = r#"
+The fixed-public-fixture record helper is unavailable in a default build.
+```compile_fail,E0432
+use spiral_protocol::record_test_support;
+```
+"#
+)]
 
 pub mod admission;
 mod buffer;
@@ -23,6 +32,9 @@ mod ffi;
 pub mod handshake;
 pub mod identity;
 pub mod records;
+#[cfg(feature = "record-fuzz")]
+#[doc(hidden)]
+pub use records::fuzz_support as record_test_support;
 mod schedule;
 pub mod secret;
 #[cfg(feature = "parser-fuzz")]

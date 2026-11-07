@@ -1,0 +1,262 @@
+{
+  "status": "passed",
+  "source_commit": "1ca44d6f3bab34bb83d3bdf6aa7c512975db43e9",
+  "source_files": 49,
+  "source_sha256": {
+    "native_research/spiral_native.c": "ccb29fe8b1f428c25a93c8cb967f1090eea619ad36dcba7d53dc9bfaedc1cd0f",
+    "native_research/spiral_native.h": "85f0454ee626cc0c38cdd6b60b12453f90276b6681dd91ab634d48c20bb1597b",
+    "protocol_rust/Cargo.lock": "19eb708fbf0c56f42704bd0a699c0f687f2b1516fc38e52c4c5d721a81889aca",
+    "protocol_rust/Cargo.toml": "f968b9872d39e75530f436131a4ce5259322a2325d8af65eb48442b10052c612",
+    "protocol_rust/build.rs": "9124a4764196d3147fed056dc9d18d29f3e1e775334c234848fc9728554ad6a8",
+    "protocol_rust/fuzz/Cargo.lock": "278e12278a5db6aaf16021e17d38b89c62f8c2ae6b0bc922303c5dddd4811d63",
+    "protocol_rust/fuzz/Cargo.toml": "23cfdd5b1750c9e3576c5f26bc8b3be5076bca6809045b715f58061d38361914",
+    "protocol_rust/fuzz/checks.rs": "133c702379d2ca87cabb810f15c486078902df24c35e51260eac27787b9e06e4",
+    "protocol_rust/fuzz/frame_target.rs": "2ff98f099e84b62f70e0d7d92d4da635fb6a6da526fd8de86c3c8e710d8fff07",
+    "protocol_rust/fuzz/hello_target.rs": "7e2f2a7ccd7e9ae383c2c3ff63dce7b61e61e7bca8725c883e63cf58d1a4c223",
+    "protocol_rust/fuzz/oracles.rs": "c01304ae9390a6809f7c5d7335b02837c2739b4cc88a18a63dfb0c66c4eb8200",
+    "protocol_rust/fuzz/record_checks.rs": "2beb5dddaa8335c1d05ea3ef6ddb8495bac8fec70a22921fbad689924886e3e8",
+    "protocol_rust/fuzz/record_model.rs": "014d253adc8d2d33a6c6b70546cf0651c55124448ad5c27c91e3aee5ecfc536e",
+    "protocol_rust/fuzz/record_replay.rs": "05cbf63099b81a304b1fab96188e9efdf2b597317c454f7daa8bcbef996eafcb",
+    "protocol_rust/fuzz/record_target.rs": "959f3c75b6a33802951c7f7661a69096411e280afaba856ffd91cc520e18d20c",
+    "protocol_rust/fuzz/replay_target.rs": "f7b88ff783d24ce45cfff12c5cca0df5ea73a935a7248c1964b980a89f4e3b62",
+    "protocol_rust/fuzzing/campaign.py": "9cb80f11d528f24b24c18b1f7583c4c2fd3a5d275cff4aab5e915ed8d0278a21",
+    "protocol_rust/fuzzing/coverage_evidence.py": "2dcf19abaf10bdf3145c002d3be2422864d607504486017944cc5e999fdfcda6",
+    "protocol_rust/fuzzing/inputs.py": "4d9d6693071d63077301f7f9d3e83a92d6a9e448efe3eae2aa7f6ae8e088633a",
+    "protocol_rust/fuzzing/install_toolchain.py": "a61ec0217cd5c789c3b4af0d2410fe638bb54ac0951bfd69a89faea9bedf819c",
+    "protocol_rust/fuzzing/record_inputs.py": "1765d5f4751a285f7b30bfe09b0a703c3d24e7c5276fdd3256a2813dd15e50a9",
+    "protocol_rust/fuzzing/reference_aead.py": "e24f0bb9936d2a60277776d2cba1f381617f18d859cf9c55c7f9d77d1219231a",
+    "protocol_rust/fuzzing/rustc_wrapper.py": "ab72ca176d9e6c9113354ae55650f22ed77002274b79c009d7a4529fd91451bf",
+    "protocol_rust/fuzzing/test_campaign.py": "dfcee3970472be13030634a738eabb053bbfa74fad250eb50af128f27eb6cd16",
+    "protocol_rust/fuzzing/test_coverage_evidence.py": "d3769e7eff1b6efe902d3ceff5581b6afc084cf3e8c7bde92d0a5d970f34bba3",
+    "protocol_rust/fuzzing/test_inputs.py": "f6b8074ace4cdfaba3455ae234e6bfa447f1226f6d4741938a976f090c37cb76",
+    "protocol_rust/fuzzing/test_install_toolchain.py": "505349f79ad96ad76ace3c401c58b85185dfc80c9587dddf06247a0369b1159e",
+    "protocol_rust/fuzzing/test_record_coverage.py": "f9ab1ae9fd2b708931c89cfdd12c59e7091bddaba9bbcc13a5e780967db8ee73",
+    "protocol_rust/fuzzing/test_record_inputs.py": "d78239c53b6cd1dff9d2d6f3906250bfa3209facebbd96d85618e0ecf9131936",
+    "protocol_rust/fuzzing/test_reference_aead.py": "ca534298e434f9f1a666ea738237c7cc29bbf518ffaf91d0a08808ff4aa9e0ed",
+    "protocol_rust/src/admission.rs": "07fe88b8f3985cfb082445e50ab0c96f12ba7d60c06fa10f87ad5b0756f7513a",
+    "protocol_rust/src/buffer.rs": "5365ce69f805e05eec1ed7fc6530a71cd384b40ac67c685302dd32ea83b94626",
+    "protocol_rust/src/channel.rs": "b2499e4f35f5d281540032de6bb30f22524b460bced7550151105b218e623be1",
+    "protocol_rust/src/error.rs": "cad570f7b7bbd2d4e3413648298679fd7218285a6f188e455a778a2f72e754ab",
+    "protocol_rust/src/ffi.rs": "92b7dd0c32c18a7f88b1447490c938eca4964b20d6c23a0a7506d93c6f148791",
+    "protocol_rust/src/handshake.rs": "731d5d4d048ab56c9e386340ee96929e46a2f4876569d0503bd5dc4c2c463492",
+    "protocol_rust/src/identity.rs": "f8de104ec385fa1b15ee00e13cb77f3157d6d34c8e79b2b005893220e877f0b7",
+    "protocol_rust/src/lib.rs": "fcf806e72538d569c4a5a5892ef7ba6eeeb10138061166acc78a4c378acefc29",
+    "protocol_rust/src/main.rs": "6fd34f294352fbe4257577be8281be3c59d816d941e9f9eabd324117acd7701b",
+    "protocol_rust/src/records.rs": "e90a64fb41013b107e6eff9df843f020570212b73aeb591228ae5695b66bf574",
+    "protocol_rust/src/records/fuzz_support.rs": "20eb134da7025e213e569b08c3806f7be25a40351e2601abe283ea19e93d07e7",
+    "protocol_rust/src/schedule.rs": "d3e5b57d293cfb5129c638912dda74c4f704548ff5a6de0cf0073d1e7a5049ea",
+    "protocol_rust/src/secret.rs": "b24ab189e8688951e2bf000bf0c7d14ed5e4d688cbcdc4b0926182bb5582765e",
+    "protocol_rust/src/test_support.rs": "4748cbadd46d66c4e2a9c38d222f1401955073275a8f99b57fecb348694383ed",
+    "protocol_rust/src/transport.rs": "d7cc8e1527f7065bf7ec6ea3b18d095d0170f94ae32e958ee859a798f871a0e7",
+    "protocol_rust/src/wire.rs": "4cb125a7e84f488864763825f9f2662ea2a1feb936113bcb405aed9b80409d21",
+    "protocol_rust/src/worker.rs": "eed5c4f026ab4944a704e4a32eed0600f29b7378f466af5f459e7720f35799fb",
+    "protocol_v01/tests/fixtures/test_vectors_v0.1.json": "b556ca8741a649dfe3346d2033a2685492470beedbc601dbb36877f4c5881ee8",
+    "rust-toolchain.toml": "ca67e66659a82661386e5a08471c913cb8b3f7c7ce37592207d3f513589a41c2"
+  },
+  "sources_match_head": true,
+  "sources_unchanged_during_run": true,
+  "platform": {
+    "system": "Linux",
+    "release": "6.18.57",
+    "version": "#1 SMP Tue Oct 20 21:56:04 UTC 2026",
+    "machine": "x86_64",
+    "processor": ""
+  },
+  "nightly_rustc_commit": "c980177d81d16f843a500905ac98c0cf3af1fd8d",
+  "scope": "Finite local DATA/CLOSE Tx/Rx state fuzzing, separate parser regression and existing functional checks. OCI/WSL record runs pending.",
+  "stdlib_reference_and_gate_tests": {
+    "passed": 67
+  },
+  "record_model_and_live_check_tests": {
+    "passed": 8
+  },
+  "initial_seed_crosscheck": {
+    "checked": 578,
+    "accepted": 93,
+    "rejected": 485,
+    "mismatches": 0
+  },
+  "record_campaign": {
+    "name": "record",
+    "status": "passed",
+    "differential": {
+      "status": "passed",
+      "expected_files": 717,
+      "checked_files": 717,
+      "accepted_checked": 103,
+      "rejected_checked": 614,
+      "mismatches": []
+    },
+    "initial_corpus_files": 578,
+    "engine_exit": 0,
+    "feedback": {
+      "initialization_executed": 578,
+      "executed": 35054,
+      "initial_cov": 494,
+      "final_cov": 499,
+      "final_features": 2608,
+      "new_corpus_events": 87
+    },
+    "final_corpus_files": 717,
+    "artifacts": []
+  },
+  "record_coverage": {
+    "status": "verified",
+    "compiler_invocations": 131,
+    "instrumented_invocations": 1,
+    "production_functions": [
+      "header_parse",
+      "tx_data",
+      "tx_close",
+      "tx_encode",
+      "rx_decode",
+      "wire_parse"
+    ],
+    "independent_full_ir_and_linked_artifact_review": "passed; complete build outputs available locally for independent review"
+  },
+  "parser_regression": {
+    "status": "passed",
+    "targets": [
+      {
+        "name": "frame",
+        "status": "passed",
+        "differential": {
+          "status": "passed",
+          "expected_files": 74,
+          "checked_files": 74,
+          "accepted_checked": 13,
+          "rejected_checked": 61,
+          "mismatches": []
+        },
+        "initial_corpus_files": 42,
+        "engine_exit": 0,
+        "feedback": {
+          "initialization_executed": 42,
+          "executed": 2000,
+          "initial_cov": 69,
+          "final_cov": 69,
+          "final_features": 99,
+          "new_corpus_events": 5
+        },
+        "final_corpus_files": 74,
+        "artifacts": []
+      },
+      {
+        "name": "hello",
+        "status": "passed",
+        "differential": {
+          "status": "passed",
+          "expected_files": 65,
+          "checked_files": 65,
+          "accepted_checked": 8,
+          "rejected_checked": 57,
+          "mismatches": []
+        },
+        "initial_corpus_files": 54,
+        "engine_exit": 0,
+        "feedback": {
+          "initialization_executed": 54,
+          "executed": 2000,
+          "initial_cov": 139,
+          "final_cov": 142,
+          "final_features": 231,
+          "new_corpus_events": 8
+        },
+        "final_corpus_files": 65,
+        "artifacts": []
+      }
+    ]
+  },
+  "functional": {
+    "status": "passed",
+    "checks": [
+      {
+        "name": "python-protocol",
+        "passed": true,
+        "tests_run": 85
+      },
+      {
+        "name": "diagnostic-parser",
+        "passed": true,
+        "tests_run": 6
+      },
+      {
+        "name": "native-kem",
+        "passed": true,
+        "tests_run": 9
+      },
+      {
+        "name": "rustc-version",
+        "passed": true
+      },
+      {
+        "name": "cargo-version",
+        "passed": true
+      },
+      {
+        "name": "rust-unit",
+        "passed": true,
+        "test_groups": [
+          {
+            "passed": 52,
+            "failed": 0,
+            "ignored": 2
+          }
+        ]
+      },
+      {
+        "name": "rust-doc",
+        "passed": true,
+        "test_groups": [
+          {
+            "passed": 6,
+            "failed": 0,
+            "ignored": 0
+          }
+        ]
+      },
+      {
+        "name": "rust-release",
+        "passed": true
+      },
+      {
+        "name": "rust-tls",
+        "passed": true,
+        "tests_run": 35,
+        "structured_tests": {
+          "tests": 35,
+          "failures": 0,
+          "errors": 0
+        }
+      }
+    ]
+  },
+  "record_feature_doctests": {
+    "passed": 5,
+    "log": "record-feature-doc.log"
+  },
+  "archives": {
+    "local-60s.tar.gz": {
+      "sha256": "de55208e1a563445912ae7bb46f32ef0835954e93db1ad697cdf52980b6437e2",
+      "bytes": 530416,
+      "manifest_verified_files": 781,
+      "status": "verified"
+    },
+    "parser-regression-2k.tar.gz": {
+      "sha256": "648d14a7c75cb27b603b3bbd707ae1998d171eeb7140fc1261486a0c9d8e871d",
+      "bytes": 286919,
+      "manifest_verified_files": 174,
+      "status": "verified"
+    }
+  },
+  "oci_record_result": "pending",
+  "wsl_record_result": "pending",
+  "github_workflow_execution": "not_observed_here",
+  "constant_time_approved": false,
+  "security_approved": false,
+  "artifact_language_normalization": {
+    "applied": true,
+    "historical_execution_repeated": false,
+    "integrity_values_describe_translated_artifacts": true
+  }
+}

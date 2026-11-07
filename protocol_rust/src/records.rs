@@ -7,6 +7,9 @@ use crate::{
 };
 use chacha20poly1305::{aead::AeadInPlace, ChaCha20Poly1305, KeyInit, Nonce, Tag};
 const MAX_BYTES: u64 = (1 << 30) - 1;
+#[cfg(feature = "record-fuzz")]
+#[doc(hidden)]
+pub mod fuzz_support;
 pub(crate) struct Tx {
     key: Option<ChaCha20Poly1305>,
     prefix: [u8; 4],
@@ -47,6 +50,7 @@ impl Tx {
             closed: false,
         })
     }
+    #[cfg_attr(feature = "record-fuzz", inline(never))]
     pub fn data(&mut self, p: Plaintext) -> Result<Buffer> {
         if self.closed || self.key.is_none() {
             return Err(Error::Closed);
@@ -60,6 +64,7 @@ impl Tx {
         }
         self.encode(DATA, p)
     }
+    #[cfg_attr(feature = "record-fuzz", inline(never))]
     pub fn close(&mut self, reason: u8) -> Result<[u8; 57]> {
         if reason > 2 {
             return Err(Error::Input);
@@ -103,6 +108,7 @@ impl Tx {
         self.key = None;
         result
     }
+    #[cfg_attr(feature = "record-fuzz", inline(never))]
     fn encode(&mut self, kind: u8, p: Plaintext) -> Result<Buffer> {
         if self.closed || self.key.is_none() {
             return Err(Error::Closed);
@@ -179,6 +185,7 @@ impl Rx {
     pub fn expected_sequence(&self) -> u64 {
         self.seq
     }
+    #[cfg_attr(feature = "record-fuzz", inline(never))]
     pub fn decode(&mut self, mut buf: Buffer) -> Result<(u8, Plaintext)> {
         let result = (|| {
             if self.closed || self.key.is_none() {
