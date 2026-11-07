@@ -1,7 +1,7 @@
-# Local validation of the first C public key target · OCI/WSL results pending
+# Local validation and OCI/WSL submitted results for the first C public-key target
 
 This records initial local validation of shared tooling intended for OCI and WSL.
-This directory contains no new C fuzzing results from OCI or WSL.
+Local run records below and subsequently submitted OCI/WSL validation summaries are retained separately.
 
 Actual conditions for `local-clang19/result.json` are Debian 13 x86-64 / Clang 19.1.7 / OpenSSL 3.5.7.
 These differ from the shared runner's default comparison conditions, Ubuntu 24.04 / Clang 18.
@@ -27,6 +27,8 @@ Used the previously signature-verified Debian Release and matching-hash Packages
 verified SHA-256 for the 4 official .deb files in `compiler-packages.json`, and extracted into the working folder.
 Used them with existing system libLLVM19; package extracts and executable binaries are not committed.
 
-On OCI ARM64 and WSL2 x86-64, run separately according to the [shared instructions](../../FUZZ_PLATFORMS.md)
-and assess both original result bundles. Existing results from other OCI/WSL tests are
-not counted as passes for this new check.
+Subsequently received and checked uploaded OCI ARM64 and WSL2 x86-64 results run through the [shared guide](../../FUZZ_PLATFORMS.md).
+`platform-review.json` summarizes verification of 100,000 executions each, exit 0, errors/crashes 0,
+the same commit `c9e4075`, 5 source SHA-256 hashes, and Clang 18.1.3.
+All result file hashes matched: 21 OCI files and 36 WSL files.
+Original uploaded archive SHA-256 hashes are also recorded; other existing check results are not added.

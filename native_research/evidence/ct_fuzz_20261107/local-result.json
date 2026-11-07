@@ -1,0 +1,268 @@
+{
+  "status": "passed",
+  "label": "local",
+  "started_utc": "2026-11-07T12:33:55.111887+00:00",
+  "platform": {
+    "system": "Linux",
+    "node": "6f5ecbe8475e",
+    "release": "6.18.57",
+    "version": "#1 SMP Tue Oct 20 21:56:04 UTC 2026",
+    "machine": "x86_64",
+    "processor": ""
+  },
+  "python": "3.12.14 (main, Aug 25 2026, 14:00:49) [Clang 22.1.3 ]",
+  "requested_runs": 100000,
+  "seconds": 60,
+  "commands": [
+    {
+      "name": "git-head",
+      "argv": [
+        "git",
+        "rev-parse",
+        "HEAD"
+      ],
+      "timeout_seconds": 30
+    },
+    {
+      "name": "compiler",
+      "argv": [
+        "/workspace/native-fuzz-clang/root/usr/bin/clang-19",
+        "--version"
+      ],
+      "timeout_seconds": 30
+    },
+    {
+      "name": "openssl",
+      "argv": [
+        "openssl",
+        "version",
+        "-a"
+      ],
+      "timeout_seconds": 30
+    },
+    {
+      "name": "compile-harness",
+      "argv": [
+        "/workspace/native-fuzz-clang/root/usr/bin/clang-19",
+        "-std=c11",
+        "-O1",
+        "-g",
+        "-Wall",
+        "-Wextra",
+        "-Werror",
+        "-fno-omit-frame-pointer",
+        "-fno-sanitize-recover=undefined",
+        "-fsanitize=address,undefined",
+        "-I",
+        "/workspace/native-ct-validation-20261107/build",
+        "-I",
+        "/workspace/Spiral-KEM/native_research",
+        "-c",
+        "/workspace/Spiral-KEM/native_research/fuzz_ct.c",
+        "-o",
+        "/workspace/native-ct-validation-20261107/build/harness.o"
+      ],
+      "timeout_seconds": 120
+    },
+    {
+      "name": "compile-runtime",
+      "argv": [
+        "/workspace/native-fuzz-clang/root/usr/bin/clang-19",
+        "-std=c11",
+        "-O1",
+        "-g",
+        "-Wall",
+        "-Wextra",
+        "-Werror",
+        "-fno-omit-frame-pointer",
+        "-fno-sanitize-recover=undefined",
+        "-DSPIRAL_TESTING",
+        "-fsanitize=fuzzer-no-link,address,undefined",
+        "-c",
+        "/workspace/Spiral-KEM/native_research/spiral_native.c",
+        "-o",
+        "/workspace/native-ct-validation-20261107/build/runtime.o"
+      ],
+      "timeout_seconds": 120
+    },
+    {
+      "name": "link-engine",
+      "argv": [
+        "/workspace/native-fuzz-clang/root/usr/bin/clang-19",
+        "-fsanitize=fuzzer,address,undefined",
+        "/workspace/native-ct-validation-20261107/build/harness.o",
+        "/workspace/native-ct-validation-20261107/build/runtime.o",
+        "-lcrypto",
+        "-o",
+        "/workspace/native-ct-validation-20261107/build/fuzz-ct"
+      ],
+      "timeout_seconds": 120
+    },
+    {
+      "name": "compile-replay",
+      "argv": [
+        "/workspace/native-fuzz-clang/root/usr/bin/clang-19",
+        "-std=c11",
+        "-O1",
+        "-g",
+        "-Wall",
+        "-Wextra",
+        "-Werror",
+        "-fno-omit-frame-pointer",
+        "-fno-sanitize-recover=undefined",
+        "-DSPIRAL_TESTING",
+        "-DFUZZ_CT_REPLAY_MAIN",
+        "-fsanitize=address,undefined",
+        "-I",
+        "/workspace/native-ct-validation-20261107/build",
+        "-I",
+        "/workspace/Spiral-KEM/native_research",
+        "/workspace/Spiral-KEM/native_research/fuzz_ct.c",
+        "/workspace/Spiral-KEM/native_research/spiral_native.c",
+        "-lcrypto",
+        "-o",
+        "/workspace/native-ct-validation-20261107/build/replay-ct"
+      ],
+      "timeout_seconds": 120
+    },
+    {
+      "name": "engine",
+      "argv": [
+        "/workspace/native-ct-validation-20261107/build/fuzz-ct",
+        "/workspace/native-ct-validation-20261107/corpus",
+        "-runs=100000",
+        "-max_total_time=60",
+        "-seed=20261107",
+        "-max_len=1280",
+        "-timeout=5",
+        "-rss_limit_mb=1536",
+        "-print_final_stats=1",
+        "-artifact_prefix=/workspace/native-ct-validation-20261107/artifacts/"
+      ],
+      "timeout_seconds": 120
+    },
+    {
+      "name": "replay/batch-0000",
+      "argv": [
+        "/workspace/native-ct-validation-20261107/build/replay-ct",
+        "/workspace/native-ct-validation-20261107/corpus/0516528100d7ca5f4aadfb49682192f5ab764798c597ee6ae1c0c910ad22d265",
+        "/workspace/native-ct-validation-20261107/corpus/09ec54307cb7d08ebbf14a389ae74c585cb62bcc596bb64d1fbfce750f948dae",
+        "/workspace/native-ct-validation-20261107/corpus/0a37ba868c80ad5037980c650aeca96a0ef943da2104e65a4ca62a88ec31d581",
+        "/workspace/native-ct-validation-20261107/corpus/0e0fae3c771990228360b7fd597a279edfdc3c427657dcc5f20af293bf402011",
+        "/workspace/native-ct-validation-20261107/corpus/12ddc8c97c7c80d567e2470e45de08ad4ba6b1269c9516b27b7efe5f20ba53c7",
+        "/workspace/native-ct-validation-20261107/corpus/25f2853b6ce3913a8f96091f9d38bf514695dd99184fd2c5159fd8a86504fc72",
+        "/workspace/native-ct-validation-20261107/corpus/29ccaa0e88efaed13eda53440a038c008ae82785f74d18e4bda67896b56ca6c4",
+        "/workspace/native-ct-validation-20261107/corpus/2b66ec3404a76cb0d0cb1d7c1f0f0263a3a18ebbccd96c218f5e59fa789ea647",
+        "/workspace/native-ct-validation-20261107/corpus/2e8f88ce72581185957d6c686b5f3c7d91d12832447c7fda57749893c29a4551",
+        "/workspace/native-ct-validation-20261107/corpus/32dab5223258a4df9c1cfbc65a794c57b06293f5dfba8901ca5b18626546775e",
+        "/workspace/native-ct-validation-20261107/corpus/3b64ff329086a6e11301ce0d55b01337e74dc9299b3b1c324a5bb71e91155248",
+        "/workspace/native-ct-validation-20261107/corpus/3d37e3173ae53e65e0d4c2fe1c8410106fe2b310bf61482059b96292907a8952",
+        "/workspace/native-ct-validation-20261107/corpus/3dd16c40b1ff25fe855b41b84b4b916c963de0e79a92d02d7dbfbe18578885a3",
+        "/workspace/native-ct-validation-20261107/corpus/45d27704ed9b1add542c883dfc5316841a78eced87d912d2ad6971286d21758d",
+        "/workspace/native-ct-validation-20261107/corpus/479cd8a51bb0a23bff1378e328130270a48fe23b334f2f3c0cac20462da6098b",
+        "/workspace/native-ct-validation-20261107/corpus/4c45d77eb2464a8e3487c765d97a56de627f6462bb2ae1d24d23caa3a50c926f",
+        "/workspace/native-ct-validation-20261107/corpus/5192320f4d9e57904e8bba945f089bb40fc7ffd890af5fc5c8940fbcec018bfa",
+        "/workspace/native-ct-validation-20261107/corpus/53c170206553f501ebb3d6861679f987d0b687fa33340036179bd0f51af9be66",
+        "/workspace/native-ct-validation-20261107/corpus/54d3bf530f0f92e0fc4893a5d70f07aabb1b68477a0fc897c8a980d223ab6efb",
+        "/workspace/native-ct-validation-20261107/corpus/58c5ba990ee364fb39bf57c668274e4d53a4785b54ec034737da0b9951aad098",
+        "/workspace/native-ct-validation-20261107/corpus/5bb1cd7593a77df7dcb8740e5ea7e1c7be05639ea7e0a4b4ed9c13cafde2a1f8",
+        "/workspace/native-ct-validation-20261107/corpus/63cd13f27759c1c3df70619f951dcf4ed320bd5160850868dde5656daf1097af",
+        "/workspace/native-ct-validation-20261107/corpus/71cd6cabdcf3b19030c9e85db2cf4925584e28c36d74ba7e7f8f5e0d3f2f2d5b",
+        "/workspace/native-ct-validation-20261107/corpus/7233bbd78752606ba59dc1f340c876280cf1221ad7a5f922b50cf11140cfae49",
+        "/workspace/native-ct-validation-20261107/corpus/72cd614fd927349d0692fb8a5f8dfb541e65878e7d68df6e48c6a9c725149616",
+        "/workspace/native-ct-validation-20261107/corpus/735ca539ecf91102c2953318339bf2ca75373a8071081c36693f3b5d286b6027",
+        "/workspace/native-ct-validation-20261107/corpus/7967a133deea173112af54094df01d425d9e5a23d1405ce829800572ebf088cb",
+        "/workspace/native-ct-validation-20261107/corpus/7d449d8620ec074c57c0c55078dab4ea02ae787dbaf1f4cf35cc56ddae0c8da4",
+        "/workspace/native-ct-validation-20261107/corpus/8692d6f0d6e3630146841d788212f08459ebcac8ea6f94357c3adcff7ef89a0a",
+        "/workspace/native-ct-validation-20261107/corpus/8c2fb1c16c3c09fe553f4605e1acdec0c9e9eca045db5ecf160b33c0fb5d924b",
+        "/workspace/native-ct-validation-20261107/corpus/8cab0688c617f6a731f99e84e29ba75a2fc32b91e89db3b54f72d4849a8118c9",
+        "/workspace/native-ct-validation-20261107/corpus/8de0b3c47f112c59745f717a626932264c422a7563954872e237b223af4ad643"
+      ],
+      "timeout_seconds": 180
+    },
+    {
+      "name": "replay/batch-0001",
+      "argv": [
+        "/workspace/native-ct-validation-20261107/build/replay-ct",
+        "/workspace/native-ct-validation-20261107/corpus/8e94b4bf57654cd7bb82f4fe8053eb6bca39ab2e856862df346471721afafc1a",
+        "/workspace/native-ct-validation-20261107/corpus/985f81c04cbd45c1f9b6f810c827a93998bbe1e34f38f5c0a603c9aa02ad4914",
+        "/workspace/native-ct-validation-20261107/corpus/994ac0dd20f4f6b5ea2df97c66ef5ba96de7d4e4dfa37a54b807dd4208b9480f",
+        "/workspace/native-ct-validation-20261107/corpus/997bd03373a909b227016dbad3d063ea17649d5679664ce67146ad57c261e2f7",
+        "/workspace/native-ct-validation-20261107/corpus/a50512bcc03351e54a936c0942d6d5b71f64fe8d446567acbc1b87820ff0f802",
+        "/workspace/native-ct-validation-20261107/corpus/a790b1900b22a1e89eaded7cca3a4b7d890350c3160fb78a6cdc98a7b3d22a72",
+        "/workspace/native-ct-validation-20261107/corpus/ad5f76e2f996f744dfd45e868dc3ba70faa38002121d0954aec110d63681f482",
+        "/workspace/native-ct-validation-20261107/corpus/af02c3c95c96f805f834c7e1c83d618f61c330c4fefc30ca734c02ff400dc85f",
+        "/workspace/native-ct-validation-20261107/corpus/af33e59608efbfca97685e1469c490059ca99626621c9dbc83988d457121d22e",
+        "/workspace/native-ct-validation-20261107/corpus/cf73c8b6187bd85694d5ca36d0d72d563aca70f5ec9d456ae42c03578e47a5e9",
+        "/workspace/native-ct-validation-20261107/corpus/d5325dc90f0293eb243329f9f42e29da2e09cd0ad7ab48bac993fd6e52d3db29",
+        "/workspace/native-ct-validation-20261107/corpus/d900b22c073bb2d1ddf156051283d9883d13844ffbace840956391bae8bb355b",
+        "/workspace/native-ct-validation-20261107/corpus/dd35dddd7e784dd3762d4395d6e5d05e7b0d5f01b100686f430bf08294f52777",
+        "/workspace/native-ct-validation-20261107/corpus/e0c694a5226d01380e207c0502134f58706e9b0a9a1cacb14168eeefa17b3215",
+        "/workspace/native-ct-validation-20261107/corpus/e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "/workspace/native-ct-validation-20261107/corpus/ecbe62258f84c64c423554237b41e696ef27c2ec2fcdf6a3d844499781c2eb65",
+        "/workspace/native-ct-validation-20261107/corpus/ef6a6674ad688b4807809bbf83c5581b27cd06684900b1cb6c13c51cdf5f3c06",
+        "/workspace/native-ct-validation-20261107/corpus/fc540e32ddc488c514e6d708f179f4988b534cf61ce2b7ae12d392256bedd4ca",
+        "/workspace/native-ct-validation-20261107/corpus/fe3d370cf2030774978ece9307321390afd89ddb7ced52b354f581a46f0d52a8",
+        "/workspace/native-ct-validation-20261107/corpus/ff623b402b7b9048aaa760d454e09fb5eefaddd3083818bbb2fe653c0b996438"
+      ],
+      "timeout_seconds": 180
+    }
+  ],
+  "scope": "C ciphertext decode/one-use key lifecycle with public fixed seeds; finite saved-corpus Python differential replay; OpenSSL machine code not instrumented",
+  "constant_time_approved": false,
+  "security_approved": false,
+  "sanitizer_environment": {
+    "ASAN_OPTIONS": "detect_leaks=1:abort_on_error=1",
+    "UBSAN_OPTIONS": "halt_on_error=1:print_stacktrace=1",
+    "LSAN_OPTIONS": "exitcode=23"
+  },
+  "differential": {
+    "status": "passed",
+    "expected_files": 52,
+    "checked_files": 52,
+    "canonical_checked": 25,
+    "malformed_checked": 27,
+    "golden_checked": 1,
+    "canonical_other_checked": 24,
+    "mismatches": []
+  },
+  "source_sha256": {
+    "native_research/fuzz_ct.c": "3fd8911d85e53957f825e8eb5021357269a42549fa986027bc4f3493d8545671",
+    "native_research/fuzz_ct.py": "d1c5244c4fa3e897356058e571a2a8209e598f142c16af0360ba2e5d6ae392de",
+    "native_research/ct_oracle.py": "f42114e3aba3421936f4b90631a122167eaf1d5eb55d164e084ce142b338e4d5",
+    "native_research/fuzz_pk.py": "0d5bf7c98c644bd86815dced4f2524222a15831f34ead53d3f269aca8972e78f",
+    "native_research/spiral_native.c": "ccb29fe8b1f428c25a93c8cb967f1090eea619ad36dcba7d53dc9bfaedc1cd0f",
+    "native_research/spiral_native.h": "85f0454ee626cc0c38cdd6b60b12453f90276b6681dd91ab634d48c20bb1597b",
+    "code/opt2/spiral_kem_toy_v031_opt2.py": "74c1ff02669d5b6eea87ccf650bc6930bc1822ffe8568fa68ce79fb29958a118",
+    "protocol_v01/tests/fixtures/test_vectors_v0.1.json": "b556ca8741a649dfe3346d2033a2685492470beedbc601dbb36877f4c5881ee8"
+  },
+  "commit": "4cdee6c24cf2f8706c1764d1efb2c5607a29f1c2",
+  "sources_match_head": true,
+  "generated_fixture_header_sha256": "2391b36eeb427f96858911992b7fd6529af4289a68148d73d8645e3280eacdb0",
+  "compiler_major": 19,
+  "symbolizer": null,
+  "binary_sha256": {
+    "fuzz-ct": "8ff5fd91a3e37523907683487b42e7a92c8bc74b04138f0614ca660986fffce6",
+    "replay-ct": "d327ea8e2f22d8bf21a34055ba60157db4881688febac42b3baf412874a41b67"
+  },
+  "initial_corpus_files": 52,
+  "engine_exit": 0,
+  "feedback": {
+    "initialization_executed": 53,
+    "executed": 21253,
+    "final_cov": 98,
+    "final_features": 131
+  },
+  "final_corpus_files": 52,
+  "sources_unchanged_during_run": true,
+  "fixture_header_unchanged": true,
+  "artifacts": [],
+  "elapsed_seconds": 62.43905883000116,
+  "finished_utc": "2026-11-07T12:34:57.550944+00:00",
+  "archive": "/workspace/native-ct-validation-20261107.tar.gz",
+  "artifact_language_normalization": {
+    "applied": true,
+    "historical_execution_repeated": false,
+    "integrity_values_describe_translated_artifacts": true
+  }
+}

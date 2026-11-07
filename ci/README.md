@@ -9,6 +9,7 @@ Successful functionality checks do not mean overall memory, constant-time, or cr
 |---|---|---|
 | Functional validation | push, Pull Request, manual | Python/C/Rust functionality and real TLS. Failures, 0 tests, and unexpected skips fail |
 | Coverage-guided Python fuzzing | push, Pull Request, manual, every Monday 04:29 UTC | Fuzz 5 targets using Python runtime feedback. Exceptions, verdict mismatches, 0 executions, and initialization-only runs fail |
+| Native C ciphertext fuzzing | push, Pull Request, manual | C ciphertext/key lifetime checks and Python differential checks of saved corpus. Uses ASan/UBSan/leak checks; OCI/WSL runs are separate |
 | Runtime memory diagnostics | Manual, every Monday 02:17 UTC on default branch | Minimal std/libtest controls. Separate diagnostic completion from memory approval; reproduced warnings are failures |
 
 For PRs, see **Checks** for functional results. Repository **Actions** provides per-run logs and
