@@ -1,8 +1,15 @@
 #![forbid(unsafe_code)]
 use crate::{secret::Secret, Error, Result};
-use hmac::{Hmac, Mac};
+use hmac::{Hmac, KeyInit, Mac};
 use sha2::{Digest, Sha256};
 use zeroize::Zeroize;
+// Keep the selected hash-state cleanup contract in ordinary release builds too.
+// This covers owned hash state/buffers, not output arrays or historical copies.
+const _: fn() = || {
+    fn require_cleanup<T: zeroize::ZeroizeOnDrop>() {}
+    require_cleanup::<Sha256>();
+    require_cleanup::<sha2::Sha512>();
+};
 pub const PID: &[u8] = b"SpiralOPT2-Proto-v0.1";
 pub fn digest(data: &[u8]) -> [u8; 32] {
     Sha256::digest(data).into()

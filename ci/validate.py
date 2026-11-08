@@ -95,7 +95,7 @@ def main():
             raise RuntimeError('CI requires Cargo 1.99.1')
         cargo_base = ['--locked', '--manifest-path', str(ROOT / 'protocol_rust/Cargo.toml'), '--target-dir', str(ROOT / 'protocol_rust/target'), '-j', '2']
         ignored = 5 if re.search(r'(?m)^host: x86_64-', version) else 0
-        run('rust-unit', [cargo, 'test', '--lib', *cargo_base], 1200, rust_minimum=66, expected_ignored=ignored)
+        run('rust-unit', [cargo, 'test', '--lib', *cargo_base], 1200, rust_minimum=70, expected_ignored=ignored)
         run('rust-doc', [cargo, 'test', '--doc', *cargo_base], 300, rust_minimum=4)
         run('rust-release', [cargo, 'build', '--release', *cargo_base], 1200)
         binary = ROOT / 'protocol_rust/target/release/spiral-lab'

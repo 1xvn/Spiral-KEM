@@ -4,6 +4,9 @@ We narrowed down ownership and shutdown lifetime of the 48-byte std/libtest warn
 are wiped after receive decryption. Basic functionality and new disposal tests passed.
 **We do not deem the full memory checks or constant time validation complete.**
 
+The latest [HMAC/HKDF/signing state cleanup](SECRET_STATE.md) enables hash-state
+zeroization in stable dependencies and adds new regressions. Below is the record from the earlier ownership/buffer observations.
+
 The next-stage [actual receive path and temporary secret state validation](RECEIVE_SECRET.md)
 adds 78 key/prefix taint cases and 78 public controls, enables Poly1305 state zeroization, and lists lifetimes
 inside dependencies. Below are the earlier measurement results; see the follow-up record for the latest scope.

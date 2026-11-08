@@ -1,0 +1,769 @@
+{
+  "schema": "spiral-rust-adversarial/v0.3",
+  "tests": 35,
+  "failures": 0,
+  "errors": 0,
+  "observations": [
+    {
+      "scenario": "test_expired_tls_certificate_is_rejected_before_inner_kem",
+      "expected_jobs": 0,
+      "report": {
+        "kem": {
+          "executed_jobs": 0,
+          "live_keys": 0,
+          "rejected_jobs": 0
+        },
+        "status": "failed"
+      }
+    },
+    {
+      "scenario": "test_independent_authenticated_unknown_close_reason_is_rejected",
+      "expected_jobs": 2,
+      "report": {
+        "kem": {
+          "executed_jobs": 2,
+          "live_keys": 0,
+          "rejected_jobs": 0
+        },
+        "status": "failed"
+      }
+    },
+    {
+      "scenario": "test_independent_bad_tag_has_no_delivery",
+      "expected_jobs": 2,
+      "report": {
+        "kem": {
+          "executed_jobs": 2,
+          "live_keys": 0,
+          "rejected_jobs": 0
+        },
+        "status": "failed"
+      }
+    },
+    {
+      "scenario": "test_independent_canonical_changed_ciphertext_never_establishes",
+      "expected_jobs": 2,
+      "report": {
+        "kem": {
+          "executed_jobs": 2,
+          "live_keys": 0,
+          "rejected_jobs": 0
+        },
+        "status": "failed"
+      }
+    },
+    {
+      "scenario": "test_independent_duplicate_clientkey_never_decapsulates_twice",
+      "expected_jobs": 2,
+      "report": {
+        "kem": {
+          "executed_jobs": 2,
+          "live_keys": 0,
+          "rejected_jobs": 0
+        },
+        "status": "failed"
+      }
+    },
+    {
+      "scenario": "test_independent_early_data_never_decapsulates",
+      "expected_jobs": 1,
+      "report": {
+        "kem": {
+          "executed_jobs": 1,
+          "live_keys": 0,
+          "rejected_jobs": 0
+        },
+        "status": "failed"
+      }
+    },
+    {
+      "scenario": "test_independent_eof_without_authenticated_close_is_not_clean",
+      "expected_jobs": 2,
+      "report": {
+        "kem": {
+          "executed_jobs": 2,
+          "live_keys": 0,
+          "rejected_jobs": 0
+        },
+        "status": "failed"
+      }
+    },
+    {
+      "scenario": "test_independent_forged_client_finished_never_establishes",
+      "expected_jobs": 2,
+      "report": {
+        "kem": {
+          "executed_jobs": 2,
+          "live_keys": 0,
+          "rejected_jobs": 0
+        },
+        "status": "failed"
+      }
+    },
+    {
+      "admission_released": true,
+      "auth_key_closed": true,
+      "connections": 1,
+      "kem": {
+        "executed_jobs": 2,
+        "live_keys": 0,
+        "rejected_jobs": 0
+      },
+      "role": "server",
+      "sessions": [
+        {
+          "authenticated_close": true,
+          "binding_hash": "d683b3f6e1cedcf4514e16790bed4bd25bdaa91a56e3f966a1fe18253d813047",
+          "messages": 1,
+          "session_id": "026a6ce5a6925d55d4f597ef4bac1650",
+          "transcript_hash": "df892579c6e35680ba12559afcaf291877e7e9b8ce27e76308e8216bf9df91b1"
+        }
+      ],
+      "status": "passed"
+    },
+    {
+      "admission_released": true,
+      "auth_key_closed": true,
+      "connections": 1,
+      "kem": {
+        "executed_jobs": 2,
+        "live_keys": 0,
+        "rejected_jobs": 0
+      },
+      "role": "server",
+      "sessions": [
+        {
+          "authenticated_close": true,
+          "binding_hash": "98c9d3da3caa47200a9b62555e24443b1928354d4851b24a06c666af0644769b",
+          "messages": 1,
+          "session_id": "a29b8df7bb2ec3f051efcd216c6eea7f",
+          "transcript_hash": "ef08aaac5f8a91212bb27e459ea3d85749fef861d738e79d4bf3322d715a76f1"
+        }
+      ],
+      "status": "passed"
+    },
+    {
+      "admission_released": true,
+      "auth_key_closed": true,
+      "connections": 1,
+      "kem": {
+        "executed_jobs": 2,
+        "live_keys": 0,
+        "rejected_jobs": 0
+      },
+      "role": "server",
+      "sessions": [
+        {
+          "authenticated_close": true,
+          "binding_hash": "6ca089391f9737cc512073349db3dc7ae0a3a7929133f73cbc6022b5636aa9a9",
+          "messages": 1,
+          "session_id": "fdf0d43e7042b14e00a9bd76ec34ecd8",
+          "transcript_hash": "cb998c067e956f7523e386e35ffb478e75bacf1fa5d668781cddef8f043ac909"
+        }
+      ],
+      "status": "passed"
+    },
+    {
+      "admission_released": true,
+      "auth_key_closed": true,
+      "connections": 1,
+      "kem": {
+        "executed_jobs": 2,
+        "live_keys": 0,
+        "rejected_jobs": 0
+      },
+      "role": "server",
+      "sessions": [
+        {
+          "authenticated_close": true,
+          "binding_hash": "8d9119ed03cc3674edcb487a91cc694c64a03ea9084eae91e607a87b66ab04e3",
+          "messages": 2,
+          "session_id": "9b1729d4fed6512f6855331e066d634c",
+          "transcript_hash": "e78b04cfb030f4cb98d317ce6ef09b7553453f74f770843fc112236aef4e3276"
+        }
+      ],
+      "status": "passed"
+    },
+    {
+      "admission_released": true,
+      "auth_key_closed": true,
+      "connections": 1,
+      "kem": {
+        "executed_jobs": 2,
+        "live_keys": 0,
+        "rejected_jobs": 0
+      },
+      "role": "server",
+      "sessions": [
+        {
+          "authenticated_close": true,
+          "binding_hash": "7112b55907f594b03067665f243d3740b02034f8f65e890aaa3630c2771cd433",
+          "messages": 1,
+          "session_id": "1ac5c503c8e02a2e27f0b2b52ae52c8a",
+          "transcript_hash": "61fabf9ceebac479ed04db2cfebc3be6a654292f4a4dcbec815dd2b37719ee6d"
+        }
+      ],
+      "status": "passed"
+    },
+    {
+      "scenario": "test_independent_previous_session_clientkey_is_rejected",
+      "expected_jobs": 1,
+      "report": {
+        "kem": {
+          "executed_jobs": 1,
+          "live_keys": 0,
+          "rejected_jobs": 0
+        },
+        "status": "failed"
+      }
+    },
+    {
+      "scenario": "test_independent_skipped_sequence_has_no_delivery",
+      "expected_jobs": 2,
+      "report": {
+        "kem": {
+          "executed_jobs": 2,
+          "live_keys": 0,
+          "rejected_jobs": 0
+        },
+        "status": "failed"
+      }
+    },
+    {
+      "scenario": "test_independent_truncated_clientkey_never_decapsulates",
+      "expected_jobs": 1,
+      "report": {
+        "kem": {
+          "executed_jobs": 1,
+          "live_keys": 0,
+          "rejected_jobs": 0
+        },
+        "status": "failed"
+      }
+    },
+    {
+      "scenario": "test_independent_untrusted_signing_pin_is_rejected",
+      "expected_jobs": 1,
+      "report": {
+        "kem": {
+          "executed_jobs": 1,
+          "live_keys": 0,
+          "rejected_jobs": 0
+        },
+        "status": "failed"
+      }
+    },
+    {
+      "scenario": "test_independent_valid_record_replay_delivers_only_once",
+      "expected_jobs": 2,
+      "report": {
+        "kem": {
+          "executed_jobs": 2,
+          "live_keys": 0,
+          "rejected_jobs": 0
+        },
+        "status": "failed"
+      }
+    },
+    {
+      "scenario": "test_independent_wrong_binding_rejected_before_keygen",
+      "expected_jobs": 0,
+      "report": {
+        "kem": {
+          "executed_jobs": 0,
+          "live_keys": 0,
+          "rejected_jobs": 0
+        },
+        "status": "failed"
+      }
+    },
+    {
+      "scenario": "test_independent_wrong_direction_has_no_delivery",
+      "expected_jobs": 2,
+      "report": {
+        "kem": {
+          "executed_jobs": 2,
+          "live_keys": 0,
+          "rejected_jobs": 0
+        },
+        "status": "failed"
+      }
+    },
+    {
+      "scenario": "test_independent_wrong_service_rejected_before_keygen",
+      "expected_jobs": 0,
+      "report": {
+        "kem": {
+          "executed_jobs": 0,
+          "live_keys": 0,
+          "rejected_jobs": 0
+        },
+        "status": "failed"
+      }
+    },
+    {
+      "scenario": "test_invalid_server_signature_rejected_before_encapsulation",
+      "expected_jobs": 0,
+      "report": {
+        "kem": {
+          "executed_jobs": 0,
+          "live_keys": 0,
+          "rejected_jobs": 0
+        },
+        "status": "failed"
+      }
+    },
+    {
+      "admission_released": true,
+      "auth_key_closed": true,
+      "connections": 4,
+      "kem": {
+        "executed_jobs": 8,
+        "live_keys": 0,
+        "rejected_jobs": 0
+      },
+      "role": "server",
+      "sessions": [
+        {
+          "authenticated_close": true,
+          "binding_hash": "e5c39c74faa7ac94c319ac57e3b192b685cb6bd4f5d991179ac6bcbda88f0888",
+          "messages": 3,
+          "session_id": "f7d0a1774ea583d735b8b959b40f7788",
+          "transcript_hash": "614c81132fa9d71dcd2a4575382240bf00e74f5361d6236ede3f43e6175d44d3"
+        },
+        {
+          "authenticated_close": true,
+          "binding_hash": "ac1e05dd679d833083988fe4533e32f3aaf2d47dfc30e1a8e55e2d5b632a7fa8",
+          "messages": 3,
+          "session_id": "fd3a29e35ec0c558fc73f9bb5267a4aa",
+          "transcript_hash": "a88bac9389b68cd7395db0e85f575380b49dbee0617dba91e78e746c23622fbc"
+        },
+        {
+          "authenticated_close": true,
+          "binding_hash": "caa1b773d432b18f83ac7750d7532ed38950f5abb5a8e051a265af2ce531cd7f",
+          "messages": 3,
+          "session_id": "2eb7c7b0f0e1765dc888c14f4b832e95",
+          "transcript_hash": "3b7087ab5180fc7ce43379648101233dbff21032c8f40d9335e5e4f8b1a569e1"
+        },
+        {
+          "authenticated_close": true,
+          "binding_hash": "01a74c225fbef835b5cbd9be0322ccbabc937bfd796bdd13f6bf3b4b598a9ca6",
+          "messages": 3,
+          "session_id": "1faf467abb5ea61206256ba4878d90b4",
+          "transcript_hash": "ea1819b93bb762f1354a15b70c87f9f3789cd91428153d1f29b6dd9b3c52d7bb"
+        }
+      ],
+      "status": "passed"
+    },
+    {
+      "connections": 4,
+      "kem": {
+        "executed_jobs": 4,
+        "live_keys": 0,
+        "rejected_jobs": 0
+      },
+      "role": "client",
+      "sessions": [
+        {
+          "app_ms": 44.722812,
+          "authenticated_close": true,
+          "binding_hash": "a9a5da9274b0a5b6874c60f8a47c25c8ac8eec5f2560ff3d10dc0da6b7338bd0",
+          "handshake_ms": 54.131353,
+          "messages": 3,
+          "payload_bytes": 1024,
+          "session_id": "492c24aecc74e102beda5067b5626eb7",
+          "spiral_ms": 50.369495,
+          "tcp_ms": 0.095294,
+          "tls_ms": 3.665643,
+          "total_ms": 99.485578,
+          "transcript_hash": "ba27b60b200d39ad827f6253b53e27b0b967952a774b5607691e15681287f90c"
+        },
+        {
+          "app_ms": 41.473346,
+          "authenticated_close": true,
+          "binding_hash": "436ab96c267e31c4d9cd69e90f606ea29e57f0c31c7894d26239e8cb4416151f",
+          "handshake_ms": 57.734263,
+          "messages": 3,
+          "payload_bytes": 1024,
+          "session_id": "e95e94c9545974b78970b00c867dc1f3",
+          "spiral_ms": 55.953044,
+          "tcp_ms": 0.49759200000000003,
+          "tls_ms": 1.282776,
+          "total_ms": 99.800985,
+          "transcript_hash": "b1dd3012caf15c67f3c50a19aedb43b6fd68aa36cf057637dd686a03c0057df7"
+        },
+        {
+          "app_ms": 44.743052,
+          "authenticated_close": true,
+          "binding_hash": "9313d060c886ac97c8e348341e257742058c309e9cc50b763e5bee58af75a08e",
+          "handshake_ms": 54.49353,
+          "messages": 3,
+          "payload_bytes": 1024,
+          "session_id": "6606095b87c8dc2498d14238726cc1ac",
+          "spiral_ms": 52.997943,
+          "tcp_ms": 0.459654,
+          "tls_ms": 1.017095,
+          "total_ms": 99.911772,
+          "transcript_hash": "8a3aab6a8f3fbd4bb1720e7a3e078d9173f2efe93855a0f834440fb9540f2eee"
+        },
+        {
+          "app_ms": 45.532194,
+          "authenticated_close": true,
+          "binding_hash": "0306155567dcbad4a30313b497aef54f2e651bf8823944d8c1b6233367dfb32e",
+          "handshake_ms": 57.166466,
+          "messages": 3,
+          "payload_bytes": 1024,
+          "session_id": "58b739238776f8e4c3d58cc176a96cad",
+          "spiral_ms": 55.484055,
+          "tcp_ms": 0.110888,
+          "tls_ms": 1.5706909999999998,
+          "total_ms": 102.90792499999999,
+          "transcript_hash": "e762378b64489661022c1f1a65d6384995e29a9a5885fe372cdd3c8c66cb47b1"
+        }
+      ],
+      "status": "passed"
+    },
+    {
+      "connections": 4,
+      "kem": {
+        "executed_jobs": 4,
+        "live_keys": 0,
+        "rejected_jobs": 0
+      },
+      "role": "client",
+      "sessions": [
+        {
+          "app_ms": 2.2959460000000003,
+          "authenticated_close": true,
+          "binding_hash": "b57a2f9e7bc18789a325599f804e12da3fda855d14b9b37569f9882736ad55a7",
+          "handshake_ms": 6.227671,
+          "messages": 32,
+          "payload_bytes": 64,
+          "session_id": "d5c96da431b8768ce59e0b9b87d1febe",
+          "spiral_ms": 5.25986,
+          "tcp_ms": 0.228836,
+          "tls_ms": 0.738154,
+          "total_ms": 8.617509,
+          "transcript_hash": "bdf6aada96e0630f52a123474a0d657168c58fc9cbaeeaf8266c620728a7c7a4"
+        },
+        {
+          "app_ms": 2.19321,
+          "authenticated_close": true,
+          "binding_hash": "6ca662c8ed26a6fd07a1961c80622cdffee2611f543e7132d36016018e6a4b3a",
+          "handshake_ms": 6.7247319999999995,
+          "messages": 32,
+          "payload_bytes": 64,
+          "session_id": "bbc3017ed84b5e168ce80f7fab62a6ef",
+          "spiral_ms": 5.570509,
+          "tcp_ms": 0.396659,
+          "tls_ms": 0.756813,
+          "total_ms": 8.997763,
+          "transcript_hash": "54192e7420c9f6ab96dbf237dce7f6f68706781ca20c7ef0fbccce1104924f1f"
+        },
+        {
+          "app_ms": 1.0852279999999999,
+          "authenticated_close": true,
+          "binding_hash": "5300749da6b13fad24ee7b64eabeabef21062a3cc2570cb820f7f109b3ffecf3",
+          "handshake_ms": 7.919545,
+          "messages": 32,
+          "payload_bytes": 64,
+          "session_id": "1bd89edecc85d59058bb93a2feee9c82",
+          "spiral_ms": 7.162733,
+          "tcp_ms": 0.149085,
+          "tls_ms": 0.592184,
+          "total_ms": 9.091234,
+          "transcript_hash": "0475acba5cf0b179cc2ab7cbc0ca0065214d78b83f3447dfbf633ea04f64ff4b"
+        },
+        {
+          "app_ms": 2.891495,
+          "authenticated_close": true,
+          "binding_hash": "8cb04557a70218c267e509382715f1bd9572b44ad19c4cc8d2ebb07e71f5c68d",
+          "handshake_ms": 6.4034260000000005,
+          "messages": 32,
+          "payload_bytes": 64,
+          "session_id": "2e35eccbec58e6ab704eb9243d69766e",
+          "spiral_ms": 5.055732,
+          "tcp_ms": 0.45798099999999997,
+          "tls_ms": 0.888811,
+          "total_ms": 9.363905,
+          "transcript_hash": "15e8876391f359955b4834f53fb10290a20d7cc494eb0cc67c9c088a7ed9e2b6"
+        }
+      ],
+      "status": "passed"
+    },
+    {
+      "admission_released": true,
+      "auth_key_closed": true,
+      "connections": 4,
+      "kem": {
+        "executed_jobs": 8,
+        "live_keys": 0,
+        "rejected_jobs": 0
+      },
+      "role": "server",
+      "sessions": [
+        {
+          "authenticated_close": true,
+          "binding_hash": "b57a2f9e7bc18789a325599f804e12da3fda855d14b9b37569f9882736ad55a7",
+          "messages": 32,
+          "session_id": "d5c96da431b8768ce59e0b9b87d1febe",
+          "transcript_hash": "bdf6aada96e0630f52a123474a0d657168c58fc9cbaeeaf8266c620728a7c7a4"
+        },
+        {
+          "authenticated_close": true,
+          "binding_hash": "6ca662c8ed26a6fd07a1961c80622cdffee2611f543e7132d36016018e6a4b3a",
+          "messages": 32,
+          "session_id": "bbc3017ed84b5e168ce80f7fab62a6ef",
+          "transcript_hash": "54192e7420c9f6ab96dbf237dce7f6f68706781ca20c7ef0fbccce1104924f1f"
+        },
+        {
+          "authenticated_close": true,
+          "binding_hash": "8cb04557a70218c267e509382715f1bd9572b44ad19c4cc8d2ebb07e71f5c68d",
+          "messages": 32,
+          "session_id": "2e35eccbec58e6ab704eb9243d69766e",
+          "transcript_hash": "15e8876391f359955b4834f53fb10290a20d7cc494eb0cc67c9c088a7ed9e2b6"
+        },
+        {
+          "authenticated_close": true,
+          "binding_hash": "5300749da6b13fad24ee7b64eabeabef21062a3cc2570cb820f7f109b3ffecf3",
+          "messages": 32,
+          "session_id": "1bd89edecc85d59058bb93a2feee9c82",
+          "transcript_hash": "0475acba5cf0b179cc2ab7cbc0ca0065214d78b83f3447dfbf633ea04f64ff4b"
+        }
+      ],
+      "status": "passed"
+    },
+    {
+      "connections": 4,
+      "kem": {
+        "executed_jobs": 4,
+        "live_keys": 0,
+        "rejected_jobs": 0
+      },
+      "role": "client",
+      "sessions": [
+        {
+          "app_ms": 1.699105,
+          "authenticated_close": true,
+          "binding_hash": "149011613ed31472ff7d01828e11e815171bc528b76bf4c789fa1c50c1a0d002",
+          "handshake_ms": 6.813165000000001,
+          "messages": 32,
+          "payload_bytes": 1024,
+          "session_id": "eb5f6fe4530b846b0150f74491f29075",
+          "spiral_ms": 5.917803999999999,
+          "tcp_ms": 0.39398500000000003,
+          "tls_ms": 0.487055,
+          "total_ms": 8.5784,
+          "transcript_hash": "3aab8a8ff1a7c911d426a7e426f5814a43ac352dd3dee3ae044b006af6a352c8"
+        },
+        {
+          "app_ms": 1.597466,
+          "authenticated_close": true,
+          "binding_hash": "25ce8681643e9586aa22c5270dd91b78df891d56c6e56be18862f9ce169cf182",
+          "handshake_ms": 7.611204,
+          "messages": 32,
+          "payload_bytes": 1024,
+          "session_id": "0e8acbb4f80b31a0f26db14da09b49a4",
+          "spiral_ms": 7.041805,
+          "tcp_ms": 0.032038000000000004,
+          "tls_ms": 0.5231600000000001,
+          "total_ms": 9.248750999999999,
+          "transcript_hash": "265c82954065f7bbeb41c0cef8df43c387473673b7d758278b95f9e6411c289d"
+        },
+        {
+          "app_ms": 1.684583,
+          "authenticated_close": true,
+          "binding_hash": "caa3c0038b4d38cc23199f05d039fd5b54c72256aefcdca8a318769a5492c0db",
+          "handshake_ms": 7.592761,
+          "messages": 32,
+          "payload_bytes": 1024,
+          "session_id": "3a03a5c4122fc8faa78dd35570c13d19",
+          "spiral_ms": 6.817602,
+          "tcp_ms": 0.13228900000000002,
+          "tls_ms": 0.64233,
+          "total_ms": 9.361355999999999,
+          "transcript_hash": "6b406fc09fb35d38fce0e525cf80349940eee45c90fc59db3eb8859d1d646f8f"
+        },
+        {
+          "app_ms": 1.755454,
+          "authenticated_close": true,
+          "binding_hash": "b9cb8358bc2cb4116c152138851c785ef05ebd06037389dbb4a118d3da79a1e0",
+          "handshake_ms": 7.915814,
+          "messages": 32,
+          "payload_bytes": 1024,
+          "session_id": "754cbb237f79c2e2e76e128173397af6",
+          "spiral_ms": 6.814171,
+          "tcp_ms": 0.458121,
+          "tls_ms": 0.642901,
+          "total_ms": 9.723027,
+          "transcript_hash": "973919d1a39d3cd70c588e75fd0fe3051b5454868514c8b81dab7ac6f05628bf"
+        }
+      ],
+      "status": "passed"
+    },
+    {
+      "admission_released": true,
+      "auth_key_closed": true,
+      "connections": 4,
+      "kem": {
+        "executed_jobs": 8,
+        "live_keys": 0,
+        "rejected_jobs": 0
+      },
+      "role": "server",
+      "sessions": [
+        {
+          "authenticated_close": true,
+          "binding_hash": "149011613ed31472ff7d01828e11e815171bc528b76bf4c789fa1c50c1a0d002",
+          "messages": 32,
+          "session_id": "eb5f6fe4530b846b0150f74491f29075",
+          "transcript_hash": "3aab8a8ff1a7c911d426a7e426f5814a43ac352dd3dee3ae044b006af6a352c8"
+        },
+        {
+          "authenticated_close": true,
+          "binding_hash": "25ce8681643e9586aa22c5270dd91b78df891d56c6e56be18862f9ce169cf182",
+          "messages": 32,
+          "session_id": "0e8acbb4f80b31a0f26db14da09b49a4",
+          "transcript_hash": "265c82954065f7bbeb41c0cef8df43c387473673b7d758278b95f9e6411c289d"
+        },
+        {
+          "authenticated_close": true,
+          "binding_hash": "caa3c0038b4d38cc23199f05d039fd5b54c72256aefcdca8a318769a5492c0db",
+          "messages": 32,
+          "session_id": "3a03a5c4122fc8faa78dd35570c13d19",
+          "transcript_hash": "6b406fc09fb35d38fce0e525cf80349940eee45c90fc59db3eb8859d1d646f8f"
+        },
+        {
+          "authenticated_close": true,
+          "binding_hash": "b9cb8358bc2cb4116c152138851c785ef05ebd06037389dbb4a118d3da79a1e0",
+          "messages": 32,
+          "session_id": "754cbb237f79c2e2e76e128173397af6",
+          "transcript_hash": "973919d1a39d3cd70c588e75fd0fe3051b5454868514c8b81dab7ac6f05628bf"
+        }
+      ],
+      "status": "passed"
+    },
+    {
+      "connections": 4,
+      "kem": {
+        "executed_jobs": 4,
+        "live_keys": 0,
+        "rejected_jobs": 0
+      },
+      "role": "client",
+      "sessions": [
+        {
+          "app_ms": 4.246931,
+          "authenticated_close": true,
+          "binding_hash": "3676a460c7280a76a00bdaf5dc6161562c4ac40b1cb750c3a1a365903d43dd85",
+          "handshake_ms": 6.093128,
+          "messages": 32,
+          "payload_bytes": 16384,
+          "session_id": "7c663993a98d15dab7e11a44bc4c32ca",
+          "spiral_ms": 5.054049,
+          "tcp_ms": 0.47079,
+          "tls_ms": 0.5529540000000001,
+          "total_ms": 10.755436,
+          "transcript_hash": "17c19e9fa70bc984b1a156d5ecd2bfea173cca64902d7e130b780965dc5567df"
+        },
+        {
+          "app_ms": 4.359842,
+          "authenticated_close": true,
+          "binding_hash": "21dd4f19e97a5f630e0603d9afd652bc98bd69ade523578d915ac0b163229928",
+          "handshake_ms": 6.274872,
+          "messages": 32,
+          "payload_bytes": 16384,
+          "session_id": "737fb3a542a73c2ccf68609b5cd62466",
+          "spiral_ms": 5.31242,
+          "tcp_ms": 0.428917,
+          "tls_ms": 0.532814,
+          "total_ms": 10.786673,
+          "transcript_hash": "87911f5791c07eefed56fa613b634960a6b814be4280a7e23be1daa9267d03a5"
+        },
+        {
+          "app_ms": 4.92888,
+          "authenticated_close": true,
+          "binding_hash": "867d48a09aeb94c1c19716d4bbb88a236f74b1b8dbb11b35238439d242e326b8",
+          "handshake_ms": 6.1311860000000005,
+          "messages": 32,
+          "payload_bytes": 16384,
+          "session_id": "37d28ad0b6550243c96926ff3302bd30",
+          "spiral_ms": 5.0833129999999995,
+          "tcp_ms": 0.444051,
+          "tls_ms": 0.586235,
+          "total_ms": 11.364255,
+          "transcript_hash": "dc3a1ace257620292081166baba55a3fed30126d07fd6f79fd0d577ecafa0bf1"
+        },
+        {
+          "app_ms": 3.01388,
+          "authenticated_close": true,
+          "binding_hash": "83b78967a3e81c12b7fe2af4720af4c4001c599e8a6471aee43445f16d1e3c2d",
+          "handshake_ms": 8.523907000000001,
+          "messages": 32,
+          "payload_bytes": 16384,
+          "session_id": "f1c9b9d20d584a703fa92a3f42a0d58d",
+          "spiral_ms": 7.468915,
+          "tcp_ms": 0.12152299999999999,
+          "tls_ms": 0.9327880000000001,
+          "total_ms": 11.68572,
+          "transcript_hash": "4bd6fb043a5ec389bbd5160aa01e374d8ce0a6c2543fd9a14a9bd128700df4aa"
+        }
+      ],
+      "status": "passed"
+    },
+    {
+      "admission_released": true,
+      "auth_key_closed": true,
+      "connections": 4,
+      "kem": {
+        "executed_jobs": 8,
+        "live_keys": 0,
+        "rejected_jobs": 0
+      },
+      "role": "server",
+      "sessions": [
+        {
+          "authenticated_close": true,
+          "binding_hash": "3676a460c7280a76a00bdaf5dc6161562c4ac40b1cb750c3a1a365903d43dd85",
+          "messages": 32,
+          "session_id": "7c663993a98d15dab7e11a44bc4c32ca",
+          "transcript_hash": "17c19e9fa70bc984b1a156d5ecd2bfea173cca64902d7e130b780965dc5567df"
+        },
+        {
+          "authenticated_close": true,
+          "binding_hash": "21dd4f19e97a5f630e0603d9afd652bc98bd69ade523578d915ac0b163229928",
+          "messages": 32,
+          "session_id": "737fb3a542a73c2ccf68609b5cd62466",
+          "transcript_hash": "87911f5791c07eefed56fa613b634960a6b814be4280a7e23be1daa9267d03a5"
+        },
+        {
+          "authenticated_close": true,
+          "binding_hash": "867d48a09aeb94c1c19716d4bbb88a236f74b1b8dbb11b35238439d242e326b8",
+          "messages": 32,
+          "session_id": "37d28ad0b6550243c96926ff3302bd30",
+          "transcript_hash": "dc3a1ace257620292081166baba55a3fed30126d07fd6f79fd0d577ecafa0bf1"
+        },
+        {
+          "authenticated_close": true,
+          "binding_hash": "83b78967a3e81c12b7fe2af4720af4c4001c599e8a6471aee43445f16d1e3c2d",
+          "messages": 32,
+          "session_id": "f1c9b9d20d584a703fa92a3f42a0d58d",
+          "transcript_hash": "4bd6fb043a5ec389bbd5160aa01e374d8ce0a6c2543fd9a14a9bd128700df4aa"
+        }
+      ],
+      "status": "passed"
+    },
+    {
+      "scenario": "test_tls12_is_rejected_before_inner_kem",
+      "expected_jobs": 0,
+      "report": {
+        "kem": {
+          "executed_jobs": 0,
+          "live_keys": 0,
+          "rejected_jobs": 0
+        },
+        "status": "failed"
+      }
+    }
+  ]
+}

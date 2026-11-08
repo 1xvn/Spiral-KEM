@@ -1,0 +1,528 @@
+{
+  "code_commit": "fe52b62a146850927bcc62c09395adac3fcaafb2",
+  "source_sha256_verified_against_git_blob": {
+    "native_research/spiral_native.c": "ccb29fe8b1f428c25a93c8cb967f1090eea619ad36dcba7d53dc9bfaedc1cd0f",
+    "native_research/spiral_native.h": "85f0454ee626cc0c38cdd6b60b12453f90276b6681dd91ab634d48c20bb1597b",
+    "protocol_rust/Cargo.lock": "d12949c1b2e3293041b75d0461e94ed133a6a78635a2cfb85c9710be02a603d2",
+    "protocol_rust/Cargo.toml": "6228e4e89852d2079b237bdf5d0883ba1ec04dbd3a848a4a704e3fb8c3a5db6c",
+    "protocol_rust/build.rs": "9124a4764196d3147fed056dc9d18d29f3e1e775334c234848fc9728554ad6a8",
+    "protocol_rust/fuzz/Cargo.lock": "609d35e9f73418b5130e3794c99df0b9eea95f46dba1f5cf949435641946d873",
+    "protocol_rust/fuzz/Cargo.toml": "23cfdd5b1750c9e3576c5f26bc8b3be5076bca6809045b715f58061d38361914",
+    "protocol_rust/fuzz/checks.rs": "133c702379d2ca87cabb810f15c486078902df24c35e51260eac27787b9e06e4",
+    "protocol_rust/fuzz/frame_target.rs": "2ff98f099e84b62f70e0d7d92d4da635fb6a6da526fd8de86c3c8e710d8fff07",
+    "protocol_rust/fuzz/hello_target.rs": "7e2f2a7ccd7e9ae383c2c3ff63dce7b61e61e7bca8725c883e63cf58d1a4c223",
+    "protocol_rust/fuzz/oracles.rs": "c01304ae9390a6809f7c5d7335b02837c2739b4cc88a18a63dfb0c66c4eb8200",
+    "protocol_rust/fuzz/record_checks.rs": "2beb5dddaa8335c1d05ea3ef6ddb8495bac8fec70a22921fbad689924886e3e8",
+    "protocol_rust/fuzz/record_model.rs": "014d253adc8d2d33a6c6b70546cf0651c55124448ad5c27c91e3aee5ecfc536e",
+    "protocol_rust/fuzz/record_replay.rs": "05cbf63099b81a304b1fab96188e9efdf2b597317c454f7daa8bcbef996eafcb",
+    "protocol_rust/fuzz/record_target.rs": "959f3c75b6a33802951c7f7661a69096411e280afaba856ffd91cc520e18d20c",
+    "protocol_rust/fuzz/replay_target.rs": "f7b88ff783d24ce45cfff12c5cca0df5ea73a935a7248c1964b980a89f4e3b62",
+    "protocol_rust/fuzzing/campaign.py": "9cb80f11d528f24b24c18b1f7583c4c2fd3a5d275cff4aab5e915ed8d0278a21",
+    "protocol_rust/fuzzing/coverage_evidence.py": "2dcf19abaf10bdf3145c002d3be2422864d607504486017944cc5e999fdfcda6",
+    "protocol_rust/fuzzing/inputs.py": "4d9d6693071d63077301f7f9d3e83a92d6a9e448efe3eae2aa7f6ae8e088633a",
+    "protocol_rust/fuzzing/install_toolchain.py": "a61ec0217cd5c789c3b4af0d2410fe638bb54ac0951bfd69a89faea9bedf819c",
+    "protocol_rust/fuzzing/record_inputs.py": "1765d5f4751a285f7b30bfe09b0a703c3d24e7c5276fdd3256a2813dd15e50a9",
+    "protocol_rust/fuzzing/reference_aead.py": "e24f0bb9936d2a60277776d2cba1f381617f18d859cf9c55c7f9d77d1219231a",
+    "protocol_rust/fuzzing/rustc_wrapper.py": "ab72ca176d9e6c9113354ae55650f22ed77002274b79c009d7a4529fd91451bf",
+    "protocol_rust/fuzzing/test_campaign.py": "dfcee3970472be13030634a738eabb053bbfa74fad250eb50af128f27eb6cd16",
+    "protocol_rust/fuzzing/test_coverage_evidence.py": "d3769e7eff1b6efe902d3ceff5581b6afc084cf3e8c7bde92d0a5d970f34bba3",
+    "protocol_rust/fuzzing/test_inputs.py": "f6b8074ace4cdfaba3455ae234e6bfa447f1226f6d4741938a976f090c37cb76",
+    "protocol_rust/fuzzing/test_install_toolchain.py": "505349f79ad96ad76ace3c401c58b85185dfc80c9587dddf06247a0369b1159e",
+    "protocol_rust/fuzzing/test_record_coverage.py": "f9ab1ae9fd2b708931c89cfdd12c59e7091bddaba9bbcc13a5e780967db8ee73",
+    "protocol_rust/fuzzing/test_record_inputs.py": "d78239c53b6cd1dff9d2d6f3906250bfa3209facebbd96d85618e0ecf9131936",
+    "protocol_rust/fuzzing/test_reference_aead.py": "ca534298e434f9f1a666ea738237c7cc29bbf518ffaf91d0a08808ff4aa9e0ed",
+    "protocol_rust/src/admission.rs": "07fe88b8f3985cfb082445e50ab0c96f12ba7d60c06fa10f87ad5b0756f7513a",
+    "protocol_rust/src/buffer.rs": "5365ce69f805e05eec1ed7fc6530a71cd384b40ac67c685302dd32ea83b94626",
+    "protocol_rust/src/channel.rs": "2255e076c700f530d9eac6d6ced2c9f823bea456fe05d00405d639e58ed4bdee",
+    "protocol_rust/src/channel/lifecycle_tests.rs": "6e0eaafe94bb1a8f4b6e1764600a654e888c66567fb82a700550eb9817bfebc1",
+    "protocol_rust/src/error.rs": "cad570f7b7bbd2d4e3413648298679fd7218285a6f188e455a778a2f72e754ab",
+    "protocol_rust/src/ffi.rs": "92b7dd0c32c18a7f88b1447490c938eca4964b20d6c23a0a7506d93c6f148791",
+    "protocol_rust/src/handshake.rs": "731d5d4d048ab56c9e386340ee96929e46a2f4876569d0503bd5dc4c2c463492",
+    "protocol_rust/src/identity.rs": "41504042392ac0e90129c8e7df623ddb48c317e7f64d4dda0946d365bb3ed1fe",
+    "protocol_rust/src/lib.rs": "001e078e03036dbd1141796bdec57faae0b01c02d97e6136797d881cb84fce96",
+    "protocol_rust/src/main.rs": "6fd34f294352fbe4257577be8281be3c59d816d941e9f9eabd324117acd7701b",
+    "protocol_rust/src/receive_audit.rs": "38c12efc9cbf192427afd77d26ce3e22e14d1011abf35d4fad313c19020314c5",
+    "protocol_rust/src/records.rs": "e90a64fb41013b107e6eff9df843f020570212b73aeb591228ae5695b66bf574",
+    "protocol_rust/src/records/fuzz_support.rs": "20eb134da7025e213e569b08c3806f7be25a40351e2601abe283ea19e93d07e7",
+    "protocol_rust/src/schedule.rs": "f0f06185190ee4c916435c8941fb6dc1f6917db76d4a8d8f2dd4ae409a9ec75b",
+    "protocol_rust/src/secret.rs": "b24ab189e8688951e2bf000bf0c7d14ed5e4d688cbcdc4b0926182bb5582765e",
+    "protocol_rust/src/secret_audit.rs": "766267f939b68c28b75e20011f5568b05c177ca5e8147c8e1d3f175383c7f027",
+    "protocol_rust/src/secret_state_tests.rs": "c18a891bf4d67c20b01ef61015657c1e9dec1765bd7d8b9fde15346361695a22",
+    "protocol_rust/src/signature_state_tests.rs": "2445d8872d501a9ba537ecb64a0fd9c8dffd9d73e271d7ac54eafe681cd3fbdd",
+    "protocol_rust/src/test_support.rs": "4748cbadd46d66c4e2a9c38d222f1401955073275a8f99b57fecb348694383ed",
+    "protocol_rust/src/transport.rs": "d7cc8e1527f7065bf7ec6ea3b18d095d0170f94ae32e958ee859a798f871a0e7",
+    "protocol_rust/src/wire.rs": "4cb125a7e84f488864763825f9f2662ea2a1feb936113bcb405aed9b80409d21",
+    "protocol_rust/src/worker.rs": "eed5c4f026ab4944a704e4a32eed0600f29b7378f466af5f459e7720f35799fb",
+    "protocol_v01/tests/fixtures/test_vectors_v0.1.json": "b556ca8741a649dfe3346d2033a2685492470beedbc601dbb36877f4c5881ee8",
+    "rust-toolchain.toml": "ca67e66659a82661386e5a08471c913cb8b3f7c7ce37592207d3f513589a41c2",
+    "ci/validate.py": "7a796ec038db018367bf3f5861e67cfc0ee4a90ffbe37c338cccbe417e0d8151",
+    "protocol_rust/diagnostics/receive_flow.py": "4695ba12c483057b9604b8c5168724af21b985eea3f272344610a5a377d30ebf",
+    "protocol_rust/diagnostics/libtest_memory.py": "0dfa8b7c4bed792afd932860d65036c22430a99dbb6bf100ca8dd318e82de654",
+    "protocol_rust/diagnostics/test_receive_flow.py": "59aab3e638f5aedd1581f0f782d584a4d25e5a30b6240ec58b9c7e6775f2dd57"
+  },
+  "binary_sha256": "c3a6edc32220e38a7a9660f0ddb23e9de9f1c96010aef45b76c1e0f9ccfc2e0f",
+  "binary_unchanged": true,
+  "constant_time_approved": false,
+  "production_memory_passed": false,
+  "all_temporary_secrets_erased": false,
+  "original_memory_findings_resolved": false,
+  "receive": {
+    "counts": {
+      "fixture_variants": 78,
+      "public_baselines": 78,
+      "key_prefix_taint_traces": 78,
+      "positive_controls": 2
+    },
+    "diagnostic_complete": true,
+    "instruction_mapping_complete": true,
+    "warning_contexts": {
+      "authentication_decision_candidate": 64,
+      "authentication_result_propagation_candidate": 64,
+      "close_reason_validity_candidate": 6
+    },
+    "raw_exits": {
+      "99": 156,
+      "0": 2
+    },
+    "possibly_lost_48_block_counts": {
+      "1": 155,
+      "0": 3
+    }
+  },
+  "taint_and_wipe": [
+    {
+      "name": "kdf-seal-sign",
+      "argv": [
+        "/workspace/rust48-tools/debian/usr/bin/valgrind",
+        "--command-line-only=yes",
+        "--tool=memcheck",
+        "--leak-check=full",
+        "--show-leak-kinds=all",
+        "--errors-for-leak-kinds=definite,indirect,possible",
+        "--error-exitcode=99",
+        "--num-callers=32",
+        "--log-file=/workspace/secret-state-upgrade-20261108/taint-and-wipe/kdf-seal-sign.log",
+        "/workspace/rust48-tools/runtime/ld-linux-x86-64.so.2",
+        "--library-path",
+        "/workspace/rust48-tools/debian/usr/lib/x86_64-linux-gnu",
+        "/workspace/Spiral-KEM/protocol_rust/target/audit/deps/spiral_protocol-b0b94ffb9a7366b8",
+        "--exact",
+        "ffi::taint_audit::rust_secret_derivation_sealing_and_signing",
+        "--ignored",
+        "--test-threads=1",
+        "--nocapture"
+      ],
+      "raw_exit": 99,
+      "binary_sha256": "c3a6edc32220e38a7a9660f0ddb23e9de9f1c96010aef45b76c1e0f9ccfc2e0f",
+      "summary": {
+        "errors": 1,
+        "contexts": 1,
+        "suppressed_errors": 0,
+        "suppressed_contexts": 0
+      },
+      "leaks": {
+        "definitely lost": {
+          "bytes": 0,
+          "blocks": 0
+        },
+        "indirectly lost": {
+          "bytes": 0,
+          "blocks": 0
+        },
+        "possibly lost": {
+          "bytes": 48,
+          "blocks": 1
+        },
+        "still reachable": {
+          "bytes": 548,
+          "blocks": 2
+        },
+        "suppressed": {
+          "bytes": 0,
+          "blocks": 0
+        }
+      },
+      "possibly_lost_48_records": [
+        {
+          "stack": "==272814== 48 bytes in 1 blocks are possibly lost in loss record 2 of 3\n==272814==    at 0x4A58818: malloc (vg_replace_malloc.c:446)\n==272814==    by 0x49A9797: alloc (unix.rs:31)\n==272814==    by 0x49A9797: alloc_impl (alloc.rs:161)\n==272814==    by 0x49A9797: allocate (alloc.rs:223)\n==272814==    by 0x49A9797: {closure#0}<std::thread::thread::Inner, std::alloc::System> (sync.rs:823)\n==272814==    by 0x49A9797: allocate_for_layout<core::mem::maybe_uninit::MaybeUninit<std::thread::thread::Inner>, alloc::sync::{impl#17}::new_uninit_in::{closure_env#0}<std::thread::thread::Inner, std::alloc::System>, fn(*mut u8) -> *mut alloc::sync::ArcInner<core::mem::maybe_uninit::MaybeUninit<std::thread::thread::Inner>>> (sync.rs:2191)\n==272814==    by 0x49A9797: new_uninit_in<std::thread::thread::Inner, std::alloc::System> (sync.rs:821)\n==272814==    by 0x49A9797: new (thread.rs:102)\n==272814==    by 0x49A9797: std::thread::current::init_current (current.rs:294)\n==272814==    by 0x498E659: current_or_unnamed (current.rs:251)\n==272814==    by 0x498E659: <std::sync::mpmc::context::Context>::new (context.rs:72)\n==272814==    by 0x49B7B1B: __rust_std_internal_init_fn (context.rs:43)\n==272814==    by 0x49B7B1B: call_once<fn() -> core::cell::Cell<core::option::Option<std::sync::mpmc::context::Context>>, ()> (function.rs:250)\n==272814==    by 0x49B7B1B: unwrap_or_else<core::cell::Cell<core::option::Option<std::sync::mpmc::context::Context>>, fn() -> core::cell::Cell<core::option::Option<std::sync::mpmc::context::Context>>> (option.rs:1065)\n==272814==    by 0x49B7B1B: <std::sys::thread_local::native::lazy::Storage<core::cell::Cell<core::option::Option<std::sync::mpmc::context::Context>>, ()>>::get_or_init_slow::<<std::sync::mpmc::context::Context>::with::CONTEXT::__rust_std_internal_init_fn> (lazy.rs:80)\n==272814==    by 0x49D2EB2: get_or_init<core::cell::Cell<core::option::Option<std::sync::mpmc::context::Context>>, (), fn() -> core::cell::Cell<core::option::Option<std::sync::mpmc::context::Context>>> (lazy.rs:62)\n==272814==    by 0x49D2EB2: {closure#0} (mod.rs:97)\n==272814==    by 0x49D2EB2: call_once<std::sync::mpmc::context::{impl#0}::with::CONTEXT::{constant#0}::{closure_env#0}, (core::option::Option<&mut core::option::Option<core::cell::Cell<core::option::Option<std::sync::mpmc::context::Context>>>>)> (function.rs:250)\n==272814==    by 0x49D2EB2: try_with<core::cell::Cell<core::option::Option<std::sync::mpmc::context::Context>>, std::sync::mpmc::context::{impl#0}::with::{closure_env#1}<std::sync::mpmc::list::{impl#3}::recv::{closure_env#1}<test::event::CompletedTest>, ()>, ()> (local.rs:462)\n==272814==    by 0x49D2EB2: with<std::sync::mpmc::list::{impl#3}::recv::{closure_env#1}<test::event::CompletedTest>, ()> (context.rs:53)\n==272814==    by 0x49D2EB2: <std::sync::mpmc::list::Channel<test::event::CompletedTest>>::recv (list.rs:442)\n==272814==    by 0x49DEE28: recv<test::event::CompletedTest> (mod.rs:1025)\n==272814==    by 0x49DEE28: recv<test::event::CompletedTest> (mpsc.rs:890)\n==272814==    by 0x49DEE28: run_tests<test::console::run_tests_console::{closure_env#2}> (lib.rs:445)\n==272814==    by 0x49DEE28: test::console::run_tests_console (console.rs:328)\n==272814==    by 0x49CB1C9: test_main_inner<test::test_main_static::{closure_env#0}> (lib.rs:170)\n==272814==    by 0x49CB1C9: test::test_main_static (lib.rs:195)\n==272814==    by 0x48DA8A2: call_once<fn(), ()> (library/core/src/ops/function.rs:250)\n==272814==    by 0x48DA8A2: std::sys::backtrace::__rust_begin_short_backtrace::<fn(), ()> (library/std/src/sys/backtrace.rs:166)\n==272814==    by 0x48F3D08: std::rt::lang_start::<()>::{closure#0} (library/std/src/rt.rs:206)\n==272814==    by 0x49A7618: call_once<(), (dyn core::ops::function::Fn<(), Output=i32> + core::marker::Sync + core::panic::unwind_safe::RefUnwindSafe)> (function.rs:287)\n==272814==    by 0x49A7618: do_call<&(dyn core::ops::function::Fn<(), Output=i32> + core::marker::Sync + core::panic::unwind_safe::RefUnwindSafe), i32> (panicking.rs:576)\n==272814==    by 0x49A7618: catch_unwind<i32, &(dyn core::ops::function::Fn<(), Output=i32> + core::marker::Sync + core::panic::unwind_safe::RefUnwindSafe)> (panicking.rs:544)\n==272814==    by 0x49A7618: catch_unwind<&(dyn core::ops::function::Fn<(), Output=i32> + core::marker::Sync + core::panic::unwind_safe::RefUnwindSafe), i32> (panic.rs:359)\n==272814==    by 0x49A7618: {closure#0} (rt.rs:175)\n==272814==    by 0x49A7618: do_call<std::rt::lang_start_internal::{closure_env#0}, isize> (panicking.rs:576)\n==272814==    by 0x49A7618: catch_unwind<isize, std::rt::lang_start_internal::{closure_env#0}> (panicking.rs:544)\n==272814==    by 0x49A7618: catch_unwind<std::rt::lang_start_internal::{closure_env#0}, isize> (panic.rs:359)\n==272814==    by 0x49A7618: std::rt::lang_start_internal (rt.rs:171)\n==272814==    by 0x497939B: main (in /workspace/Spiral-KEM/protocol_rust/target/audit/deps/spiral_protocol-b0b94ffb9a7366b8)",
+          "std_thread_frame": true,
+          "std_channel_frame": true,
+          "libtest_frame": true,
+          "classification": "std_thread_and_libtest"
+        }
+      ],
+      "branch_or_address_contexts": 0
+    },
+    {
+      "name": "wipe",
+      "argv": [
+        "/workspace/rust48-tools/debian/usr/bin/valgrind",
+        "--command-line-only=yes",
+        "--tool=memcheck",
+        "--leak-check=full",
+        "--show-leak-kinds=all",
+        "--errors-for-leak-kinds=definite,indirect,possible",
+        "--error-exitcode=99",
+        "--num-callers=32",
+        "--log-file=/workspace/secret-state-upgrade-20261108/taint-and-wipe/wipe.log",
+        "/workspace/rust48-tools/runtime/ld-linux-x86-64.so.2",
+        "--library-path",
+        "/workspace/rust48-tools/debian/usr/lib/x86_64-linux-gnu",
+        "/workspace/Spiral-KEM/protocol_rust/target/audit/deps/spiral_protocol-b0b94ffb9a7366b8",
+        "secret_audit::",
+        "--test-threads=1",
+        "--nocapture"
+      ],
+      "raw_exit": 99,
+      "binary_sha256": "c3a6edc32220e38a7a9660f0ddb23e9de9f1c96010aef45b76c1e0f9ccfc2e0f",
+      "summary": {
+        "errors": 1,
+        "contexts": 1,
+        "suppressed_errors": 0,
+        "suppressed_contexts": 0
+      },
+      "leaks": {
+        "definitely lost": {
+          "bytes": 0,
+          "blocks": 0
+        },
+        "indirectly lost": {
+          "bytes": 0,
+          "blocks": 0
+        },
+        "possibly lost": {
+          "bytes": 48,
+          "blocks": 1
+        },
+        "still reachable": {
+          "bytes": 548,
+          "blocks": 2
+        },
+        "suppressed": {
+          "bytes": 0,
+          "blocks": 0
+        }
+      },
+      "possibly_lost_48_records": [
+        {
+          "stack": "==272860== 48 bytes in 1 blocks are possibly lost in loss record 2 of 3\n==272860==    at 0x4A58818: malloc (vg_replace_malloc.c:446)\n==272860==    by 0x49A9797: alloc (unix.rs:31)\n==272860==    by 0x49A9797: alloc_impl (alloc.rs:161)\n==272860==    by 0x49A9797: allocate (alloc.rs:223)\n==272860==    by 0x49A9797: {closure#0}<std::thread::thread::Inner, std::alloc::System> (sync.rs:823)\n==272860==    by 0x49A9797: allocate_for_layout<core::mem::maybe_uninit::MaybeUninit<std::thread::thread::Inner>, alloc::sync::{impl#17}::new_uninit_in::{closure_env#0}<std::thread::thread::Inner, std::alloc::System>, fn(*mut u8) -> *mut alloc::sync::ArcInner<core::mem::maybe_uninit::MaybeUninit<std::thread::thread::Inner>>> (sync.rs:2191)\n==272860==    by 0x49A9797: new_uninit_in<std::thread::thread::Inner, std::alloc::System> (sync.rs:821)\n==272860==    by 0x49A9797: new (thread.rs:102)\n==272860==    by 0x49A9797: std::thread::current::init_current (current.rs:294)\n==272860==    by 0x498E659: current_or_unnamed (current.rs:251)\n==272860==    by 0x498E659: <std::sync::mpmc::context::Context>::new (context.rs:72)\n==272860==    by 0x49B7B1B: __rust_std_internal_init_fn (context.rs:43)\n==272860==    by 0x49B7B1B: call_once<fn() -> core::cell::Cell<core::option::Option<std::sync::mpmc::context::Context>>, ()> (function.rs:250)\n==272860==    by 0x49B7B1B: unwrap_or_else<core::cell::Cell<core::option::Option<std::sync::mpmc::context::Context>>, fn() -> core::cell::Cell<core::option::Option<std::sync::mpmc::context::Context>>> (option.rs:1065)\n==272860==    by 0x49B7B1B: <std::sys::thread_local::native::lazy::Storage<core::cell::Cell<core::option::Option<std::sync::mpmc::context::Context>>, ()>>::get_or_init_slow::<<std::sync::mpmc::context::Context>::with::CONTEXT::__rust_std_internal_init_fn> (lazy.rs:80)\n==272860==    by 0x49D2EB2: get_or_init<core::cell::Cell<core::option::Option<std::sync::mpmc::context::Context>>, (), fn() -> core::cell::Cell<core::option::Option<std::sync::mpmc::context::Context>>> (lazy.rs:62)\n==272860==    by 0x49D2EB2: {closure#0} (mod.rs:97)\n==272860==    by 0x49D2EB2: call_once<std::sync::mpmc::context::{impl#0}::with::CONTEXT::{constant#0}::{closure_env#0}, (core::option::Option<&mut core::option::Option<core::cell::Cell<core::option::Option<std::sync::mpmc::context::Context>>>>)> (function.rs:250)\n==272860==    by 0x49D2EB2: try_with<core::cell::Cell<core::option::Option<std::sync::mpmc::context::Context>>, std::sync::mpmc::context::{impl#0}::with::{closure_env#1}<std::sync::mpmc::list::{impl#3}::recv::{closure_env#1}<test::event::CompletedTest>, ()>, ()> (local.rs:462)\n==272860==    by 0x49D2EB2: with<std::sync::mpmc::list::{impl#3}::recv::{closure_env#1}<test::event::CompletedTest>, ()> (context.rs:53)\n==272860==    by 0x49D2EB2: <std::sync::mpmc::list::Channel<test::event::CompletedTest>>::recv (list.rs:442)\n==272860==    by 0x49DEE28: recv<test::event::CompletedTest> (mod.rs:1025)\n==272860==    by 0x49DEE28: recv<test::event::CompletedTest> (mpsc.rs:890)\n==272860==    by 0x49DEE28: run_tests<test::console::run_tests_console::{closure_env#2}> (lib.rs:445)\n==272860==    by 0x49DEE28: test::console::run_tests_console (console.rs:328)\n==272860==    by 0x49CB1C9: test_main_inner<test::test_main_static::{closure_env#0}> (lib.rs:170)\n==272860==    by 0x49CB1C9: test::test_main_static (lib.rs:195)\n==272860==    by 0x48DA8A2: call_once<fn(), ()> (library/core/src/ops/function.rs:250)\n==272860==    by 0x48DA8A2: std::sys::backtrace::__rust_begin_short_backtrace::<fn(), ()> (library/std/src/sys/backtrace.rs:166)\n==272860==    by 0x48F3D08: std::rt::lang_start::<()>::{closure#0} (library/std/src/rt.rs:206)\n==272860==    by 0x49A7618: call_once<(), (dyn core::ops::function::Fn<(), Output=i32> + core::marker::Sync + core::panic::unwind_safe::RefUnwindSafe)> (function.rs:287)\n==272860==    by 0x49A7618: do_call<&(dyn core::ops::function::Fn<(), Output=i32> + core::marker::Sync + core::panic::unwind_safe::RefUnwindSafe), i32> (panicking.rs:576)\n==272860==    by 0x49A7618: catch_unwind<i32, &(dyn core::ops::function::Fn<(), Output=i32> + core::marker::Sync + core::panic::unwind_safe::RefUnwindSafe)> (panicking.rs:544)\n==272860==    by 0x49A7618: catch_unwind<&(dyn core::ops::function::Fn<(), Output=i32> + core::marker::Sync + core::panic::unwind_safe::RefUnwindSafe), i32> (panic.rs:359)\n==272860==    by 0x49A7618: {closure#0} (rt.rs:175)\n==272860==    by 0x49A7618: do_call<std::rt::lang_start_internal::{closure_env#0}, isize> (panicking.rs:576)\n==272860==    by 0x49A7618: catch_unwind<isize, std::rt::lang_start_internal::{closure_env#0}> (panicking.rs:544)\n==272860==    by 0x49A7618: catch_unwind<std::rt::lang_start_internal::{closure_env#0}, isize> (panic.rs:359)\n==272860==    by 0x49A7618: std::rt::lang_start_internal (rt.rs:171)\n==272860==    by 0x497939B: main (in /workspace/Spiral-KEM/protocol_rust/target/audit/deps/spiral_protocol-b0b94ffb9a7366b8)",
+          "std_thread_frame": true,
+          "std_channel_frame": true,
+          "libtest_frame": true,
+          "classification": "std_thread_and_libtest"
+        }
+      ],
+      "branch_or_address_contexts": 0
+    }
+  ],
+  "receive-flow": {
+    "sha256": "7a76e396471a57dc77d37a50009822bff28d4ee86d0fc0c9380199cc907bd276",
+    "manifest_files_verified": 480
+  },
+  "record-fuzz": {
+    "sha256": "70f810018bf586d50135a4af1fce9f4855d08961688fabb0131b5caa96e64208",
+    "manifest_files_verified": 691
+  },
+  "record_fuzz": [
+    {
+      "name": "record",
+      "status": "passed",
+      "feedback": {
+        "initialization_executed": 578,
+        "executed": 2435,
+        "initial_cov": 471,
+        "final_cov": 473,
+        "final_features": 2161,
+        "new_corpus_events": 51
+      },
+      "differential": {
+        "status": "passed",
+        "expected_files": 633,
+        "checked_files": 633,
+        "accepted_checked": 95,
+        "rejected_checked": 538,
+        "mismatches": []
+      }
+    }
+  ],
+  "functional": {
+    "python-protocol": {
+      "passed": true,
+      "exit": 0,
+      "tests_run": 85
+    },
+    "diagnostic-parser": {
+      "passed": true,
+      "exit": 0,
+      "tests_run": 20
+    },
+    "native-kem": {
+      "passed": true,
+      "exit": 0,
+      "tests_run": 9
+    },
+    "rustc-version": {
+      "passed": true,
+      "exit": 0
+    },
+    "cargo-version": {
+      "passed": true,
+      "exit": 0
+    },
+    "rust-unit": {
+      "passed": true,
+      "exit": 0,
+      "test_groups": [
+        {
+          "passed": 70,
+          "failed": 0,
+          "ignored": 5
+        }
+      ]
+    },
+    "rust-doc": {
+      "passed": true,
+      "exit": 0,
+      "test_groups": [
+        {
+          "passed": 6,
+          "failed": 0,
+          "ignored": 0
+        }
+      ]
+    },
+    "rust-release": {
+      "passed": true,
+      "exit": 0
+    },
+    "rust-tls": {
+      "passed": true,
+      "exit": 0,
+      "tests_run": 35,
+      "structured_tests": {
+        "tests": 35,
+        "failures": 0,
+        "errors": 0
+      }
+    }
+  },
+  "asan": {
+    "passed": true,
+    "tests_passed": 70,
+    "ignored": 5,
+    "binary_sha256": "1997b9fd7d6b041d9973cc3a7b6af1fcc18bcfb40dfc486b02a6bf7314800f64",
+    "asan_init_present": true,
+    "rustc": "rustc 1.101.0-nightly (c980177d8 2026-11-06)\nbinary: rustc\ncommit-hash: c980177d81d16f843a500905ac98c0cf3af1fd8d\ncommit-date: 2026-11-06\nhost: x86_64-unknown-linux-gnu\nrelease: 1.101.0-nightly\nLLVM version: 23.1.5\n",
+    "rustflags": "-Zsanitizer=address -Cdebuginfo=1 -Cforce-frame-pointers=yes -Coverflow-checks=yes -Cdebug-assertions=yes",
+    "asan_options": "detect_leaks=1:abort_on_error=1",
+    "prebuilt_std_and_native_openssl_coverage_claimed": false
+  },
+  "feature_negative_and_positive_controls": [
+    {
+      "feature": "disabled",
+      "command": [
+        "/workspace/rust48-tools/rust/bin/cargo",
+        "check",
+        "--locked",
+        "--offline",
+        "--manifest-path",
+        "/workspace/secret-state-upgrade-20261108/probe/Cargo.toml",
+        "--target-dir",
+        "/workspace/secret-state-upgrade-20261108/probe-target"
+      ],
+      "exit": 101,
+      "expected_outcome": true
+    },
+    {
+      "feature": "enabled",
+      "command": [
+        "/workspace/rust48-tools/rust/bin/cargo",
+        "check",
+        "--locked",
+        "--offline",
+        "--manifest-path",
+        "/workspace/secret-state-upgrade-20261108/probe/Cargo.toml",
+        "--target-dir",
+        "/workspace/secret-state-upgrade-20261108/probe-target",
+        "--features",
+        "wipe"
+      ],
+      "exit": 0,
+      "expected_outcome": true
+    }
+  ],
+  "linked_cleanup": {
+    "binary_sha256": "c3a6edc32220e38a7a9660f0ddb23e9de9f1c96010aef45b76c1e0f9ccfc2e0f",
+    "uncompressed_disassembly_sha256": "3bee160edea935854f16e16b8ef8b9ae0a959598fceea9688b0cd3fb7dcce22d",
+    "sha256_hmac_hkdf_and_sha512_signer_volatile_zero_stores_present": true,
+    "all_copies_or_registers_wiped": false
+  },
+  "dependency_inventory": [
+    {
+      "name": "block-buffer",
+      "version": "0.12.1",
+      "selected_for_current_target": true,
+      "crate_sha256_matches_lock": true,
+      "crate_sha256": "d2f6c7dbe95a6ed67ad9f18e57daf93a2f034c524b99fd2b76d18fdfeb6660aa",
+      "source_files_verified": 4,
+      "features": [
+        "zeroize"
+      ]
+    },
+    {
+      "name": "cmov",
+      "version": "0.5.4",
+      "selected_for_current_target": true,
+      "crate_sha256_matches_lock": true,
+      "crate_sha256": "0c9ea0ac24bc397ab3c98583a3c9ba74fa56b09a4449bbe172b9b1ddb016027a",
+      "source_files_verified": 9,
+      "features": []
+    },
+    {
+      "name": "const-oid",
+      "version": "0.10.2",
+      "selected_for_current_target": true,
+      "crate_sha256_matches_lock": true,
+      "crate_sha256": "a6ef517f0926dd24a1582492c791b6a4818a4d94e789a334894aa15b0d12f55c",
+      "source_files_verified": 11,
+      "features": []
+    },
+    {
+      "name": "cpufeatures",
+      "version": "0.3.1",
+      "selected_for_current_target": true,
+      "crate_sha256_matches_lock": true,
+      "crate_sha256": "5ca28b0ae3115b884660db4118d803791fd6756b6e88f39c0f3f7859060d7566",
+      "source_files_verified": 6,
+      "features": []
+    },
+    {
+      "name": "crypto-common",
+      "version": "0.2.2",
+      "selected_for_current_target": true,
+      "crate_sha256_matches_lock": true,
+      "crate_sha256": "ce6e4c961d6cd6c9a86db418387425e8bdeaf05b3c8bc1411e6dca4c252f1453",
+      "source_files_verified": 4,
+      "features": []
+    },
+    {
+      "name": "ctutils",
+      "version": "0.4.8",
+      "selected_for_current_target": true,
+      "crate_sha256_matches_lock": true,
+      "crate_sha256": "261af4dc7a06ea8a527a8717d8cbba3417530d6ea14e1edb3de6b67806be474f",
+      "source_files_verified": 14,
+      "features": []
+    },
+    {
+      "name": "curve25519-dalek",
+      "version": "5.0.0",
+      "selected_for_current_target": true,
+      "crate_sha256_matches_lock": true,
+      "crate_sha256": "b5eed333089e2e1c1ac8c6c0398e5e2497b4c9926ca6d0365ed1e099afa5bc23",
+      "source_files_verified": 57,
+      "features": [
+        "digest",
+        "precomputed-tables",
+        "zeroize"
+      ]
+    },
+    {
+      "name": "digest",
+      "version": "0.11.3",
+      "selected_for_current_target": true,
+      "crate_sha256_matches_lock": true,
+      "crate_sha256": "f1dd6dbb5841937940781866fa1281a1ff7bd3bf827091440879f9994983d5c2",
+      "source_files_verified": 17,
+      "features": [
+        "alloc",
+        "block-api",
+        "default",
+        "mac",
+        "oid",
+        "zeroize"
+      ]
+    },
+    {
+      "name": "ed25519",
+      "version": "3.0.0",
+      "selected_for_current_target": true,
+      "crate_sha256_matches_lock": true,
+      "crate_sha256": "29fcf32e6c73d1079f83ab4d782de2d81620346a5f38c6237a86a22f8368980a",
+      "source_files_verified": 4,
+      "features": []
+    },
+    {
+      "name": "ed25519-dalek",
+      "version": "3.0.0",
+      "selected_for_current_target": true,
+      "crate_sha256_matches_lock": true,
+      "crate_sha256": "6ebaa1a2bf1290ab3bfe5a7b771d050ebffab2711c19a81691c683a5144a25de",
+      "source_files_verified": 12,
+      "features": [
+        "default",
+        "fast",
+        "zeroize"
+      ]
+    },
+    {
+      "name": "fiat-crypto",
+      "version": "0.3.0",
+      "checksum_in_lock": "64cd1e32ddd350061ae6edb1b082d7c54915b5c672c389143b9a63403a109f24",
+      "selected_for_current_target": false
+    },
+    {
+      "name": "hkdf",
+      "version": "0.13.0",
+      "selected_for_current_target": true,
+      "crate_sha256_matches_lock": true,
+      "crate_sha256": "4aaa26c720c68b866f2c96ef5c1264b3e6f473fe5d4ce61cd44bbe913e553018",
+      "source_files_verified": 4,
+      "features": []
+    },
+    {
+      "name": "hmac",
+      "version": "0.13.0",
+      "selected_for_current_target": true,
+      "crate_sha256_matches_lock": true,
+      "crate_sha256": "6303bc9732ae41b04cb554b844a762b4115a61bfaa81e3e83050991eeb56863f",
+      "source_files_verified": 6,
+      "features": [
+        "zeroize"
+      ]
+    },
+    {
+      "name": "hybrid-array",
+      "version": "0.4.15",
+      "selected_for_current_target": true,
+      "crate_sha256_matches_lock": true,
+      "crate_sha256": "27f864f10dfb56725ce5ce5472bc52252c8f93a4ab86327122cebf62c5f59a17",
+      "source_files_verified": 8,
+      "features": []
+    },
+    {
+      "name": "sha2",
+      "version": "0.11.1",
+      "selected_for_current_target": true,
+      "crate_sha256_matches_lock": true,
+      "crate_sha256": "47d7069beb7d6ac7b9acd1039986e73443f24234f41074da099d6f994ac9ad19",
+      "source_files_verified": 26,
+      "features": [
+        "alloc",
+        "default",
+        "oid",
+        "zeroize"
+      ]
+    },
+    {
+      "name": "signature",
+      "version": "3.0.0",
+      "selected_for_current_target": true,
+      "crate_sha256_matches_lock": true,
+      "crate_sha256": "28d567dcbaf0049cb8ac2608a76cd95ff9e4412e1899d389ee400918ca7537f5",
+      "source_files_verified": 8,
+      "features": []
+    }
+  ],
+  "dalek_uses_same_zeroize_sha2_0_11_1": true
+}

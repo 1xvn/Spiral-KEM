@@ -1,0 +1,10 @@
+
+running 4 tests
+test secret_state_tests::configured_sha_and_buffer_cleanup_contract ... ok
+test secret_state_tests::rfc4231_hmac_sha256_sha512_short_and_long_keys ... ok
+test secret_state_tests::rfc5869_sha256_extract_and_expand_with_and_without_salt ... ok
+test signature_state_tests::owned_ed25519_matches_ring_at_hash_boundaries_and_rejects_mutation ... SIGNATURE_STATE_CASE {"pairs_checked":40,"changed_messages_rejected":40,"changed_signature_bytes_rejected":64,"scope":"public fixtures; ring differential and revocation; no complete-wipe claim","status":"passed"}
+ok
+
+test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 71 filtered out; finished in 0.02s
+

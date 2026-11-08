@@ -5,6 +5,9 @@ Added key and nonce-prefix instrumentation to actual `Rx::decode`, and enabled t
 78 key/prefix taint traces, and 2 branch/address positive controls.
 **This does not mark all of item 2, constant-time validation, or overall memory checking complete.**
 
+Dependencies were updated in the subsequent [HMAC·HKDF·signature state cleanup supplement](SECRET_STATE.md).
+The results below concern code and executables before that update; the follow-up record covers regression tests and remaining scope for the new version.
+
 The measured code commit is `832e996842b2d0c746dd7b65e388907207c5b72c`.
 [Evidence and review record](evidence/receive_flow_20261108/README.md) retains original warnings,
 executable/source hashes, linked commands, regression results, and dependency rationale together.
