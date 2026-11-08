@@ -1,9 +1,9 @@
-# Local channel and authenticated TLS lifecycle validation
+# Local·OCI·WSL validation of channel and authenticated TLS lifecycles
 
 Executed against pinned source `0c2609c82124f1984cada26ca3c6623ee667bcfb`.
 The recorded local date is 2026-11-08; timestamps in original JSON and logs are UTC.
-The first table shows local Debian x86-64 results. Later WSL2 submissions are recorded separately
-below; OCI ARM64 lifecycle results have not yet been submitted.
+The first table shows local Debian x86-64 results. Subsequently submitted WSL2 and OCI ARM64 results
+are recorded separately below.
 
 | Check | Result |
 |---|---|
@@ -100,8 +100,44 @@ WSL original bundle SHA-256:
 5631bab532e80b542f7547fa4b6b41412d6a22b65a301b84e5b5329bfd58fc32
 ```
 
-The jointly submitted `Spiral-Rust-record-oci-20261108.tar.gz` concerns the previously verified record state
+`Spiral-Rust-record-oci-20261108.tar.gz`, initially submitted alongside WSL, matches the previously validated record-state
 fuzzing bundle byte-for-byte and in SHA-256. Its internal tests use `suite: records`, commit
 `0516222`; they are not added to this channel/TLS lifecycle result count. Previous OCI record
-pass record, which is retained. The OCI file needed for this phase is
-`Spiral-channel-lifecycle-oci-20261108.tar.gz`, which remains pending submission.
+pass results remain recorded; subsequently submitted lifecycle results appear in the next section.
+
+## Submitted OCI lifecycle results and completion on both platforms
+
+Validated the newly submitted `Spiral-channel-lifecycle-oci-20261108.tar.gz`.
+It uses the same pinned commit as WSL, `9367c7688f3fac2e249b70e3439b3fcddc6e8060`,
+with matching full paths/hashes for 67 sources, pinned Rust/Python dependencies, and 5-round/seed settings.
+
+| Environment | Channel methods / detailed conditions | Rust authenticated TLS | Independent peer TLS | Result file hashes |
+|---|---:|---:|---:|---:|
+| OCI ARM64 | 40 / 135 | 30 | 30 | 21/21 matched |
+| WSL2 x86-64 | 40 / 135 | 30 | 30 | 21/21 matched |
+
+Compared OCI's five loop logs, both peers' case/final summaries, independent server stdout/stderr/return
+codes, and authenticated connection SID/transcript/exporter against the result JSON again.
+Across 129 compilation audit records, verified source paths, compiler, target CPU, and ASan in the four required actual builds,
+along with debug, overflow, frame-pointer, and codegen options. The three executables'
+retained nm outputs contain ASan initialization symbols; no unexpected sanitizer, leak, or panic
+diagnostics occurred. Rust peer records matched 90 native jobs, final live key count 0, authentication-key
+owner close, and admission return.
+
+Independent OCI peer shutdown observations were 10 normal, 17 expected `Closed`, and 3 `Deadline`.
+The five cases withholding TLS close_notify exited on their own after approximately 2.016~2.024 seconds.
+Of these, two appeared as `Closed` at the upper API; the other three appeared as
+`Deadline`. Verified withheld TCP, authenticated Spiral CLOSE on both sides, server TLS
+close_notify, and termination after the grace period; did not relabel the two `Closed` observations as directly observed `Deadline`
+results. All five corresponding WSL cases were `Deadline`.
+
+OCI original archive SHA-256:
+
+```text
+2d89ddf41e4de8b57d1312daea5c29a1579be7b03f5c3ca8a2bb66b16205a520
+```
+
+Completed local, OCI, and WSL executions and submitted-evidence validation for these finite lifecycle tests.
+This does not represent rerunning submitted binaries or directly recomputing binary hashes.
+This is distinct from approval of overall memory safety, constant-time implementation, or cryptographic security; the next validation targets are
+remaining constant-time/secret-management evidence and unresolved Rust/WSL memory diagnostics.

@@ -22,7 +22,8 @@ rechecks of 702/702 and 718/718 saved inputs passed.
 The [channel and TLS lifecycle check guide](LIFECYCLE.md) separately checks channel-loop tests combining partial writes, cancellation, simultaneous shutdown, and
 timeouts, and the shutdown and resource release of actual authenticated TLS connections.
 It uses the same pinned nightly and an independent Python peer, with separate runs on OCI and WSL.
-run each separately.
+For each submitted environment, records of 40 channel cases, 135 detailed conditions, 30 Rust TLS cases, and
+30 independent-peer TLS cases were revalidated and passed.
 
 ## Quick start
 
