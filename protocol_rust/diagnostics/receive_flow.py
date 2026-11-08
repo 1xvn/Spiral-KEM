@@ -135,11 +135,12 @@ def main():
     env.pop('VALGRIND_OPTS',None);env.pop('RUST_TEST_NOCAPTURE',None)
     for name in list(env):
         if name.startswith('SPIRAL_RX_TRACE_'):env.pop(name)
-    report={'schema':'spiral-receive-secret-flow/v1','started_utc':datetime.now(timezone.utc).isoformat(),
+    report={'schema':'spiral-receive-secret-flow/v2','started_utc':datetime.now(timezone.utc).isoformat(),
       'diagnostic_complete':False,'constant_time_approved':False,'production_memory_passed':False,
       'binary':{'path':str(binary),'sha256':digest(binary),'bytes':binary.stat().st_size},
       'runner_sha256':digest(Path(__file__)),'public_contract':'AEAD authentication bit and CLOSE reason-range validity bit; DATA plaintext and full CLOSE value remain secret.',
-      'platform':platform.uname()._asdict(),'declassification_used':False,'suppression_used':False,'positive_controls':[],'cases':[],'errors':[]}
+      'platform':platform.uname()._asdict(),'declassification_used':True,'receive_declassification_used':False,
+      'derivation_wire_output_declassification_used':True,'suppression_used':False,'positive_controls':[],'cases':[],'errors':[]}
     prefix=[str(args.loader.resolve()),'--library-path',str(args.library_path.resolve())] if args.loader else []
     started=time.monotonic()
 
