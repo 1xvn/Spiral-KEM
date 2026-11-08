@@ -1,0 +1,53 @@
+{
+  "scope": "Design artifacts and compile-only API/type probes; no runtime crypto patch",
+  "target_revision": "47c80c75cc93934836b2893905752fb3f13a0c23",
+  "source_integrity": {
+    "repository_files": 13,
+    "dependency_archives": 9,
+    "dependency_source_files": 170,
+    "both_lockfile_archive_checksums_match": true
+  },
+  "api_compile_probe": {
+    "positive_exit": 0,
+    "negative_exit": 101,
+    "expected_e0277_count": 2,
+    "runtime_cleanup_measured": false
+  },
+  "artifact_checks": {
+    "required_headings": true,
+    "json_cross_references": true,
+    "option_specific_work_packages": true,
+    "evidence_coverage": true,
+    "tradeoff_dimensions": true,
+    "relative_links": true,
+    "collection_hash": true,
+    "distributable_paths": true
+  },
+  "independent_model_assisted_reviews": [
+    {
+      "scope": "HMAC/HKDF/digest source and proposal",
+      "corrections": [
+        "Separate option-specific implementation readiness",
+        "Distinguish generic HKDF and app length contracts"
+      ],
+      "corrections_rechecked": true
+    },
+    {
+      "scope": "Ed25519/curve source and proposal",
+      "corrections": [
+        "Separate option-specific implementation readiness",
+        "Clarify generic failure injection versus pure try_sign",
+        "Preserve ZIP-215 decode and current verify_strict rules"
+      ],
+      "corrections_rechecked": true
+    }
+  ],
+  "review_limit": "Model-assisted source review is not an external human cryptographic audit.",
+  "production_source_changed": false,
+  "dependency_lockfiles_changed": false,
+  "new_runtime_regression_required_for_this_design_only_change": false,
+  "option_selected_by_user": false,
+  "runtime_patch_implemented": false,
+  "constant_time_approved": false,
+  "production_memory_passed": false
+}

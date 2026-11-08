@@ -1,0 +1,55 @@
+hybrid-array v0.4.15
+└── hybrid-array feature "default"
+    ├── block-buffer v0.12.1
+    │   ├── block-buffer feature "default"
+    │   │   └── digest v0.11.3
+    │   │       ├── digest feature "alloc"
+    │   │       │   └── sha2 feature "alloc"
+    │   │       │       └── sha2 feature "default"
+    │   │       │           └── spiral-protocol v0.3.0 (repository/protocol_rust)
+    │   │       │               └── spiral-protocol feature "default" (command-line)
+    │   │       ├── digest feature "block-api"
+    │   │       │   └── curve25519-dalek v5.0.0
+    │   │       │       ├── curve25519-dalek feature "digest"
+    │   │       │       │   └── ed25519-dalek v3.0.0
+    │   │       │       │       ├── ed25519-dalek feature "default"
+    │   │       │       │       │   └── spiral-protocol v0.3.0 (repository/protocol_rust) (*)
+    │   │       │       │       ├── ed25519-dalek feature "fast"
+    │   │       │       │       │   └── ed25519-dalek feature "default" (*)
+    │   │       │       │       └── ed25519-dalek feature "zeroize"
+    │   │       │       │           └── spiral-protocol v0.3.0 (repository/protocol_rust) (*)
+    │   │       │       │           └── ed25519-dalek feature "default" (*)
+    │   │       │       ├── curve25519-dalek feature "precomputed-tables"
+    │   │       │       │   └── ed25519-dalek feature "fast" (*)
+    │   │       │       └── curve25519-dalek feature "zeroize"
+    │   │       │           └── ed25519-dalek feature "zeroize" (*)
+    │   │       │   └── digest feature "default"
+    │   │       │       ├── hmac v0.13.0
+    │   │       │       │   ├── hmac feature "default"
+    │   │       │       │   │   ├── hkdf v0.13.0
+    │   │       │       │   │   │   └── hkdf feature "default"
+    │   │       │       │   │   │       └── spiral-protocol v0.3.0 (repository/protocol_rust) (*)
+    │   │       │       │   │   └── spiral-protocol v0.3.0 (repository/protocol_rust) (*)
+    │   │       │       │   └── hmac feature "zeroize"
+    │   │       │       │       └── spiral-protocol v0.3.0 (repository/protocol_rust) (*)
+    │   │       │       └── sha2 v0.11.1
+    │   │       │           └── ed25519-dalek v3.0.0 (*)
+    │   │       │           ├── sha2 feature "alloc" (*)
+    │   │       │           ├── sha2 feature "default" (*)
+    │   │       │           ├── sha2 feature "oid"
+    │   │       │           │   └── sha2 feature "default" (*)
+    │   │       │           └── sha2 feature "zeroize"
+    │   │       │               └── spiral-protocol v0.3.0 (repository/protocol_rust) (*)
+    │   │       ├── digest feature "default" (*)
+    │   │       ├── digest feature "mac"
+    │   │       │   └── hmac v0.13.0 (*)
+    │   │       ├── digest feature "oid"
+    │   │       │   └── sha2 feature "oid" (*)
+    │   │       └── digest feature "zeroize"
+    │   │           ├── sha2 feature "zeroize" (*)
+    │   │           └── hmac feature "zeroize" (*)
+    │   └── block-buffer feature "zeroize"
+    │       └── digest feature "zeroize" (*)
+    └── crypto-common v0.2.2
+        └── crypto-common feature "default"
+            └── digest v0.11.3 (*)

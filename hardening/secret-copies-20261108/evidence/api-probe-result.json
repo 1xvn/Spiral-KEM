@@ -1,0 +1,33 @@
+{
+  "positive": {
+    "exit": 0,
+    "compiler_e0277_count": 0
+  },
+  "negative": {
+    "exit": 101,
+    "compiler_e0277_count": 2
+  },
+  "scope": "Compile-only API/type feasibility experiment; no crypto implementation or runtime wipe verification.",
+  "rustc_release": "1.99.1",
+  "positive_contracts": [
+    "Sha256/Sha512 ZeroizeOnDrop",
+    "Scalar Copy + Clone + Zeroize",
+    "AsMut<[u8]> private owned-byte guard",
+    "Zeroizing<Scalar>"
+  ],
+  "negative_contract": "The current output Array types do not satisfy Zeroize under the inspected feature configuration.",
+  "raw_log_sha256": {
+    "positive": "665a1afa21e1212dcdd5cd9a2550e5139e77246be541a69a05b5b5582a83735a",
+    "negative": "bcdfb557aa623d50adb78cc5e3ff0cd277b86ae5e033af1c19409899b0565f0b"
+  },
+  "retained_log_transform": "Task-local absolute path prefixes were replaced by probe-work; diagnostics are otherwise unchanged.",
+  "reproduce": [
+    "cargo check --locked --offline",
+    "cargo check --locked --offline --features array-zeroize"
+  ],
+  "expected_exits": {
+    "positive": 0,
+    "negative": 101
+  },
+  "not_evidence_of_runtime_cleanup": true
+}

@@ -1,0 +1,20 @@
+{
+  "context.md": "de53dd49f9bd19e6c686628361c5280b68a3d443520b7b8160969c9490e53d6e",
+  "diagrams/secret-scratch-ownership-before.mmd": "54185887db3edd3ed16315b84a6fb9361ed20ddb79cd13753fb32d02abbfddb3",
+  "diagrams/secret-scratch-ownership-caller-outputs-after.mmd": "f0a5e79f6cabeab1f125b893ed4f10a029d46616c95cf47ee1c96d287ad724e1",
+  "diagrams/secret-scratch-ownership-dependency-scopes-after.mmd": "6119b49461fd23aec40101ba7d988e85856a7a4670962157f99c45e0238b87ab",
+  "diagrams/secret-scratch-ownership-provider-isolation-after.mmd": "e1184827078db80a90b80f873313b53d26a0f99e5859a204718766f7e44bfc5d",
+  "evidence/actual-hybrid-array-features.log": "52e66fe81deb59463c56737710e7a59612755d61061b8a1e65d5b515dd932368",
+  "evidence/api-probe/Cargo.lock": "14212ad507fa9c61b6380c4f18960b3e7b8353c245744a81c9e9785ba3f73040",
+  "evidence/api-probe/Cargo.toml": "b835ac3912627cd933318ada2f4bef0ce83928824f2f305077650308f59dabf9",
+  "evidence/api-probe/src/main.rs": "b5b267ad49cab5d400826d535a13ace3728a5341e163f7252dd82a55a5b61c14",
+  "evidence/api-probe-negative.log": "ef0e09d1042ccbe1025d16eac5ce71d77118eef8f2cefddee12b6f5249993ec2",
+  "evidence/api-probe-positive.log": "fc96ce2e718a602e5c2c38f6a373a8c11057cbbf31ecae6f8b54d972dee8672b",
+  "evidence/api-probe-result.json": "01021ac9e4db4d160306371d28a86f0a492774b6106febd2add1162b2fbe6d69",
+  "evidence/input-inventory.json": "273058d6e42032472d8528dd58b19b84df29c782bb79f5b1bc5739be2fc52572",
+  "evidence/source-manifest.json": "ed263f344199654d4a5f5575ee3890fc81672c658d5de945df869583c19495dd",
+  "hardening.json": "e439a6568597154244c7413831c40c51b8f311ef59c9b7e5927ef9c1a8d56baa",
+  "hardening.md": "76d5b2804510acb3c678480e7f89d38159bf4f3e4fc2fce6562e5f311d27dbdc",
+  "proposals/secret-scratch-ownership.md": "ad3a44e717f5bc98eb03922c6e56f99eccc40826a7286e1d3aa52fe09227e91c",
+  "validation.json": "4f092424510b5ea34a7cd25c1de478116487acc249997ee5e8eb1be93cf66037"
+}

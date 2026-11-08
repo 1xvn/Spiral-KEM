@@ -1,0 +1,115 @@
+{
+  "target_revision": "47c80c75cc93934836b2893905752fb3f13a0c23",
+  "collection_sha256": "53d3287b300e4c39a5cee0347b1ff19710d1ce25575657418a874603246bf944",
+  "artifact_count": 27,
+  "artifacts": [
+    {
+      "path": "crate-archives/crypto-common-0.2.2.crate",
+      "sha256": "ce6e4c961d6cd6c9a86db418387425e8bdeaf05b3c8bc1411e6dca4c252f1453"
+    },
+    {
+      "path": "crate-archives/curve25519-dalek-5.0.0.crate",
+      "sha256": "b5eed333089e2e1c1ac8c6c0398e5e2497b4c9926ca6d0365ed1e099afa5bc23"
+    },
+    {
+      "path": "crate-archives/digest-0.11.3.crate",
+      "sha256": "f1dd6dbb5841937940781866fa1281a1ff7bd3bf827091440879f9994983d5c2"
+    },
+    {
+      "path": "crate-archives/ed25519-dalek-3.0.0.crate",
+      "sha256": "6ebaa1a2bf1290ab3bfe5a7b771d050ebffab2711c19a81691c683a5144a25de"
+    },
+    {
+      "path": "crate-archives/hkdf-0.13.0.crate",
+      "sha256": "4aaa26c720c68b866f2c96ef5c1264b3e6f473fe5d4ce61cd44bbe913e553018"
+    },
+    {
+      "path": "crate-archives/hmac-0.13.0.crate",
+      "sha256": "6303bc9732ae41b04cb554b844a762b4115a61bfaa81e3e83050991eeb56863f"
+    },
+    {
+      "path": "crate-archives/hybrid-array-0.4.15.crate",
+      "sha256": "27f864f10dfb56725ce5ce5472bc52252c8f93a4ab86327122cebf62c5f59a17"
+    },
+    {
+      "path": "crate-archives/sha2-0.11.1.crate",
+      "sha256": "47d7069beb7d6ac7b9acd1039986e73443f24234f41074da099d6f994ac9ad19"
+    },
+    {
+      "path": "crate-archives/zeroize-1.9.1.crate",
+      "sha256": "e13084392c5e4bc371903e2935a5eaeed24905a7511356b883835e18a78f6879"
+    },
+    {
+      "path": "experiment/evidence/actual-hybrid-array-features.log",
+      "sha256": "52e66fe81deb59463c56737710e7a59612755d61061b8a1e65d5b515dd932368"
+    },
+    {
+      "path": "experiment/evidence/api-probe-result.json",
+      "sha256": "01021ac9e4db4d160306371d28a86f0a492774b6106febd2add1162b2fbe6d69"
+    },
+    {
+      "path": "experiment/evidence/api-probe/Cargo.lock",
+      "sha256": "14212ad507fa9c61b6380c4f18960b3e7b8353c245744a81c9e9785ba3f73040"
+    },
+    {
+      "path": "experiment/evidence/api-probe/Cargo.toml",
+      "sha256": "b835ac3912627cd933318ada2f4bef0ce83928824f2f305077650308f59dabf9"
+    },
+    {
+      "path": "experiment/evidence/api-probe/src/main.rs",
+      "sha256": "b5b267ad49cab5d400826d535a13ace3728a5341e163f7252dd82a55a5b61c14"
+    },
+    {
+      "path": "repository/protocol_rust/Cargo.lock",
+      "sha256": "d12949c1b2e3293041b75d0461e94ed133a6a78635a2cfb85c9710be02a603d2"
+    },
+    {
+      "path": "repository/protocol_rust/Cargo.toml",
+      "sha256": "6228e4e89852d2079b237bdf5d0883ba1ec04dbd3a848a4a704e3fb8c3a5db6c"
+    },
+    {
+      "path": "repository/protocol_rust/SECRET_STATE.md",
+      "sha256": "07afbf1589cb30f889b32830ff481e6c02f817207186aa31886797b03b2ffac9"
+    },
+    {
+      "path": "repository/protocol_rust/evidence/arm_secret_flow_20261108/README.md",
+      "sha256": "4d8ada50a7c3ada85cce4043e6670e874a631036e21285cf4fc097bd3a308aa6"
+    },
+    {
+      "path": "repository/protocol_rust/evidence/arm_secret_flow_20261108/review.json",
+      "sha256": "061f1e2c02df177f002c4d56c5a473b5d97ec98a04ed5170c90bbba9af3009a5"
+    },
+    {
+      "path": "repository/protocol_rust/fuzz/Cargo.lock",
+      "sha256": "609d35e9f73418b5130e3794c99df0b9eea95f46dba1f5cf949435641946d873"
+    },
+    {
+      "path": "repository/protocol_rust/fuzz/Cargo.toml",
+      "sha256": "23cfdd5b1750c9e3576c5f26bc8b3be5076bca6809045b715f58061d38361914"
+    },
+    {
+      "path": "repository/protocol_rust/src/ffi.rs",
+      "sha256": "16ecf94a88d60578b8cb8394847d858c1401ea035f580cd186b976b83d87e922"
+    },
+    {
+      "path": "repository/protocol_rust/src/identity.rs",
+      "sha256": "41504042392ac0e90129c8e7df623ddb48c317e7f64d4dda0946d365bb3ed1fe"
+    },
+    {
+      "path": "repository/protocol_rust/src/schedule.rs",
+      "sha256": "f0f06185190ee4c916435c8941fb6dc1f6917db76d4a8d8f2dd4ae409a9ec75b"
+    },
+    {
+      "path": "repository/protocol_rust/src/secret.rs",
+      "sha256": "b24ab189e8688951e2bf000bf0c7d14ed5e4d688cbcdc4b0926182bb5582765e"
+    },
+    {
+      "path": "repository/protocol_rust/src/secret_state_tests.rs",
+      "sha256": "c18a891bf4d67c20b01ef61015657c1e9dec1765bd7d8b9fde15346361695a22"
+    },
+    {
+      "path": "repository/protocol_rust/src/signature_state_tests.rs",
+      "sha256": "2445d8872d501a9ba537ecb64a0fd9c8dffd9d73e271d7ac54eafe681cd3fbdd"
+    }
+  ]
+}
