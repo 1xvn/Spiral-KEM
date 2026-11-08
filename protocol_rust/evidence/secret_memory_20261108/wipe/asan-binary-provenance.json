@@ -1,0 +1,10 @@
+{
+  "binary": "/workspace/secret-wipe-asan-build-20261108/x86_64-unknown-linux-gnu/release/build/spiral-protocol/2e52537794d02b68/out/spiral_protocol-2e52537794d02b68",
+  "binary_sha256": "a2e4f1735193874d034eafd8b22c3e863474ecc34abc7359caa9ba0d8213761c",
+  "asan_init_present": true,
+  "rustc_commit": "c980177d81d16f843a500905ac98c0cf3af1fd8d",
+  "RUSTFLAGS": "-Zsanitizer=address -Cdebuginfo=1 -Cforce-frame-pointers=yes -Coverflow-checks=yes -Cdebug-assertions=yes",
+  "ASAN_OPTIONS": "detect_leaks=1:abort_on_error=1",
+  "LSAN_OPTIONS": "exitcode=23",
+  "exit": 0
+}

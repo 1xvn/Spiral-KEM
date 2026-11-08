@@ -1,0 +1,277 @@
+
+## std/src/thread/current.rs:275
+275: #[stable(feature = "rust1", since = "1.0.0")]
+276: pub fn current() -> Thread {
+277:     let current = CURRENT.get();
+278:     if current > DESTROYED {
+279:         unsafe {
+280:             let current = ManuallyDrop::new(Thread::from_raw(current));
+281:             (*current).clone()
+282:         }
+283:     } else {
+284:         init_current(current)
+285:     }
+286: }
+287: 
+288: #[cold]
+289: fn init_current(current: *mut ()) -> Thread {
+290:     if current == NONE {
+291:         CURRENT.set(BUSY);
+292:         // If the thread ID was initialized already, use it.
+293:         let id = id::get_or_init();
+294:         let thread = Thread::new(id, None);
+295: 
+296:         // Make sure that `crate::rt::thread_cleanup` will be run, which will
+297:         // call `drop_current`.
+298:         crate::sys::thread_local::guard::enable();
+299:         CURRENT.set(thread.clone().into_raw().cast_mut());
+300:         thread
+
+## std/src/thread/current.rs:322
+322: /// This should be run in [`crate::rt::thread_cleanup`] to reset the thread
+323: /// handle.
+324: pub(crate) fn drop_current() {
+325:     let current = CURRENT.get();
+326:     if current > DESTROYED {
+327:         unsafe {
+328:             CURRENT.set(DESTROYED);
+329:             drop(Thread::from_raw(current));
+330:         }
+331:     }
+332: }
+
+## std/src/thread/thread.rs:48
+48: #[repr(align(8))]
+49: struct Inner {
+50:     name: Option<ThreadNameString>,
+51:     id: ThreadId,
+52:     parker: Parker,
+53: }
+
+## std/src/thread/thread.rs:80
+80: /// [`thread`]: super::JoinHandle::thread
+81: /// [`JoinHandle`]: super::JoinHandle
+82: /// [`thread::current`]: super::current::current
+83: /// [`Builder`]: super::Builder
+84: /// [`spawn`]: super::spawn
+85: pub struct Thread {
+86:     // We use the System allocator such that creating or dropping this handle
+87:     // does not interfere with a potential Global allocator using thread-local
+88:     // storage.
+89:     inner: Pin<Arc<Inner, System>>,
+90: }
+91: 
+92: impl Thread {
+93:     pub(crate) fn new(id: ThreadId, name: Option<String>) -> Thread {
+94:         let name = name.map(ThreadNameString::from);
+95: 
+96:         // We have to use `unsafe` here to construct the `Parker` in-place,
+97:         // which is required for the UNIX implementation.
+98:         //
+99:         // SAFETY: We pin the Arc immediately after creation, so its address never
+100:         // changes.
+101:         let inner = unsafe {
+102:             let mut arc = Arc::<Inner, _>::new_uninit_in(System);
+103:             let ptr = Arc::get_mut_unchecked(&mut arc).as_mut_ptr();
+104:             (&raw mut (*ptr).name).write(name);
+105:             (&raw mut (*ptr).id).write(id);
+106:             Parker::new_in_place(&raw mut (*ptr).parker);
+107:             Pin::new_unchecked(arc.assume_init())
+
+## std/src/thread/thread.rs:270
+270:     /// let id = thread.id();
+271:     /// let ptr = Thread::into_raw(thread);
+272:     /// unsafe {
+273:     ///     assert_eq!(Thread::from_raw(ptr).id(), id);
+274:     /// }
+275:     /// ```
+276:     #[unstable(feature = "thread_raw", issue = "97523")]
+277:     pub fn into_raw(self) -> *const () {
+278:         // Safety: We only expose an opaque pointer, which maintains the `Pin` invariant.
+279:         let inner = unsafe { Pin::into_inner_unchecked(self.inner) };
+280:         Arc::into_raw_with_allocator(inner).0 as *const ()
+281:     }
+282: 
+283:     /// Constructs a `Thread` from a raw pointer.
+284:     ///
+285:     /// The raw pointer must have been previously returned
+286:     /// by a call to [`Thread::into_raw`].
+287:     ///
+288:     /// # Safety
+289:     ///
+290:     /// This function is unsafe because improper use may lead
+291:     /// to memory unsafety, even if the returned `Thread` is never
+292:     /// accessed.
+293:     ///
+294:     /// Creating a `Thread` from a pointer other than one returned
+295:     /// from [`Thread::into_raw`] is **undefined behavior**.
+296:     ///
+297:     /// Calling this function twice on the same raw pointer can lead
+298:     /// to a double-free if both `Thread` instances are dropped.
+299:     #[unstable(feature = "thread_raw", issue = "97523")]
+300:     pub unsafe fn from_raw(ptr: *const ()) -> Thread {
+301:         // Safety: Upheld by caller.
+302:         unsafe {
+303:             Thread { inner: Pin::new_unchecked(Arc::from_raw_in(ptr as *const Inner, System)) }
+304:         }
+
+## alloc/src/sync.rs:392
+392: #[repr(C, align(2))]
+393: struct ArcInner<T: ?Sized> {
+394:     strong: Atomic<usize>,
+395: 
+396:     // the value usize::MAX acts as a sentinel for temporarily "locking" the
+397:     // weak count, preventing `Arc::downgrade` from racing to create new
+398:     // `Weak` references. `Arc::is_unique` (which backs `Arc::get_mut`)
+399:     // needs to observe both the strong and weak counts as indicating
+400:     // uniqueness in one logical atomic step; since they live in separate
+401:     // atomic words, it locks the weak count while reading the strong
+402:     // count to keep the two reads consistent.
+403:     weak: Atomic<usize>,
+404: 
+405:     data: T,
+
+## alloc/src/sync.rs:1806
+1806:     #[must_use = "losing the pointer will leak memory"]
+1807:     #[unstable(feature = "allocator_api", issue = "32838")]
+1808:     pub fn into_raw_with_allocator(this: Self) -> (*const T, A) {
+1809:         let this = mem::ManuallyDrop::new(this);
+1810:         let ptr = Self::as_ptr(&this);
+1811:         // Safety: `this` is ManuallyDrop so the allocator will not be double-dropped
+1812:         let alloc = unsafe { ptr::read(&this.alloc) };
+1813:         (ptr, alloc)
+1814:     }
+
+## alloc/src/sync.rs:1916
+1916:     pub unsafe fn from_raw_in(ptr: *const T, alloc: A) -> Self {
+1917:         unsafe {
+1918:             let offset = data_offset(ptr);
+1919: 
+1920:             // Reverse the offset to find the original ArcInner.
+1921:             let arc_ptr = ptr.byte_sub(offset) as *mut ArcInner<T>;
+1922: 
+1923:             Self::from_ptr_in(arc_ptr, alloc)
+1924:         }
+
+## std/src/sys/thread_local/guard/key.rs:8
+8: #[cfg(target_thread_local)]
+9: pub fn enable() {
+10:     use crate::sys::thread_local::destructors;
+11: 
+12:     static DTORS: LazyKey = LazyKey::new(Some(run));
+13: 
+14:     // Setting the key value to something other than NULL will result in the
+15:     // destructor being run at thread exit.
+16:     unsafe {
+17:         set(DTORS.force(), ptr::without_provenance_mut(1));
+18:     }
+19: 
+20:     unsafe extern "C" fn run(_: *mut u8) {
+21:         unsafe {
+22:             destructors::run();
+23:             // On platforms with `__cxa_thread_atexit_impl`, `destructors::run`
+24:             // does nothing on newer systems as the TLS destructors are
+25:             // registered with the system. But because all of those platforms
+26:             // call the destructors of TLS keys after the registered ones, this
+27:             // function will still be run last (at the time of writing).
+28:             crate::rt::thread_cleanup();
+29:         }
+
+## std/src/rt.rs:120
+120: }
+121: 
+122: /// Clean up the thread-local runtime state. This *should* be run after all other
+123: /// code managed by the Rust runtime, but will not cause UB if that condition is
+124: /// not fulfilled. Also note that this function is not guaranteed to be run, but
+125: /// skipping it will cause leaks and therefore is to be avoided.
+126: pub(crate) fn thread_cleanup() {
+127:     // This function is run in situations where unwinding leads to an abort
+128:     // (think `extern "C"` functions). Abort here instead so that we can
+129:     // print a nice message.
+130:     panic::catch_unwind(|| {
+131:         crate::thread::drop_current();
+132:     })
+133:     .unwrap_or_else(handle_rt_panic);
+134: }
+135: 
+136: // One-time runtime cleanup.
+137: // Runs after `main` or at program exit.
+138: // NOTE: this is not guaranteed to run, for example when the program aborts.
+139: pub(crate) fn cleanup() {
+140:     static CLEANUP: Once = Once::new();
+141:     CLEANUP.call_once(|| unsafe {
+142:         // Flush stdout and disable buffering.
+143:         crate::io::cleanup();
+144:         // SAFETY: Only called once during runtime cleanup.
+145:         sys::cleanup();
+146:     });
+147: }
+148: 
+
+## std/src/rt.rs:185
+185:         let ret_code = ret_code as isize;
+186: 
+187:         cleanup();
+188:         // Guard against multiple threads calling `libc::exit` concurrently.
+189:         // See the documentation for `unique_thread_exit` for more information.
+190:         crate::sys::exit::unique_thread_exit();
+191: 
+192:         ret_code
+193:     })
+
+## std/src/sys/thread_local/key/unix.rs:25
+25: #[inline]
+26: pub fn create(dtor: Option<unsafe extern "C" fn(*mut u8)>) -> Key {
+27:     let mut key = 0;
+28:     if unsafe { libc::pthread_key_create(&mut key, mem::transmute(dtor)) } != 0 {
+29:         rtabort!("out of TLS keys");
+30:     }
+31:     key
+32: }
+33: 
+34: #[cold]
+35: fn fail() -> ! {
+36:     rtabort!("Unexpected TLS failure")
+37: }
+38: 
+39: #[inline]
+40: pub unsafe fn set(key: Key, value: *mut u8) {
+41:     let r = unsafe { libc::pthread_setspecific(key, value as *mut _) };
+
+## std/src/sys/thread_local/native/mod.rs:114
+114: pub(crate) macro local_pointer {
+115:     () => {},
+116:     ($vis:vis static $name:ident; $($rest:tt)*) => {
+117:         #[thread_local]
+118:         $vis static $name: $crate::sys::thread_local::LocalPointer = $crate::sys::thread_local::LocalPointer::__new();
+119:         $crate::sys::thread_local::local_pointer! { $($rest)* }
+120:     },
+121: }
+122: 
+123: pub(crate) struct LocalPointer {
+124:     p: Cell<*mut ()>,
+125: }
+126: 
+127: impl LocalPointer {
+128:     pub const fn __new() -> LocalPointer {
+129:         LocalPointer { p: Cell::new(ptr::null_mut()) }
+130:     }
+131: 
+132:     pub fn get(&self) -> *mut () {
+133:         self.p.get()
+134:     }
+135: 
+136:     pub fn set(&self, p: *mut ()) {
+137:         self.p.set(p)
+138:     }
+
+## std/src/sys/pal/unix/mod.rs:210
+210:     ON_BROKEN_PIPE_USED.load(crate::sync::atomic::Ordering::Relaxed)
+211: }
+212: 
+213: // SAFETY: must be called only once during runtime cleanup.
+214: // NOTE: this is not guaranteed to run, for example when the program aborts, and
+215: //       is not guaranteed to run on the main thread (#161018 was caused by that
+216: //       mistaken assumption).
+217: pub unsafe fn cleanup() {}
+218: 

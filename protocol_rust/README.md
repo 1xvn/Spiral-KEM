@@ -9,6 +9,10 @@ Changes and remaining limitations are in the [v0.3 implementation report](HARDEN
 
 The [2026-11-07 memory follow-up record](MEMORY_FOLLOWUP.md) adds user OCI/WSL results, controls investigating local AES-GCM warnings, and independent reproduction code. Production code and original memory-check verdicts are retained.
 
+[2026-11-08 secret and memory follow-up validation](SECRET_MEMORY.md) adds std 48-byte ownership and
+shutdown-lifetime controls and 216 observations of actual receive-buffer disposal. It distinguishes
+the completed scope from remaining validation for constant time and secret management.
+
 The [Rust frame and ClientHello fuzzing guide](FUZZ_PARSERS.md) uses a separately pinned nightly and
 the disabled-by-default `parser-fuzz` entry points to check actual parser coverage and compare saved inputs
 against the Python reference implementation. OCI ARM64 and WSL2 x86-64 results are collected separately.
@@ -141,7 +145,7 @@ Interoperability tests use four connections each for Python→Rust and Rust→Py
 eight senders, and 32 messages. They check actual exporters/transcripts at both ends, session independence, and normal/abnormal shutdown.
 Bursts of 16/64 connections from the same IP are rejection/cleanup tests, not capacity tests of 16/64 successful connections.
 
-The Python baseline for basic functional regression is 85 tests. After adding channel combination tests, Rust unit 60 + compile-fail 6 and the existing 35 actual TLS negative/interoperability tests are recorded separately. See the separate guidance and evidence above for the latest subsequent fuzzing/lifecycle results.
+The Python baseline for basic functional regression is 85 tests. After adding receive-buffer disposal tests, Rust unit 64 + compile-fail 6 and the existing 35 actual TLS negative/interoperability tests are recorded separately. See the separate guidance and evidence above for the latest subsequent validation results.
 The [mapping](REGRESSION_MAP.md) distinguishes 72 requirements with execution tests, 8 addressed structurally, and 5 with different API/test scope.
 See `VALIDATION.json` and `evidence/` for final environments, counts, check logs, and performance figures.
 The initial v0.3 validation bundle excludes coverage-guided fuzzing, long soaks, validation on other OS/CPU combinations, and independent code audits. Follow-up fuzzing and platform validation are recorded separately at the links above.

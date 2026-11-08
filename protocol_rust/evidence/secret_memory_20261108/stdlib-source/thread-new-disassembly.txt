@@ -1,0 +1,409 @@
+
+/workspace/thread-ownership-validation-20261108/build/thread-main:     file format elf64-x86-64
+
+
+Disassembly of section .text:
+
+00000000000332b0 <_RNvMs_NtNtCs8ZKwes1zzDd_3std6thread6threadNtB4_6Thread3new>:
+_RNvMs_NtNtCs8ZKwes1zzDd_3std6thread6threadNtB4_6Thread3new():
+/rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/std/src/thread/thread.rs:93
+   332b0:	55                   	push   %rbp
+   332b1:	48 89 e5             	mov    %rsp,%rbp
+   332b4:	41 57                	push   %r15
+   332b6:	41 56                	push   %r14
+   332b8:	41 55                	push   %r13
+   332ba:	41 54                	push   %r12
+   332bc:	53                   	push   %rbx
+   332bd:	50                   	push   %rax
+   332be:	49 89 ff             	mov    %rdi,%r15
+_RINvMNtCskADBYZwJmSU_4core6optionINtB3_6OptionNtNtCsgFX3jaOk65H_5alloc6string6StringE3mapNtNtNtNtCs8ZKwes1zzDd_3std6thread6thread18thread_name_string16ThreadNameStringNvYB1p_INtNtB5_7convert4FromBI_E4fromEB1x_():
+/rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/core/src/option.rs:1162
+inlined by /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/std/src/thread/thread.rs:94 (_RNvMs_NtNtCs8ZKwes1zzDd_3std6thread6threadNtB4_6Thread3new)
+   332c1:	48 83 3e ff          	cmpq   $0xffffffffffffffff,(%rsi)
+inlined by /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/std/src/thread/thread.rs:94 (_RNvMs_NtNtCs8ZKwes1zzDd_3std6thread6threadNtB4_6Thread3new)
+   332c5:	74 11                	je     332d8 <_RNvMs_NtNtCs8ZKwes1zzDd_3std6thread6threadNtB4_6Thread3new+0x28>
+_RNvYNvYNtNtNtNtCs8ZKwes1zzDd_3std6thread6thread18thread_name_string16ThreadNameStringINtNtCskADBYZwJmSU_4core7convert4FromNtNtCsgFX3jaOk65H_5alloc6string6StringE4fromINtNtNtB1q_3ops8function6FnOnceTB1W_EE9call_onceBd_():
+/rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/core/src/ops/function.rs:250
+inlined by /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/core/src/option.rs:1163 (_RINvMNtCskADBYZwJmSU_4core6optionINtB3_6OptionNtNtCsgFX3jaOk65H_5alloc6string6StringE3mapNtNtNtNtCs8ZKwes1zzDd_3std6thread6thread18thread_name_string16ThreadNameStringNvYB1p_INtNtB5_7convert4FromBI_E4fromEB1x_)
+inlined by /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/std/src/thread/thread.rs:94 (_RNvMs_NtNtCs8ZKwes1zzDd_3std6thread6threadNtB4_6Thread3new)
+   332c7:	48 89 f7             	mov    %rsi,%rdi
+inlined by /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/core/src/option.rs:1163 (_RINvMNtCskADBYZwJmSU_4core6optionINtB3_6OptionNtNtCsgFX3jaOk65H_5alloc6string6StringE3mapNtNtNtNtCs8ZKwes1zzDd_3std6thread6thread18thread_name_string16ThreadNameStringNvYB1p_INtNtB5_7convert4FromBI_E4fromEB1x_)
+inlined by /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/std/src/thread/thread.rs:94 (_RNvMs_NtNtCs8ZKwes1zzDd_3std6thread6threadNtB4_6Thread3new)
+   332ca:	ff 15 f0 6b 02 00    	call   *0x26bf0(%rip)        # 59ec0 <_DYNAMIC+0x750>
+inlined by /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/core/src/option.rs:1163 (_RINvMNtCskADBYZwJmSU_4core6optionINtB3_6OptionNtNtCsgFX3jaOk65H_5alloc6string6StringE3mapNtNtNtNtCs8ZKwes1zzDd_3std6thread6thread18thread_name_string16ThreadNameStringNvYB1p_INtNtB5_7convert4FromBI_E4fromEB1x_)
+inlined by /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/std/src/thread/thread.rs:94 (_RNvMs_NtNtCs8ZKwes1zzDd_3std6thread6threadNtB4_6Thread3new)
+   332d0:	48 89 c3             	mov    %rax,%rbx
+inlined by /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/core/src/option.rs:1163 (_RINvMNtCskADBYZwJmSU_4core6optionINtB3_6OptionNtNtCsgFX3jaOk65H_5alloc6string6StringE3mapNtNtNtNtCs8ZKwes1zzDd_3std6thread6thread18thread_name_string16ThreadNameStringNvYB1p_INtNtB5_7convert4FromBI_E4fromEB1x_)
+inlined by /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/std/src/thread/thread.rs:94 (_RNvMs_NtNtCs8ZKwes1zzDd_3std6thread6threadNtB4_6Thread3new)
+   332d3:	49 89 d6             	mov    %rdx,%r14
+inlined by /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/core/src/option.rs:1163 (_RINvMNtCskADBYZwJmSU_4core6optionINtB3_6OptionNtNtCsgFX3jaOk65H_5alloc6string6StringE3mapNtNtNtNtCs8ZKwes1zzDd_3std6thread6thread18thread_name_string16ThreadNameStringNvYB1p_INtNtB5_7convert4FromBI_E4fromEB1x_)
+inlined by /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/std/src/thread/thread.rs:94 (_RNvMs_NtNtCs8ZKwes1zzDd_3std6thread6threadNtB4_6Thread3new)
+   332d6:	eb 02                	jmp    332da <_RNvMs_NtNtCs8ZKwes1zzDd_3std6thread6threadNtB4_6Thread3new+0x2a>
+_RNvMs_NtNtCs8ZKwes1zzDd_3std6thread6threadNtB4_6Thread3new():
+   332d8:	31 db                	xor    %ebx,%ebx
+_RINvMso_NtCsgFX3jaOk65H_5alloc4syncINtB6_3ArcINtNtNtCskADBYZwJmSU_4core3mem12maybe_uninit11MaybeUninitNtNtNtCs8ZKwes1zzDd_3std6thread6thread5InnerEE19allocate_for_layoutNCNvMsf_B6_IBy_B1C_NtNtB1I_5alloc6SystemE13new_uninit_in0INvMNtNtBO_3ptr7mut_ptrOh4castINtB6_8ArcInnerBH_EEEB1I_():
+/rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/alloc/src/sync.rs:2189
+inlined by /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/alloc/src/sync.rs:821 (_RNvMsf_NtCsgFX3jaOk65H_5alloc4syncINtB5_3ArcNtNtNtCs8ZKwes1zzDd_3std6thread6thread5InnerNtNtBM_5alloc6SystemE13new_uninit_inBM_)
+inlined by /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/std/src/thread/thread.rs:102 (_RNvMs_NtNtCs8ZKwes1zzDd_3std6thread6threadNtB4_6Thread3new)
+   332da:	bf 08 00 00 00       	mov    $0x8,%edi
+inlined by /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/alloc/src/sync.rs:821 (_RNvMsf_NtCsgFX3jaOk65H_5alloc4syncINtB5_3ArcNtNtNtCs8ZKwes1zzDd_3std6thread6thread5InnerNtNtBM_5alloc6SystemE13new_uninit_inBM_)
+inlined by /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/std/src/thread/thread.rs:102 (_RNvMs_NtNtCs8ZKwes1zzDd_3std6thread6threadNtB4_6Thread3new)
+   332df:	be 20 00 00 00       	mov    $0x20,%esi
+inlined by /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/alloc/src/sync.rs:821 (_RNvMsf_NtCsgFX3jaOk65H_5alloc4syncINtB5_3ArcNtNtNtCs8ZKwes1zzDd_3std6thread6thread5InnerNtNtBM_5alloc6SystemE13new_uninit_inBM_)
+inlined by /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/std/src/thread/thread.rs:102 (_RNvMs_NtNtCs8ZKwes1zzDd_3std6thread6threadNtB4_6Thread3new)
+   332e4:	ff 15 de 6b 02 00    	call   *0x26bde(%rip)        # 59ec8 <_DYNAMIC+0x758>
+inlined by /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/alloc/src/sync.rs:821 (_RNvMsf_NtCsgFX3jaOk65H_5alloc4syncINtB5_3ArcNtNtNtCs8ZKwes1zzDd_3std6thread6thread5InnerNtNtBM_5alloc6SystemE13new_uninit_inBM_)
+inlined by /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/std/src/thread/thread.rs:102 (_RNvMs_NtNtCs8ZKwes1zzDd_3std6thread6threadNtB4_6Thread3new)
+   332ea:	49 89 c5             	mov    %rax,%r13
+inlined by /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/alloc/src/sync.rs:821 (_RNvMsf_NtCsgFX3jaOk65H_5alloc4syncINtB5_3ArcNtNtNtCs8ZKwes1zzDd_3std6thread6thread5InnerNtNtBM_5alloc6SystemE13new_uninit_inBM_)
+inlined by /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/std/src/thread/thread.rs:102 (_RNvMs_NtNtCs8ZKwes1zzDd_3std6thread6threadNtB4_6Thread3new)
+   332ed:	49 89 d4             	mov    %rdx,%r12
+_RNvMs0_NtCs8ZKwes1zzDd_3std5allocNtB5_6System10alloc_impl():
+/rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/std/src/alloc.rs:157
+inlined by /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/std/src/alloc.rs:223 (_RNvXs1_NtCs8ZKwes1zzDd_3std5allocNtB5_6SystemNtNtCskADBYZwJmSU_4core5alloc9Allocator8allocate)
+inlined by /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/alloc/src/sync.rs:823 (_RNCNvMsf_NtCsgFX3jaOk65H_5alloc4syncINtB7_3ArcNtNtNtCs8ZKwes1zzDd_3std6thread6thread5InnerNtNtBO_5alloc6SystemE13new_uninit_in0BO_)
+inlined by /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/alloc/src/sync.rs:2191 (_RINvMso_NtCsgFX3jaOk65H_5alloc4syncINtB6_3ArcINtNtNtCskADBYZwJmSU_4core3mem12maybe_uninit11MaybeUninitNtNtNtCs8ZKwes1zzDd_3std6thread6thread5InnerEE19allocate_for_layoutNCNvMsf_B6_IBy_B1C_NtNtB1I_5alloc6SystemE13new_uninit_in0INvMNtNtBO_3ptr7mut_ptrOh4castINtB6_8ArcInnerBH_EEEB1I_)
+inlined by /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/alloc/src/sync.rs:821 (_RNvMsf_NtCsgFX3jaOk65H_5alloc4syncINtB5_3ArcNtNtNtCs8ZKwes1zzDd_3std6thread6thread5InnerNtNtBM_5alloc6SystemE13new_uninit_inBM_)
+inlined by /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/std/src/thread/thread.rs:102 (_RNvMs_NtNtCs8ZKwes1zzDd_3std6thread6threadNtB4_6Thread3new)
+   332f0:	48 85 d2             	test   %rdx,%rdx
+inlined by /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/std/src/alloc.rs:223 (_RNvXs1_NtCs8ZKwes1zzDd_3std5allocNtB5_6SystemNtNtCskADBYZwJmSU_4core5alloc9Allocator8allocate)
+inlined by /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/alloc/src/sync.rs:823 (_RNCNvMsf_NtCsgFX3jaOk65H_5alloc4syncINtB7_3ArcNtNtNtCs8ZKwes1zzDd_3std6thread6thread5InnerNtNtBO_5alloc6SystemE13new_uninit_in0BO_)
+inlined by /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/alloc/src/sync.rs:2191 (_RINvMso_NtCsgFX3jaOk65H_5alloc4syncINtB6_3ArcINtNtNtCskADBYZwJmSU_4core3mem12maybe_uninit11MaybeUninitNtNtNtCs8ZKwes1zzDd_3std6thread6thread5InnerEE19allocate_for_layoutNCNvMsf_B6_IBy_B1C_NtNtB1I_5alloc6SystemE13new_uninit_in0INvMNtNtBO_3ptr7mut_ptrOh4castINtB6_8ArcInnerBH_EEEB1I_)
+inlined by /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/alloc/src/sync.rs:821 (_RNvMsf_NtCsgFX3jaOk65H_5alloc4syncINtB5_3ArcNtNtNtCs8ZKwes1zzDd_3std6thread6thread5InnerNtNtBM_5alloc6SystemE13new_uninit_inBM_)
+inlined by /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/std/src/thread/thread.rs:102 (_RNvMs_NtNtCs8ZKwes1zzDd_3std6thread6threadNtB4_6Thread3new)
+   332f3:	74 21                	je     33316 <_RNvMs_NtNtCs8ZKwes1zzDd_3std6thread6threadNtB4_6Thread3new+0x66>
+_RNvNtNtNtCs8ZKwes1zzDd_3std3sys5alloc4unix5alloc():
+/rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/std/src/sys/alloc/unix.rs:30
+inlined by /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/std/src/alloc.rs:161 (_RNvMs0_NtCs8ZKwes1zzDd_3std5allocNtB5_6System10alloc_impl)
+inlined by /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/std/src/alloc.rs:223 (_RNvXs1_NtCs8ZKwes1zzDd_3std5allocNtB5_6SystemNtNtCskADBYZwJmSU_4core5alloc9Allocator8allocate)
+inlined by /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/alloc/src/sync.rs:823 (_RNCNvMsf_NtCsgFX3jaOk65H_5alloc4syncINtB7_3ArcNtNtNtCs8ZKwes1zzDd_3std6thread6thread5InnerNtNtBO_5alloc6SystemE13new_uninit_in0BO_)
+inlined by /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/alloc/src/sync.rs:2191 (_RINvMso_NtCsgFX3jaOk65H_5alloc4syncINtB6_3ArcINtNtNtCskADBYZwJmSU_4core3mem12maybe_uninit11MaybeUninitNtNtNtCs8ZKwes1zzDd_3std6thread6thread5InnerEE19allocate_for_layoutNCNvMsf_B6_IBy_B1C_NtNtB1I_5alloc6SystemE13new_uninit_in0INvMNtNtBO_3ptr7mut_ptrOh4castINtB6_8ArcInnerBH_EEEB1I_)
+inlined by /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/alloc/src/sync.rs:821 (_RNvMsf_NtCsgFX3jaOk65H_5alloc4syncINtB5_3ArcNtNtNtCs8ZKwes1zzDd_3std6thread6thread5InnerNtNtBM_5alloc6SystemE13new_uninit_inBM_)
+inlined by /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/std/src/thread/thread.rs:102 (_RNvMs_NtNtCs8ZKwes1zzDd_3std6thread6threadNtB4_6Thread3new)
+   332f5:	49 83 fd 11          	cmp    $0x11,%r13
+inlined by /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/std/src/alloc.rs:161 (_RNvMs0_NtCs8ZKwes1zzDd_3std5allocNtB5_6System10alloc_impl)
+inlined by /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/std/src/alloc.rs:223 (_RNvXs1_NtCs8ZKwes1zzDd_3std5allocNtB5_6SystemNtNtCskADBYZwJmSU_4core5alloc9Allocator8allocate)
+inlined by /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/alloc/src/sync.rs:823 (_RNCNvMsf_NtCsgFX3jaOk65H_5alloc4syncINtB7_3ArcNtNtNtCs8ZKwes1zzDd_3std6thread6thread5InnerNtNtBO_5alloc6SystemE13new_uninit_in0BO_)
+inlined by /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/alloc/src/sync.rs:2191 (_RINvMso_NtCsgFX3jaOk65H_5alloc4syncINtB6_3ArcINtNtNtCskADBYZwJmSU_4core3mem12maybe_uninit11MaybeUninitNtNtNtCs8ZKwes1zzDd_3std6thread6thread5InnerEE19allocate_for_layoutNCNvMsf_B6_IBy_B1C_NtNtB1I_5alloc6SystemE13new_uninit_in0INvMNtNtBO_3ptr7mut_ptrOh4castINtB6_8ArcInnerBH_EEEB1I_)
+inlined by /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/alloc/src/sync.rs:821 (_RNvMsf_NtCsgFX3jaOk65H_5alloc4syncINtB5_3ArcNtNtNtCs8ZKwes1zzDd_3std6thread6thread5InnerNtNtBM_5alloc6SystemE13new_uninit_inBM_)
+inlined by /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/std/src/thread/thread.rs:102 (_RNvMs_NtNtCs8ZKwes1zzDd_3std6thread6threadNtB4_6Thread3new)
+   332f9:	0f 92 c0             	setb   %al
+inlined by /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/std/src/alloc.rs:161 (_RNvMs0_NtCs8ZKwes1zzDd_3std5allocNtB5_6System10alloc_impl)
+inlined by /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/std/src/alloc.rs:223 (_RNvXs1_NtCs8ZKwes1zzDd_3std5allocNtB5_6SystemNtNtCskADBYZwJmSU_4core5alloc9Allocator8allocate)
+inlined by /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/alloc/src/sync.rs:823 (_RNCNvMsf_NtCsgFX3jaOk65H_5alloc4syncINtB7_3ArcNtNtNtCs8ZKwes1zzDd_3std6thread6thread5InnerNtNtBO_5alloc6SystemE13new_uninit_in0BO_)
+inlined by /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/alloc/src/sync.rs:2191 (_RINvMso_NtCsgFX3jaOk65H_5alloc4syncINtB6_3ArcINtNtNtCskADBYZwJmSU_4core3mem12maybe_uninit11MaybeUninitNtNtNtCs8ZKwes1zzDd_3std6thread6thread5InnerEE19allocate_for_layoutNCNvMsf_B6_IBy_B1C_NtNtB1I_5alloc6SystemE13new_uninit_in0INvMNtNtBO_3ptr7mut_ptrOh4castINtB6_8ArcInnerBH_EEEB1I_)
+inlined by /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/alloc/src/sync.rs:821 (_RNvMsf_NtCsgFX3jaOk65H_5alloc4syncINtB5_3ArcNtNtNtCs8ZKwes1zzDd_3std6thread6thread5InnerNtNtBM_5alloc6SystemE13new_uninit_inBM_)
+inlined by /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/std/src/thread/thread.rs:102 (_RNvMs_NtNtCs8ZKwes1zzDd_3std6thread6threadNtB4_6Thread3new)
+   332fc:	4d 39 e5             	cmp    %r12,%r13
+inlined by /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/std/src/alloc.rs:161 (_RNvMs0_NtCs8ZKwes1zzDd_3std5allocNtB5_6System10alloc_impl)
+inlined by /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/std/src/alloc.rs:223 (_RNvXs1_NtCs8ZKwes1zzDd_3std5allocNtB5_6SystemNtNtCskADBYZwJmSU_4core5alloc9Allocator8allocate)
+inlined by /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/alloc/src/sync.rs:823 (_RNCNvMsf_NtCsgFX3jaOk65H_5alloc4syncINtB7_3ArcNtNtNtCs8ZKwes1zzDd_3std6thread6thread5InnerNtNtBO_5alloc6SystemE13new_uninit_in0BO_)
+inlined by /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/alloc/src/sync.rs:2191 (_RINvMso_NtCsgFX3jaOk65H_5alloc4syncINtB6_3ArcINtNtNtCskADBYZwJmSU_4core3mem12maybe_uninit11MaybeUninitNtNtNtCs8ZKwes1zzDd_3std6thread6thread5InnerEE19allocate_for_layoutNCNvMsf_B6_IBy_B1C_NtNtB1I_5alloc6SystemE13new_uninit_in0INvMNtNtBO_3ptr7mut_ptrOh4castINtB6_8ArcInnerBH_EEEB1I_)
+inlined by /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/alloc/src/sync.rs:821 (_RNvMsf_NtCsgFX3jaOk65H_5alloc4syncINtB5_3ArcNtNtNtCs8ZKwes1zzDd_3std6thread6thread5InnerNtNtBM_5alloc6SystemE13new_uninit_inBM_)
+inlined by /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/std/src/thread/thread.rs:102 (_RNvMs_NtNtCs8ZKwes1zzDd_3std6thread6threadNtB4_6Thread3new)
+   332ff:	0f 96 c1             	setbe  %cl
+inlined by /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/std/src/alloc.rs:161 (_RNvMs0_NtCs8ZKwes1zzDd_3std5allocNtB5_6System10alloc_impl)
+inlined by /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/std/src/alloc.rs:223 (_RNvXs1_NtCs8ZKwes1zzDd_3std5allocNtB5_6SystemNtNtCskADBYZwJmSU_4core5alloc9Allocator8allocate)
+inlined by /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/alloc/src/sync.rs:823 (_RNCNvMsf_NtCsgFX3jaOk65H_5alloc4syncINtB7_3ArcNtNtNtCs8ZKwes1zzDd_3std6thread6thread5InnerNtNtBO_5alloc6SystemE13new_uninit_in0BO_)
+inlined by /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/alloc/src/sync.rs:2191 (_RINvMso_NtCsgFX3jaOk65H_5alloc4syncINtB6_3ArcINtNtNtCskADBYZwJmSU_4core3mem12maybe_uninit11MaybeUninitNtNtNtCs8ZKwes1zzDd_3std6thread6thread5InnerEE19allocate_for_layoutNCNvMsf_B6_IBy_B1C_NtNtB1I_5alloc6SystemE13new_uninit_in0INvMNtNtBO_3ptr7mut_ptrOh4castINtB6_8ArcInnerBH_EEEB1I_)
+inlined by /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/alloc/src/sync.rs:821 (_RNvMsf_NtCsgFX3jaOk65H_5alloc4syncINtB5_3ArcNtNtNtCs8ZKwes1zzDd_3std6thread6thread5InnerNtNtBM_5alloc6SystemE13new_uninit_inBM_)
+inlined by /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/std/src/thread/thread.rs:102 (_RNvMs_NtNtCs8ZKwes1zzDd_3std6thread6threadNtB4_6Thread3new)
+   33302:	84 c8                	test   %cl,%al
+inlined by /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/std/src/alloc.rs:161 (_RNvMs0_NtCs8ZKwes1zzDd_3std5allocNtB5_6System10alloc_impl)
+inlined by /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/std/src/alloc.rs:223 (_RNvXs1_NtCs8ZKwes1zzDd_3std5allocNtB5_6SystemNtNtCskADBYZwJmSU_4core5alloc9Allocator8allocate)
+inlined by /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/alloc/src/sync.rs:823 (_RNCNvMsf_NtCsgFX3jaOk65H_5alloc4syncINtB7_3ArcNtNtNtCs8ZKwes1zzDd_3std6thread6thread5InnerNtNtBO_5alloc6SystemE13new_uninit_in0BO_)
+inlined by /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/alloc/src/sync.rs:2191 (_RINvMso_NtCsgFX3jaOk65H_5alloc4syncINtB6_3ArcINtNtNtCskADBYZwJmSU_4core3mem12maybe_uninit11MaybeUninitNtNtNtCs8ZKwes1zzDd_3std6thread6thread5InnerEE19allocate_for_layoutNCNvMsf_B6_IBy_B1C_NtNtB1I_5alloc6SystemE13new_uninit_in0INvMNtNtBO_3ptr7mut_ptrOh4castINtB6_8ArcInnerBH_EEEB1I_)
+inlined by /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/alloc/src/sync.rs:821 (_RNvMsf_NtCsgFX3jaOk65H_5alloc4syncINtB5_3ArcNtNtNtCs8ZKwes1zzDd_3std6thread6thread5InnerNtNtBM_5alloc6SystemE13new_uninit_inBM_)
+inlined by /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/std/src/thread/thread.rs:102 (_RNvMs_NtNtCs8ZKwes1zzDd_3std6thread6threadNtB4_6Thread3new)
+   33304:	74 1a                	je     33320 <_RNvMs_NtNtCs8ZKwes1zzDd_3std6thread6threadNtB4_6Thread3new+0x70>
+/rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/std/src/sys/alloc/unix.rs:31
+inlined by /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/std/src/alloc.rs:161 (_RNvMs0_NtCs8ZKwes1zzDd_3std5allocNtB5_6System10alloc_impl)
+inlined by /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/std/src/alloc.rs:223 (_RNvXs1_NtCs8ZKwes1zzDd_3std5allocNtB5_6SystemNtNtCskADBYZwJmSU_4core5alloc9Allocator8allocate)
+inlined by /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/alloc/src/sync.rs:823 (_RNCNvMsf_NtCsgFX3jaOk65H_5alloc4syncINtB7_3ArcNtNtNtCs8ZKwes1zzDd_3std6thread6thread5InnerNtNtBO_5alloc6SystemE13new_uninit_in0BO_)
+inlined by /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/alloc/src/sync.rs:2191 (_RINvMso_NtCsgFX3jaOk65H_5alloc4syncINtB6_3ArcINtNtNtCskADBYZwJmSU_4core3mem12maybe_uninit11MaybeUninitNtNtNtCs8ZKwes1zzDd_3std6thread6thread5InnerEE19allocate_for_layoutNCNvMsf_B6_IBy_B1C_NtNtB1I_5alloc6SystemE13new_uninit_in0INvMNtNtBO_3ptr7mut_ptrOh4castINtB6_8ArcInnerBH_EEEB1I_)
+inlined by /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/alloc/src/sync.rs:821 (_RNvMsf_NtCsgFX3jaOk65H_5alloc4syncINtB5_3ArcNtNtNtCs8ZKwes1zzDd_3std6thread6thread5InnerNtNtBM_5alloc6SystemE13new_uninit_inBM_)
+inlined by /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/std/src/thread/thread.rs:102 (_RNvMs_NtNtCs8ZKwes1zzDd_3std6thread6threadNtB4_6Thread3new)
+   33306:	4c 89 e7             	mov    %r12,%rdi
+inlined by /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/std/src/alloc.rs:161 (_RNvMs0_NtCs8ZKwes1zzDd_3std5allocNtB5_6System10alloc_impl)
+inlined by /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/std/src/alloc.rs:223 (_RNvXs1_NtCs8ZKwes1zzDd_3std5allocNtB5_6SystemNtNtCskADBYZwJmSU_4core5alloc9Allocator8allocate)
+inlined by /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/alloc/src/sync.rs:823 (_RNCNvMsf_NtCsgFX3jaOk65H_5alloc4syncINtB7_3ArcNtNtNtCs8ZKwes1zzDd_3std6thread6thread5InnerNtNtBO_5alloc6SystemE13new_uninit_in0BO_)
+inlined by /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/alloc/src/sync.rs:2191 (_RINvMso_NtCsgFX3jaOk65H_5alloc4syncINtB6_3ArcINtNtNtCskADBYZwJmSU_4core3mem12maybe_uninit11MaybeUninitNtNtNtCs8ZKwes1zzDd_3std6thread6thread5InnerEE19allocate_for_layoutNCNvMsf_B6_IBy_B1C_NtNtB1I_5alloc6SystemE13new_uninit_in0INvMNtNtBO_3ptr7mut_ptrOh4castINtB6_8ArcInnerBH_EEEB1I_)
+inlined by /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/alloc/src/sync.rs:821 (_RNvMsf_NtCsgFX3jaOk65H_5alloc4syncINtB5_3ArcNtNtNtCs8ZKwes1zzDd_3std6thread6thread5InnerNtNtBM_5alloc6SystemE13new_uninit_inBM_)
+inlined by /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/std/src/thread/thread.rs:102 (_RNvMs_NtNtCs8ZKwes1zzDd_3std6thread6threadNtB4_6Thread3new)
+   33309:	ff 15 91 6a 02 00    	call   *0x26a91(%rip)        # 59da0 <malloc@GLIBC_2.2.5>
+_RINvMNtCskADBYZwJmSU_4core6resultINtB3_6ResultINtNtNtB5_3ptr8non_null7NonNullShENtNtB5_5alloc10AllocErrorE14unwrap_or_elseNCINvMso_NtCsgFX3jaOk65H_5alloc4syncINtB25_3ArcINtNtNtB5_3mem12maybe_uninit11MaybeUninitNtNtNtCs8ZKwes1zzDd_3std6thread6thread5InnerEE19allocate_for_layoutNCNvMsf_B25_IB2x_B3m_NtNtB3s_5alloc6SystemE13new_uninit_in0INvMNtBN_7mut_ptrOh4castINtB25_8ArcInnerB2H_EEE0EB3s_():
+/rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/core/src/result.rs:1619
+inlined by /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/alloc/src/sync.rs:2191 (_RINvMso_NtCsgFX3jaOk65H_5alloc4syncINtB6_3ArcINtNtNtCskADBYZwJmSU_4core3mem12maybe_uninit11MaybeUninitNtNtNtCs8ZKwes1zzDd_3std6thread6thread5InnerEE19allocate_for_layoutNCNvMsf_B6_IBy_B1C_NtNtB1I_5alloc6SystemE13new_uninit_in0INvMNtNtBO_3ptr7mut_ptrOh4castINtB6_8ArcInnerBH_EEEB1I_)
+inlined by /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/alloc/src/sync.rs:821 (_RNvMsf_NtCsgFX3jaOk65H_5alloc4syncINtB5_3ArcNtNtNtCs8ZKwes1zzDd_3std6thread6thread5InnerNtNtBM_5alloc6SystemE13new_uninit_inBM_)
+inlined by /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/std/src/thread/thread.rs:102 (_RNvMs_NtNtCs8ZKwes1zzDd_3std6thread6threadNtB4_6Thread3new)
+   3330f:	48 85 c0             	test   %rax,%rax
+inlined by /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/alloc/src/sync.rs:2191 (_RINvMso_NtCsgFX3jaOk65H_5alloc4syncINtB6_3ArcINtNtNtCskADBYZwJmSU_4core3mem12maybe_uninit11MaybeUninitNtNtNtCs8ZKwes1zzDd_3std6thread6thread5InnerEE19allocate_for_layoutNCNvMsf_B6_IBy_B1C_NtNtB1I_5alloc6SystemE13new_uninit_in0INvMNtNtBO_3ptr7mut_ptrOh4castINtB6_8ArcInnerBH_EEEB1I_)
+inlined by /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/alloc/src/sync.rs:821 (_RNvMsf_NtCsgFX3jaOk65H_5alloc4syncINtB5_3ArcNtNtNtCs8ZKwes1zzDd_3std6thread6thread5InnerNtNtBM_5alloc6SystemE13new_uninit_inBM_)
+inlined by /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/std/src/thread/thread.rs:102 (_RNvMs_NtNtCs8ZKwes1zzDd_3std6thread6threadNtB4_6Thread3new)
+   33312:	75 3b                	jne    3334f <_RNvMs_NtNtCs8ZKwes1zzDd_3std6thread6threadNtB4_6Thread3new+0x9f>
+inlined by /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/alloc/src/sync.rs:2191 (_RINvMso_NtCsgFX3jaOk65H_5alloc4syncINtB6_3ArcINtNtNtCskADBYZwJmSU_4core3mem12maybe_uninit11MaybeUninitNtNtNtCs8ZKwes1zzDd_3std6thread6thread5InnerEE19allocate_for_layoutNCNvMsf_B6_IBy_B1C_NtNtB1I_5alloc6SystemE13new_uninit_in0INvMNtNtBO_3ptr7mut_ptrOh4castINtB6_8ArcInnerBH_EEEB1I_)
+inlined by /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/alloc/src/sync.rs:821 (_RNvMsf_NtCsgFX3jaOk65H_5alloc4syncINtB5_3ArcNtNtNtCs8ZKwes1zzDd_3std6thread6thread5InnerNtNtBM_5alloc6SystemE13new_uninit_inBM_)
+inlined by /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/std/src/thread/thread.rs:102 (_RNvMs_NtNtCs8ZKwes1zzDd_3std6thread6threadNtB4_6Thread3new)
+   33314:	eb 6a                	jmp    33380 <_RNvMs_NtNtCs8ZKwes1zzDd_3std6thread6threadNtB4_6Thread3new+0xd0>
+inlined by /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/alloc/src/sync.rs:2191 (_RINvMso_NtCsgFX3jaOk65H_5alloc4syncINtB6_3ArcINtNtNtCskADBYZwJmSU_4core3mem12maybe_uninit11MaybeUninitNtNtNtCs8ZKwes1zzDd_3std6thread6thread5InnerEE19allocate_for_layoutNCNvMsf_B6_IBy_B1C_NtNtB1I_5alloc6SystemE13new_uninit_in0INvMNtNtBO_3ptr7mut_ptrOh4castINtB6_8ArcInnerBH_EEEB1I_)
+inlined by /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/alloc/src/sync.rs:821 (_RNvMsf_NtCsgFX3jaOk65H_5alloc4syncINtB5_3ArcNtNtNtCs8ZKwes1zzDd_3std6thread6thread5InnerNtNtBM_5alloc6SystemE13new_uninit_inBM_)
+inlined by /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/std/src/thread/thread.rs:102 (_RNvMs_NtNtCs8ZKwes1zzDd_3std6thread6threadNtB4_6Thread3new)
+   33316:	4c 89 e8             	mov    %r13,%rax
+inlined by /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/alloc/src/sync.rs:2191 (_RINvMso_NtCsgFX3jaOk65H_5alloc4syncINtB6_3ArcINtNtNtCskADBYZwJmSU_4core3mem12maybe_uninit11MaybeUninitNtNtNtCs8ZKwes1zzDd_3std6thread6thread5InnerEE19allocate_for_layoutNCNvMsf_B6_IBy_B1C_NtNtB1I_5alloc6SystemE13new_uninit_in0INvMNtNtBO_3ptr7mut_ptrOh4castINtB6_8ArcInnerBH_EEEB1I_)
+inlined by /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/alloc/src/sync.rs:821 (_RNvMsf_NtCsgFX3jaOk65H_5alloc4syncINtB5_3ArcNtNtNtCs8ZKwes1zzDd_3std6thread6thread5InnerNtNtBM_5alloc6SystemE13new_uninit_inBM_)
+inlined by /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/std/src/thread/thread.rs:102 (_RNvMs_NtNtCs8ZKwes1zzDd_3std6thread6threadNtB4_6Thread3new)
+   33319:	48 85 c0             	test   %rax,%rax
+inlined by /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/alloc/src/sync.rs:2191 (_RINvMso_NtCsgFX3jaOk65H_5alloc4syncINtB6_3ArcINtNtNtCskADBYZwJmSU_4core3mem12maybe_uninit11MaybeUninitNtNtNtCs8ZKwes1zzDd_3std6thread6thread5InnerEE19allocate_for_layoutNCNvMsf_B6_IBy_B1C_NtNtB1I_5alloc6SystemE13new_uninit_in0INvMNtNtBO_3ptr7mut_ptrOh4castINtB6_8ArcInnerBH_EEEB1I_)
+inlined by /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/alloc/src/sync.rs:821 (_RNvMsf_NtCsgFX3jaOk65H_5alloc4syncINtB5_3ArcNtNtNtCs8ZKwes1zzDd_3std6thread6thread5InnerNtNtBM_5alloc6SystemE13new_uninit_inBM_)
+inlined by /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/std/src/thread/thread.rs:102 (_RNvMs_NtNtCs8ZKwes1zzDd_3std6thread6threadNtB4_6Thread3new)
+   3331c:	75 31                	jne    3334f <_RNvMs_NtNtCs8ZKwes1zzDd_3std6thread6threadNtB4_6Thread3new+0x9f>
+inlined by /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/alloc/src/sync.rs:2191 (_RINvMso_NtCsgFX3jaOk65H_5alloc4syncINtB6_3ArcINtNtNtCskADBYZwJmSU_4core3mem12maybe_uninit11MaybeUninitNtNtNtCs8ZKwes1zzDd_3std6thread6thread5InnerEE19allocate_for_layoutNCNvMsf_B6_IBy_B1C_NtNtB1I_5alloc6SystemE13new_uninit_in0INvMNtNtBO_3ptr7mut_ptrOh4castINtB6_8ArcInnerBH_EEEB1I_)
+inlined by /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/alloc/src/sync.rs:821 (_RNvMsf_NtCsgFX3jaOk65H_5alloc4syncINtB5_3ArcNtNtNtCs8ZKwes1zzDd_3std6thread6thread5InnerNtNtBM_5alloc6SystemE13new_uninit_inBM_)
+inlined by /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/std/src/thread/thread.rs:102 (_RNvMs_NtNtCs8ZKwes1zzDd_3std6thread6threadNtB4_6Thread3new)
+   3331e:	eb 60                	jmp    33380 <_RNvMs_NtNtCs8ZKwes1zzDd_3std6thread6threadNtB4_6Thread3new+0xd0>
+_RINvNtNtCskADBYZwJmSU_4core3ptr8metadata18from_raw_parts_mutNtNtB6_3ffi6c_voiduECs8ZKwes1zzDd_3std():
+/rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/core/src/ptr/metadata.rs:133
+inlined by /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/core/src/ptr/mod.rs:902 (_RINvNtCskADBYZwJmSU_4core3ptr8null_mutNtNtB4_3ffi6c_voidECs8ZKwes1zzDd_3std)
+inlined by /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/std/src/sys/alloc/unix.rs:90 (_RNvNtNtNtCs8ZKwes1zzDd_3std3sys5alloc4unix14aligned_malloc)
+inlined by /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/std/src/sys/alloc/unix.rs:45 (_RNvNtNtNtCs8ZKwes1zzDd_3std3sys5alloc4unix5alloc)
+inlined by /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/std/src/alloc.rs:161 (_RNvMs0_NtCs8ZKwes1zzDd_3std5allocNtB5_6System10alloc_impl)
+inlined by /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/std/src/alloc.rs:223 (_RNvXs1_NtCs8ZKwes1zzDd_3std5allocNtB5_6SystemNtNtCskADBYZwJmSU_4core5alloc9Allocator8allocate)
+inlined by /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/alloc/src/sync.rs:823 (_RNCNvMsf_NtCsgFX3jaOk65H_5alloc4syncINtB7_3ArcNtNtNtCs8ZKwes1zzDd_3std6thread6thread5InnerNtNtBO_5alloc6SystemE13new_uninit_in0BO_)
+inlined by /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/alloc/src/sync.rs:2191 (_RINvMso_NtCsgFX3jaOk65H_5alloc4syncINtB6_3ArcINtNtNtCskADBYZwJmSU_4core3mem12maybe_uninit11MaybeUninitNtNtNtCs8ZKwes1zzDd_3std6thread6thread5InnerEE19allocate_for_layoutNCNvMsf_B6_IBy_B1C_NtNtB1I_5alloc6SystemE13new_uninit_in0INvMNtNtBO_3ptr7mut_ptrOh4castINtB6_8ArcInnerBH_EEEB1I_)
+inlined by /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/alloc/src/sync.rs:821 (_RNvMsf_NtCsgFX3jaOk65H_5alloc4syncINtB5_3ArcNtNtNtCs8ZKwes1zzDd_3std6thread6thread5InnerNtNtBM_5alloc6SystemE13new_uninit_inBM_)
+inlined by /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/std/src/thread/thread.rs:102 (_RNvMs_NtNtCs8ZKwes1zzDd_3std6thread6threadNtB4_6Thread3new)
+   33320:	48 c7 45 d0 00 00 00 	movq   $0x0,-0x30(%rbp)
+   33327:	00 
+_RNvYjNtNtCskADBYZwJmSU_4core3cmp3Ord3maxCs8ZKwes1zzDd_3std():
+/rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/core/src/cmp.rs:1051
+inlined by /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/std/src/sys/alloc/unix.rs:98 (_RNvNtNtNtCs8ZKwes1zzDd_3std3sys5alloc4unix14aligned_malloc)
+inlined by /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/std/src/sys/alloc/unix.rs:45 (_RNvNtNtNtCs8ZKwes1zzDd_3std3sys5alloc4unix5alloc)
+inlined by /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/std/src/alloc.rs:161 (_RNvMs0_NtCs8ZKwes1zzDd_3std5allocNtB5_6System10alloc_impl)
+inlined by /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/std/src/alloc.rs:223 (_RNvXs1_NtCs8ZKwes1zzDd_3std5allocNtB5_6SystemNtNtCskADBYZwJmSU_4core5alloc9Allocator8allocate)
+inlined by /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/alloc/src/sync.rs:823 (_RNCNvMsf_NtCsgFX3jaOk65H_5alloc4syncINtB7_3ArcNtNtNtCs8ZKwes1zzDd_3std6thread6thread5InnerNtNtBO_5alloc6SystemE13new_uninit_in0BO_)
+inlined by /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/alloc/src/sync.rs:2191 (_RINvMso_NtCsgFX3jaOk65H_5alloc4syncINtB6_3ArcINtNtNtCskADBYZwJmSU_4core3mem12maybe_uninit11MaybeUninitNtNtNtCs8ZKwes1zzDd_3std6thread6thread5InnerEE19allocate_for_layoutNCNvMsf_B6_IBy_B1C_NtNtB1I_5alloc6SystemE13new_uninit_in0INvMNtNtBO_3ptr7mut_ptrOh4castINtB6_8ArcInnerBH_EEEB1I_)
+inlined by /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/alloc/src/sync.rs:821 (_RNvMsf_NtCsgFX3jaOk65H_5alloc4syncINtB5_3ArcNtNtNtCs8ZKwes1zzDd_3std6thread6thread5InnerNtNtBM_5alloc6SystemE13new_uninit_inBM_)
+inlined by /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/std/src/thread/thread.rs:102 (_RNvMs_NtNtCs8ZKwes1zzDd_3std6thread6threadNtB4_6Thread3new)
+   33328:	49 83 fd 09          	cmp    $0x9,%r13
+inlined by /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/std/src/sys/alloc/unix.rs:98 (_RNvNtNtNtCs8ZKwes1zzDd_3std3sys5alloc4unix14aligned_malloc)
+inlined by /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/std/src/sys/alloc/unix.rs:45 (_RNvNtNtNtCs8ZKwes1zzDd_3std3sys5alloc4unix5alloc)
+inlined by /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/std/src/alloc.rs:161 (_RNvMs0_NtCs8ZKwes1zzDd_3std5allocNtB5_6System10alloc_impl)
+inlined by /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/std/src/alloc.rs:223 (_RNvXs1_NtCs8ZKwes1zzDd_3std5allocNtB5_6SystemNtNtCskADBYZwJmSU_4core5alloc9Allocator8allocate)
+inlined by /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/alloc/src/sync.rs:823 (_RNCNvMsf_NtCsgFX3jaOk65H_5alloc4syncINtB7_3ArcNtNtNtCs8ZKwes1zzDd_3std6thread6thread5InnerNtNtBO_5alloc6SystemE13new_uninit_in0BO_)
+inlined by /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/alloc/src/sync.rs:2191 (_RINvMso_NtCsgFX3jaOk65H_5alloc4syncINtB6_3ArcINtNtNtCskADBYZwJmSU_4core3mem12maybe_uninit11MaybeUninitNtNtNtCs8ZKwes1zzDd_3std6thread6thread5InnerEE19allocate_for_layoutNCNvMsf_B6_IBy_B1C_NtNtB1I_5alloc6SystemE13new_uninit_in0INvMNtNtBO_3ptr7mut_ptrOh4castINtB6_8ArcInnerBH_EEEB1I_)
+inlined by /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/alloc/src/sync.rs:821 (_RNvMsf_NtCsgFX3jaOk65H_5alloc4syncINtB5_3ArcNtNtNtCs8ZKwes1zzDd_3std6thread6thread5InnerNtNtBM_5alloc6SystemE13new_uninit_inBM_)
+inlined by /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/std/src/thread/thread.rs:102 (_RNvMs_NtNtCs8ZKwes1zzDd_3std6thread6threadNtB4_6Thread3new)
+   3332c:	be 08 00 00 00       	mov    $0x8,%esi
+inlined by /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/std/src/sys/alloc/unix.rs:98 (_RNvNtNtNtCs8ZKwes1zzDd_3std3sys5alloc4unix14aligned_malloc)
+inlined by /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/std/src/sys/alloc/unix.rs:45 (_RNvNtNtNtCs8ZKwes1zzDd_3std3sys5alloc4unix5alloc)
+inlined by /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/std/src/alloc.rs:161 (_RNvMs0_NtCs8ZKwes1zzDd_3std5allocNtB5_6System10alloc_impl)
+inlined by /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/std/src/alloc.rs:223 (_RNvXs1_NtCs8ZKwes1zzDd_3std5allocNtB5_6SystemNtNtCskADBYZwJmSU_4core5alloc9Allocator8allocate)
+inlined by /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/alloc/src/sync.rs:823 (_RNCNvMsf_NtCsgFX3jaOk65H_5alloc4syncINtB7_3ArcNtNtNtCs8ZKwes1zzDd_3std6thread6thread5InnerNtNtBO_5alloc6SystemE13new_uninit_in0BO_)
+inlined by /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/alloc/src/sync.rs:2191 (_RINvMso_NtCsgFX3jaOk65H_5alloc4syncINtB6_3ArcINtNtNtCskADBYZwJmSU_4core3mem12maybe_uninit11MaybeUninitNtNtNtCs8ZKwes1zzDd_3std6thread6thread5InnerEE19allocate_for_layoutNCNvMsf_B6_IBy_B1C_NtNtB1I_5alloc6SystemE13new_uninit_in0INvMNtNtBO_3ptr7mut_ptrOh4castINtB6_8ArcInnerBH_EEEB1I_)
+inlined by /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/alloc/src/sync.rs:821 (_RNvMsf_NtCsgFX3jaOk65H_5alloc4syncINtB5_3ArcNtNtNtCs8ZKwes1zzDd_3std6thread6thread5InnerNtNtBM_5alloc6SystemE13new_uninit_inBM_)
+inlined by /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/std/src/thread/thread.rs:102 (_RNvMs_NtNtCs8ZKwes1zzDd_3std6thread6threadNtB4_6Thread3new)
+   33331:	49 0f 43 f5          	cmovae %r13,%rsi
+inlined by /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/std/src/sys/alloc/unix.rs:98 (_RNvNtNtNtCs8ZKwes1zzDd_3std3sys5alloc4unix14aligned_malloc)
+inlined by /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/std/src/sys/alloc/unix.rs:45 (_RNvNtNtNtCs8ZKwes1zzDd_3std3sys5alloc4unix5alloc)
+inlined by /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/std/src/alloc.rs:161 (_RNvMs0_NtCs8ZKwes1zzDd_3std5allocNtB5_6System10alloc_impl)
+inlined by /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/std/src/alloc.rs:223 (_RNvXs1_NtCs8ZKwes1zzDd_3std5allocNtB5_6SystemNtNtCskADBYZwJmSU_4core5alloc9Allocator8allocate)
+inlined by /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/alloc/src/sync.rs:823 (_RNCNvMsf_NtCsgFX3jaOk65H_5alloc4syncINtB7_3ArcNtNtNtCs8ZKwes1zzDd_3std6thread6thread5InnerNtNtBO_5alloc6SystemE13new_uninit_in0BO_)
+inlined by /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/alloc/src/sync.rs:2191 (_RINvMso_NtCsgFX3jaOk65H_5alloc4syncINtB6_3ArcINtNtNtCskADBYZwJmSU_4core3mem12maybe_uninit11MaybeUninitNtNtNtCs8ZKwes1zzDd_3std6thread6thread5InnerEE19allocate_for_layoutNCNvMsf_B6_IBy_B1C_NtNtB1I_5alloc6SystemE13new_uninit_in0INvMNtNtBO_3ptr7mut_ptrOh4castINtB6_8ArcInnerBH_EEEB1I_)
+inlined by /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/alloc/src/sync.rs:821 (_RNvMsf_NtCsgFX3jaOk65H_5alloc4syncINtB5_3ArcNtNtNtCs8ZKwes1zzDd_3std6thread6thread5InnerNtNtBM_5alloc6SystemE13new_uninit_inBM_)
+inlined by /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/std/src/thread/thread.rs:102 (_RNvMs_NtNtCs8ZKwes1zzDd_3std6thread6threadNtB4_6Thread3new)
+   33335:	48 8d 7d d0          	lea    -0x30(%rbp),%rdi
+_RNvNtNtNtCs8ZKwes1zzDd_3std3sys5alloc4unix14aligned_malloc():
+/rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/std/src/sys/alloc/unix.rs:99
+inlined by /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/std/src/sys/alloc/unix.rs:45 (_RNvNtNtNtCs8ZKwes1zzDd_3std3sys5alloc4unix5alloc)
+inlined by /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/std/src/alloc.rs:161 (_RNvMs0_NtCs8ZKwes1zzDd_3std5allocNtB5_6System10alloc_impl)
+inlined by /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/std/src/alloc.rs:223 (_RNvXs1_NtCs8ZKwes1zzDd_3std5allocNtB5_6SystemNtNtCskADBYZwJmSU_4core5alloc9Allocator8allocate)
+inlined by /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/alloc/src/sync.rs:823 (_RNCNvMsf_NtCsgFX3jaOk65H_5alloc4syncINtB7_3ArcNtNtNtCs8ZKwes1zzDd_3std6thread6thread5InnerNtNtBO_5alloc6SystemE13new_uninit_in0BO_)
+inlined by /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/alloc/src/sync.rs:2191 (_RINvMso_NtCsgFX3jaOk65H_5alloc4syncINtB6_3ArcINtNtNtCskADBYZwJmSU_4core3mem12maybe_uninit11MaybeUninitNtNtNtCs8ZKwes1zzDd_3std6thread6thread5InnerEE19allocate_for_layoutNCNvMsf_B6_IBy_B1C_NtNtB1I_5alloc6SystemE13new_uninit_in0INvMNtNtBO_3ptr7mut_ptrOh4castINtB6_8ArcInnerBH_EEEB1I_)
+inlined by /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/alloc/src/sync.rs:821 (_RNvMsf_NtCsgFX3jaOk65H_5alloc4syncINtB5_3ArcNtNtNtCs8ZKwes1zzDd_3std6thread6thread5InnerNtNtBM_5alloc6SystemE13new_uninit_inBM_)
+inlined by /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/std/src/thread/thread.rs:102 (_RNvMs_NtNtCs8ZKwes1zzDd_3std6thread6threadNtB4_6Thread3new)
+   33339:	4c 89 e2             	mov    %r12,%rdx
+inlined by /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/std/src/sys/alloc/unix.rs:45 (_RNvNtNtNtCs8ZKwes1zzDd_3std3sys5alloc4unix5alloc)
+inlined by /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/std/src/alloc.rs:161 (_RNvMs0_NtCs8ZKwes1zzDd_3std5allocNtB5_6System10alloc_impl)
+inlined by /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/std/src/alloc.rs:223 (_RNvXs1_NtCs8ZKwes1zzDd_3std5allocNtB5_6SystemNtNtCskADBYZwJmSU_4core5alloc9Allocator8allocate)
+inlined by /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/alloc/src/sync.rs:823 (_RNCNvMsf_NtCsgFX3jaOk65H_5alloc4syncINtB7_3ArcNtNtNtCs8ZKwes1zzDd_3std6thread6thread5InnerNtNtBO_5alloc6SystemE13new_uninit_in0BO_)
+inlined by /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/alloc/src/sync.rs:2191 (_RINvMso_NtCsgFX3jaOk65H_5alloc4syncINtB6_3ArcINtNtNtCskADBYZwJmSU_4core3mem12maybe_uninit11MaybeUninitNtNtNtCs8ZKwes1zzDd_3std6thread6thread5InnerEE19allocate_for_layoutNCNvMsf_B6_IBy_B1C_NtNtB1I_5alloc6SystemE13new_uninit_in0INvMNtNtBO_3ptr7mut_ptrOh4castINtB6_8ArcInnerBH_EEEB1I_)
+inlined by /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/alloc/src/sync.rs:821 (_RNvMsf_NtCsgFX3jaOk65H_5alloc4syncINtB5_3ArcNtNtNtCs8ZKwes1zzDd_3std6thread6thread5InnerNtNtBM_5alloc6SystemE13new_uninit_inBM_)
+inlined by /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/std/src/thread/thread.rs:102 (_RNvMs_NtNtCs8ZKwes1zzDd_3std6thread6threadNtB4_6Thread3new)
+   3333c:	ff 15 66 6a 02 00    	call   *0x26a66(%rip)        # 59da8 <posix_memalign@GLIBC_2.2.5>
+/rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/std/src/sys/alloc/unix.rs:100
+inlined by /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/std/src/sys/alloc/unix.rs:45 (_RNvNtNtNtCs8ZKwes1zzDd_3std3sys5alloc4unix5alloc)
+inlined by /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/std/src/alloc.rs:161 (_RNvMs0_NtCs8ZKwes1zzDd_3std5allocNtB5_6System10alloc_impl)
+inlined by /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/std/src/alloc.rs:223 (_RNvXs1_NtCs8ZKwes1zzDd_3std5allocNtB5_6SystemNtNtCskADBYZwJmSU_4core5alloc9Allocator8allocate)
+inlined by /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/alloc/src/sync.rs:823 (_RNCNvMsf_NtCsgFX3jaOk65H_5alloc4syncINtB7_3ArcNtNtNtCs8ZKwes1zzDd_3std6thread6thread5InnerNtNtBO_5alloc6SystemE13new_uninit_in0BO_)
+inlined by /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/alloc/src/sync.rs:2191 (_RINvMso_NtCsgFX3jaOk65H_5alloc4syncINtB6_3ArcINtNtNtCskADBYZwJmSU_4core3mem12maybe_uninit11MaybeUninitNtNtNtCs8ZKwes1zzDd_3std6thread6thread5InnerEE19allocate_for_layoutNCNvMsf_B6_IBy_B1C_NtNtB1I_5alloc6SystemE13new_uninit_in0INvMNtNtBO_3ptr7mut_ptrOh4castINtB6_8ArcInnerBH_EEEB1I_)
+inlined by /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/alloc/src/sync.rs:821 (_RNvMsf_NtCsgFX3jaOk65H_5alloc4syncINtB5_3ArcNtNtNtCs8ZKwes1zzDd_3std6thread6thread5InnerNtNtBM_5alloc6SystemE13new_uninit_inBM_)
+inlined by /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/std/src/thread/thread.rs:102 (_RNvMs_NtNtCs8ZKwes1zzDd_3std6thread6threadNtB4_6Thread3new)
+   33342:	85 c0                	test   %eax,%eax
+_RNvNtNtNtCs8ZKwes1zzDd_3std3sys5alloc4unix5alloc():
+inlined by /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/std/src/alloc.rs:161 (_RNvMs0_NtCs8ZKwes1zzDd_3std5allocNtB5_6System10alloc_impl)
+inlined by /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/std/src/alloc.rs:223 (_RNvXs1_NtCs8ZKwes1zzDd_3std5allocNtB5_6SystemNtNtCskADBYZwJmSU_4core5alloc9Allocator8allocate)
+inlined by /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/alloc/src/sync.rs:823 (_RNCNvMsf_NtCsgFX3jaOk65H_5alloc4syncINtB7_3ArcNtNtNtCs8ZKwes1zzDd_3std6thread6thread5InnerNtNtBO_5alloc6SystemE13new_uninit_in0BO_)
+inlined by /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/alloc/src/sync.rs:2191 (_RINvMso_NtCsgFX3jaOk65H_5alloc4syncINtB6_3ArcINtNtNtCskADBYZwJmSU_4core3mem12maybe_uninit11MaybeUninitNtNtNtCs8ZKwes1zzDd_3std6thread6thread5InnerEE19allocate_for_layoutNCNvMsf_B6_IBy_B1C_NtNtB1I_5alloc6SystemE13new_uninit_in0INvMNtNtBO_3ptr7mut_ptrOh4castINtB6_8ArcInnerBH_EEEB1I_)
+inlined by /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/alloc/src/sync.rs:821 (_RNvMsf_NtCsgFX3jaOk65H_5alloc4syncINtB5_3ArcNtNtNtCs8ZKwes1zzDd_3std6thread6thread5InnerNtNtBM_5alloc6SystemE13new_uninit_inBM_)
+inlined by /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/std/src/thread/thread.rs:102 (_RNvMs_NtNtCs8ZKwes1zzDd_3std6thread6threadNtB4_6Thread3new)
+   33344:	75 3a                	jne    33380 <_RNvMs_NtNtCs8ZKwes1zzDd_3std6thread6threadNtB4_6Thread3new+0xd0>
+_RINvMso_NtCsgFX3jaOk65H_5alloc4syncINtB6_3ArcINtNtNtCskADBYZwJmSU_4core3mem12maybe_uninit11MaybeUninitNtNtNtCs8ZKwes1zzDd_3std6thread6thread5InnerEE19allocate_for_layoutNCNvMsf_B6_IBy_B1C_NtNtB1I_5alloc6SystemE13new_uninit_in0INvMNtNtBO_3ptr7mut_ptrOh4castINtB6_8ArcInnerBH_EEEB1I_():
+inlined by /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/alloc/src/sync.rs:821 (_RNvMsf_NtCsgFX3jaOk65H_5alloc4syncINtB5_3ArcNtNtNtCs8ZKwes1zzDd_3std6thread6thread5InnerNtNtBM_5alloc6SystemE13new_uninit_inBM_)
+inlined by /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/std/src/thread/thread.rs:102 (_RNvMs_NtNtCs8ZKwes1zzDd_3std6thread6threadNtB4_6Thread3new)
+   33346:	48 8b 45 d0          	mov    -0x30(%rbp),%rax
+_RINvMNtCskADBYZwJmSU_4core6resultINtB3_6ResultINtNtNtB5_3ptr8non_null7NonNullShENtNtB5_5alloc10AllocErrorE14unwrap_or_elseNCINvMso_NtCsgFX3jaOk65H_5alloc4syncINtB25_3ArcINtNtNtB5_3mem12maybe_uninit11MaybeUninitNtNtNtCs8ZKwes1zzDd_3std6thread6thread5InnerEE19allocate_for_layoutNCNvMsf_B25_IB2x_B3m_NtNtB3s_5alloc6SystemE13new_uninit_in0INvMNtBN_7mut_ptrOh4castINtB25_8ArcInnerB2H_EEE0EB3s_():
+/rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/core/src/result.rs:1619
+inlined by /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/alloc/src/sync.rs:2191 (_RINvMso_NtCsgFX3jaOk65H_5alloc4syncINtB6_3ArcINtNtNtCskADBYZwJmSU_4core3mem12maybe_uninit11MaybeUninitNtNtNtCs8ZKwes1zzDd_3std6thread6thread5InnerEE19allocate_for_layoutNCNvMsf_B6_IBy_B1C_NtNtB1I_5alloc6SystemE13new_uninit_in0INvMNtNtBO_3ptr7mut_ptrOh4castINtB6_8ArcInnerBH_EEEB1I_)
+inlined by /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/alloc/src/sync.rs:821 (_RNvMsf_NtCsgFX3jaOk65H_5alloc4syncINtB5_3ArcNtNtNtCs8ZKwes1zzDd_3std6thread6thread5InnerNtNtBM_5alloc6SystemE13new_uninit_inBM_)
+inlined by /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/std/src/thread/thread.rs:102 (_RNvMs_NtNtCs8ZKwes1zzDd_3std6thread6threadNtB4_6Thread3new)
+   3334a:	48 85 c0             	test   %rax,%rax
+inlined by /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/alloc/src/sync.rs:2191 (_RINvMso_NtCsgFX3jaOk65H_5alloc4syncINtB6_3ArcINtNtNtCskADBYZwJmSU_4core3mem12maybe_uninit11MaybeUninitNtNtNtCs8ZKwes1zzDd_3std6thread6thread5InnerEE19allocate_for_layoutNCNvMsf_B6_IBy_B1C_NtNtB1I_5alloc6SystemE13new_uninit_in0INvMNtNtBO_3ptr7mut_ptrOh4castINtB6_8ArcInnerBH_EEEB1I_)
+inlined by /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/alloc/src/sync.rs:821 (_RNvMsf_NtCsgFX3jaOk65H_5alloc4syncINtB5_3ArcNtNtNtCs8ZKwes1zzDd_3std6thread6thread5InnerNtNtBM_5alloc6SystemE13new_uninit_inBM_)
+inlined by /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/std/src/thread/thread.rs:102 (_RNvMs_NtNtCs8ZKwes1zzDd_3std6thread6threadNtB4_6Thread3new)
+   3334d:	74 31                	je     33380 <_RNvMs_NtNtCs8ZKwes1zzDd_3std6thread6threadNtB4_6Thread3new+0xd0>
+_RINvNtCskADBYZwJmSU_4core3ptr5writeINtNtNtB4_4sync6atomic6AtomicjEECs8ZKwes1zzDd_3std():
+/rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/core/src/ptr/mod.rs:1963
+inlined by /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/core/src/ptr/mut_ptr.rs:1402 (_RNvMNtNtCskADBYZwJmSU_4core3ptr7mut_ptrOINtNtNtB6_4sync6atomic6AtomicjE5writeCs8ZKwes1zzDd_3std)
+inlined by /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/alloc/src/sync.rs:2225 (_RINvMso_NtCsgFX3jaOk65H_5alloc4syncINtB6_3ArcINtNtNtCskADBYZwJmSU_4core3mem12maybe_uninit11MaybeUninitNtNtNtCs8ZKwes1zzDd_3std6thread6thread5InnerEE19initialize_arcinnerINvMNtNtBO_3ptr7mut_ptrOh4castINtB6_8ArcInnerBH_EEEB1I_)
+inlined by /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/alloc/src/sync.rs:2193 (_RINvMso_NtCsgFX3jaOk65H_5alloc4syncINtB6_3ArcINtNtNtCskADBYZwJmSU_4core3mem12maybe_uninit11MaybeUninitNtNtNtCs8ZKwes1zzDd_3std6thread6thread5InnerEE19allocate_for_layoutNCNvMsf_B6_IBy_B1C_NtNtB1I_5alloc6SystemE13new_uninit_in0INvMNtNtBO_3ptr7mut_ptrOh4castINtB6_8ArcInnerBH_EEEB1I_)
+inlined by /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/alloc/src/sync.rs:821 (_RNvMsf_NtCsgFX3jaOk65H_5alloc4syncINtB5_3ArcNtNtNtCs8ZKwes1zzDd_3std6thread6thread5InnerNtNtBM_5alloc6SystemE13new_uninit_inBM_)
+inlined by /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/std/src/thread/thread.rs:102 (_RNvMs_NtNtCs8ZKwes1zzDd_3std6thread6threadNtB4_6Thread3new)
+   3334f:	48 c7 00 01 00 00 00 	movq   $0x1,(%rax)
+inlined by /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/core/src/ptr/mut_ptr.rs:1402 (_RNvMNtNtCskADBYZwJmSU_4core3ptr7mut_ptrOINtNtNtB6_4sync6atomic6AtomicjE5writeCs8ZKwes1zzDd_3std)
+inlined by /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/alloc/src/sync.rs:2226 (_RINvMso_NtCsgFX3jaOk65H_5alloc4syncINtB6_3ArcINtNtNtCskADBYZwJmSU_4core3mem12maybe_uninit11MaybeUninitNtNtNtCs8ZKwes1zzDd_3std6thread6thread5InnerEE19initialize_arcinnerINvMNtNtBO_3ptr7mut_ptrOh4castINtB6_8ArcInnerBH_EEEB1I_)
+inlined by /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/alloc/src/sync.rs:2193 (_RINvMso_NtCsgFX3jaOk65H_5alloc4syncINtB6_3ArcINtNtNtCskADBYZwJmSU_4core3mem12maybe_uninit11MaybeUninitNtNtNtCs8ZKwes1zzDd_3std6thread6thread5InnerEE19allocate_for_layoutNCNvMsf_B6_IBy_B1C_NtNtB1I_5alloc6SystemE13new_uninit_in0INvMNtNtBO_3ptr7mut_ptrOh4castINtB6_8ArcInnerBH_EEEB1I_)
+inlined by /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/alloc/src/sync.rs:821 (_RNvMsf_NtCsgFX3jaOk65H_5alloc4syncINtB5_3ArcNtNtNtCs8ZKwes1zzDd_3std6thread6thread5InnerNtNtBM_5alloc6SystemE13new_uninit_inBM_)
+inlined by /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/std/src/thread/thread.rs:102 (_RNvMs_NtNtCs8ZKwes1zzDd_3std6thread6threadNtB4_6Thread3new)
+   33356:	48 c7 40 08 01 00 00 	movq   $0x1,0x8(%rax)
+   3335d:	00 
+_RINvNtCskADBYZwJmSU_4core3ptr5writeINtNtB4_6option6OptionNtNtNtNtCs8ZKwes1zzDd_3std6thread6thread18thread_name_string16ThreadNameStringEEB11_():
+/rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/core/src/ptr/mod.rs:1963
+inlined by /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/core/src/ptr/mut_ptr.rs:1402 (_RNvMNtNtCskADBYZwJmSU_4core3ptr7mut_ptrOINtNtB6_6option6OptionNtNtNtNtCs8ZKwes1zzDd_3std6thread6thread18thread_name_string16ThreadNameStringE5writeB16_)
+inlined by /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/std/src/thread/thread.rs:104 (_RNvMs_NtNtCs8ZKwes1zzDd_3std6thread6threadNtB4_6Thread3new)
+   3335e:	48 89 58 18          	mov    %rbx,0x18(%rax)
+inlined by /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/core/src/ptr/mut_ptr.rs:1402 (_RNvMNtNtCskADBYZwJmSU_4core3ptr7mut_ptrOINtNtB6_6option6OptionNtNtNtNtCs8ZKwes1zzDd_3std6thread6thread18thread_name_string16ThreadNameStringE5writeB16_)
+inlined by /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/std/src/thread/thread.rs:104 (_RNvMs_NtNtCs8ZKwes1zzDd_3std6thread6threadNtB4_6Thread3new)
+   33362:	4c 89 70 20          	mov    %r14,0x20(%rax)
+_RINvNtCskADBYZwJmSU_4core3ptr5writeNtNtNtCs8ZKwes1zzDd_3std6thread2id8ThreadIdEBD_():
+/rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/core/src/ptr/mod.rs:1963
+inlined by /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/core/src/ptr/mut_ptr.rs:1402 (_RNvMNtNtCskADBYZwJmSU_4core3ptr7mut_ptrONtNtNtCs8ZKwes1zzDd_3std6thread2id8ThreadId5writeBI_)
+inlined by /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/std/src/thread/thread.rs:105 (_RNvMs_NtNtCs8ZKwes1zzDd_3std6thread6threadNtB4_6Thread3new)
+   33366:	4c 89 78 10          	mov    %r15,0x10(%rax)
+_RINvNtCskADBYZwJmSU_4core3ptr5writeNtNtNtNtNtCs8ZKwes1zzDd_3std3sys4sync14thread_parking5futex6ParkerEBH_():
+/rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/core/src/ptr/mod.rs:1963
+inlined by /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/core/src/ptr/mut_ptr.rs:1402 (_RNvMNtNtCskADBYZwJmSU_4core3ptr7mut_ptrONtNtNtNtNtCs8ZKwes1zzDd_3std3sys4sync14thread_parking5futex6Parker5writeBM_)
+inlined by /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/std/src/sys/sync/thread_parking/futex.rs:42 (_RNvMNtNtNtNtCs8ZKwes1zzDd_3std3sys4sync14thread_parking5futexNtB2_6Parker12new_in_place)
+inlined by /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/std/src/thread/thread.rs:106 (_RNvMs_NtNtCs8ZKwes1zzDd_3std6thread6threadNtB4_6Thread3new)
+   3336a:	c7 40 28 00 00 00 00 	movl   $0x0,0x28(%rax)
+_RNvMs_NtNtCs8ZKwes1zzDd_3std6thread6threadNtB4_6Thread3new():
+/rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/std/src/thread/thread.rs:111
+   33371:	48 83 c4 08          	add    $0x8,%rsp
+   33375:	5b                   	pop    %rbx
+   33376:	41 5c                	pop    %r12
+   33378:	41 5d                	pop    %r13
+   3337a:	41 5e                	pop    %r14
+   3337c:	41 5f                	pop    %r15
+   3337e:	5d                   	pop    %rbp
+   3337f:	c3                   	ret
+_RNCINvMso_NtCsgFX3jaOk65H_5alloc4syncINtB8_3ArcINtNtNtCskADBYZwJmSU_4core3mem12maybe_uninit11MaybeUninitNtNtNtCs8ZKwes1zzDd_3std6thread6thread5InnerEE19allocate_for_layoutNCNvMsf_B8_IBA_B1E_NtNtB1K_5alloc6SystemE13new_uninit_in0INvMNtNtBQ_3ptr7mut_ptrOh4castINtB8_8ArcInnerBJ_EEE0B1K_():
+/rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/alloc/src/sync.rs:2191
+inlined by /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/core/src/result.rs:1621 (_RINvMNtCskADBYZwJmSU_4core6resultINtB3_6ResultINtNtNtB5_3ptr8non_null7NonNullShENtNtB5_5alloc10AllocErrorE14unwrap_or_elseNCINvMso_NtCsgFX3jaOk65H_5alloc4syncINtB25_3ArcINtNtNtB5_3mem12maybe_uninit11MaybeUninitNtNtNtCs8ZKwes1zzDd_3std6thread6thread5InnerEE19allocate_for_layoutNCNvMsf_B25_IB2x_B3m_NtNtB3s_5alloc6SystemE13new_uninit_in0INvMNtBN_7mut_ptrOh4castINtB25_8ArcInnerB2H_EEE0EB3s_)
+inlined by /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/alloc/src/sync.rs:2191 (_RINvMso_NtCsgFX3jaOk65H_5alloc4syncINtB6_3ArcINtNtNtCskADBYZwJmSU_4core3mem12maybe_uninit11MaybeUninitNtNtNtCs8ZKwes1zzDd_3std6thread6thread5InnerEE19allocate_for_layoutNCNvMsf_B6_IBy_B1C_NtNtB1I_5alloc6SystemE13new_uninit_in0INvMNtNtBO_3ptr7mut_ptrOh4castINtB6_8ArcInnerBH_EEEB1I_)
+inlined by /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/alloc/src/sync.rs:821 (_RNvMsf_NtCsgFX3jaOk65H_5alloc4syncINtB5_3ArcNtNtNtCs8ZKwes1zzDd_3std6thread6thread5InnerNtNtBM_5alloc6SystemE13new_uninit_inBM_)
+inlined by /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/std/src/thread/thread.rs:102 (_RNvMs_NtNtCs8ZKwes1zzDd_3std6thread6threadNtB4_6Thread3new)
+   33380:	4c 89 ef             	mov    %r13,%rdi
+inlined by /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/core/src/result.rs:1621 (_RINvMNtCskADBYZwJmSU_4core6resultINtB3_6ResultINtNtNtB5_3ptr8non_null7NonNullShENtNtB5_5alloc10AllocErrorE14unwrap_or_elseNCINvMso_NtCsgFX3jaOk65H_5alloc4syncINtB25_3ArcINtNtNtB5_3mem12maybe_uninit11MaybeUninitNtNtNtCs8ZKwes1zzDd_3std6thread6thread5InnerEE19allocate_for_layoutNCNvMsf_B25_IB2x_B3m_NtNtB3s_5alloc6SystemE13new_uninit_in0INvMNtBN_7mut_ptrOh4castINtB25_8ArcInnerB2H_EEE0EB3s_)
+inlined by /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/alloc/src/sync.rs:2191 (_RINvMso_NtCsgFX3jaOk65H_5alloc4syncINtB6_3ArcINtNtNtCskADBYZwJmSU_4core3mem12maybe_uninit11MaybeUninitNtNtNtCs8ZKwes1zzDd_3std6thread6thread5InnerEE19allocate_for_layoutNCNvMsf_B6_IBy_B1C_NtNtB1I_5alloc6SystemE13new_uninit_in0INvMNtNtBO_3ptr7mut_ptrOh4castINtB6_8ArcInnerBH_EEEB1I_)
+inlined by /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/alloc/src/sync.rs:821 (_RNvMsf_NtCsgFX3jaOk65H_5alloc4syncINtB5_3ArcNtNtNtCs8ZKwes1zzDd_3std6thread6thread5InnerNtNtBM_5alloc6SystemE13new_uninit_inBM_)
+inlined by /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/std/src/thread/thread.rs:102 (_RNvMs_NtNtCs8ZKwes1zzDd_3std6thread6threadNtB4_6Thread3new)
+   33383:	4c 89 e6             	mov    %r12,%rsi
+inlined by /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/core/src/result.rs:1621 (_RINvMNtCskADBYZwJmSU_4core6resultINtB3_6ResultINtNtNtB5_3ptr8non_null7NonNullShENtNtB5_5alloc10AllocErrorE14unwrap_or_elseNCINvMso_NtCsgFX3jaOk65H_5alloc4syncINtB25_3ArcINtNtNtB5_3mem12maybe_uninit11MaybeUninitNtNtNtCs8ZKwes1zzDd_3std6thread6thread5InnerEE19allocate_for_layoutNCNvMsf_B25_IB2x_B3m_NtNtB3s_5alloc6SystemE13new_uninit_in0INvMNtBN_7mut_ptrOh4castINtB25_8ArcInnerB2H_EEE0EB3s_)
+inlined by /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/alloc/src/sync.rs:2191 (_RINvMso_NtCsgFX3jaOk65H_5alloc4syncINtB6_3ArcINtNtNtCskADBYZwJmSU_4core3mem12maybe_uninit11MaybeUninitNtNtNtCs8ZKwes1zzDd_3std6thread6thread5InnerEE19allocate_for_layoutNCNvMsf_B6_IBy_B1C_NtNtB1I_5alloc6SystemE13new_uninit_in0INvMNtNtBO_3ptr7mut_ptrOh4castINtB6_8ArcInnerBH_EEEB1I_)
+inlined by /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/alloc/src/sync.rs:821 (_RNvMsf_NtCsgFX3jaOk65H_5alloc4syncINtB5_3ArcNtNtNtCs8ZKwes1zzDd_3std6thread6thread5InnerNtNtBM_5alloc6SystemE13new_uninit_inBM_)
+inlined by /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/std/src/thread/thread.rs:102 (_RNvMs_NtNtCs8ZKwes1zzDd_3std6thread6threadNtB4_6Thread3new)
+   33386:	ff 15 bc 66 02 00    	call   *0x266bc(%rip)        # 59a48 <_DYNAMIC+0x2d8>
+inlined by /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/core/src/result.rs:1621 (_RINvMNtCskADBYZwJmSU_4core6resultINtB3_6ResultINtNtNtB5_3ptr8non_null7NonNullShENtNtB5_5alloc10AllocErrorE14unwrap_or_elseNCINvMso_NtCsgFX3jaOk65H_5alloc4syncINtB25_3ArcINtNtNtB5_3mem12maybe_uninit11MaybeUninitNtNtNtCs8ZKwes1zzDd_3std6thread6thread5InnerEE19allocate_for_layoutNCNvMsf_B25_IB2x_B3m_NtNtB3s_5alloc6SystemE13new_uninit_in0INvMNtBN_7mut_ptrOh4castINtB25_8ArcInnerB2H_EEE0EB3s_)
+inlined by /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/alloc/src/sync.rs:2191 (_RINvMso_NtCsgFX3jaOk65H_5alloc4syncINtB6_3ArcINtNtNtCskADBYZwJmSU_4core3mem12maybe_uninit11MaybeUninitNtNtNtCs8ZKwes1zzDd_3std6thread6thread5InnerEE19allocate_for_layoutNCNvMsf_B6_IBy_B1C_NtNtB1I_5alloc6SystemE13new_uninit_in0INvMNtNtBO_3ptr7mut_ptrOh4castINtB6_8ArcInnerBH_EEEB1I_)
+inlined by /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/alloc/src/sync.rs:821 (_RNvMsf_NtCsgFX3jaOk65H_5alloc4syncINtB5_3ArcNtNtNtCs8ZKwes1zzDd_3std6thread6thread5InnerNtNtBM_5alloc6SystemE13new_uninit_inBM_)
+inlined by /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/std/src/thread/thread.rs:102 (_RNvMs_NtNtCs8ZKwes1zzDd_3std6thread6threadNtB4_6Thread3new)
+   3338c:	0f 0b                	ud2
+_RNvMs_NtNtCs8ZKwes1zzDd_3std6thread6threadNtB4_6Thread3new():
+   3338e:	49 89 c7             	mov    %rax,%r15
+_RINvNtCskADBYZwJmSU_4core3ptr9drop_glueINtNtB4_6option6OptionNtNtNtNtCs8ZKwes1zzDd_3std6thread6thread18thread_name_string16ThreadNameStringEEB15_():
+/rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/core/src/ptr/mod.rs:847
+inlined by /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/std/src/thread/thread.rs:111 (_RNvMs_NtNtCs8ZKwes1zzDd_3std6thread6threadNtB4_6Thread3new)
+   33391:	48 85 db             	test   %rbx,%rbx
+inlined by /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/std/src/thread/thread.rs:111 (_RNvMs_NtNtCs8ZKwes1zzDd_3std6thread6threadNtB4_6Thread3new)
+   33394:	74 19                	je     333af <_RNvMs_NtNtCs8ZKwes1zzDd_3std6thread6threadNtB4_6Thread3new+0xff>
+_RNvXs0_NtNtCsgFX3jaOk65H_5alloc3ffi5c_strNtB5_7CStringNtNtNtCskADBYZwJmSU_4core3ops4drop4Drop4drop():
+/rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/alloc/src/ffi/c_str.rs:706
+inlined by /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/core/src/ptr/mod.rs:847 (_RINvNtCskADBYZwJmSU_4core3ptr9drop_glueNtNtNtCsgFX3jaOk65H_5alloc3ffi5c_str7CStringECs8ZKwes1zzDd_3std)
+inlined by /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/core/src/ptr/mod.rs:847 (_RINvNtCskADBYZwJmSU_4core3ptr9drop_glueNtNtNtNtCs8ZKwes1zzDd_3std6thread6thread18thread_name_string16ThreadNameStringEBJ_)
+inlined by /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/core/src/ptr/mod.rs:847 (_RINvNtCskADBYZwJmSU_4core3ptr9drop_glueINtNtB4_6option6OptionNtNtNtNtCs8ZKwes1zzDd_3std6thread6thread18thread_name_string16ThreadNameStringEEB15_)
+inlined by /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/std/src/thread/thread.rs:111 (_RNvMs_NtNtCs8ZKwes1zzDd_3std6thread6threadNtB4_6Thread3new)
+   33396:	c6 03 00             	movb   $0x0,(%rbx)
+_RNvXs8_NtCsgFX3jaOk65H_5alloc5boxedINtB5_3BoxShENtNtNtCskADBYZwJmSU_4core3ops4drop4Drop4dropCs8ZKwes1zzDd_3std():
+/rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/alloc/src/boxed.rs:1999
+inlined by /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/core/src/ptr/mod.rs:847 (_RINvNtCskADBYZwJmSU_4core3ptr9drop_glueINtNtCsgFX3jaOk65H_5alloc5boxed3BoxShEECs8ZKwes1zzDd_3std)
+inlined by /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/core/src/ptr/mod.rs:847 (_RINvNtCskADBYZwJmSU_4core3ptr9drop_glueNtNtNtCsgFX3jaOk65H_5alloc3ffi5c_str7CStringECs8ZKwes1zzDd_3std)
+inlined by /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/core/src/ptr/mod.rs:847 (_RINvNtCskADBYZwJmSU_4core3ptr9drop_glueNtNtNtNtCs8ZKwes1zzDd_3std6thread6thread18thread_name_string16ThreadNameStringEBJ_)
+inlined by /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/core/src/ptr/mod.rs:847 (_RINvNtCskADBYZwJmSU_4core3ptr9drop_glueINtNtB4_6option6OptionNtNtNtNtCs8ZKwes1zzDd_3std6thread6thread18thread_name_string16ThreadNameStringEEB15_)
+inlined by /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/std/src/thread/thread.rs:111 (_RNvMs_NtNtCs8ZKwes1zzDd_3std6thread6threadNtB4_6Thread3new)
+   33399:	4d 85 f6             	test   %r14,%r14
+inlined by /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/core/src/ptr/mod.rs:847 (_RINvNtCskADBYZwJmSU_4core3ptr9drop_glueINtNtCsgFX3jaOk65H_5alloc5boxed3BoxShEECs8ZKwes1zzDd_3std)
+inlined by /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/core/src/ptr/mod.rs:847 (_RINvNtCskADBYZwJmSU_4core3ptr9drop_glueNtNtNtCsgFX3jaOk65H_5alloc3ffi5c_str7CStringECs8ZKwes1zzDd_3std)
+inlined by /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/core/src/ptr/mod.rs:847 (_RINvNtCskADBYZwJmSU_4core3ptr9drop_glueNtNtNtNtCs8ZKwes1zzDd_3std6thread6thread18thread_name_string16ThreadNameStringEBJ_)
+inlined by /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/core/src/ptr/mod.rs:847 (_RINvNtCskADBYZwJmSU_4core3ptr9drop_glueINtNtB4_6option6OptionNtNtNtNtCs8ZKwes1zzDd_3std6thread6thread18thread_name_string16ThreadNameStringEEB15_)
+inlined by /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/std/src/thread/thread.rs:111 (_RNvMs_NtNtCs8ZKwes1zzDd_3std6thread6threadNtB4_6Thread3new)
+   3339c:	74 11                	je     333af <_RNvMs_NtNtCs8ZKwes1zzDd_3std6thread6threadNtB4_6Thread3new+0xff>
+_RNvNtCsgFX3jaOk65H_5alloc5alloc15dealloc_nonnull():
+/rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/alloc/src/alloc.rs:175
+inlined by /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/alloc/src/alloc.rs:321 (_RNvMs0_NtCsgFX3jaOk65H_5alloc5allocNtB5_6Global23deallocate_impl_runtime)
+inlined by /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/alloc/src/alloc.rs:436 (_RNvMs0_NtCsgFX3jaOk65H_5alloc5allocNtB5_6Global15deallocate_impl)
+inlined by /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/alloc/src/alloc.rs:554 (_RNvXs1_NtCsgFX3jaOk65H_5alloc5allocNtB5_6GlobalNtNtCskADBYZwJmSU_4core5alloc9Allocator10deallocate)
+inlined by /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/alloc/src/boxed.rs:2000 (_RNvXs8_NtCsgFX3jaOk65H_5alloc5boxedINtB5_3BoxShENtNtNtCskADBYZwJmSU_4core3ops4drop4Drop4dropCs8ZKwes1zzDd_3std)
+inlined by /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/core/src/ptr/mod.rs:847 (_RINvNtCskADBYZwJmSU_4core3ptr9drop_glueINtNtCsgFX3jaOk65H_5alloc5boxed3BoxShEECs8ZKwes1zzDd_3std)
+inlined by /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/core/src/ptr/mod.rs:847 (_RINvNtCskADBYZwJmSU_4core3ptr9drop_glueNtNtNtCsgFX3jaOk65H_5alloc3ffi5c_str7CStringECs8ZKwes1zzDd_3std)
+inlined by /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/core/src/ptr/mod.rs:847 (_RINvNtCskADBYZwJmSU_4core3ptr9drop_glueNtNtNtNtCs8ZKwes1zzDd_3std6thread6thread18thread_name_string16ThreadNameStringEBJ_)
+inlined by /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/core/src/ptr/mod.rs:847 (_RINvNtCskADBYZwJmSU_4core3ptr9drop_glueINtNtB4_6option6OptionNtNtNtNtCs8ZKwes1zzDd_3std6thread6thread18thread_name_string16ThreadNameStringEEB15_)
+inlined by /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/std/src/thread/thread.rs:111 (_RNvMs_NtNtCs8ZKwes1zzDd_3std6thread6threadNtB4_6Thread3new)
+   3339e:	ba 01 00 00 00       	mov    $0x1,%edx
+inlined by /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/alloc/src/alloc.rs:321 (_RNvMs0_NtCsgFX3jaOk65H_5alloc5allocNtB5_6Global23deallocate_impl_runtime)
+inlined by /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/alloc/src/alloc.rs:436 (_RNvMs0_NtCsgFX3jaOk65H_5alloc5allocNtB5_6Global15deallocate_impl)
+inlined by /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/alloc/src/alloc.rs:554 (_RNvXs1_NtCsgFX3jaOk65H_5alloc5allocNtB5_6GlobalNtNtCskADBYZwJmSU_4core5alloc9Allocator10deallocate)
+inlined by /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/alloc/src/boxed.rs:2000 (_RNvXs8_NtCsgFX3jaOk65H_5alloc5boxedINtB5_3BoxShENtNtNtCskADBYZwJmSU_4core3ops4drop4Drop4dropCs8ZKwes1zzDd_3std)
+inlined by /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/core/src/ptr/mod.rs:847 (_RINvNtCskADBYZwJmSU_4core3ptr9drop_glueINtNtCsgFX3jaOk65H_5alloc5boxed3BoxShEECs8ZKwes1zzDd_3std)
+inlined by /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/core/src/ptr/mod.rs:847 (_RINvNtCskADBYZwJmSU_4core3ptr9drop_glueNtNtNtCsgFX3jaOk65H_5alloc3ffi5c_str7CStringECs8ZKwes1zzDd_3std)
+inlined by /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/core/src/ptr/mod.rs:847 (_RINvNtCskADBYZwJmSU_4core3ptr9drop_glueNtNtNtNtCs8ZKwes1zzDd_3std6thread6thread18thread_name_string16ThreadNameStringEBJ_)
+inlined by /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/core/src/ptr/mod.rs:847 (_RINvNtCskADBYZwJmSU_4core3ptr9drop_glueINtNtB4_6option6OptionNtNtNtNtCs8ZKwes1zzDd_3std6thread6thread18thread_name_string16ThreadNameStringEEB15_)
+inlined by /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/std/src/thread/thread.rs:111 (_RNvMs_NtNtCs8ZKwes1zzDd_3std6thread6threadNtB4_6Thread3new)
+   333a3:	48 89 df             	mov    %rbx,%rdi
+inlined by /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/alloc/src/alloc.rs:321 (_RNvMs0_NtCsgFX3jaOk65H_5alloc5allocNtB5_6Global23deallocate_impl_runtime)
+inlined by /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/alloc/src/alloc.rs:436 (_RNvMs0_NtCsgFX3jaOk65H_5alloc5allocNtB5_6Global15deallocate_impl)
+inlined by /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/alloc/src/alloc.rs:554 (_RNvXs1_NtCsgFX3jaOk65H_5alloc5allocNtB5_6GlobalNtNtCskADBYZwJmSU_4core5alloc9Allocator10deallocate)
+inlined by /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/alloc/src/boxed.rs:2000 (_RNvXs8_NtCsgFX3jaOk65H_5alloc5boxedINtB5_3BoxShENtNtNtCskADBYZwJmSU_4core3ops4drop4Drop4dropCs8ZKwes1zzDd_3std)
+inlined by /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/core/src/ptr/mod.rs:847 (_RINvNtCskADBYZwJmSU_4core3ptr9drop_glueINtNtCsgFX3jaOk65H_5alloc5boxed3BoxShEECs8ZKwes1zzDd_3std)
+inlined by /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/core/src/ptr/mod.rs:847 (_RINvNtCskADBYZwJmSU_4core3ptr9drop_glueNtNtNtCsgFX3jaOk65H_5alloc3ffi5c_str7CStringECs8ZKwes1zzDd_3std)
+inlined by /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/core/src/ptr/mod.rs:847 (_RINvNtCskADBYZwJmSU_4core3ptr9drop_glueNtNtNtNtCs8ZKwes1zzDd_3std6thread6thread18thread_name_string16ThreadNameStringEBJ_)
+inlined by /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/core/src/ptr/mod.rs:847 (_RINvNtCskADBYZwJmSU_4core3ptr9drop_glueINtNtB4_6option6OptionNtNtNtNtCs8ZKwes1zzDd_3std6thread6thread18thread_name_string16ThreadNameStringEEB15_)
+inlined by /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/std/src/thread/thread.rs:111 (_RNvMs_NtNtCs8ZKwes1zzDd_3std6thread6threadNtB4_6Thread3new)
+   333a6:	4c 89 f6             	mov    %r14,%rsi
+inlined by /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/alloc/src/alloc.rs:321 (_RNvMs0_NtCsgFX3jaOk65H_5alloc5allocNtB5_6Global23deallocate_impl_runtime)
+inlined by /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/alloc/src/alloc.rs:436 (_RNvMs0_NtCsgFX3jaOk65H_5alloc5allocNtB5_6Global15deallocate_impl)
+inlined by /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/alloc/src/alloc.rs:554 (_RNvXs1_NtCsgFX3jaOk65H_5alloc5allocNtB5_6GlobalNtNtCskADBYZwJmSU_4core5alloc9Allocator10deallocate)
+inlined by /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/alloc/src/boxed.rs:2000 (_RNvXs8_NtCsgFX3jaOk65H_5alloc5boxedINtB5_3BoxShENtNtNtCskADBYZwJmSU_4core3ops4drop4Drop4dropCs8ZKwes1zzDd_3std)
+inlined by /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/core/src/ptr/mod.rs:847 (_RINvNtCskADBYZwJmSU_4core3ptr9drop_glueINtNtCsgFX3jaOk65H_5alloc5boxed3BoxShEECs8ZKwes1zzDd_3std)
+inlined by /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/core/src/ptr/mod.rs:847 (_RINvNtCskADBYZwJmSU_4core3ptr9drop_glueNtNtNtCsgFX3jaOk65H_5alloc3ffi5c_str7CStringECs8ZKwes1zzDd_3std)
+inlined by /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/core/src/ptr/mod.rs:847 (_RINvNtCskADBYZwJmSU_4core3ptr9drop_glueNtNtNtNtCs8ZKwes1zzDd_3std6thread6thread18thread_name_string16ThreadNameStringEBJ_)
+inlined by /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/core/src/ptr/mod.rs:847 (_RINvNtCskADBYZwJmSU_4core3ptr9drop_glueINtNtB4_6option6OptionNtNtNtNtCs8ZKwes1zzDd_3std6thread6thread18thread_name_string16ThreadNameStringEEB15_)
+inlined by /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/std/src/thread/thread.rs:111 (_RNvMs_NtNtCs8ZKwes1zzDd_3std6thread6threadNtB4_6Thread3new)
+   333a9:	ff 15 e9 65 02 00    	call   *0x265e9(%rip)        # 59998 <_DYNAMIC+0x228>
+_RNvMs_NtNtCs8ZKwes1zzDd_3std6thread6threadNtB4_6Thread3new():
+   333af:	4c 89 ff             	mov    %r15,%rdi
+   333b2:	e8 e9 31 02 00       	call   565a0 <_Unwind_Resume@plt>
+
+Disassembly of section .init:
+
+Disassembly of section .fini:
+
+Disassembly of section .plt:

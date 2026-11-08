@@ -1,0 +1,103 @@
+   Compiling proc-macro2 v1.0.107
+   Compiling quote v1.0.47
+   Compiling unicode-ident v1.0.27
+   Compiling version_check v0.9.5
+   Compiling generic-array v0.14.7
+   Compiling libc v0.2.191
+   Compiling syn v2.0.119
+   Compiling cfg-if v1.0.5
+   Compiling getrandom v0.2.17
+   Compiling typenum v1.20.1
+   Compiling rand_core v0.6.4
+   Compiling crypto-common v0.1.7
+   Compiling syn v3.0.9
+   Compiling zeroize_derive v1.5.0
+   Compiling subtle v2.6.1
+   Compiling zeroize v1.9.1
+   Compiling shlex v2.0.1
+   Compiling find-msvc-tools v0.1.15
+   Compiling cc v1.11.0
+   Compiling autocfg v1.5.1
+   Compiling num-traits v0.2.19
+   Compiling memchr v2.8.3
+   Compiling ring v0.17.14
+   Compiling block-buffer v0.10.4
+   Compiling minimal-lexical v0.2.1
+   Compiling time-core v0.1.9
+   Compiling cpufeatures v0.2.17
+   Compiling thiserror v2.0.21
+   Compiling num-conv v0.2.2
+   Compiling nom v7.1.3
+   Compiling time-macros v0.2.32
+   Compiling digest v0.10.7
+   Compiling thiserror-impl v2.0.21
+   Compiling synstructure v0.13.2
+   Compiling powerfmt v0.2.1
+   Compiling deranged v0.5.9
+   Compiling semver v1.0.28
+   Compiling rustc_version v0.4.1
+   Compiling time v0.3.55
+   Compiling asn1-rs-derive v0.6.0
+   Compiling rusticata-macros v4.1.0
+   Compiling displaydoc v0.2.7
+   Compiling rustls-pki-types v1.15.1
+   Compiling asn1-rs-impl v0.2.0
+   Compiling untrusted v0.9.0
+   Compiling asn1-rs v0.7.2
+   Compiling curve25519-dalek v4.1.3
+   Compiling num-integer v0.1.47
+   Compiling inout v0.1.4
+   Compiling zmij v1.0.23
+   Compiling oid-registry v0.8.1
+   Compiling rustls v0.23.46
+   Compiling serde_core v1.0.229
+   Compiling sha2 v0.10.9
+   Compiling cipher v0.4.4
+   Compiling num-bigint v0.4.8
+   Compiling rustls-webpki v0.103.16
+   Compiling tokio-macros v2.7.2
+   Compiling universal-hash v0.5.1
+   Compiling curve25519-dalek-derive v0.1.1
+   Compiling socket2 v0.6.5
+   Compiling mio v1.2.4
+   Compiling once_cell v1.21.4
+   Compiling signature v2.2.0
+   Compiling serde_json v1.0.154
+   Compiling bytes v1.12.1
+   Compiling opaque-debug v0.3.1
+   Compiling pin-project-lite v0.2.17
+   Compiling poly1305 v0.8.0
+   Compiling tokio v1.54.1
+   Compiling ed25519 v2.2.3
+   Compiling der-parser v10.0.0
+   Compiling chacha20 v0.9.1
+   Compiling spiral-protocol v0.3.0 (/workspace/Spiral-KEM/protocol_rust)
+   Compiling hmac v0.12.1
+   Compiling aead v0.5.2
+   Compiling lazy_static v1.5.1
+   Compiling data-encoding v2.11.1
+   Compiling itoa v1.0.18
+   Compiling x509-parser v0.18.1
+   Compiling ed25519-dalek v2.2.0
+   Compiling chacha20poly1305 v0.10.1
+   Compiling hkdf v0.12.4
+   Compiling tokio-rustls v0.26.6
+   Compiling rustls-pemfile v2.2.0
+   Compiling async-trait v0.1.92
+   Compiling hex v0.4.3
+   Compiling static_assertions v1.1.0
+    Finished `release` profile [optimized + debuginfo] target(s) in 50.14s
+     Running unittests src/lib.rs (/workspace/secret-wipe-asan-build-20261108/x86_64-unknown-linux-gnu/release/build/spiral-protocol/2e52537794d02b68/out/spiral_protocol-2e52537794d02b68)
+
+running 4 tests
+test secret_audit::authenticated_invalid_close_reason_wipes_decrypted_bytes_and_poisoned_retry ... SECRET_AUDIT_CASE {"buffers_checked":8,"id":"authenticated_invalid_close_reason_wipes_decrypted_bytes_and_poisoned_retry","scope":"initialized live pooled allocation; no key/register-copy claim","status":"passed"}
+ok
+test secret_audit::authentication_and_syntax_failures_wipe_full_capacity_and_remain_poisoned ... SECRET_AUDIT_CASE {"buffers_checked":168,"id":"authentication_and_syntax_failures_wipe_full_capacity_and_remain_poisoned","scope":"initialized live pooled allocation; no key/register-copy claim","status":"passed"}
+ok
+test secret_audit::valid_close_and_post_close_rejection_wipe_full_capacity_before_reuse ... SECRET_AUDIT_CASE {"buffers_checked":12,"id":"valid_close_and_post_close_rejection_wipe_full_capacity_before_reuse","scope":"initialized live pooled allocation; no key/register-copy claim","status":"passed"}
+ok
+test secret_audit::valid_data_and_following_close_wipe_full_capacity_before_reuse ... SECRET_AUDIT_CASE {"buffers_checked":28,"id":"valid_data_and_following_close_wipe_full_capacity_before_reuse","scope":"initialized live pooled allocation; no key/register-copy claim","status":"passed"}
+ok
+
+test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 62 filtered out; finished in 0.01s
+

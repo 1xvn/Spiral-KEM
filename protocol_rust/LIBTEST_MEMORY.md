@@ -1,5 +1,9 @@
 # Minimal control results for the 48-byte memory warning
 
+**2026-11-08 follow-up:** Added pinned std source and
+10 controls in the [ownership/shutdown lifetime investigation](SECRET_MEMORY.md). The difference between an Arc interior pointer in thread-local storage and pthread exit after C return
+provides evidence explaining the warning; original failure records below and the overall memory-incomplete verdict remain.
+
 2026-11-07, baseline main `adfc055d3531f62dfb9f8e04de69530619f0a9ac`.
 Wrote direct reproducers and a runner, then executed six controls.
 This record documents the local investigation and the tools and commands used.

@@ -23,6 +23,8 @@ Rust record OCI/WSL commands are in the [DATA/CLOSE state fuzzing guide](../prot
 For channel shutdown/cancellation combination tests, see the [channel/TLS lifecycle guide](../protocol_rust/LIFECYCLE.md).
 
 If the current 48-byte warning reproduces in the same environment, a red Runtime memory diagnostics failure is expected.
+Completion of controls in the added [standard thread ownership/buffer disposal investigation](../protocol_rust/SECRET_MEMORY.md)
+does not replace this clean-memory gate. Weekly/manual jobs also retain the ownership control bundle.
 Do not turn results green using `continue-on-error` or suppressions. Functionality and memory jobs are separate.
 Even if all 6 memory controls are clean, that is only a std control result for that environment, not resolution of the original warning or production system approval.
 TLS AES-GCM, full Rust taint/memory checks, and long-running fuzzing are outside this minimal control workflow.

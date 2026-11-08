@@ -1,0 +1,285 @@
+
+/workspace/thread-ownership-validation-20261108/build/thread-main:     file format elf64-x86-64
+
+
+Disassembly of section .text:
+
+000000000003ddd0 <_RNvNtNtCs8ZKwes1zzDd_3std6thread7current12init_current>:
+_RNvNtNtCs8ZKwes1zzDd_3std6thread7current12init_current():
+/rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/std/src/thread/current.rs:289
+   3ddd0:	55                   	push   %rbp
+   3ddd1:	48 89 e5             	mov    %rsp,%rbp
+   3ddd4:	41 56                	push   %r14
+   3ddd6:	53                   	push   %rbx
+   3ddd7:	48 83 ec 30          	sub    $0x30,%rsp
+/rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/std/src/thread/current.rs:290
+   3dddb:	48 85 ff             	test   %rdi,%rdi
+   3ddde:	0f 85 a9 00 00 00    	jne    3de8d <_RNvNtNtCs8ZKwes1zzDd_3std6thread7current12init_current+0xbd>
+/rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/std/src/thread/current.rs:291
+   3dde4:	64 48 8b 04 25 00 00 	mov    %fs:0x0,%rax
+   3ddeb:	00 00 
+   3dded:	48 8d 80 f0 ff ff ff 	lea    -0x10(%rax),%rax
+   3ddf4:	48 89 c3             	mov    %rax,%rbx
+_RINvNtCskADBYZwJmSU_4core3mem7replaceOuECs8ZKwes1zzDd_3std():
+/rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/core/src/mem/mod.rs:976
+inlined by /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/core/src/cell.rs:516 (_RNvMs7_NtCskADBYZwJmSU_4core4cellINtB5_4CellOuE7replaceCs8ZKwes1zzDd_3std)
+inlined by /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/core/src/cell.rs:440 (_RNvMs7_NtCskADBYZwJmSU_4core4cellINtB5_4CellOuE3setCs8ZKwes1zzDd_3std)
+inlined by /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/std/src/sys/thread_local/native/mod.rs:137 (_RNvMNtNtNtCs8ZKwes1zzDd_3std3sys12thread_local6nativeNtB2_12LocalPointer3set)
+inlined by /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/std/src/thread/current.rs:291 (_RNvNtNtCs8ZKwes1zzDd_3std6thread7current12init_current)
+   3ddf7:	48 c7 00 01 00 00 00 	movq   $0x1,(%rax)
+_RNvNtNtNtCs8ZKwes1zzDd_3std6thread7current2id3get():
+/rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/std/src/thread/current.rs:34
+inlined by /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/std/src/thread/current.rs:108 (_RNvNtNtNtCs8ZKwes1zzDd_3std6thread7current2id11get_or_init)
+inlined by /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/std/src/thread/current.rs:293 (_RNvNtNtCs8ZKwes1zzDd_3std6thread7current12init_current)
+   3ddfe:	64 48 8b 04 25 00 00 	mov    %fs:0x0,%rax
+   3de05:	00 00 
+inlined by /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/std/src/thread/current.rs:108 (_RNvNtNtNtCs8ZKwes1zzDd_3std6thread7current2id11get_or_init)
+inlined by /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/std/src/thread/current.rs:293 (_RNvNtNtCs8ZKwes1zzDd_3std6thread7current12init_current)
+   3de07:	48 8d 80 f8 ff ff ff 	lea    -0x8(%rax),%rax
+_RNvMs8_NtCskADBYZwJmSU_4core4cellINtB5_4CellINtNtB7_6option6OptionNtNtNtCs8ZKwes1zzDd_3std6thread2id8ThreadIdEE3getB18_():
+/rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/core/src/cell.rs:558
+inlined by /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/std/src/thread/current.rs:34 (_RNvNtNtNtCs8ZKwes1zzDd_3std6thread7current2id3get)
+inlined by /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/std/src/thread/current.rs:108 (_RNvNtNtNtCs8ZKwes1zzDd_3std6thread7current2id11get_or_init)
+inlined by /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/std/src/thread/current.rs:293 (_RNvNtNtCs8ZKwes1zzDd_3std6thread7current12init_current)
+   3de0e:	48 8b 38             	mov    (%rax),%rdi
+_RINvMNtCskADBYZwJmSU_4core6optionINtB3_6OptionNtNtNtCs8ZKwes1zzDd_3std6thread2id8ThreadIdE14unwrap_or_elseNCNvNtNtBM_7current2id11get_or_init0EBO_():
+/rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/core/src/option.rs:1063
+inlined by /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/std/src/thread/current.rs:108 (_RNvNtNtNtCs8ZKwes1zzDd_3std6thread7current2id11get_or_init)
+inlined by /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/std/src/thread/current.rs:293 (_RNvNtNtCs8ZKwes1zzDd_3std6thread7current12init_current)
+   3de11:	48 85 ff             	test   %rdi,%rdi
+inlined by /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/std/src/thread/current.rs:108 (_RNvNtNtNtCs8ZKwes1zzDd_3std6thread7current2id11get_or_init)
+inlined by /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/std/src/thread/current.rs:293 (_RNvNtNtCs8ZKwes1zzDd_3std6thread7current12init_current)
+   3de14:	75 22                	jne    3de38 <_RNvNtNtCs8ZKwes1zzDd_3std6thread7current12init_current+0x68>
+_RNvNtNtNtCs8ZKwes1zzDd_3std6thread7current2id11get_or_init():
+/rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/std/src/thread/current.rs:108
+inlined by /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/std/src/thread/current.rs:293 (_RNvNtNtCs8ZKwes1zzDd_3std6thread7current12init_current)
+   3de16:	48 89 c1             	mov    %rax,%rcx
+_RINvNtNtCskADBYZwJmSU_4core4sync6atomic11atomic_loadyECs8ZKwes1zzDd_3std():
+/rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/core/src/sync/atomic.rs:3994
+inlined by /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/core/src/sync/atomic.rs:2916 (_RNvMsY_NtNtCskADBYZwJmSU_4core4sync6atomicINtB5_6AtomicyE4load)
+inlined by /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/std/src/thread/id.rs:47 (_RNvMNtNtCs8ZKwes1zzDd_3std6thread2idNtB2_8ThreadId3new)
+inlined by /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/std/src/thread/current.rs:111 (_RNCNvNtNtNtCs8ZKwes1zzDd_3std6thread7current2id11get_or_init0B9_)
+inlined by /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/core/src/option.rs:1065 (_RINvMNtCskADBYZwJmSU_4core6optionINtB3_6OptionNtNtNtCs8ZKwes1zzDd_3std6thread2id8ThreadIdE14unwrap_or_elseNCNvNtNtBM_7current2id11get_or_init0EBO_)
+inlined by /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/std/src/thread/current.rs:108 (_RNvNtNtNtCs8ZKwes1zzDd_3std6thread7current2id11get_or_init)
+inlined by /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/std/src/thread/current.rs:293 (_RNvNtNtCs8ZKwes1zzDd_3std6thread7current12init_current)
+   3de19:	48 8b 05 40 e0 01 00 	mov    0x1e040(%rip),%rax        # 5be60 <_RNvNvMNtNtCs8ZKwes1zzDd_3std6thread2idNtB4_8ThreadId3new7COUNTER>
+_RNvMs7_NtCskADBYZwJmSU_4core3numy11checked_add():
+/rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/core/src/num/uint_macros.rs:938
+inlined by /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/std/src/thread/id.rs:49 (_RNvMNtNtCs8ZKwes1zzDd_3std6thread2idNtB2_8ThreadId3new)
+inlined by /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/std/src/thread/current.rs:111 (_RNCNvNtNtNtCs8ZKwes1zzDd_3std6thread7current2id11get_or_init0B9_)
+inlined by /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/core/src/option.rs:1065 (_RINvMNtCskADBYZwJmSU_4core6optionINtB3_6OptionNtNtNtCs8ZKwes1zzDd_3std6thread2id8ThreadIdE14unwrap_or_elseNCNvNtNtBM_7current2id11get_or_init0EBO_)
+inlined by /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/std/src/thread/current.rs:108 (_RNvNtNtNtCs8ZKwes1zzDd_3std6thread7current2id11get_or_init)
+inlined by /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/std/src/thread/current.rs:293 (_RNvNtNtCs8ZKwes1zzDd_3std6thread7current12init_current)
+   3de20:	48 83 f8 ff          	cmp    $0xffffffffffffffff,%rax
+_RNvNtCskADBYZwJmSU_4core10intrinsics8unlikely():
+/rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/core/src/intrinsics/mod.rs:478
+inlined by /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/core/src/num/uint_macros.rs:938 (_RNvMs7_NtCskADBYZwJmSU_4core3numy11checked_add)
+inlined by /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/std/src/thread/id.rs:49 (_RNvMNtNtCs8ZKwes1zzDd_3std6thread2idNtB2_8ThreadId3new)
+inlined by /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/std/src/thread/current.rs:111 (_RNCNvNtNtNtCs8ZKwes1zzDd_3std6thread7current2id11get_or_init0B9_)
+inlined by /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/core/src/option.rs:1065 (_RINvMNtCskADBYZwJmSU_4core6optionINtB3_6OptionNtNtNtCs8ZKwes1zzDd_3std6thread2id8ThreadIdE14unwrap_or_elseNCNvNtNtBM_7current2id11get_or_init0EBO_)
+inlined by /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/std/src/thread/current.rs:108 (_RNvNtNtNtCs8ZKwes1zzDd_3std6thread7current2id11get_or_init)
+inlined by /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/std/src/thread/current.rs:293 (_RNvNtNtCs8ZKwes1zzDd_3std6thread7current12init_current)
+   3de24:	74 62                	je     3de88 <_RNvNtNtCs8ZKwes1zzDd_3std6thread7current12init_current+0xb8>
+_RNvMs7_NtCskADBYZwJmSU_4core3numy11checked_add():
+/rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/core/src/num/uint_macros.rs:938
+inlined by /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/std/src/thread/id.rs:49 (_RNvMNtNtCs8ZKwes1zzDd_3std6thread2idNtB2_8ThreadId3new)
+inlined by /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/std/src/thread/current.rs:111 (_RNCNvNtNtNtCs8ZKwes1zzDd_3std6thread7current2id11get_or_init0B9_)
+inlined by /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/core/src/option.rs:1065 (_RINvMNtCskADBYZwJmSU_4core6optionINtB3_6OptionNtNtNtCs8ZKwes1zzDd_3std6thread2id8ThreadIdE14unwrap_or_elseNCNvNtNtBM_7current2id11get_or_init0EBO_)
+inlined by /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/std/src/thread/current.rs:108 (_RNvNtNtNtCs8ZKwes1zzDd_3std6thread7current2id11get_or_init)
+inlined by /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/std/src/thread/current.rs:293 (_RNvNtNtCs8ZKwes1zzDd_3std6thread7current12init_current)
+   3de26:	48 8d 78 01          	lea    0x1(%rax),%rdi
+_RINvNtNtCskADBYZwJmSU_4core4sync6atomic28atomic_compare_exchange_weakyECs8ZKwes1zzDd_3std():
+/rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/core/src/sync/atomic.rs:4140
+inlined by /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/core/src/sync/atomic.rs:3186 (_RNvMsY_NtNtCskADBYZwJmSU_4core4sync6atomicINtB5_6AtomicyE21compare_exchange_weak)
+inlined by /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/std/src/thread/id.rs:53 (_RNvMNtNtCs8ZKwes1zzDd_3std6thread2idNtB2_8ThreadId3new)
+inlined by /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/std/src/thread/current.rs:111 (_RNCNvNtNtNtCs8ZKwes1zzDd_3std6thread7current2id11get_or_init0B9_)
+inlined by /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/core/src/option.rs:1065 (_RINvMNtCskADBYZwJmSU_4core6optionINtB3_6OptionNtNtNtCs8ZKwes1zzDd_3std6thread2id8ThreadIdE14unwrap_or_elseNCNvNtNtBM_7current2id11get_or_init0EBO_)
+inlined by /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/std/src/thread/current.rs:108 (_RNvNtNtNtCs8ZKwes1zzDd_3std6thread7current2id11get_or_init)
+inlined by /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/std/src/thread/current.rs:293 (_RNvNtNtCs8ZKwes1zzDd_3std6thread7current12init_current)
+   3de2a:	f0 48 0f b1 3d 2d e0 	lock cmpxchg %rdi,0x1e02d(%rip)        # 5be60 <_RNvNvMNtNtCs8ZKwes1zzDd_3std6thread2idNtB4_8ThreadId3new7COUNTER>
+   3de31:	01 00 
+_RNvMNtNtCs8ZKwes1zzDd_3std6thread2idNtB2_8ThreadId3new():
+/rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/std/src/thread/id.rs:53
+inlined by /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/std/src/thread/current.rs:111 (_RNCNvNtNtNtCs8ZKwes1zzDd_3std6thread7current2id11get_or_init0B9_)
+inlined by /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/core/src/option.rs:1065 (_RINvMNtCskADBYZwJmSU_4core6optionINtB3_6OptionNtNtNtCs8ZKwes1zzDd_3std6thread2id8ThreadIdE14unwrap_or_elseNCNvNtNtBM_7current2id11get_or_init0EBO_)
+inlined by /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/std/src/thread/current.rs:108 (_RNvNtNtNtCs8ZKwes1zzDd_3std6thread7current2id11get_or_init)
+inlined by /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/std/src/thread/current.rs:293 (_RNvNtNtCs8ZKwes1zzDd_3std6thread7current12init_current)
+   3de33:	75 eb                	jne    3de20 <_RNvNtNtCs8ZKwes1zzDd_3std6thread7current12init_current+0x50>
+_RINvNtCskADBYZwJmSU_4core3mem7replaceINtNtB4_6option6OptionNtNtNtCs8ZKwes1zzDd_3std6thread2id8ThreadIdEEB11_():
+/rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/core/src/mem/mod.rs:976
+inlined by /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/core/src/cell.rs:516 (_RNvMs7_NtCskADBYZwJmSU_4core4cellINtB5_4CellINtNtB7_6option6OptionNtNtNtCs8ZKwes1zzDd_3std6thread2id8ThreadIdEE7replaceB18_)
+inlined by /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/core/src/cell.rs:440 (_RNvMs7_NtCskADBYZwJmSU_4core4cellINtB5_4CellINtNtB7_6option6OptionNtNtNtCs8ZKwes1zzDd_3std6thread2id8ThreadIdEE3setB18_)
+inlined by /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/std/src/thread/current.rs:38 (_RNvNtNtNtCs8ZKwes1zzDd_3std6thread7current2id3set)
+inlined by /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/std/src/thread/current.rs:112 (_RNCNvNtNtNtCs8ZKwes1zzDd_3std6thread7current2id11get_or_init0B9_)
+inlined by /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/core/src/option.rs:1065 (_RINvMNtCskADBYZwJmSU_4core6optionINtB3_6OptionNtNtNtCs8ZKwes1zzDd_3std6thread2id8ThreadIdE14unwrap_or_elseNCNvNtNtBM_7current2id11get_or_init0EBO_)
+inlined by /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/std/src/thread/current.rs:108 (_RNvNtNtNtCs8ZKwes1zzDd_3std6thread7current2id11get_or_init)
+inlined by /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/std/src/thread/current.rs:293 (_RNvNtNtCs8ZKwes1zzDd_3std6thread7current12init_current)
+   3de35:	48 89 39             	mov    %rdi,(%rcx)
+_RNvNtNtCs8ZKwes1zzDd_3std6thread7current12init_current():
+/rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/std/src/thread/current.rs:294
+   3de38:	48 c7 45 c8 ff ff ff 	movq   $0xffffffffffffffff,-0x38(%rbp)
+   3de3f:	ff 
+   3de40:	48 8d 75 c8          	lea    -0x38(%rbp),%rsi
+   3de44:	ff 15 ce bb 01 00    	call   *0x1bbce(%rip)        # 59a18 <_DYNAMIC+0x2a8>
+   3de4a:	49 89 c6             	mov    %rax,%r14
+   3de4d:	48 89 45 e0          	mov    %rax,-0x20(%rbp)
+_RINvNtNtCskADBYZwJmSU_4core4sync6atomic11atomic_loadjECs8ZKwes1zzDd_3std():
+/rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/core/src/sync/atomic.rs:3995
+inlined by /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/core/src/sync/atomic.rs:2916 (_RNvMs16_NtNtCskADBYZwJmSU_4core4sync6atomicINtB6_6AtomicjE4load)
+inlined by /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/std/src/sys/thread_local/key/racy.rs:39 (_RNvMNtNtNtNtCs8ZKwes1zzDd_3std3sys12thread_local3key4racyNtB2_7LazyKey5force)
+inlined by /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/std/src/sys/thread_local/guard/key.rs:17 (_RNvNtNtNtNtCs8ZKwes1zzDd_3std3sys12thread_local5guard3key6enable)
+inlined by /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/std/src/thread/current.rs:298 (_RNvNtNtCs8ZKwes1zzDd_3std6thread7current12init_current)
+   3de51:	48 8b 3d 38 df 01 00 	mov    0x1df38(%rip),%rdi        # 5bd90 <_RNvNvNtNtNtNtCs8ZKwes1zzDd_3std3sys12thread_local5guard3key6enable5DTORS>
+_RNvMNtNtNtNtCs8ZKwes1zzDd_3std3sys12thread_local3key4racyNtB2_7LazyKey5force():
+/rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/std/src/sys/thread_local/key/racy.rs:39
+inlined by /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/std/src/sys/thread_local/guard/key.rs:17 (_RNvNtNtNtNtCs8ZKwes1zzDd_3std3sys12thread_local5guard3key6enable)
+inlined by /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/std/src/thread/current.rs:298 (_RNvNtNtCs8ZKwes1zzDd_3std6thread7current12init_current)
+   3de58:	48 85 ff             	test   %rdi,%rdi
+inlined by /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/std/src/sys/thread_local/guard/key.rs:17 (_RNvNtNtNtNtCs8ZKwes1zzDd_3std3sys12thread_local5guard3key6enable)
+inlined by /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/std/src/thread/current.rs:298 (_RNvNtNtCs8ZKwes1zzDd_3std6thread7current12init_current)
+   3de5b:	74 59                	je     3deb6 <_RNvNtNtCs8ZKwes1zzDd_3std6thread7current12init_current+0xe6>
+_RNvNtNtNtNtCs8ZKwes1zzDd_3std3sys12thread_local3key4unix3set():
+/rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/std/src/sys/thread_local/key/unix.rs:41
+inlined by /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/std/src/sys/thread_local/guard/key.rs:17 (_RNvNtNtNtNtCs8ZKwes1zzDd_3std3sys12thread_local5guard3key6enable)
+inlined by /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/std/src/thread/current.rs:298 (_RNvNtNtCs8ZKwes1zzDd_3std6thread7current12init_current)
+   3de5d:	be 01 00 00 00       	mov    $0x1,%esi
+inlined by /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/std/src/sys/thread_local/guard/key.rs:17 (_RNvNtNtNtNtCs8ZKwes1zzDd_3std3sys12thread_local5guard3key6enable)
+inlined by /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/std/src/thread/current.rs:298 (_RNvNtNtCs8ZKwes1zzDd_3std6thread7current12init_current)
+   3de62:	ff 15 78 c1 01 00    	call   *0x1c178(%rip)        # 59fe0 <pthread_setspecific@GLIBC_2.34>
+/rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/std/src/sys/thread_local/key/unix.rs:43
+inlined by /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/std/src/sys/thread_local/guard/key.rs:17 (_RNvNtNtNtNtCs8ZKwes1zzDd_3std3sys12thread_local5guard3key6enable)
+inlined by /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/std/src/thread/current.rs:298 (_RNvNtNtCs8ZKwes1zzDd_3std6thread7current12init_current)
+   3de68:	85 c0                	test   %eax,%eax
+inlined by /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/std/src/sys/thread_local/guard/key.rs:17 (_RNvNtNtNtNtCs8ZKwes1zzDd_3std3sys12thread_local5guard3key6enable)
+inlined by /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/std/src/thread/current.rs:298 (_RNvNtNtCs8ZKwes1zzDd_3std6thread7current12init_current)
+   3de6a:	75 61                	jne    3decd <_RNvNtNtCs8ZKwes1zzDd_3std6thread7current12init_current+0xfd>
+_RINvNtNtCskADBYZwJmSU_4core4sync6atomic10atomic_addjjECs8ZKwes1zzDd_3std():
+/rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/core/src/sync/atomic.rs:4029
+inlined by /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/core/src/sync/atomic.rs:3220 (_RNvMs16_NtNtCskADBYZwJmSU_4core4sync6atomicINtB6_6AtomicjE9fetch_add)
+inlined by /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/alloc/src/sync.rs:2417 (_RNvXsu_NtCsgFX3jaOk65H_5alloc4syncINtB5_3ArcNtNtNtCs8ZKwes1zzDd_3std6thread6thread5InnerNtNtBM_5alloc6SystemENtNtCskADBYZwJmSU_4core5clone5Clone5cloneBM_)
+inlined by /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/core/src/pin.rs:1090 (_RNvXso_NtCskADBYZwJmSU_4core3pinINtB5_3PinINtNtCsgFX3jaOk65H_5alloc4sync3ArcNtNtNtCs8ZKwes1zzDd_3std6thread6thread5InnerNtNtB1i_5alloc6SystemEENtNtB7_5clone5Clone5cloneB1i_)
+inlined by /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/std/src/thread/thread.rs:61 (_RNvXs1_NtNtCs8ZKwes1zzDd_3std6thread6threadNtB5_6ThreadNtNtCskADBYZwJmSU_4core5clone5Clone5clone)
+inlined by /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/std/src/thread/current.rs:299 (_RNvNtNtCs8ZKwes1zzDd_3std6thread7current12init_current)
+   3de6c:	f0 49 ff 06          	lock incq (%r14)
+_RNvXsu_NtCsgFX3jaOk65H_5alloc4syncINtB5_3ArcNtNtNtCs8ZKwes1zzDd_3std6thread6thread5InnerNtNtBM_5alloc6SystemENtNtCskADBYZwJmSU_4core5clone5Clone5cloneBM_():
+/rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/alloc/src/sync.rs:2434
+inlined by /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/core/src/pin.rs:1090 (_RNvXso_NtCskADBYZwJmSU_4core3pinINtB5_3PinINtNtCsgFX3jaOk65H_5alloc4sync3ArcNtNtNtCs8ZKwes1zzDd_3std6thread6thread5InnerNtNtB1i_5alloc6SystemEENtNtB7_5clone5Clone5cloneB1i_)
+inlined by /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/std/src/thread/thread.rs:61 (_RNvXs1_NtNtCs8ZKwes1zzDd_3std6thread6threadNtB5_6ThreadNtNtCskADBYZwJmSU_4core5clone5Clone5clone)
+inlined by /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/std/src/thread/current.rs:299 (_RNvNtNtCs8ZKwes1zzDd_3std6thread7current12init_current)
+   3de70:	7e 60                	jle    3ded2 <_RNvNtNtCs8ZKwes1zzDd_3std6thread7current12init_current+0x102>
+_RNvMsn_NtCsgFX3jaOk65H_5alloc4syncINtB5_3ArcNtNtNtCs8ZKwes1zzDd_3std6thread6thread5InnerNtNtBM_5alloc6SystemE6as_ptrBM_():
+/rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/alloc/src/sync.rs:1841
+inlined by /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/alloc/src/sync.rs:1810 (_RNvMsn_NtCsgFX3jaOk65H_5alloc4syncINtB5_3ArcNtNtNtCs8ZKwes1zzDd_3std6thread6thread5InnerNtNtBM_5alloc6SystemE23into_raw_with_allocatorBM_)
+inlined by /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/std/src/thread/thread.rs:280 (_RNvMs_NtNtCs8ZKwes1zzDd_3std6thread6threadNtB4_6Thread8into_raw)
+inlined by /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/std/src/thread/current.rs:299 (_RNvNtNtCs8ZKwes1zzDd_3std6thread7current12init_current)
+   3de72:	4c 89 f0             	mov    %r14,%rax
+inlined by /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/alloc/src/sync.rs:1810 (_RNvMsn_NtCsgFX3jaOk65H_5alloc4syncINtB5_3ArcNtNtNtCs8ZKwes1zzDd_3std6thread6thread5InnerNtNtBM_5alloc6SystemE23into_raw_with_allocatorBM_)
+inlined by /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/std/src/thread/thread.rs:280 (_RNvMs_NtNtCs8ZKwes1zzDd_3std6thread6threadNtB4_6Thread8into_raw)
+inlined by /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/std/src/thread/current.rs:299 (_RNvNtNtCs8ZKwes1zzDd_3std6thread7current12init_current)
+   3de75:	48 83 c0 10          	add    $0x10,%rax
+_RINvNtCskADBYZwJmSU_4core3mem7replaceOuECs8ZKwes1zzDd_3std():
+/rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/core/src/mem/mod.rs:976
+inlined by /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/core/src/cell.rs:516 (_RNvMs7_NtCskADBYZwJmSU_4core4cellINtB5_4CellOuE7replaceCs8ZKwes1zzDd_3std)
+inlined by /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/core/src/cell.rs:440 (_RNvMs7_NtCskADBYZwJmSU_4core4cellINtB5_4CellOuE3setCs8ZKwes1zzDd_3std)
+inlined by /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/std/src/sys/thread_local/native/mod.rs:137 (_RNvMNtNtNtCs8ZKwes1zzDd_3std3sys12thread_local6nativeNtB2_12LocalPointer3set)
+inlined by /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/std/src/thread/current.rs:299 (_RNvNtNtCs8ZKwes1zzDd_3std6thread7current12init_current)
+   3de79:	48 89 03             	mov    %rax,(%rbx)
+_RNvNtNtCs8ZKwes1zzDd_3std6thread7current12init_current():
+/rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/std/src/thread/current.rs:320
+   3de7c:	4c 89 f0             	mov    %r14,%rax
+   3de7f:	48 83 c4 30          	add    $0x30,%rsp
+   3de83:	5b                   	pop    %rbx
+   3de84:	41 5e                	pop    %r14
+   3de86:	5d                   	pop    %rbp
+   3de87:	c3                   	ret
+_RNvMNtNtCs8ZKwes1zzDd_3std6thread2idNtB2_8ThreadId3new():
+/rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/std/src/thread/id.rs:50
+inlined by /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/std/src/thread/current.rs:111 (_RNCNvNtNtNtCs8ZKwes1zzDd_3std6thread7current2id11get_or_init0B9_)
+inlined by /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/core/src/option.rs:1065 (_RINvMNtCskADBYZwJmSU_4core6optionINtB3_6OptionNtNtNtCs8ZKwes1zzDd_3std6thread2id8ThreadIdE14unwrap_or_elseNCNvNtNtBM_7current2id11get_or_init0EBO_)
+inlined by /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/std/src/thread/current.rs:108 (_RNvNtNtNtCs8ZKwes1zzDd_3std6thread7current2id11get_or_init)
+inlined by /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/std/src/thread/current.rs:293 (_RNvNtNtCs8ZKwes1zzDd_3std6thread7current12init_current)
+   3de88:	e8 13 2f 00 00       	call   40da0 <_RNvNvMNtNtCs8ZKwes1zzDd_3std6thread2idNtB4_8ThreadId3new9exhausted>
+_RNvNtNtCs8ZKwes1zzDd_3std6thread7current12init_current():
+/rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/std/src/thread/current.rs:290
+   3de8d:	48 83 ff 01          	cmp    $0x1,%rdi
+   3de91:	75 41                	jne    3ded4 <_RNvNtNtCs8ZKwes1zzDd_3std6thread7current12init_current+0x104>
+/rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/std/src/rt.rs:44
+   3de93:	48 8d 35 3b bb fc ff 	lea    -0x344c5(%rip),%rsi        # 99d5 <__abi_tag+0x96d9>
+   3de9a:	48 8d 7d ef          	lea    -0x11(%rbp),%rdi
+   3de9e:	ba f3 00 00 00       	mov    $0xf3,%edx
+   3dea3:	e8 08 78 00 00       	call   456b0 <_RNvYNtNtNtNtCs8ZKwes1zzDd_3std3sys5stdio4unix6StderrNtNtNtCskADBYZwJmSU_4core2io5write5Write9write_fmtBa_>
+   3dea8:	48 89 c7             	mov    %rax,%rdi
+   3deab:	e8 e0 33 fe ff       	call   21290 <_RINvNtCskADBYZwJmSU_4core3ptr9drop_glueINtNtB4_6result6ResultuNtNtNtB4_2io5error5ErrorEECs8ZKwes1zzDd_3std>
+/rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/std/src/rt.rs:57
+   3deb0:	ff 15 b2 bc 01 00    	call   *0x1bcb2(%rip)        # 59b68 <_DYNAMIC+0x3f8>
+_RNvMNtNtNtNtCs8ZKwes1zzDd_3std3sys12thread_local3key4racyNtB2_7LazyKey5force():
+/rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/std/src/sys/thread_local/key/racy.rs:40
+inlined by /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/std/src/sys/thread_local/guard/key.rs:17 (_RNvNtNtNtNtCs8ZKwes1zzDd_3std3sys12thread_local5guard3key6enable)
+inlined by /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/std/src/thread/current.rs:298 (_RNvNtNtCs8ZKwes1zzDd_3std6thread7current12init_current)
+   3deb6:	e8 f5 df fe ff       	call   2beb0 <_RNvMNtNtNtNtCs8ZKwes1zzDd_3std3sys12thread_local3key4racyNtB2_7LazyKey9lazy_init>
+_RNvNtNtNtNtCs8ZKwes1zzDd_3std3sys12thread_local5guard3key6enable():
+inlined by /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/std/src/thread/current.rs:298 (_RNvNtNtCs8ZKwes1zzDd_3std6thread7current12init_current)
+   3debb:	48 89 c7             	mov    %rax,%rdi
+_RNvNtNtNtNtCs8ZKwes1zzDd_3std3sys12thread_local3key4unix3set():
+/rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/std/src/sys/thread_local/key/unix.rs:41
+inlined by /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/std/src/sys/thread_local/guard/key.rs:17 (_RNvNtNtNtNtCs8ZKwes1zzDd_3std3sys12thread_local5guard3key6enable)
+inlined by /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/std/src/thread/current.rs:298 (_RNvNtNtCs8ZKwes1zzDd_3std6thread7current12init_current)
+   3debe:	be 01 00 00 00       	mov    $0x1,%esi
+inlined by /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/std/src/sys/thread_local/guard/key.rs:17 (_RNvNtNtNtNtCs8ZKwes1zzDd_3std3sys12thread_local5guard3key6enable)
+inlined by /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/std/src/thread/current.rs:298 (_RNvNtNtCs8ZKwes1zzDd_3std6thread7current12init_current)
+   3dec3:	ff 15 17 c1 01 00    	call   *0x1c117(%rip)        # 59fe0 <pthread_setspecific@GLIBC_2.34>
+/rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/std/src/sys/thread_local/key/unix.rs:43
+inlined by /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/std/src/sys/thread_local/guard/key.rs:17 (_RNvNtNtNtNtCs8ZKwes1zzDd_3std3sys12thread_local5guard3key6enable)
+inlined by /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/std/src/thread/current.rs:298 (_RNvNtNtCs8ZKwes1zzDd_3std6thread7current12init_current)
+   3dec9:	85 c0                	test   %eax,%eax
+inlined by /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/std/src/sys/thread_local/guard/key.rs:17 (_RNvNtNtNtNtCs8ZKwes1zzDd_3std3sys12thread_local5guard3key6enable)
+inlined by /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/std/src/thread/current.rs:298 (_RNvNtNtCs8ZKwes1zzDd_3std6thread7current12init_current)
+   3decb:	74 9f                	je     3de6c <_RNvNtNtCs8ZKwes1zzDd_3std6thread7current12init_current+0x9c>
+/rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/std/src/sys/thread_local/key/unix.rs:44
+inlined by /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/std/src/sys/thread_local/guard/key.rs:17 (_RNvNtNtNtNtCs8ZKwes1zzDd_3std3sys12thread_local5guard3key6enable)
+inlined by /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/std/src/thread/current.rs:298 (_RNvNtNtCs8ZKwes1zzDd_3std6thread7current12init_current)
+   3decd:	e8 5e 17 00 00       	call   3f630 <_RNvNtNtNtNtCs8ZKwes1zzDd_3std3sys12thread_local3key4unix4fail>
+_RNvNtNtCs8ZKwes1zzDd_3std6thread7current12init_current():
+   3ded2:	0f 0b                	ud2
+/rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/std/src/thread/current.rs:315
+   3ded4:	48 8d 3d 9c ba fc ff 	lea    -0x34564(%rip),%rdi        # 9977 <__abi_tag+0x967b>
+   3dedb:	48 8d 15 9e a3 01 00 	lea    0x1a39e(%rip),%rdx        # 58280 <__frame_dummy_init_array_entry+0xc80>
+   3dee2:	be bd 00 00 00       	mov    $0xbd,%esi
+   3dee7:	ff 15 83 bb 01 00    	call   *0x1bb83(%rip)        # 59a70 <_DYNAMIC+0x300>
+   3deed:	48 89 c3             	mov    %rax,%rbx
+_RINvNtNtCskADBYZwJmSU_4core4sync6atomic10atomic_subjjECs8ZKwes1zzDd_3std():
+/rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/core/src/sync/atomic.rs:4049
+inlined by /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/core/src/sync/atomic.rs:3253 (_RNvMs16_NtNtCskADBYZwJmSU_4core4sync6atomicINtB6_6AtomicjE9fetch_sub)
+inlined by /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/alloc/src/sync.rs:2868 (_RNvXsE_NtCsgFX3jaOk65H_5alloc4syncINtB5_3ArcNtNtNtCs8ZKwes1zzDd_3std6thread6thread5InnerNtNtBM_5alloc6SystemENtNtNtCskADBYZwJmSU_4core3ops4drop4Drop4dropBM_)
+inlined by /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/core/src/ptr/mod.rs:847 (_RINvNtCskADBYZwJmSU_4core3ptr9drop_glueINtNtCsgFX3jaOk65H_5alloc4sync3ArcNtNtNtCs8ZKwes1zzDd_3std6thread6thread5InnerNtNtB1f_5alloc6SystemEEB1f_)
+inlined by /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/core/src/ptr/mod.rs:847 (_RINvNtCskADBYZwJmSU_4core3ptr9drop_glueINtNtB4_3pin3PinINtNtCsgFX3jaOk65H_5alloc4sync3ArcNtNtNtCs8ZKwes1zzDd_3std6thread6thread5InnerNtNtB1v_5alloc6SystemEEEB1v_)
+inlined by /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/core/src/ptr/mod.rs:847 (_RINvNtCskADBYZwJmSU_4core3ptr9drop_glueNtNtNtCs8ZKwes1zzDd_3std6thread6thread6ThreadEBH_)
+inlined by /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/std/src/thread/current.rs:301 (_RNvNtNtCs8ZKwes1zzDd_3std6thread7current12init_current)
+   3def0:	f0 49 ff 0e          	lock decq (%r14)
+_RNvXsE_NtCsgFX3jaOk65H_5alloc4syncINtB5_3ArcNtNtNtCs8ZKwes1zzDd_3std6thread6thread5InnerNtNtBM_5alloc6SystemENtNtNtCskADBYZwJmSU_4core3ops4drop4Drop4dropBM_():
+/rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/alloc/src/sync.rs:2868
+inlined by /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/core/src/ptr/mod.rs:847 (_RINvNtCskADBYZwJmSU_4core3ptr9drop_glueINtNtCsgFX3jaOk65H_5alloc4sync3ArcNtNtNtCs8ZKwes1zzDd_3std6thread6thread5InnerNtNtB1f_5alloc6SystemEEB1f_)
+inlined by /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/core/src/ptr/mod.rs:847 (_RINvNtCskADBYZwJmSU_4core3ptr9drop_glueINtNtB4_3pin3PinINtNtCsgFX3jaOk65H_5alloc4sync3ArcNtNtNtCs8ZKwes1zzDd_3std6thread6thread5InnerNtNtB1v_5alloc6SystemEEEB1v_)
+inlined by /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/core/src/ptr/mod.rs:847 (_RINvNtCskADBYZwJmSU_4core3ptr9drop_glueNtNtNtCs8ZKwes1zzDd_3std6thread6thread6ThreadEBH_)
+inlined by /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/std/src/thread/current.rs:301 (_RNvNtNtCs8ZKwes1zzDd_3std6thread7current12init_current)
+   3def4:	75 0a                	jne    3df00 <_RNvNtNtCs8ZKwes1zzDd_3std6thread7current12init_current+0x130>
+inlined by /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/core/src/ptr/mod.rs:847 (_RINvNtCskADBYZwJmSU_4core3ptr9drop_glueINtNtCsgFX3jaOk65H_5alloc4sync3ArcNtNtNtCs8ZKwes1zzDd_3std6thread6thread5InnerNtNtB1f_5alloc6SystemEEB1f_)
+inlined by /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/core/src/ptr/mod.rs:847 (_RINvNtCskADBYZwJmSU_4core3ptr9drop_glueINtNtB4_3pin3PinINtNtCsgFX3jaOk65H_5alloc4sync3ArcNtNtNtCs8ZKwes1zzDd_3std6thread6thread5InnerNtNtB1v_5alloc6SystemEEEB1v_)
+inlined by /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/core/src/ptr/mod.rs:847 (_RINvNtCskADBYZwJmSU_4core3ptr9drop_glueNtNtNtCs8ZKwes1zzDd_3std6thread6thread6ThreadEBH_)
+inlined by /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/std/src/thread/current.rs:301 (_RNvNtNtCs8ZKwes1zzDd_3std6thread7current12init_current)
+   3def6:	48 8d 7d e0          	lea    -0x20(%rbp),%rdi
+/rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/alloc/src/sync.rs:2911
+inlined by /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/core/src/ptr/mod.rs:847 (_RINvNtCskADBYZwJmSU_4core3ptr9drop_glueINtNtCsgFX3jaOk65H_5alloc4sync3ArcNtNtNtCs8ZKwes1zzDd_3std6thread6thread5InnerNtNtB1f_5alloc6SystemEEB1f_)
+inlined by /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/core/src/ptr/mod.rs:847 (_RINvNtCskADBYZwJmSU_4core3ptr9drop_glueINtNtB4_3pin3PinINtNtCsgFX3jaOk65H_5alloc4sync3ArcNtNtNtCs8ZKwes1zzDd_3std6thread6thread5InnerNtNtB1v_5alloc6SystemEEEB1v_)
+inlined by /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/core/src/ptr/mod.rs:847 (_RINvNtCskADBYZwJmSU_4core3ptr9drop_glueNtNtNtCs8ZKwes1zzDd_3std6thread6thread6ThreadEBH_)
+inlined by /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/std/src/thread/current.rs:301 (_RNvNtNtCs8ZKwes1zzDd_3std6thread7current12init_current)
+   3defa:	ff 15 c8 ba 01 00    	call   *0x1bac8(%rip)        # 599c8 <_DYNAMIC+0x258>
+_RNvNtNtCs8ZKwes1zzDd_3std6thread7current12init_current():
+   3df00:	48 89 df             	mov    %rbx,%rdi
+   3df03:	e8 98 86 01 00       	call   565a0 <_Unwind_Resume@plt>
+
+Disassembly of section .init:
+
+Disassembly of section .fini:
+
+Disassembly of section .plt:

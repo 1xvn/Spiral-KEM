@@ -34,13 +34,22 @@ jobs:
       - name: Install exact Rust toolchain
         run: rustup toolchain install 1.99.1 --profile minimal
       - name: Check result-classification rules
-        run: python -m unittest discover -s ci -p 'test_checks.py' -v
+        run: |
+          python -m unittest discover -s ci -p 'test_checks.py' -v
+          python -m unittest discover -s protocol_rust/diagnostics -p 'test_*.py' -v
       - name: Measure controls and preserve child errors
         run: |
           python protocol_rust/diagnostics/libtest_memory.py \
             --rustc "$(rustup which --toolchain 1.99.1 rustc)" \
             --valgrind "$(command -v valgrind)" \
             --output ci-results/memory
+      - name: Trace std thread ownership and exit lifetime
+        if: always()
+        run: |
+          python protocol_rust/diagnostics/thread_ownership.py \
+            --rustc "$(rustup which --toolchain 1.99.1 rustc)" \
+            --valgrind "$(command -v valgrind)" \
+            --output ci-results/thread-ownership
       - name: Require clean control measurements, not merely completed diagnostics
         if: always()
         run: python ci/check_memory_result.py ci-results/memory/result.json
@@ -55,6 +64,7 @@ jobs:
             ci-results/memory/*.stdout
             ci-results/memory/*.stderr
             ci-results/memory/*.rs
+            ci-results/thread-ownership.tar.gz
           if-no-files-found: warn
           retention-days: 30
       - name: State diagnostic scope
@@ -62,3 +72,4 @@ jobs:
         run: |
           echo 'Std/libtest controls only; not a production-memory acceptance check.' >> "$GITHUB_STEP_SUMMARY"
           echo 'A reproduced Memcheck error makes this job fail. Exit 99 is preserved. Original findings are not closed by a clean control run.' >> "$GITHUB_STEP_SUMMARY"
+          echo 'The separate thread-ownership comparison records lifetime changes; diagnostic completion does not replace the strict clean-memory gate.' >> "$GITHUB_STEP_SUMMARY"

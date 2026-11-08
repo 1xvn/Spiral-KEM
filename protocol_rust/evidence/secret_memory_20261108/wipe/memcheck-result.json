@@ -1,0 +1,63 @@
+{
+  "command": [
+    "/workspace/rust48-tools/debian/usr/bin/valgrind",
+    "--command-line-only=yes",
+    "--tool=memcheck",
+    "--leak-check=full",
+    "--show-leak-kinds=all",
+    "--errors-for-leak-kinds=definite,indirect,possible",
+    "--error-exitcode=99",
+    "--track-origins=yes",
+    "--num-callers=40",
+    "--log-file=/workspace/secret-wipe-audit-memcheck-20261108.log",
+    "/workspace/rust48-tools/runtime/ld-linux-x86-64.so.2",
+    "--library-path",
+    "/workspace/rust48-tools/debian/usr/lib/x86_64-linux-gnu",
+    "/workspace/Spiral-KEM/protocol_rust/target/audit/deps/spiral_protocol-a3951d1e6e24daa8",
+    "secret_audit::",
+    "--test-threads=1",
+    "--nocapture"
+  ],
+  "exit": 99,
+  "binary_sha256": "03f70f012ea753807e6564413f5b35e8ce0b16c7a8700538bed48556b9d3f46d",
+  "memcheck": {
+    "summary": {
+      "errors": 1,
+      "contexts": 1,
+      "suppressed_errors": 0,
+      "suppressed_contexts": 0
+    },
+    "leaks": {
+      "definitely lost": {
+        "bytes": 0,
+        "blocks": 0
+      },
+      "indirectly lost": {
+        "bytes": 0,
+        "blocks": 0
+      },
+      "possibly lost": {
+        "bytes": 48,
+        "blocks": 1
+      },
+      "still reachable": {
+        "bytes": 548,
+        "blocks": 2
+      },
+      "suppressed": {
+        "bytes": 0,
+        "blocks": 0
+      }
+    },
+    "possibly_lost_48_records": [
+      {
+        "stack": "==239533== 48 bytes in 1 blocks are possibly lost in loss record 2 of 3\n==239533==    at 0x4A23818: malloc (vg_replace_malloc.c:446)\n==239533==    by 0x4993D07: alloc (unix.rs:31)\n==239533==    by 0x4993D07: alloc_impl (alloc.rs:161)\n==239533==    by 0x4993D07: allocate (alloc.rs:223)\n==239533==    by 0x4993D07: {closure#0}<std::thread::thread::Inner, std::alloc::System> (sync.rs:823)\n==239533==    by 0x4993D07: allocate_for_layout<core::mem::maybe_uninit::MaybeUninit<std::thread::thread::Inner>, alloc::sync::{impl#17}::new_uninit_in::{closure_env#0}<std::thread::thread::Inner, std::alloc::System>, fn(*mut u8) -> *mut alloc::sync::ArcInner<core::mem::maybe_uninit::MaybeUninit<std::thread::thread::Inner>>> (sync.rs:2191)\n==239533==    by 0x4993D07: new_uninit_in<std::thread::thread::Inner, std::alloc::System> (sync.rs:821)\n==239533==    by 0x4993D07: new (thread.rs:102)\n==239533==    by 0x4993D07: std::thread::current::init_current (current.rs:294)\n==239533==    by 0x4978BC9: current_or_unnamed (current.rs:251)\n==239533==    by 0x4978BC9: <std::sync::mpmc::context::Context>::new (context.rs:72)\n==239533==    by 0x49A208B: __rust_std_internal_init_fn (context.rs:43)\n==239533==    by 0x49A208B: call_once<fn() -> core::cell::Cell<core::option::Option<std::sync::mpmc::context::Context>>, ()> (function.rs:250)\n==239533==    by 0x49A208B: unwrap_or_else<core::cell::Cell<core::option::Option<std::sync::mpmc::context::Context>>, fn() -> core::cell::Cell<core::option::Option<std::sync::mpmc::context::Context>>> (option.rs:1065)\n==239533==    by 0x49A208B: <std::sys::thread_local::native::lazy::Storage<core::cell::Cell<core::option::Option<std::sync::mpmc::context::Context>>, ()>>::get_or_init_slow::<<std::sync::mpmc::context::Context>::with::CONTEXT::__rust_std_internal_init_fn> (lazy.rs:80)\n==239533==    by 0x49BD422: get_or_init<core::cell::Cell<core::option::Option<std::sync::mpmc::context::Context>>, (), fn() -> core::cell::Cell<core::option::Option<std::sync::mpmc::context::Context>>> (lazy.rs:62)\n==239533==    by 0x49BD422: {closure#0} (mod.rs:97)\n==239533==    by 0x49BD422: call_once<std::sync::mpmc::context::{impl#0}::with::CONTEXT::{constant#0}::{closure_env#0}, (core::option::Option<&mut core::option::Option<core::cell::Cell<core::option::Option<std::sync::mpmc::context::Context>>>>)> (function.rs:250)\n==239533==    by 0x49BD422: try_with<core::cell::Cell<core::option::Option<std::sync::mpmc::context::Context>>, std::sync::mpmc::context::{impl#0}::with::{closure_env#1}<std::sync::mpmc::list::{impl#3}::recv::{closure_env#1}<test::event::CompletedTest>, ()>, ()> (local.rs:462)\n==239533==    by 0x49BD422: with<std::sync::mpmc::list::{impl#3}::recv::{closure_env#1}<test::event::CompletedTest>, ()> (context.rs:53)\n==239533==    by 0x49BD422: <std::sync::mpmc::list::Channel<test::event::CompletedTest>>::recv (list.rs:442)\n==239533==    by 0x49C9398: recv<test::event::CompletedTest> (mod.rs:1025)\n==239533==    by 0x49C9398: recv<test::event::CompletedTest> (mpsc.rs:890)\n==239533==    by 0x49C9398: run_tests<test::console::run_tests_console::{closure_env#2}> (lib.rs:445)\n==239533==    by 0x49C9398: test::console::run_tests_console (console.rs:328)\n==239533==    by 0x49B5739: test_main_inner<test::test_main_static::{closure_env#0}> (lib.rs:170)\n==239533==    by 0x49B5739: test::test_main_static (lib.rs:195)\n==239533==    by 0x48CF3B2: call_once<fn(), ()> (library/core/src/ops/function.rs:250)\n==239533==    by 0x48CF3B2: std::sys::backtrace::__rust_begin_short_backtrace::<fn(), ()> (library/std/src/sys/backtrace.rs:166)\n==239533==    by 0x48E8888: std::rt::lang_start::<()>::{closure#0} (library/std/src/rt.rs:206)\n==239533==    by 0x4991B88: call_once<(), (dyn core::ops::function::Fn<(), Output=i32> + core::marker::Sync + core::panic::unwind_safe::RefUnwindSafe)> (function.rs:287)\n==239533==    by 0x4991B88: do_call<&(dyn core::ops::function::Fn<(), Output=i32> + core::marker::Sync + core::panic::unwind_safe::RefUnwindSafe), i32> (panicking.rs:576)\n==239533==    by 0x4991B88: catch_unwind<i32, &(dyn core::ops::function::Fn<(), Output=i32> + core::marker::Sync + core::panic::unwind_safe::RefUnwindSafe)> (panicking.rs:544)\n==239533==    by 0x4991B88: catch_unwind<&(dyn core::ops::function::Fn<(), Output=i32> + core::marker::Sync + core::panic::unwind_safe::RefUnwindSafe), i32> (panic.rs:359)\n==239533==    by 0x4991B88: {closure#0} (rt.rs:175)\n==239533==    by 0x4991B88: do_call<std::rt::lang_start_internal::{closure_env#0}, isize> (panicking.rs:576)\n==239533==    by 0x4991B88: catch_unwind<isize, std::rt::lang_start_internal::{closure_env#0}> (panicking.rs:544)\n==239533==    by 0x4991B88: catch_unwind<std::rt::lang_start_internal::{closure_env#0}, isize> (panic.rs:359)\n==239533==    by 0x4991B88: std::rt::lang_start_internal (rt.rs:171)\n==239533==    by 0x496390B: main (in /workspace/Spiral-KEM/protocol_rust/target/audit/deps/spiral_protocol-a3951d1e6e24daa8)",
+        "std_thread_frame": true,
+        "std_channel_frame": true,
+        "libtest_frame": true,
+        "classification": "std_thread_and_libtest"
+      }
+    ]
+  },
+  "production_memory_passed": false
+}
