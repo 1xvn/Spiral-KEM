@@ -35,10 +35,12 @@ pub mod records;
 #[cfg(feature = "record-fuzz")]
 #[doc(hidden)]
 pub use records::fuzz_support as record_test_support;
+#[cfg(test)]
+mod receive_audit;
 mod schedule;
+pub mod secret;
 #[cfg(test)]
 mod secret_audit;
-pub mod secret;
 #[cfg(feature = "parser-fuzz")]
 #[doc(hidden)]
 pub mod test_support;
