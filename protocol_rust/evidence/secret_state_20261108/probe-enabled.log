@@ -1,0 +1,5 @@
+    Checking block-buffer v0.12.1
+    Checking digest v0.11.3
+    Checking sha2 v0.11.1
+    Checking spiral-cleanup-contract-probe v0.0.0 (/workspace/secret-state-upgrade-20261108/probe)
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 0.43s

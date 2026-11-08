@@ -65,6 +65,10 @@ address mapping, missing data, suppression, and original exit code checks, and r
 The full actual receive taint run is a separate manual diagnostic. Completion is not treated as memory/constant-time
 approval, and the weekly clean-memory gate above remains.
 
+The subsequent [HMAC·HKDF·signature state cleanup](../protocol_rust/SECRET_STATE.md)
+raised the minimum Rust pass count to 70, including new RFC and independent ring signature regressions.
+Rerunning the same functional runner passed Python 85·diagnostics 20·C9·Rust 70·documentation 6·TLS 35.
+
 ## When manual reproduction is needed
 
 In a normal environment, install pinned Python requirements and use the runner below.

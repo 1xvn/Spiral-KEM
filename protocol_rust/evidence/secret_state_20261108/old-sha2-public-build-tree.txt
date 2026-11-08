@@ -1,0 +1,3 @@
+sha2 v0.10.9
+[build-dependencies]
+└── spiral-protocol v0.3.0 (/workspace/Spiral-KEM/protocol_rust)

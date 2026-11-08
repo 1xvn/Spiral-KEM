@@ -1,0 +1,35 @@
+{
+  "reason": "compiler-artifact",
+  "package_id": "path+file:///workspace/Spiral-KEM/protocol_rust#spiral-protocol@0.3.0",
+  "manifest_path": "/workspace/Spiral-KEM/protocol_rust/Cargo.toml",
+  "target": {
+    "kind": [
+      "lib"
+    ],
+    "crate_types": [
+      "lib"
+    ],
+    "name": "spiral_protocol",
+    "src_path": "/workspace/Spiral-KEM/protocol_rust/src/lib.rs",
+    "edition": "2021",
+    "doc": true,
+    "doctest": true,
+    "test": true
+  },
+  "profile": {
+    "opt_level": "3",
+    "debuginfo": 2,
+    "debug_assertions": false,
+    "overflow_checks": false,
+    "test": true
+  },
+  "features": [
+    "default"
+  ],
+  "filenames": [
+    "/workspace/Spiral-KEM/protocol_rust/target/audit/deps/spiral_protocol-b0b94ffb9a7366b8"
+  ],
+  "executable": "/workspace/Spiral-KEM/protocol_rust/target/audit/deps/spiral_protocol-b0b94ffb9a7366b8",
+  "fresh": false,
+  "sha256": "c3a6edc32220e38a7a9660f0ddb23e9de9f1c96010aef45b76c1e0f9ccfc2e0f"
+}

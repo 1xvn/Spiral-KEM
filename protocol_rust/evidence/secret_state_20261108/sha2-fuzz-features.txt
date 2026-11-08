@@ -1,0 +1,24 @@
+sha2 v0.11.1
+└── ed25519-dalek v3.0.0
+    ├── ed25519-dalek feature "default"
+    │   └── spiral-protocol v0.3.0 (/workspace/Spiral-KEM/protocol_rust)
+    │       ├── spiral-protocol feature "default"
+    │       │   └── spiral-parser-fuzz v0.0.0 (/workspace/Spiral-KEM/protocol_rust/fuzz)
+    │       │       └── spiral-parser-fuzz feature "default" (command-line)
+    │       ├── spiral-protocol feature "parser-fuzz"
+    │       │   └── spiral-parser-fuzz v0.0.0 (/workspace/Spiral-KEM/protocol_rust/fuzz) (*)
+    │       └── spiral-protocol feature "record-fuzz"
+    │           └── spiral-parser-fuzz v0.0.0 (/workspace/Spiral-KEM/protocol_rust/fuzz) (*)
+    ├── ed25519-dalek feature "fast"
+    │   └── ed25519-dalek feature "default" (*)
+    └── ed25519-dalek feature "zeroize"
+        └── spiral-protocol v0.3.0 (/workspace/Spiral-KEM/protocol_rust) (*)
+        └── ed25519-dalek feature "default" (*)
+├── sha2 feature "alloc"
+│   └── sha2 feature "default"
+│       └── spiral-protocol v0.3.0 (/workspace/Spiral-KEM/protocol_rust) (*)
+├── sha2 feature "default" (*)
+├── sha2 feature "oid"
+│   └── sha2 feature "default" (*)
+└── sha2 feature "zeroize"
+    └── spiral-protocol v0.3.0 (/workspace/Spiral-KEM/protocol_rust) (*)

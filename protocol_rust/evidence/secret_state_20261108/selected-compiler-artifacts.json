@@ -1,0 +1,557 @@
+[
+  {
+    "reason": "compiler-artifact",
+    "package_id": "registry+https://github.com/rust-lang/crates.io-index#cmov@0.5.4",
+    "manifest_path": "/workspace/rust48-tools/cargo-cache/registry/src/index.crates.io-1949cf8c6b5b557f/cmov-0.5.4/Cargo.toml",
+    "target": {
+      "kind": [
+        "lib"
+      ],
+      "crate_types": [
+        "lib"
+      ],
+      "name": "cmov",
+      "src_path": "/workspace/rust48-tools/cargo-cache/registry/src/index.crates.io-1949cf8c6b5b557f/cmov-0.5.4/src/lib.rs",
+      "edition": "2024",
+      "doc": true,
+      "doctest": true,
+      "test": true
+    },
+    "profile": {
+      "opt_level": "3",
+      "debuginfo": 2,
+      "debug_assertions": false,
+      "overflow_checks": false,
+      "test": false
+    },
+    "features": [],
+    "filenames": [
+      "/workspace/Spiral-KEM/protocol_rust/target/audit/deps/libcmov-38d09e3e3ec4b81f.rlib",
+      "/workspace/Spiral-KEM/protocol_rust/target/audit/deps/libcmov-38d09e3e3ec4b81f.rmeta"
+    ],
+    "executable": null,
+    "fresh": false
+  },
+  {
+    "reason": "compiler-artifact",
+    "package_id": "registry+https://github.com/rust-lang/crates.io-index#ctutils@0.4.8",
+    "manifest_path": "/workspace/rust48-tools/cargo-cache/registry/src/index.crates.io-1949cf8c6b5b557f/ctutils-0.4.8/Cargo.toml",
+    "target": {
+      "kind": [
+        "lib"
+      ],
+      "crate_types": [
+        "lib"
+      ],
+      "name": "ctutils",
+      "src_path": "/workspace/rust48-tools/cargo-cache/registry/src/index.crates.io-1949cf8c6b5b557f/ctutils-0.4.8/src/lib.rs",
+      "edition": "2024",
+      "doc": true,
+      "doctest": true,
+      "test": true
+    },
+    "profile": {
+      "opt_level": "3",
+      "debuginfo": 2,
+      "debug_assertions": false,
+      "overflow_checks": false,
+      "test": false
+    },
+    "features": [],
+    "filenames": [
+      "/workspace/Spiral-KEM/protocol_rust/target/audit/deps/libctutils-29c982ff81391a60.rlib",
+      "/workspace/Spiral-KEM/protocol_rust/target/audit/deps/libctutils-29c982ff81391a60.rmeta"
+    ],
+    "executable": null,
+    "fresh": false
+  },
+  {
+    "reason": "compiler-artifact",
+    "package_id": "registry+https://github.com/rust-lang/crates.io-index#const-oid@0.10.2",
+    "manifest_path": "/workspace/rust48-tools/cargo-cache/registry/src/index.crates.io-1949cf8c6b5b557f/const-oid-0.10.2/Cargo.toml",
+    "target": {
+      "kind": [
+        "lib"
+      ],
+      "crate_types": [
+        "lib"
+      ],
+      "name": "const_oid",
+      "src_path": "/workspace/rust48-tools/cargo-cache/registry/src/index.crates.io-1949cf8c6b5b557f/const-oid-0.10.2/src/lib.rs",
+      "edition": "2024",
+      "doc": true,
+      "doctest": true,
+      "test": true
+    },
+    "profile": {
+      "opt_level": "3",
+      "debuginfo": 2,
+      "debug_assertions": false,
+      "overflow_checks": false,
+      "test": false
+    },
+    "features": [],
+    "filenames": [
+      "/workspace/Spiral-KEM/protocol_rust/target/audit/deps/libconst_oid-9190b1b5f4a547db.rlib",
+      "/workspace/Spiral-KEM/protocol_rust/target/audit/deps/libconst_oid-9190b1b5f4a547db.rmeta"
+    ],
+    "executable": null,
+    "fresh": false
+  },
+  {
+    "reason": "compiler-artifact",
+    "package_id": "registry+https://github.com/rust-lang/crates.io-index#curve25519-dalek@5.0.0",
+    "manifest_path": "/workspace/rust48-tools/cargo-cache/registry/src/index.crates.io-1949cf8c6b5b557f/curve25519-dalek-5.0.0/Cargo.toml",
+    "target": {
+      "kind": [
+        "custom-build"
+      ],
+      "crate_types": [
+        "bin"
+      ],
+      "name": "build-script-build",
+      "src_path": "/workspace/rust48-tools/cargo-cache/registry/src/index.crates.io-1949cf8c6b5b557f/curve25519-dalek-5.0.0/build.rs",
+      "edition": "2024",
+      "doc": false,
+      "doctest": false,
+      "test": false
+    },
+    "profile": {
+      "opt_level": "0",
+      "debuginfo": 0,
+      "debug_assertions": false,
+      "overflow_checks": false,
+      "test": false
+    },
+    "features": [
+      "digest",
+      "precomputed-tables",
+      "zeroize"
+    ],
+    "filenames": [
+      "/workspace/Spiral-KEM/protocol_rust/target/audit/build/curve25519-dalek-90184612e6ba507b/build-script-build"
+    ],
+    "executable": null,
+    "fresh": false
+  },
+  {
+    "reason": "compiler-artifact",
+    "package_id": "registry+https://github.com/rust-lang/crates.io-index#cpufeatures@0.3.1",
+    "manifest_path": "/workspace/rust48-tools/cargo-cache/registry/src/index.crates.io-1949cf8c6b5b557f/cpufeatures-0.3.1/Cargo.toml",
+    "target": {
+      "kind": [
+        "lib"
+      ],
+      "crate_types": [
+        "lib"
+      ],
+      "name": "cpufeatures",
+      "src_path": "/workspace/rust48-tools/cargo-cache/registry/src/index.crates.io-1949cf8c6b5b557f/cpufeatures-0.3.1/src/lib.rs",
+      "edition": "2024",
+      "doc": true,
+      "doctest": true,
+      "test": true
+    },
+    "profile": {
+      "opt_level": "3",
+      "debuginfo": 2,
+      "debug_assertions": false,
+      "overflow_checks": false,
+      "test": false
+    },
+    "features": [],
+    "filenames": [
+      "/workspace/Spiral-KEM/protocol_rust/target/audit/deps/libcpufeatures-b8871818d231744b.rlib",
+      "/workspace/Spiral-KEM/protocol_rust/target/audit/deps/libcpufeatures-b8871818d231744b.rmeta"
+    ],
+    "executable": null,
+    "fresh": false
+  },
+  {
+    "reason": "compiler-artifact",
+    "package_id": "registry+https://github.com/rust-lang/crates.io-index#signature@3.0.0",
+    "manifest_path": "/workspace/rust48-tools/cargo-cache/registry/src/index.crates.io-1949cf8c6b5b557f/signature-3.0.0/Cargo.toml",
+    "target": {
+      "kind": [
+        "lib"
+      ],
+      "crate_types": [
+        "lib"
+      ],
+      "name": "signature",
+      "src_path": "/workspace/rust48-tools/cargo-cache/registry/src/index.crates.io-1949cf8c6b5b557f/signature-3.0.0/src/lib.rs",
+      "edition": "2024",
+      "doc": true,
+      "doctest": true,
+      "test": true
+    },
+    "profile": {
+      "opt_level": "3",
+      "debuginfo": 2,
+      "debug_assertions": false,
+      "overflow_checks": false,
+      "test": false
+    },
+    "features": [],
+    "filenames": [
+      "/workspace/Spiral-KEM/protocol_rust/target/audit/deps/libsignature-7566e398f908d7d1.rlib",
+      "/workspace/Spiral-KEM/protocol_rust/target/audit/deps/libsignature-7566e398f908d7d1.rmeta"
+    ],
+    "executable": null,
+    "fresh": false
+  },
+  {
+    "reason": "compiler-artifact",
+    "package_id": "registry+https://github.com/rust-lang/crates.io-index#hybrid-array@0.4.15",
+    "manifest_path": "/workspace/rust48-tools/cargo-cache/registry/src/index.crates.io-1949cf8c6b5b557f/hybrid-array-0.4.15/Cargo.toml",
+    "target": {
+      "kind": [
+        "lib"
+      ],
+      "crate_types": [
+        "lib"
+      ],
+      "name": "hybrid_array",
+      "src_path": "/workspace/rust48-tools/cargo-cache/registry/src/index.crates.io-1949cf8c6b5b557f/hybrid-array-0.4.15/src/lib.rs",
+      "edition": "2024",
+      "doc": true,
+      "doctest": true,
+      "test": true
+    },
+    "profile": {
+      "opt_level": "3",
+      "debuginfo": 2,
+      "debug_assertions": false,
+      "overflow_checks": false,
+      "test": false
+    },
+    "features": [],
+    "filenames": [
+      "/workspace/Spiral-KEM/protocol_rust/target/audit/deps/libhybrid_array-df9a0e3ff306fbc6.rlib",
+      "/workspace/Spiral-KEM/protocol_rust/target/audit/deps/libhybrid_array-df9a0e3ff306fbc6.rmeta"
+    ],
+    "executable": null,
+    "fresh": false
+  },
+  {
+    "reason": "compiler-artifact",
+    "package_id": "registry+https://github.com/rust-lang/crates.io-index#crypto-common@0.2.2",
+    "manifest_path": "/workspace/rust48-tools/cargo-cache/registry/src/index.crates.io-1949cf8c6b5b557f/crypto-common-0.2.2/Cargo.toml",
+    "target": {
+      "kind": [
+        "lib"
+      ],
+      "crate_types": [
+        "lib"
+      ],
+      "name": "crypto_common",
+      "src_path": "/workspace/rust48-tools/cargo-cache/registry/src/index.crates.io-1949cf8c6b5b557f/crypto-common-0.2.2/src/lib.rs",
+      "edition": "2024",
+      "doc": true,
+      "doctest": true,
+      "test": true
+    },
+    "profile": {
+      "opt_level": "3",
+      "debuginfo": 2,
+      "debug_assertions": false,
+      "overflow_checks": false,
+      "test": false
+    },
+    "features": [],
+    "filenames": [
+      "/workspace/Spiral-KEM/protocol_rust/target/audit/deps/libcrypto_common-5f371716c930ec92.rlib",
+      "/workspace/Spiral-KEM/protocol_rust/target/audit/deps/libcrypto_common-5f371716c930ec92.rmeta"
+    ],
+    "executable": null,
+    "fresh": false
+  },
+  {
+    "reason": "compiler-artifact",
+    "package_id": "registry+https://github.com/rust-lang/crates.io-index#block-buffer@0.12.1",
+    "manifest_path": "/workspace/rust48-tools/cargo-cache/registry/src/index.crates.io-1949cf8c6b5b557f/block-buffer-0.12.1/Cargo.toml",
+    "target": {
+      "kind": [
+        "lib"
+      ],
+      "crate_types": [
+        "lib"
+      ],
+      "name": "block_buffer",
+      "src_path": "/workspace/rust48-tools/cargo-cache/registry/src/index.crates.io-1949cf8c6b5b557f/block-buffer-0.12.1/src/lib.rs",
+      "edition": "2024",
+      "doc": true,
+      "doctest": true,
+      "test": true
+    },
+    "profile": {
+      "opt_level": "3",
+      "debuginfo": 2,
+      "debug_assertions": false,
+      "overflow_checks": false,
+      "test": false
+    },
+    "features": [
+      "zeroize"
+    ],
+    "filenames": [
+      "/workspace/Spiral-KEM/protocol_rust/target/audit/deps/libblock_buffer-5382efa1dba244e0.rlib",
+      "/workspace/Spiral-KEM/protocol_rust/target/audit/deps/libblock_buffer-5382efa1dba244e0.rmeta"
+    ],
+    "executable": null,
+    "fresh": false
+  },
+  {
+    "reason": "compiler-artifact",
+    "package_id": "registry+https://github.com/rust-lang/crates.io-index#digest@0.11.3",
+    "manifest_path": "/workspace/rust48-tools/cargo-cache/registry/src/index.crates.io-1949cf8c6b5b557f/digest-0.11.3/Cargo.toml",
+    "target": {
+      "kind": [
+        "lib"
+      ],
+      "crate_types": [
+        "lib"
+      ],
+      "name": "digest",
+      "src_path": "/workspace/rust48-tools/cargo-cache/registry/src/index.crates.io-1949cf8c6b5b557f/digest-0.11.3/src/lib.rs",
+      "edition": "2024",
+      "doc": true,
+      "doctest": true,
+      "test": true
+    },
+    "profile": {
+      "opt_level": "3",
+      "debuginfo": 2,
+      "debug_assertions": false,
+      "overflow_checks": false,
+      "test": false
+    },
+    "features": [
+      "alloc",
+      "block-api",
+      "default",
+      "mac",
+      "oid",
+      "zeroize"
+    ],
+    "filenames": [
+      "/workspace/Spiral-KEM/protocol_rust/target/audit/deps/libdigest-dd9acc6c68231b0c.rlib",
+      "/workspace/Spiral-KEM/protocol_rust/target/audit/deps/libdigest-dd9acc6c68231b0c.rmeta"
+    ],
+    "executable": null,
+    "fresh": false
+  },
+  {
+    "reason": "compiler-artifact",
+    "package_id": "registry+https://github.com/rust-lang/crates.io-index#hmac@0.13.0",
+    "manifest_path": "/workspace/rust48-tools/cargo-cache/registry/src/index.crates.io-1949cf8c6b5b557f/hmac-0.13.0/Cargo.toml",
+    "target": {
+      "kind": [
+        "lib"
+      ],
+      "crate_types": [
+        "lib"
+      ],
+      "name": "hmac",
+      "src_path": "/workspace/rust48-tools/cargo-cache/registry/src/index.crates.io-1949cf8c6b5b557f/hmac-0.13.0/src/lib.rs",
+      "edition": "2024",
+      "doc": true,
+      "doctest": true,
+      "test": true
+    },
+    "profile": {
+      "opt_level": "3",
+      "debuginfo": 2,
+      "debug_assertions": false,
+      "overflow_checks": false,
+      "test": false
+    },
+    "features": [
+      "zeroize"
+    ],
+    "filenames": [
+      "/workspace/Spiral-KEM/protocol_rust/target/audit/deps/libhmac-406357614c68d6f1.rlib",
+      "/workspace/Spiral-KEM/protocol_rust/target/audit/deps/libhmac-406357614c68d6f1.rmeta"
+    ],
+    "executable": null,
+    "fresh": false
+  },
+  {
+    "reason": "compiler-artifact",
+    "package_id": "registry+https://github.com/rust-lang/crates.io-index#curve25519-dalek@5.0.0",
+    "manifest_path": "/workspace/rust48-tools/cargo-cache/registry/src/index.crates.io-1949cf8c6b5b557f/curve25519-dalek-5.0.0/Cargo.toml",
+    "target": {
+      "kind": [
+        "lib"
+      ],
+      "crate_types": [
+        "lib"
+      ],
+      "name": "curve25519_dalek",
+      "src_path": "/workspace/rust48-tools/cargo-cache/registry/src/index.crates.io-1949cf8c6b5b557f/curve25519-dalek-5.0.0/src/lib.rs",
+      "edition": "2024",
+      "doc": true,
+      "doctest": true,
+      "test": true
+    },
+    "profile": {
+      "opt_level": "3",
+      "debuginfo": 2,
+      "debug_assertions": false,
+      "overflow_checks": false,
+      "test": false
+    },
+    "features": [
+      "digest",
+      "precomputed-tables",
+      "zeroize"
+    ],
+    "filenames": [
+      "/workspace/Spiral-KEM/protocol_rust/target/audit/deps/libcurve25519_dalek-2d74ee1eff27983b.rlib",
+      "/workspace/Spiral-KEM/protocol_rust/target/audit/deps/libcurve25519_dalek-2d74ee1eff27983b.rmeta"
+    ],
+    "executable": null,
+    "fresh": false
+  },
+  {
+    "reason": "compiler-artifact",
+    "package_id": "registry+https://github.com/rust-lang/crates.io-index#sha2@0.11.1",
+    "manifest_path": "/workspace/rust48-tools/cargo-cache/registry/src/index.crates.io-1949cf8c6b5b557f/sha2-0.11.1/Cargo.toml",
+    "target": {
+      "kind": [
+        "lib"
+      ],
+      "crate_types": [
+        "lib"
+      ],
+      "name": "sha2",
+      "src_path": "/workspace/rust48-tools/cargo-cache/registry/src/index.crates.io-1949cf8c6b5b557f/sha2-0.11.1/src/lib.rs",
+      "edition": "2024",
+      "doc": true,
+      "doctest": true,
+      "test": true
+    },
+    "profile": {
+      "opt_level": "3",
+      "debuginfo": 2,
+      "debug_assertions": false,
+      "overflow_checks": false,
+      "test": false
+    },
+    "features": [
+      "alloc",
+      "default",
+      "oid",
+      "zeroize"
+    ],
+    "filenames": [
+      "/workspace/Spiral-KEM/protocol_rust/target/audit/deps/libsha2-7b941c542fc50f3e.rlib",
+      "/workspace/Spiral-KEM/protocol_rust/target/audit/deps/libsha2-7b941c542fc50f3e.rmeta"
+    ],
+    "executable": null,
+    "fresh": false
+  },
+  {
+    "reason": "compiler-artifact",
+    "package_id": "registry+https://github.com/rust-lang/crates.io-index#ed25519@3.0.0",
+    "manifest_path": "/workspace/rust48-tools/cargo-cache/registry/src/index.crates.io-1949cf8c6b5b557f/ed25519-3.0.0/Cargo.toml",
+    "target": {
+      "kind": [
+        "lib"
+      ],
+      "crate_types": [
+        "lib"
+      ],
+      "name": "ed25519",
+      "src_path": "/workspace/rust48-tools/cargo-cache/registry/src/index.crates.io-1949cf8c6b5b557f/ed25519-3.0.0/src/lib.rs",
+      "edition": "2024",
+      "doc": true,
+      "doctest": true,
+      "test": true
+    },
+    "profile": {
+      "opt_level": "3",
+      "debuginfo": 2,
+      "debug_assertions": false,
+      "overflow_checks": false,
+      "test": false
+    },
+    "features": [],
+    "filenames": [
+      "/workspace/Spiral-KEM/protocol_rust/target/audit/deps/libed25519-da6ea5699c0e81b2.rlib",
+      "/workspace/Spiral-KEM/protocol_rust/target/audit/deps/libed25519-da6ea5699c0e81b2.rmeta"
+    ],
+    "executable": null,
+    "fresh": false
+  },
+  {
+    "reason": "compiler-artifact",
+    "package_id": "registry+https://github.com/rust-lang/crates.io-index#ed25519-dalek@3.0.0",
+    "manifest_path": "/workspace/rust48-tools/cargo-cache/registry/src/index.crates.io-1949cf8c6b5b557f/ed25519-dalek-3.0.0/Cargo.toml",
+    "target": {
+      "kind": [
+        "lib"
+      ],
+      "crate_types": [
+        "lib"
+      ],
+      "name": "ed25519_dalek",
+      "src_path": "/workspace/rust48-tools/cargo-cache/registry/src/index.crates.io-1949cf8c6b5b557f/ed25519-dalek-3.0.0/src/lib.rs",
+      "edition": "2024",
+      "doc": true,
+      "doctest": true,
+      "test": true
+    },
+    "profile": {
+      "opt_level": "3",
+      "debuginfo": 2,
+      "debug_assertions": false,
+      "overflow_checks": false,
+      "test": false
+    },
+    "features": [
+      "default",
+      "fast",
+      "zeroize"
+    ],
+    "filenames": [
+      "/workspace/Spiral-KEM/protocol_rust/target/audit/deps/libed25519_dalek-be5d348f4d054257.rlib",
+      "/workspace/Spiral-KEM/protocol_rust/target/audit/deps/libed25519_dalek-be5d348f4d054257.rmeta"
+    ],
+    "executable": null,
+    "fresh": false
+  },
+  {
+    "reason": "compiler-artifact",
+    "package_id": "registry+https://github.com/rust-lang/crates.io-index#hkdf@0.13.0",
+    "manifest_path": "/workspace/rust48-tools/cargo-cache/registry/src/index.crates.io-1949cf8c6b5b557f/hkdf-0.13.0/Cargo.toml",
+    "target": {
+      "kind": [
+        "lib"
+      ],
+      "crate_types": [
+        "lib"
+      ],
+      "name": "hkdf",
+      "src_path": "/workspace/rust48-tools/cargo-cache/registry/src/index.crates.io-1949cf8c6b5b557f/hkdf-0.13.0/src/lib.rs",
+      "edition": "2024",
+      "doc": true,
+      "doctest": true,
+      "test": true
+    },
+    "profile": {
+      "opt_level": "3",
+      "debuginfo": 2,
+      "debug_assertions": false,
+      "overflow_checks": false,
+      "test": false
+    },
+    "features": [],
+    "filenames": [
+      "/workspace/Spiral-KEM/protocol_rust/target/audit/deps/libhkdf-71e7cb64ba0eb653.rlib",
+      "/workspace/Spiral-KEM/protocol_rust/target/audit/deps/libhkdf-71e7cb64ba0eb653.rmeta"
+    ],
+    "executable": null,
+    "fresh": false
+  }
+]

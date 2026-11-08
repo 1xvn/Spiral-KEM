@@ -1,0 +1,274 @@
+Locked official crates.io sources; limited excerpts for cleanup and remaining lifetime gaps.
+
+sha2-0.11.1/src/block_api.rs:92-104
+92: impl Drop for Sha256VarCore {
+93:     fn drop(&mut self) {
+94:         #[cfg(feature = "zeroize")]
+95:         {
+96:             use digest::zeroize::Zeroize;
+97:             self.state.zeroize();
+98:             self.block_len.zeroize();
+99:         }
+100:     }
+101: }
+102: 
+103: #[cfg(feature = "zeroize")]
+104: impl digest::zeroize::ZeroizeOnDrop for Sha256VarCore {}
+
+sha2-0.11.1/src/block_api.rs:217-228
+217: impl Drop for Sha512VarCore {
+218:     fn drop(&mut self) {
+219:         #[cfg(feature = "zeroize")]
+220:         {
+221:             use digest::zeroize::Zeroize;
+222:             self.state.zeroize();
+223:             self.block_len.zeroize();
+224:         }
+225:     }
+226: }
+227: #[cfg(feature = "zeroize")]
+228: impl digest::zeroize::ZeroizeOnDrop for Sha512VarCore {}
+
+block-buffer-0.12.1/src/lib.rs:424-442
+424: #[cfg(feature = "zeroize")]
+425: impl<BS: BlockSizes, K: BufferKind> Zeroize for BlockBuffer<BS, K> {
+426:     #[inline]
+427:     fn zeroize(&mut self) {
+428:         self.buffer.zeroize();
+429:         self.pos.zeroize();
+430:     }
+431: }
+432: 
+433: impl<BS: BlockSizes, K: BufferKind> Drop for BlockBuffer<BS, K> {
+434:     #[inline]
+435:     fn drop(&mut self) {
+436:         #[cfg(feature = "zeroize")]
+437:         self.zeroize();
+438:     }
+439: }
+440: 
+441: #[cfg(feature = "zeroize")]
+442: impl<BS: BlockSizes, K: BufferKind> ZeroizeOnDrop for BlockBuffer<BS, K> {}
+
+hmac-0.13.0/src/block_api.rs:14-26
+14: pub struct HmacCore<D: EagerHash> {
+15:     digest: D::Core,
+16:     opad_digest: D::Core,
+17: }
+18: 
+19: impl<D: EagerHash> Clone for HmacCore<D> {
+20:     fn clone(&self) -> Self {
+21:         Self {
+22:             digest: self.digest.clone(),
+23:             opad_digest: self.opad_digest.clone(),
+24:         }
+25:     }
+26: }
+
+hmac-0.13.0/src/block_api.rs:56-69
+56: 
+57:         let mut digest = D::Core::default();
+58:         digest.update_blocks(slice::from_ref(&buf));
+59: 
+60:         buf.iter_mut().for_each(|b: &mut u8| *b ^= IPAD ^ OPAD);
+61: 
+62:         let mut opad_digest = D::Core::default();
+63:         opad_digest.update_blocks(slice::from_ref(&buf));
+64: 
+65:         Ok(Self {
+66:             opad_digest,
+67:             digest,
+68:         })
+69:     }
+
+hmac-0.13.0/src/block_api.rs:84-94
+84:         // finalize_fixed_core should reset the buffer as well, but
+85:         // to be extra safe we reset it explicitly again.
+86:         buffer.reset();
+87:         let h = &mut self.opad_digest;
+88:         buffer.digest_blocks(&hash, |b| h.update_blocks(b));
+89:         h.finalize_fixed_core(buffer, out);
+90:     }
+91: }
+92: 
+93: impl<D: EagerHash + AlgorithmName> AlgorithmName for HmacCore<D> {
+94:     fn write_alg_name(f: &mut fmt::Formatter<'_>) -> fmt::Result {
+
+hmac-0.13.0/src/utils.rs:15-32
+15:     if key.len() <= der_key.len() {
+16:         der_key[..key.len()].copy_from_slice(key);
+17:     } else {
+18:         let hash = D::digest(key);
+19:         // All commonly used hash functions have block size bigger
+20:         // than output hash size, but to be extra rigorous we
+21:         // handle the potential uncommon cases as well.
+22:         // The condition is calculated at compile time, so this
+23:         // branch gets removed from the final binary.
+24:         if hash.len() <= der_key.len() {
+25:             der_key[..hash.len()].copy_from_slice(&hash);
+26:         } else {
+27:             let n = der_key.len();
+28:             der_key.copy_from_slice(&hash[..n]);
+29:         }
+30:     }
+31:     der_key
+32: }
+
+hkdf-0.13.0/src/lib.rs:130-171
+130:     pub fn expand_multi_info(
+131:         &self,
+132:         info_components: &[&[u8]],
+133:         okm: &mut [u8],
+134:     ) -> Result<(), InvalidLength> {
+135:         let mut prev: Option<Output<H>> = None;
+136: 
+137:         let chunk_len = <H as OutputSizeUser>::OutputSize::USIZE;
+138:         if okm.len() > chunk_len * 255 {
+139:             return Err(InvalidLength);
+140:         }
+141: 
+142:         for (block_n, block) in okm.chunks_mut(chunk_len).enumerate() {
+143:             let mut hmac = self.hmac.clone();
+144: 
+145:             if let Some(ref prev) = prev {
+146:                 hmac.update(prev);
+147:             };
+148: 
+149:             // Feed in the info components in sequence. This is equivalent to feeding in the
+150:             // concatenation of all the info components
+151:             for info in info_components {
+152:                 hmac.update(info);
+153:             }
+154: 
+155:             hmac.update(&[u8::try_from(block_n).expect("should convert") + 1]);
+156: 
+157:             let output = hmac.finalize();
+158: 
+159:             let block_len = block.len();
+160:             block.copy_from_slice(&output[..block_len]);
+161: 
+162:             prev = Some(output);
+163:         }
+164: 
+165:         Ok(())
+166:     }
+167: 
+168:     /// The RFC5869 HKDF-Expand operation
+169:     ///
+170:     /// If you don't have any `info` to pass, use an empty slice.
+171:     ///
+
+digest-0.11.3/src/buffer_macros/fixed.rs:464-484
+464:     // Implements `ZeroizeOnDrop`
+465:     (
+466:         impl_inner: $name:ident
+467:         $(< $( $lt:tt $( : $clt:tt $(+ $dlt:tt )* )? ),+ >)?
+468:         ($core_ty:ty);
+469:         ZeroizeOnDrop $($trait_name:ident)*;
+470:     ) => {
+471:         // Verify that `$core_ty` and `Buffer<$core_ty>` implement `ZeroizeOnDrop`
+472:         #[cfg(feature = "zeroize")]
+473:         const _: () = {
+474:             fn check_core$(< $( $lt $( : $clt $(+ $dlt )* )? ),+ >)?(v: &$core_ty) {
+475:                 v as &dyn $crate::zeroize::ZeroizeOnDrop;
+476:             }
+477: 
+478:             fn check_buffer$(< $( $lt $( : $clt $(+ $dlt )* )? ),+ >)?(v: &$crate::block_api::Buffer<$core_ty>) {
+479:                 v as &dyn $crate::zeroize::ZeroizeOnDrop;
+480:             }
+481:         };
+482: 
+483:         #[cfg(feature = "zeroize")]
+484:         impl$(< $( $lt $( : $clt $(+ $dlt )* )? ),+ >)? $crate::zeroize::ZeroizeOnDrop for $name$(< $( $lt ),+ >)? {}
+
+ed25519-dalek-3.0.0/src/signing.rs:718-726
+718: #[cfg(feature = "zeroize")]
+719: impl Drop for SigningKey {
+720:     fn drop(&mut self) {
+721:         self.secret_key.zeroize();
+722:     }
+723: }
+724: 
+725: #[cfg(feature = "zeroize")]
+726: impl ZeroizeOnDrop for SigningKey {}
+
+ed25519-dalek-3.0.0/src/signing.rs:863-869
+863: impl From<&SecretKey> for ExpandedSecretKey {
+864:     #[allow(clippy::unwrap_used)]
+865:     fn from(secret_key: &SecretKey) -> ExpandedSecretKey {
+866:         let hash = Sha512::default().chain_update(secret_key).finalize();
+867:         ExpandedSecretKey::from_bytes(hash.as_ref())
+868:     }
+869: }
+
+ed25519-dalek-3.0.0/src/signing.rs:914-936
+914:     ) -> Result<Signature, SignatureError>
+915:     where
+916:         CtxDigest: Digest<OutputSize = U64>,
+917:         F: Fn(&mut CtxDigest) -> Result<(), SignatureError>,
+918:     {
+919:         let mut h = CtxDigest::new();
+920: 
+921:         h.update(self.hash_prefix);
+922:         msg_update(&mut h)?;
+923: 
+924:         let r = Scalar::from_hash(h);
+925:         let R: CompressedEdwardsY = EdwardsPoint::mul_base(&r).compress();
+926: 
+927:         h = CtxDigest::new();
+928:         h.update(R.as_bytes());
+929:         h.update(verifying_key.as_bytes());
+930:         msg_update(&mut h)?;
+931: 
+932:         let k = Scalar::from_hash(h);
+933:         let s: Scalar = (k * self.scalar) + r;
+934: 
+935:         Ok(InternalSignature { R, s }.into())
+936:     }
+
+ed25519-dalek-3.0.0/src/hazmat.rs:84-95
+84:     pub fn from_bytes(bytes: &[u8; 64]) -> Self {
+85:         // TODO: Use bytes.split_array_ref once it’s in MSRV.
+86:         let mut scalar_bytes: [u8; 32] = [0u8; 32];
+87:         let mut hash_prefix: [u8; 32] = [0u8; 32];
+88:         scalar_bytes.copy_from_slice(&bytes[00..32]);
+89:         hash_prefix.copy_from_slice(&bytes[32..64]);
+90: 
+91:         // For signing, we'll need the integer, clamped, and converted to a Scalar. See
+92:         // PureEdDSA.keygen in RFC 8032 Appendix A.
+93:         let scalar = Scalar::from_bytes_mod_order(clamp_integer(scalar_bytes));
+94: 
+95:         ExpandedSecretKey {
+
+curve25519-dalek-5.0.0/src/scalar.rs:192-202
+192: #[derive(Copy, Clone, Hash)]
+193: pub struct Scalar {
+194:     /// `bytes` is a little-endian byte encoding of an integer representing a scalar modulo the
+195:     /// group order.
+196:     ///
+197:     /// # Invariant #1
+198:     ///
+199:     /// The integer representing this scalar is less than \\(2\^{255}\\). That is, the most
+200:     /// significant bit of `bytes[31]` is 0.
+201:     ///
+202:     /// This is required for `EdwardsPoint` variable- and fixed-base multiplication, because most
+
+curve25519-dalek-5.0.0/src/scalar.rs:548-555
+548: 
+549: #[cfg(feature = "zeroize")]
+550: impl Zeroize for Scalar {
+551:     fn zeroize(&mut self) {
+552:         self.bytes.zeroize();
+553:     }
+554: }
+555: 
+
+curve25519-dalek-5.0.0/src/scalar.rs:663-670
+663:     pub fn from_hash<D>(hash: D) -> Scalar
+664:     where
+665:         D: Digest<OutputSize = U64>,
+666:     {
+667:         let mut output = [0u8; 64];
+668:         output.copy_from_slice(hash.finalize().as_slice());
+669:         Scalar::from_bytes_mod_order_wide(&output)
+670:     }

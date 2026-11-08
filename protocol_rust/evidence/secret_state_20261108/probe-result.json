@@ -1,0 +1,34 @@
+[
+  {
+    "feature": "disabled",
+    "command": [
+      "/workspace/rust48-tools/rust/bin/cargo",
+      "check",
+      "--locked",
+      "--offline",
+      "--manifest-path",
+      "/workspace/secret-state-upgrade-20261108/probe/Cargo.toml",
+      "--target-dir",
+      "/workspace/secret-state-upgrade-20261108/probe-target"
+    ],
+    "exit": 101,
+    "expected_outcome": true
+  },
+  {
+    "feature": "enabled",
+    "command": [
+      "/workspace/rust48-tools/rust/bin/cargo",
+      "check",
+      "--locked",
+      "--offline",
+      "--manifest-path",
+      "/workspace/secret-state-upgrade-20261108/probe/Cargo.toml",
+      "--target-dir",
+      "/workspace/secret-state-upgrade-20261108/probe-target",
+      "--features",
+      "wipe"
+    ],
+    "exit": 0,
+    "expected_outcome": true
+  }
+]

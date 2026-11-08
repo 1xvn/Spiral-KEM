@@ -1,0 +1,23 @@
+    Updating crates.io index
+     Locking 16 packages to highest compatible versions
+    Removing base64ct v1.8.3
+      Adding block-buffer v0.12.1
+      Adding cmov v0.5.4
+    Updating const-oid v0.9.6 -> v0.10.2
+      Adding cpufeatures v0.3.1
+      Adding crypto-common v0.2.2
+      Adding ctutils v0.4.8
+    Updating curve25519-dalek v4.1.3 -> v5.0.0
+    Removing der v0.7.10
+      Adding digest v0.11.3
+    Updating ed25519 v2.2.3 -> v3.0.0
+    Updating ed25519-dalek v2.2.0 -> v3.0.0
+    Updating fiat-crypto v0.2.9 -> v0.3.0
+    Updating hkdf v0.12.4 -> v0.13.0
+    Updating hmac v0.12.1 -> v0.13.0
+      Adding hybrid-array v0.4.15
+    Removing pkcs8 v0.10.2
+      Adding sha2 v0.11.1
+    Updating signature v2.2.0 -> v3.0.0
+    Removing spki v0.7.3
+note: pass `--verbose` to see 6 unchanged dependencies behind latest

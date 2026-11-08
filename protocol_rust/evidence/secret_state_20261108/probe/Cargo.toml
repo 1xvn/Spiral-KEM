@@ -1,0 +1,14 @@
+[package]
+name = "spiral-cleanup-contract-probe"
+version = "0.0.0"
+edition = "2021"
+publish = false
+
+[workspace]
+
+[features]
+wipe = ["sha2/zeroize"]
+
+[dependencies]
+sha2 = { version = "=0.11.1", default-features = false }
+zeroize = "=1.9.1"

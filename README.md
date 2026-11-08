@@ -61,8 +61,12 @@ The 48-byte `possibly lost` item was reproduced without Spiral in the [minimal s
 The original failure verdict and incomplete overall memory-safety status are retained.
 
 [Follow-up validation of the actual receive secret path](protocol_rust/RECEIVE_SECRET.md) adds 78 public/key instrumentation pairs
-and Poly1305 state zeroization. The latest functional regression passed 66 Rust unit tests and documentation
+and Poly1305 state zeroization. Functional regression at that point passed 66 Rust unit tests, documentation
 tests numbering 6, and 35 real TLS tests; the original authentication-branch warning and incomplete overall security validation remain.
+
+[Additional HMAC, HKDF, and signing-state cleanup](protocol_rust/SECRET_STATE.md) applied stable RustCrypto's
+state zeroization features. The latest regular Rust and ASan tests each passed 70 tests, together with 35 real TLS tests and
+40 independent ring signing pairs. Local outputs, signing nonce copies, and incomplete overall validation remain in scope.
 
 Rust–C v0.3 provides [running instructions](protocol_rust/README.md), an [implementation report](protocol_rust/HARDENING_v0.3.md), and a [validation record](protocol_rust/VALIDATION.md). It strengthens signing-key ownership and cancellable concurrent shutdown and passed 52 unit, 4 compile-rejection, and 35 real TLS tests. The [November 7 memory investigation](protocol_rust/MEMORY_FOLLOWUP.md) records 6 passes on OCI and 2 on WSL and reproduces a local Valgrind false-positive mechanism for the AES-GCM warning. The original WSL failure and the 48-byte possibly-lost item in Rust instrumentation tests are retained. These results do not establish production-service security validation or Spiral's own security.
 

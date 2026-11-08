@@ -1,0 +1,31 @@
+
+   Compiling typenum v1.20.1
+   Compiling cmov v0.5.4
+   Compiling subtle v2.6.1
+   Compiling ctutils v0.4.8
+   Compiling const-oid v0.10.2
+   Compiling curve25519-dalek v5.0.0
+   Compiling cpufeatures v0.3.1
+   Compiling signature v3.0.0
+   Compiling rustls v0.23.46
+   Compiling hybrid-array v0.4.15
+   Compiling generic-array v0.14.7
+   Compiling crypto-common v0.1.7
+   Compiling crypto-common v0.2.2
+   Compiling block-buffer v0.12.1
+   Compiling digest v0.11.3
+   Compiling inout v0.1.4
+   Compiling cipher v0.4.4
+   Compiling universal-hash v0.5.1
+   Compiling poly1305 v0.8.0
+   Compiling chacha20 v0.9.1
+   Compiling sha2 v0.11.1
+   Compiling hmac v0.13.0
+   Compiling aead v0.5.2
+   Compiling ed25519 v3.0.0
+   Compiling ed25519-dalek v3.0.0
+   Compiling chacha20poly1305 v0.10.1
+   Compiling hkdf v0.13.0
+   Compiling tokio-rustls v0.26.6
+   Compiling spiral-protocol v0.3.0 (/workspace/Spiral-KEM/protocol_rust)
+    Finished `release` profile [optimized] target(s) in 16.62s

@@ -1,0 +1,56 @@
+    Checking typenum v1.20.1
+    Checking cpufeatures v0.3.1
+    Checking cfg-if v1.0.5
+    Checking zeroize v1.9.1
+    Checking hybrid-array v0.4.15
+    Checking crypto-common v0.2.2
+    Checking block-buffer v0.12.1
+    Checking digest v0.11.3
+    Checking sha2 v0.11.1
+    Checking spiral-cleanup-contract-probe v0.0.0 (/workspace/secret-state-upgrade-20261108/probe)
+error[E0277]: the trait bound `Sha256: ZeroizeOnDrop` is not satisfied
+ --> src/main.rs:4:15
+  |
+4 |     require::<sha2::Sha256>();
+  |               ^^^^^^^^^^^^ the trait `ZeroizeOnDrop` is not implemented for `Sha256`
+  |
+  = help: the following other types implement trait `ZeroizeOnDrop`:
+            ()
+            (A,)
+            (A, B)
+            (A, B, C)
+            (A, B, C, D)
+            (A, B, C, D, E)
+            (A, B, C, D, E, F)
+            (A, B, C, D, E, F, G)
+          and 10 others
+note: required by a bound in `require`
+ --> src/main.rs:2:15
+  |
+2 | fn require<T: zeroize::ZeroizeOnDrop>() {}
+  |               ^^^^^^^^^^^^^^^^^^^^^^ required by this bound in `require`
+
+error[E0277]: the trait bound `Sha512: ZeroizeOnDrop` is not satisfied
+ --> src/main.rs:5:15
+  |
+5 |     require::<sha2::Sha512>();
+  |               ^^^^^^^^^^^^ the trait `ZeroizeOnDrop` is not implemented for `Sha512`
+  |
+  = help: the following other types implement trait `ZeroizeOnDrop`:
+            ()
+            (A,)
+            (A, B)
+            (A, B, C)
+            (A, B, C, D)
+            (A, B, C, D, E)
+            (A, B, C, D, E, F)
+            (A, B, C, D, E, F, G)
+          and 10 others
+note: required by a bound in `require`
+ --> src/main.rs:2:15
+  |
+2 | fn require<T: zeroize::ZeroizeOnDrop>() {}
+  |               ^^^^^^^^^^^^^^^^^^^^^^ required by this bound in `require`
+
+For more information about this error, try `rustc --explain E0277`.
+error: could not compile `spiral-cleanup-contract-probe` (bin "spiral-cleanup-contract-probe") due to 2 previous errors

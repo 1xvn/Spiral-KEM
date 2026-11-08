@@ -17,6 +17,10 @@ the completed scope from remaining validation for constant time and secret manag
 78 pairs of public/key taint traces, and enables Poly1305 0.8.0 state zeroization.
 Original authentication-related warnings and exit 99 are retained; constant-time and overall memory approval are not granted.
 
+[HMAC, HKDF, and signing-state cleanup improvements](SECRET_STATE.md) apply stable RustCrypto versions and
+SHA/HMAC zeroization features, and additionally validate RFC vectors, 40 independent ring signature pairs, and 70 functional/ASan tests.
+Hash-state cleanup is distinguished from remaining local output and nonce copies.
+
 The [Rust frame and ClientHello fuzzing guide](FUZZ_PARSERS.md) uses a separately pinned nightly and
 the disabled-by-default `parser-fuzz` entry points to check actual parser coverage and compare saved inputs
 against the Python reference implementation. OCI ARM64 and WSL2 x86-64 results are collected separately.
@@ -118,6 +122,7 @@ Keys and plaintext are not logged. Output consists of local test aggregates such
 - PRK, Finished keys, and application master are zeroized by Drop after their final use.
 - Directional data keys are tied to the corresponding record-state lifetime. The ChaCha20Poly1305 key state also provides Drop zeroization.
 - Poly1305 0.8.0 internal authentication-state zeroization is also enabled. This integrates a feature of the same version and does not guarantee zeroization of all temporary copies or registers.
+- SHA2 0.11.1/HMAC 0.13.0 zeroization features also clean HKDF state and the SHA-512 hasher used in dalek 3 signing. Release compile conditions reject missing features. Not every copy of output arrays or signing nonces is zeroized.
 - Plaintext pool buffers have their full capacity wiped with `zeroize` before return. Secret types provide no Copy/Clone/content Debug.
 
 No claim is made that all temporary state inside HKDF/HMAC, signing, or TLS providers, registers, previous copies, swap, or core dumps is erased.
@@ -150,7 +155,7 @@ Interoperability tests use four connections each for Python→Rust and Rust→Py
 eight senders, and 32 messages. They check actual exporters/transcripts at both ends, session independence, and normal/abnormal shutdown.
 Bursts of 16/64 connections from the same IP are rejection/cleanup tests, not capacity tests of 16/64 successful connections.
 
-Basic functional regressions passed Python 85, diagnostic assessment 20, C 9, Rust unit 66, compile-fail 6, and actual TLS 35 tests. The 5 ignored x86-64 instrumentation targets are not added to normal pass counts. See the separate guidance and evidence above for the latest subsequent validation results.
+Basic functional regression passed Python 85, diagnostic verdicts 20, C 9, Rust unit tests 70, compile-fail 6, and actual TLS 35. The 5 ignored x86-64 instrumentation targets are not added to normal pass counts. For the latest follow-up results, see the separate guides and evidence above.
 The [mapping](REGRESSION_MAP.md) distinguishes 72 requirements with execution tests, 8 addressed structurally, and 5 with different API/test scope.
 See `VALIDATION.json` and `evidence/` for final environments, counts, check logs, and performance figures.
 The initial v0.3 validation bundle excludes coverage-guided fuzzing, long soaks, validation on other OS/CPU combinations, and independent code audits. Follow-up fuzzing and platform validation are recorded separately at the links above.
