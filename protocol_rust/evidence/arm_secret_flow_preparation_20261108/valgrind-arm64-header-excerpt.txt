@@ -1,0 +1,43 @@
+#if defined(PLAT_arm64_linux) || defined(PLAT_arm64_freebsd)
+
+typedef
+   struct { 
+      unsigned long int nraddr; /* where's the code? */
+   }
+   OrigFn;
+
+#define __SPECIAL_INSTRUCTION_PREAMBLE                            \
+            "ror x12, x12, #3  ;  ror x12, x12, #13 \n\t"         \
+            "ror x12, x12, #51 ;  ror x12, x12, #61 \n\t"
+
+#define VALGRIND_DO_CLIENT_REQUEST_EXPR(                          \
+        _zzq_default, _zzq_request,                               \
+        _zzq_arg1, _zzq_arg2, _zzq_arg3, _zzq_arg4, _zzq_arg5)    \
+                                                                  \
+  __extension__                                                   \
+  ({volatile unsigned long int  _zzq_args[6];                     \
+    volatile unsigned long int  _zzq_result;                      \
+    _zzq_args[0] = (unsigned long int)(_zzq_request);             \
+    _zzq_args[1] = (unsigned long int)(_zzq_arg1);                \
+    _zzq_args[2] = (unsigned long int)(_zzq_arg2);                \
+    _zzq_args[3] = (unsigned long int)(_zzq_arg3);                \
+    _zzq_args[4] = (unsigned long int)(_zzq_arg4);                \
+    _zzq_args[5] = (unsigned long int)(_zzq_arg5);                \
+    __asm__ volatile("mov x3, %1\n\t" /*default*/                 \
+                     "mov x4, %2\n\t" /*ptr*/                     \
+                     __SPECIAL_INSTRUCTION_PREAMBLE               \
+                     /* X3 = client_request ( X4 ) */             \
+                     "orr x10, x10, x10\n\t"                      \
+                     "mov %0, x3"     /*result*/                  \
+                     : "=r" (_zzq_result)                         \
+                     : "r" ((unsigned long int)(_zzq_default)),   \
+                       "r" (&_zzq_args[0])                        \
+                     : "cc","memory", "x3", "x4");                \
+    _zzq_result;                                                  \
+  })
+
+#define VALGRIND_GET_NR_CONTEXT(_zzq_rlval)                       \
+  { volatile OrigFn* _zzq_orig = &(_zzq_rlval);                   \
+    unsigned long int __addr;                                     \
+    __asm__ volatile(__SPECIAL_INSTRUCTION_PREAMBLE               \
+                     /* X3 = guest_NRADDR */                      \

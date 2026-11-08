@@ -23,6 +23,10 @@ candidates only when linked instructions correspond to source; others remain unc
 Finished, ciphertext, public-key, and signature outputs.
 Those controls are not included in the receiving no-declassification claim.
 
+Existing controls also restore synthetic input-seed shadows to
+defined state after all signing operations/identity disposal finish. Seed/derived-key taint remains during operations. This test-exit
+cleanup is included in declassification scope; actual receive tracing has no such processing.
+
 All warnings, memory items, and original exit99 are preserved; no suppressions are added.
 `diagnostic_complete=true`/runner exit0 indicates collection completion, not constant-time approval.
 `constant_time_approved=false` and `production_memory_passed=false` remain.
