@@ -1,0 +1,20 @@
+{
+  "archive": "Spiral-platform-check-fcf7ff0.tar.gz",
+  "bytes": 4663676,
+  "sha256": "690dcfa32354be92a2cb93f65b40172e920c5f4aaca946d21a5e3131873f8e3b",
+  "source_commit": "fcf7ff07ecba260f6b446baa7f1efd55bbe11ec2",
+  "source_files_verified": 603,
+  "launcher_sha256": "e06f4ca155d44acebf3a8246795e47c70dbab3105ecbe917a5729a9d38b766f3",
+  "local_functional_tests_passed": true,
+  "oci_or_wsl_new_results_verified": false,
+  "privacy_redaction": {
+    "applied": true,
+    "historical_execution_repeated": false,
+    "integrity_values_describe_redacted_artifacts": true
+  },
+  "artifact_language_normalization": {
+    "applied": true,
+    "historical_execution_repeated": false,
+    "integrity_values_describe_translated_artifacts": true
+  }
+}
