@@ -11,6 +11,11 @@ The earlier [receive record](RECEIVE_SECRET.md) remains a result for previous de
 The additionally submitted [OCI/WSL functional regression](evidence/secret_state_platforms_20261108/README.md)
 passed on both platforms at merge commit `fcf7ff07ecba260f6b446baa7f1efd55bbe11ec2`.
 
+Subsequently also reviewed [actual OCI ARM secret-flow results](evidence/arm_secret_flow_20261108/README.md) for fixed source `7bff0e4`.
+Completed 70 default tests and 160 Memcheck collection runs, preserving warnings and original exit 99.
+This adds completion of ARM instrumentation collection; it does not complete the full scope of temporary secret copies, memory, and constant-time
+validation below.
+
 ## Changes and zeroization contracts
 
 | Dependency | Previous → Current | Actual improvement |
@@ -64,12 +69,13 @@ Signature lengths are0/1/63/64/65/127/128/129/1,024/16,384. dalek/curve are majo
 version changes. Normal vectors, tampering samples, and pin/TLS regression do not establish identical acceptance policies
 for every noncanonical signature or weak public key.
 
-KDF/transmission/signing taint retains the existing contract declassifying only wire Finished, ciphertext, public keys, and signatures.
-No declassification or suppression was added to actual receive tracing.
+KDF/send/signature taint makes only wire Finished/ciphertext/public-key/signature outputs public during operations,
+and also clears the synthetic seed's shadow after signing ends. Actual receive traces
+added no declassification or suppressions.
 Authentication decisions64, result propagation64, and CLOSE-reason checks6 retain **134 warning contexts**;
 actual receive has0 unclassified warnings. This is not a vulnerability count; the public-result contract is unchanged from the earlier record.
 
-Among158 receive runs, original exits were99 for156 and0 for2. The existing48-byte item was observed in155
+Of 158 earlier `fe52b62a` local x86-64 receive runs, original exit 99 occurred 156 times and exit 0 in 2 runs. The existing 48-byte item appeared in 155
 runs. Its absence in a few controls does not establish resolution of the original issue.
 Overall memory/constant-time verdicts remain incomplete; the WSL AES-GCM failure and strict CI gates remain.
 
@@ -116,7 +122,8 @@ Public API callers cannot erase private local copies by accessing arbitrary addr
 Further improvements require APIs providing explicit output/nonce ownership and zeroization, or reviewable dependency
 changes. They must jointly satisfy actual-path source review, optimized zeroization instructions, RFC, independent signature/communication, and taint regressions.
 App wrappers or tests reading freed memory do not substitute for these.
-ARM instrumentation for the new features and service-key storage/permission/rotation/revocation/recovery policies remain outstanding.
+ARM instrumentation collection for the new features is complete in the follow-up record above. Temporary secret-copy erasure supplements and
+service-key storage, permissions, rotation, disposal, and recovery policies remain.
 
 ## Optional reproduction
 
@@ -134,5 +141,5 @@ The OFF failure is intentional. For receive tracing, follow the [receive guide](
 using a fresh executable and output path.
 Existing records retain their original source and environment provenance.
 
-For the next ARM step, see the [secret-flow instrumentation guide](ARM_SECRET_FLOW.md).
-Record existing functional passes on both platforms separately from new ARM instrumentation preparation/actual execution.
+For ARM execution and its limitations, see the [secret-flow instrumentation guide](ARM_SECRET_FLOW.md).
+Existing functional passes on both platforms and added ARM instrumentation collection are recorded with their respective sources and scopes.

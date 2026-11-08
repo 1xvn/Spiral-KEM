@@ -1,0 +1,30 @@
+{
+  "review_type": "independent read-only source, raw log, memory and ARM linked-instruction review",
+  "source_commit": "7bff0e49132b76e6c4271ebb3c219f625a46d816",
+  "outer_manifest_files_verified": 497,
+  "trace_manifest_files_verified": 486,
+  "memcheck_invocations_reviewed": 160,
+  "raw_exit_99_count": 160,
+  "warning_contexts_pc_mapped": 136,
+  "unique_instruction_sites": 5,
+  "positive_controls_detected": [
+    "branch",
+    "address"
+  ],
+  "receive_public_warning_contexts": 0,
+  "receive_secret_warning_contexts": 134,
+  "receive_unclassified_warning_contexts": 0,
+  "derivation_warning_contexts": 0,
+  "possibly_lost_48_bytes_observed_invocations": 160,
+  "source_and_instruction_candidate_classifications_consistent": true,
+  "classification_is_security_allowance": false,
+  "arm_secret_flow_collection_complete": true,
+  "constant_time_approved": false,
+  "production_memory_passed": false,
+  "limits": [
+    "Original ELF and measured source tree are excluded from the result archive.",
+    "Mappings cover selected linked functions and five observed warning sites.",
+    "Whole-campaign declassification is true; receive-only declassification is false.",
+    "Finite tests do not prove full timing/cache independence or erase all secret copies."
+  ]
+}

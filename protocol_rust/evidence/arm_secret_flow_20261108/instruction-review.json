@@ -1,0 +1,74 @@
+{
+  "warning_contexts_mapped": 136,
+  "unique_instruction_sites": 5,
+  "zero_based_pie_load_segment_verified": true,
+  "all_recorded_pcs_and_disassembly_match": true,
+  "sites": [
+    {
+      "classification_candidate": "unclassified",
+      "runtime_ip": "0x1dd9e8",
+      "elf_rva": "0xd59e8",
+      "load_bias": "0x108000",
+      "instruction": "cbz\tw8, d59f8 <_RNvYNCNvNtCs7vHqpLCgVVV_15spiral_protocol13receive_audit22positive_secret_branch0INtNtNtCsaWcbhsS8OaW_4core3ops8function6FnOnceuE9call_onceB8_+0xa8>",
+      "top_source_frames": [
+        "==63202==    at 0x1DD9E8: positive_secret_branch (receive_audit.rs:206)",
+        "==63202==    by 0x1DD9E8: {closure#0} (receive_audit.rs:202)",
+        "==63202==    by 0x1DD9E8: <spiral_protocol::receive_audit::positive_secret_branch::{closure#0} as core::ops::function::FnOnce<()>>::call_once (library/core/src/ops/function.rs:250)"
+      ],
+      "observed_contexts": 1
+    },
+    {
+      "classification_candidate": "unclassified",
+      "runtime_ip": "0x1ddadc",
+      "elf_rva": "0xd5adc",
+      "load_bias": "0x108000",
+      "instruction": "ldrb\tw8, [x9, x8]",
+      "top_source_frames": [
+        "==63275==    at 0x1DDADC: read_volatile<u8> (library/core/src/ptr/mod.rs:2160)",
+        "==63275==    by 0x1DDADC: positive_secret_address (receive_audit.rs:223)",
+        "==63275==    by 0x1DDADC: {closure#0} (receive_audit.rs:215)"
+      ],
+      "observed_contexts": 1
+    },
+    {
+      "classification_candidate": "authentication_decision_candidate",
+      "runtime_ip": "0x1cea8c",
+      "elf_rva": "0xc6a8c",
+      "load_bias": "0x108000",
+      "instruction": "cbz\tw8, c6aac <_RNvXs1_CsfsCNV6gYDNe_16chacha20poly1305INtB5_14ChaChaPoly1305INtNtCsi3YHlGHaRSn_6cipher14stream_wrapper23StreamCipherCoreWrapperINtCs9UpNDisPNkA_8chacha2010ChaChaCoreINtNtCs1bCklM3FpyN_7typenum4uint4UIntIB2F_IB2F_IB2F_NtB2H_5UTermNtNtB2J_3bit2B1ENtB3I_2B0EB3G_EB3W_EEEENtCsfhiNpe7FFkA_4aead11AeadInPlace25decrypt_in_place_detachedCs7vHqpLCgVVV_15spiral_protocol+0x37c>",
+      "top_source_frames": [
+        "==63283==    at 0x1CEA8C: decrypt_in_place_detached<cipher::stream_wrapper::StreamCipherCoreWrapper<chacha20::ChaChaCore<typenum::uint::UInt<typenum::uint::UInt<typenum::uint::UInt<typenum::uint::UInt<typenum::uint::UTerm, typenum::bit::B1>, typenum::bit::B0>, typenum::bit::B1>, typenum::bit::B0>>>> (src/cipher.rs:87)",
+        "==63283==    by 0x1CEA8C: <chacha20poly1305::ChaChaPoly1305<cipher::stream_wrapper::StreamCipherCoreWrapper<chacha20::ChaChaCore<typenum::uint::UInt<typenum::uint::UInt<typenum::uint::UInt<typenum::uint::UInt<typenum::uint::UTerm, typenum::bit::B1>, typenum::bit::B0>, typenum::bit::B1>, typenum::bit::B0>>>> as aead::AeadInPlace>::decrypt_in_place_detached (src/lib.rs:271)",
+        "==63283==    by 0x1C4B37: {closure#0} (records.rs:209)"
+      ],
+      "observed_contexts": 64
+    },
+    {
+      "classification_candidate": "authentication_result_propagation_candidate",
+      "runtime_ip": "0x1c4b3c",
+      "elf_rva": "0xbcb3c",
+      "load_bias": "0x108000",
+      "instruction": "tbz\tw0, #0, bcb48 <_RNvMs_NtCs7vHqpLCgVVV_15spiral_protocol7recordsNtB4_2Rx6decode+0x294>",
+      "top_source_frames": [
+        "==63283==    at 0x1C4B3C: map_err<(), aead::Error, spiral_protocol::error::Error, spiral_protocol::records::{impl#1}::decode::{closure#0}::{closure_env#0}> (library/core/src/result.rs:965)",
+        "==63283==    by 0x1C4B3C: {closure#0} (records.rs:215)",
+        "==63283==    by 0x1C4B3C: <spiral_protocol::records::Rx>::decode (records.rs:190)"
+      ],
+      "observed_contexts": 64
+    },
+    {
+      "classification_candidate": "close_reason_validity_candidate",
+      "runtime_ip": "0x1c4b60",
+      "elf_rva": "0xbcb60",
+      "load_bias": "0x108000",
+      "instruction": "b.hi\tbc92c <_RNvMs_NtCs7vHqpLCgVVV_15spiral_protocol7recordsNtB4_2Rx6decode+0x78>  // b.pmore",
+      "top_source_frames": [
+        "==63427==    at 0x1C4B60: {closure#0} (records.rs:216)",
+        "==63427==    by 0x1C4B60: <spiral_protocol::records::Rx>::decode (records.rs:190)",
+        "==63427==    by 0x1DD4C3: trace_actual_receive (receive_audit.rs:246)"
+      ],
+      "observed_contexts": 6
+    }
+  ],
+  "limit": "Observed warning sites in selected linked functions only; complete binary constant-time behavior is not established."
+}

@@ -3,14 +3,17 @@
 Added the Valgrind client-request ABI for Linux ARM64. It uses a test-only common module,
 preserving production keys/wire/cryptographic operations. x86-64 tests use the same module.
 Passing existing ARM functional tests is separate from completion of this secret-flow instrumentation.
+We reviewed the [OCI ARM submission results](evidence/arm_secret_flow_20261108/README.md) for corrected source `7bff0e4`
+and confirmed **70 basic tests and 160 Memcheck collection runs complete**.
+We do not approve constant time or full memory checks.
 
 We confirmed that the collector in the earlier `26dd0d6` OCI submission required `.git` and stopped before instrumentation
 began. The originals are retained in the [fix record](evidence/arm_standalone_fix_20261108/README.md),
 and both collectors were fixed to share verified `SOURCE.json`.
-The normal Rust 70 tests passed, but there were 0 actual Memcheck runs at that time, so this does not count as ARM instrumentation completion.
+The 70 regular Rust tests passed, but there were 0 actual Memcheck runs at that time, so that failure evidence does not count as completed ARM instrumentation.
 The [corrected download bundle](../downloads/arm-secret-flow-7bff0e4/README.md) was verified outside Git:
 641 source files verified, 70 basic tests, and 160 Memcheck collection runs. This revalidation is
-This was a local x86-64 run; actual OCI ARM results must be collected again.
+a local x86-64 run; actual ARM completion is supported by the subsequent OCI submission above.
 
 ## Collection scope
 
@@ -51,11 +54,19 @@ Rust asm assumes neither memory nor flags preservation. Test ABI is absent from 
 We performed local x86-64 functional/instrumentation regressions and cross-compiled the ARM request module with official Rust 1.99.1.
 Later OCI submissions confirmed an actual ARM audit build and 70 passing regular tests,
 but Memcheck did not run then because of the collector error.
-**Actual OCI ARM instrumentation remains incomplete until rerun material from the corrected bundle is reviewed**. On ARM too, ignored
-instrumentation tests numbering5, not added to70 normal functional passes.
+The corrected bundle was subsequently rerun on actual OCI ARM and reviewed. The 78 public/secret receive pairs,
+2 positive controls, and 2 key derivation/transmission/signing cases completed. ARM also adds 5 ignored instrumentation tests,
+which are not added to the 70 regular functional passes.
+
+On ARM, public reception has 0 branch/address warnings; secret reception has candidate categories of 64 authentication decisions, 64 result propagation contexts,
+and 6 CLOSE reason range checks, totaling 134 contexts. There are 0 unclassified receive contexts,
+and all warning PCs, including 2 intentional positive controls, map to ARM instructions.
+All 160 runs preserve original exit 99 and the std/libtest possibly-lost 48-byte entry.
+This is **completion of this ARM collection phase**, not completion of all of item 2, constant time, or full memory checks.
 
 ## Execution
 
+Reproduction instructions follow.
 Pinned source-download bundles verify hashes within their own folder before running the collector.
 Extract under OCI home and run the bundle's `run_checks.py --platform oci`.
 Requires exact Rust1.99.1, Valgrind, binutils, and C/OpenSSL development environments. On Ubuntu,

@@ -1,0 +1,100 @@
+{
+  "schema": "spiral-arm-secret-flow-review/v1",
+  "archive": "Spiral-secret-flow-aarch64-20261108-085305-acytsqvo.tar.gz",
+  "archive_bytes": 461558,
+  "archive_sha256": "b8aa054c786b038510d1051f517311606c7eb0b4c016ebeca463fee0dfbdb50b",
+  "source_commit": "7bff0e49132b76e6c4271ebb3c219f625a46d816",
+  "source_identity_kind": "bundle_manifest",
+  "source_hashes_in_campaign_report": 65,
+  "source_hashes_in_trace_report": 55,
+  "unique_reported_source_hashes_matched_to_git": 65,
+  "bundle_manifest_sha256": "f3bb6dd0965fdd1208c5008d0fe93a3b758cf66cb014ffc64d17db6d0f9639fe",
+  "bundle_manifest_matched_to_distributed_archive": true,
+  "bundle_files_verified_as_reported_by_collectors": 641,
+  "source_verification_limit": "Submitted result contains file hashes, not the entire measured source tree. The 65 reported source hashes match Git; the 641-file count is reported by the verified collectors.",
+  "binary_sha256_as_recorded": "a333219d1c1e294bf3ef708ce04b34c82b942c4a2bca656b08f08831eb7497b4",
+  "binary_verification_limit": "Executable is intentionally excluded from the archive; its recorded digest cannot be independently recomputed from this submission.",
+  "outer_manifest_files_verified": 497,
+  "trace_manifest_files_verified": 486,
+  "nested_trace_copy_byte_identical": true,
+  "platform": {
+    "system": "Linux",
+    "node": "tls-server",
+    "release": "7.0.0-1013-oracle",
+    "version": "#13~24.04.1-Ubuntu SMP PREEMPT Fri Sep 25 09:43:58 UTC 2026",
+    "machine": "aarch64",
+    "processor": "aarch64"
+  },
+  "rustc_commit": "58cf8f9c35b355199727627d07ae34a4e2846d67",
+  "rustc_release": "1.99.1",
+  "valgrind_version": "3.22.0",
+  "objdump_format": "elf64-littleaarch64",
+  "native_tests": {
+    "passed": 70,
+    "failed": 0,
+    "ignored": 5
+  },
+  "campaign_complete": true,
+  "trace_complete": true,
+  "memcheck_invocations": 160,
+  "raw_memcheck_exits": {
+    "99": 160
+  },
+  "positive_controls": [
+    {
+      "kind": "branch",
+      "raw_exit": 99,
+      "warning_contexts": 1,
+      "instruction": "cbz\tw8, d59f8 <_RNvYNCNvNtCs7vHqpLCgVVV_15spiral_protocol13receive_audit22positive_secret_branch0INtNtNtCsaWcbhsS8OaW_4core3ops8function6FnOnceuE9call_onceB8_+0xa8>",
+      "elf_rva": "0xd59e8"
+    },
+    {
+      "kind": "address",
+      "raw_exit": 99,
+      "warning_contexts": 1,
+      "instruction": "ldrb\tw8, [x9, x8]",
+      "elf_rva": "0xd5adc"
+    }
+  ],
+  "receive_public_cases": 78,
+  "receive_secret_cases": 78,
+  "receive_public_warning_contexts": 0,
+  "receive_secret_warning_contexts": 134,
+  "receive_secret_warning_classification_candidates": {
+    "authentication_decision_candidate": 64,
+    "authentication_result_propagation_candidate": 64,
+    "close_reason_validity_candidate": 6
+  },
+  "receive_unclassified_warning_contexts": 0,
+  "raw_report_unclassified_warning_contexts": 2,
+  "derivation_seal_sign_cases": 2,
+  "derivation_seal_sign_warning_contexts": 0,
+  "raw_error_summaries_match_all_recorded_invocations": true,
+  "all_recorded_invocations_test_passed_with_empty_stderr": true,
+  "possibly_lost_48_bytes_observed_invocations": 160,
+  "suppression_used": false,
+  "receive_declassification_used": false,
+  "derivation_wire_output_declassification_used": true,
+  "instruction_mapping_complete": true,
+  "source_and_binary_unchanged_as_reported": true,
+  "same_source_local_x86_64_receive_classification_counts_match": true,
+  "arm_secret_flow_collection_complete": true,
+  "constant_time_approved": false,
+  "production_memory_passed": false,
+  "remaining": [
+    "HMAC/HKDF output and Ed25519 nonce/local copies need an ownership and wipe policy.",
+    "The 48-byte std/libtest memory warning remains; WSL AES-GCM findings remain separate.",
+    "Finite taint traces do not establish timing, cache or speculative-execution independence.",
+    "Operational key lifecycle and long service/load/recovery validation remain incomplete."
+  ],
+  "privacy_redaction": {
+    "applied": true,
+    "historical_execution_repeated": false,
+    "integrity_values_describe_redacted_artifacts": true
+  },
+  "artifact_language_normalization": {
+    "applied": true,
+    "historical_execution_repeated": false,
+    "integrity_values_describe_translated_artifacts": true
+  }
+}
