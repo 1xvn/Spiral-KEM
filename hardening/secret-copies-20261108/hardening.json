@@ -1,0 +1,601 @@
+{
+  "documentType": "codex-security.hardening-analysis",
+  "schemaVersion": "1.0",
+  "analysisId": "spiral_secret_copies_20261108",
+  "sourceEvidence": {
+    "kind": "document_collection",
+    "label": "Spiral source, pinned RustCrypto crates, ARM diagnostics and API compile probe",
+    "collectionSha256": "53d3287b300e4c39a5cee0347b1ff19710d1ce25575657418a874603246bf944",
+    "artifactCount": 27,
+    "targetRevision": "47c80c75cc93934836b2893905752fb3f13a0c23",
+    "sourceDrift": "none"
+  },
+  "assessment": {
+    "outcome": "opportunities_identified",
+    "summary": "This design conditionally recommends improving scratch ownership inside dependencies; it is not a determination that implementation or vulnerability remediation is complete."
+  },
+  "constraints": {
+    "profile": "balanced",
+    "changeHorizons": [
+      "incremental",
+      "medium_term"
+    ],
+    "nonNegotiables": [
+      "wire/KEM/signature bytes unchanged",
+      "high-level try_sign and strict verifier preserved",
+      "no public hazmat or arbitrary signing capability",
+      "preserve raw diagnostics and CT/memory false",
+      "no claim of complete copy/register erasure"
+    ],
+    "assumptions": [
+      "No latency/memory budget supplied.",
+      "Named owned slots are the first cleanup target.",
+      "This deliverable contains design/type experiments and no runtime patch."
+    ]
+  },
+  "opportunities": [
+    {
+      "opportunityId": "secret-scratch-ownership",
+      "title": "Assign erasure responsibility to the layer that creates temporary secrets",
+      "summary": "Bind the creation and end of registered dependency-internal temporaries to private ownership guards.",
+      "diagnosis": "App owners cannot erase private dependency-local arrays and Copy scalar intermediates.",
+      "evidence": [
+        {
+          "claimType": "observed",
+          "sourceKind": "source",
+          "evidenceId": "app-owners",
+          "title": "Application key owners and schedule",
+          "path": "protocol_rust/src/schedule.rs",
+          "claim": "Secret/SigningKey owner cleanup and caller raw PRK erasure are present."
+        },
+        {
+          "claimType": "observed",
+          "sourceKind": "source",
+          "evidenceId": "hash-scratch",
+          "title": "digest full_res",
+          "path": "digest-0.11.3/src/block_api/ct_variable.rs",
+          "claim": "The full_res local output is separate from state Drop."
+        },
+        {
+          "claimType": "observed",
+          "sourceKind": "source",
+          "evidenceId": "hmac-scratch",
+          "title": "HMAC pad·inner hash",
+          "path": "hmac-0.13.0/src/block_api.rs",
+          "claim": "There is no explicit erasure of pad and inner hash."
+        },
+        {
+          "claimType": "observed",
+          "sourceKind": "source",
+          "evidenceId": "hkdf-scratch",
+          "title": "HKDF output·prev",
+          "path": "hkdf-0.13.0/src/lib.rs",
+          "claim": "output/prev are ordinary local outputs."
+        },
+        {
+          "claimType": "observed",
+          "sourceKind": "source",
+          "evidenceId": "signing-nonce",
+          "title": "Signing seed digest and nonce",
+          "path": "ed25519-dalek-3.0.0/src/signing.rs",
+          "claim": "There is no explicit erasure of the owning slots for r and the seed digest."
+        },
+        {
+          "claimType": "observed",
+          "sourceKind": "source",
+          "evidenceId": "backend-scratch",
+          "title": "scalar limbs and radix copies",
+          "path": "curve25519-dalek-5.0.0/src/scalar.rs",
+          "claim": "Scalar Copy/Clone and backend copies exist separately."
+        },
+        {
+          "claimType": "observed",
+          "sourceKind": "document",
+          "evidenceId": "arm-traces",
+          "title": "Existing OCI ARM collection",
+          "path": "protocol_rust/evidence/arm_secret_flow_20261108/review.json",
+          "claim": "These are 160 collection runs of existing code, not cleanup/CT approval."
+        },
+        {
+          "claimType": "observed",
+          "sourceKind": "experiment",
+          "evidenceId": "api-probe",
+          "title": "Output type compilation control",
+          "path": "evidence/api-probe-result.json",
+          "claim": "A private slice guard is possible; the Array Zeroize bound is rejected with E0277."
+        },
+        {
+          "claimType": "inferred",
+          "sourceKind": "source",
+          "evidenceId": "app-owners",
+          "path": "protocol_rust/src/schedule.rs",
+          "claim": "Assigning cleanup responsibility only to callers cannot cover library-internal scratch."
+        }
+      ],
+      "desiredInvariants": [
+        "Registered named scratch slots are owned and wiped on return/error/unwind.",
+        "Caller output ownership and public wire outputs remain distinct.",
+        "Excluded backend/historical/register copies remain explicitly incomplete."
+      ],
+      "proposalPath": "proposals/secret-scratch-ownership.md",
+      "options": [
+        {
+          "optionId": "caller-outputs",
+          "title": "Option 1: Retain caller output cleanup",
+          "kind": "baseline",
+          "summary": "Retain caller output cleanup",
+          "diagramPaths": {
+            "before": "diagrams/secret-scratch-ownership-before.mmd",
+            "after": "diagrams/secret-scratch-ownership-caller-outputs-after.mmd"
+          },
+          "evidenceCoverage": [
+            {
+              "evidenceId": "app-owners",
+              "effect": "mitigates",
+              "tacticalFixRequired": false,
+              "rationale": "This is the scope if the design is applied, not a determination that remediation is complete. Direct cleanup and regression evidence is still required."
+            },
+            {
+              "evidenceId": "hash-scratch",
+              "effect": "unaffected",
+              "tacticalFixRequired": true,
+              "rationale": "This is the scope if the design is applied, not a determination that remediation is complete. Direct cleanup and regression evidence is still required."
+            },
+            {
+              "evidenceId": "hmac-scratch",
+              "effect": "unaffected",
+              "tacticalFixRequired": true,
+              "rationale": "This is the scope if the design is applied, not a determination that remediation is complete. Direct cleanup and regression evidence is still required."
+            },
+            {
+              "evidenceId": "hkdf-scratch",
+              "effect": "unaffected",
+              "tacticalFixRequired": true,
+              "rationale": "This is the scope if the design is applied, not a determination that remediation is complete. Direct cleanup and regression evidence is still required."
+            },
+            {
+              "evidenceId": "signing-nonce",
+              "effect": "unaffected",
+              "tacticalFixRequired": true,
+              "rationale": "This is the scope if the design is applied, not a determination that remediation is complete. Direct cleanup and regression evidence is still required."
+            },
+            {
+              "evidenceId": "backend-scratch",
+              "effect": "unaffected",
+              "tacticalFixRequired": true,
+              "rationale": "This is the scope if the design is applied, not a determination that remediation is complete. Direct cleanup and regression evidence is still required."
+            },
+            {
+              "evidenceId": "arm-traces",
+              "effect": "unaffected",
+              "tacticalFixRequired": false,
+              "rationale": "This is the scope if the design is applied, not a determination that remediation is complete. Direct cleanup and regression evidence is still required."
+            },
+            {
+              "evidenceId": "api-probe",
+              "effect": "mitigates",
+              "tacticalFixRequired": false,
+              "rationale": "This is the scope if the design is applied, not a determination that remediation is complete. Direct cleanup and regression evidence is still required."
+            }
+          ],
+          "tradeoffs": [
+            {
+              "dimension": "security",
+              "direction": "improves",
+              "confidence": "high",
+              "basis": "source-derived",
+              "assessment": "Only caller output lifetimes are shortened; private scratch remains unchanged.",
+              "validationPlan": "Observe caller errors and unwind, and confirm that internals are excluded from scope"
+            },
+            {
+              "dimension": "performance",
+              "direction": "unknown",
+              "confidence": "medium",
+              "basis": "source-derived",
+              "assessment": "An into API may reduce moves, but wrapper copies may add cost.",
+              "validationPlan": "Compare key schedule, signing, and handshake p50/p95/p99"
+            },
+            {
+              "dimension": "memory",
+              "direction": "unknown",
+              "confidence": "medium",
+              "basis": "source-derived",
+              "assessment": "Peaks vary with the placement of new caller buffers/guards.",
+              "validationPlan": "Compare stack/heap peaks"
+            },
+            {
+              "dimension": "reliability",
+              "direction": "improves",
+              "confidence": "medium",
+              "basis": "source-derived",
+              "assessment": "RAII cleanup is possible on caller error paths.",
+              "validationPlan": "Result/cancellation/unwind regressions"
+            },
+            {
+              "dimension": "operability",
+              "direction": "neutral",
+              "confidence": "high",
+              "basis": "source-derived",
+              "assessment": "There is no new process or dependency fork.",
+              "validationPlan": "Check existing deployment/logging behavior"
+            },
+            {
+              "dimension": "migration",
+              "direction": "neutral",
+              "confidence": "high",
+              "basis": "source-derived",
+              "assessment": "Changes focus on application wrappers and preserve the wire format.",
+              "validationPlan": "Vectors, strict signatures, and TLS byte compatibility"
+            },
+            {
+              "dimension": "ergonomics",
+              "direction": "unknown",
+              "confidence": "medium",
+              "basis": "source-derived",
+              "assessment": "Callers must continue to follow cleanup rules.",
+              "validationPlan": "Inspect every output-returning callsite"
+            },
+            {
+              "dimension": "rollback",
+              "direction": "neutral",
+              "confidence": "high",
+              "basis": "source-derived",
+              "assessment": "Only small application changes need to be reverted.",
+              "validationPlan": "Compare builds/vectors and status documents after revert"
+            }
+          ],
+          "residualRisks": [
+            "Private HMAC/HKDF/digest/nonce scratch remains outside caller ownership."
+          ],
+          "implementationReadiness": {
+            "state": "proposed_not_selected_or_implemented",
+            "affectedComponents": [
+              "protocol_rust/src/schedule.rs",
+              "protocol_rust/src/secret.rs"
+            ],
+            "workPackages": [
+              "Caller RAII/output argument contract for application raw PRK",
+              "Preserve application N=1..32, label length, and wire return ownership",
+              "Explicitly mark dependency private scratch as incomplete"
+            ],
+            "acceptanceCriteria": [
+              "Caller-owned slot cleanup on success/error/unwind",
+              "App N=0/33 and overlong label remain rejected",
+              "Wire/RFC/strict-policy byte mismatch zero",
+              "No claim of private dependency scratch cleanup"
+            ],
+            "migrationNotes": [
+              "Preserve Secret, owner close and current dependency versions."
+            ],
+            "rollback": "Revert caller wrappers and restore the prior caller-output cleanup status."
+          }
+        },
+        {
+          "optionId": "dependency-scopes",
+          "title": "Option 2: Dependency-internal lifetime guards",
+          "kind": "incremental",
+          "summary": "Dependency-internal lifetime guards",
+          "diagramPaths": {
+            "before": "diagrams/secret-scratch-ownership-before.mmd",
+            "after": "diagrams/secret-scratch-ownership-dependency-scopes-after.mmd"
+          },
+          "evidenceCoverage": [
+            {
+              "evidenceId": "app-owners",
+              "effect": "addresses",
+              "tacticalFixRequired": false,
+              "rationale": "This is the scope if the design is applied, not a determination that remediation is complete. Direct cleanup and regression evidence is still required."
+            },
+            {
+              "evidenceId": "hash-scratch",
+              "effect": "addresses",
+              "tacticalFixRequired": true,
+              "rationale": "This is the scope if the design is applied, not a determination that remediation is complete. Direct cleanup and regression evidence is still required."
+            },
+            {
+              "evidenceId": "hmac-scratch",
+              "effect": "addresses",
+              "tacticalFixRequired": true,
+              "rationale": "This is the scope if the design is applied, not a determination that remediation is complete. Direct cleanup and regression evidence is still required."
+            },
+            {
+              "evidenceId": "hkdf-scratch",
+              "effect": "addresses",
+              "tacticalFixRequired": true,
+              "rationale": "This is the scope if the design is applied, not a determination that remediation is complete. Direct cleanup and regression evidence is still required."
+            },
+            {
+              "evidenceId": "signing-nonce",
+              "effect": "mitigates",
+              "tacticalFixRequired": true,
+              "rationale": "This is the scope if the design is applied, not a determination that remediation is complete. Direct cleanup and regression evidence is still required."
+            },
+            {
+              "evidenceId": "backend-scratch",
+              "effect": "unaffected",
+              "tacticalFixRequired": true,
+              "rationale": "This is the scope if the design is applied, not a determination that remediation is complete. Direct cleanup and regression evidence is still required."
+            },
+            {
+              "evidenceId": "arm-traces",
+              "effect": "unaffected",
+              "tacticalFixRequired": false,
+              "rationale": "This is the scope if the design is applied, not a determination that remediation is complete. Direct cleanup and regression evidence is still required."
+            },
+            {
+              "evidenceId": "api-probe",
+              "effect": "mitigates",
+              "tacticalFixRequired": false,
+              "rationale": "This is the scope if the design is applied, not a determination that remediation is complete. Direct cleanup and regression evidence is still required."
+            }
+          ],
+          "tradeoffs": [
+            {
+              "dimension": "security",
+              "direction": "improves",
+              "confidence": "high",
+              "basis": "source-derived",
+              "assessment": "The creating function cleans registered slots; backend and past copies are excluded.",
+              "validationPlan": "Live-slot witnesses and actual optimized erasure instructions"
+            },
+            {
+              "dimension": "performance",
+              "direction": "unknown",
+              "confidence": "medium",
+              "basis": "source-derived",
+              "assessment": "Erasure writes proportional to buffer length are added; there is no IPC.",
+              "validationPlan": "Baseline/candidate latency and throughput on the same CPU/toolchain"
+            },
+            {
+              "dimension": "memory",
+              "direction": "unknown",
+              "confidence": "medium",
+              "basis": "source-derived",
+              "assessment": "Guards may affect stack layout and optimization.",
+              "validationPlan": "Investigate stack/heap peaks and generated copies"
+            },
+            {
+              "dimension": "reliability",
+              "direction": "improves",
+              "confidence": "medium",
+              "basis": "source-derived",
+              "assessment": "The goal is cleanup of owned slots on return, error, and generic unwind.",
+              "validationPlan": "Hash panic, update error after nonce creation, and feature matrix"
+            },
+            {
+              "dimension": "operability",
+              "direction": "regresses",
+              "confidence": "high",
+              "basis": "source-derived",
+              "assessment": "This introduces responsibility for maintaining source patches/features/locks.",
+              "validationPlan": "Review upstream diffs, source hashes, and regular update procedures"
+            },
+            {
+              "dimension": "migration",
+              "direction": "unknown",
+              "confidence": "medium",
+              "basis": "source-derived",
+              "assessment": "Existing APIs must be preserved and patches connected for each of the two manifest workspaces.",
+              "validationPlan": "Normal/fuzz locks, ON/OFF, and compilation of external trait implementations"
+            },
+            {
+              "dimension": "ergonomics",
+              "direction": "improves",
+              "confidence": "high",
+              "basis": "source-derived",
+              "assessment": "The function creating the value owns scratch responsibility instead of the caller.",
+              "validationPlan": "Check for omitted registration of new scratch"
+            },
+            {
+              "dimension": "rollback",
+              "direction": "neutral",
+              "confidence": "medium",
+              "basis": "source-derived",
+              "assessment": "Revert patches/overrides/both locks/APIs together.",
+              "validationPlan": "Reproduce the baseline and revert the cleanup-complete status"
+            }
+          ],
+          "residualRisks": [
+            "Backend scratch and historical/register/OS copies remain excluded.",
+            "Small pinned source patches require maintenance."
+          ],
+          "implementationReadiness": {
+            "state": "proposed_not_selected_or_implemented",
+            "affectedComponents": [
+              "protocol_rust/src/schedule.rs",
+              "protocol_rust/src/identity.rs",
+              "pinned dependency sources"
+            ],
+            "workPackages": [
+              "Hash layer and feature cleanup",
+              "Optional output argument API compatibility",
+              "Improve named signing slots",
+              "Backend exclusion ledger and validation"
+            ],
+            "acceptanceCriteria": [
+              "Wire/RFC/strict-policy byte mismatch zero",
+              "Named-slot wipe on success/error/unwind with optimized instruction evidence",
+              "No new invalid access; original warnings preserved",
+              "Generic HKDF output lengths and app 1..32 restrictions verified separately",
+              "Current ZIP-215 public-key decode and verify_strict rejection rules unchanged"
+            ],
+            "migrationNotes": [
+              "Preserve current owner/close/strict verification and both manifests/locks."
+            ],
+            "rollback": "Revert the complete chosen boundary and restore explicit incomplete cleanup status."
+          }
+        },
+        {
+          "optionId": "provider-isolation",
+          "title": "Option 3: Separate provider process",
+          "kind": "isolation",
+          "summary": "Separate provider process",
+          "diagramPaths": {
+            "before": "diagrams/secret-scratch-ownership-before.mmd",
+            "after": "diagrams/secret-scratch-ownership-provider-isolation-after.mmd"
+          },
+          "evidenceCoverage": [
+            {
+              "evidenceId": "app-owners",
+              "effect": "mitigates",
+              "tacticalFixRequired": false,
+              "rationale": "This is the scope if the design is applied, not a determination that remediation is complete. Direct cleanup and regression evidence is still required."
+            },
+            {
+              "evidenceId": "hash-scratch",
+              "effect": "unknown",
+              "tacticalFixRequired": true,
+              "rationale": "This is the scope if the design is applied, not a determination that remediation is complete. Direct cleanup and regression evidence is still required."
+            },
+            {
+              "evidenceId": "hmac-scratch",
+              "effect": "unknown",
+              "tacticalFixRequired": true,
+              "rationale": "This is the scope if the design is applied, not a determination that remediation is complete. Direct cleanup and regression evidence is still required."
+            },
+            {
+              "evidenceId": "hkdf-scratch",
+              "effect": "unknown",
+              "tacticalFixRequired": true,
+              "rationale": "This is the scope if the design is applied, not a determination that remediation is complete. Direct cleanup and regression evidence is still required."
+            },
+            {
+              "evidenceId": "signing-nonce",
+              "effect": "unknown",
+              "tacticalFixRequired": true,
+              "rationale": "This is the scope if the design is applied, not a determination that remediation is complete. Direct cleanup and regression evidence is still required."
+            },
+            {
+              "evidenceId": "backend-scratch",
+              "effect": "unknown",
+              "tacticalFixRequired": true,
+              "rationale": "This is the scope if the design is applied, not a determination that remediation is complete. Direct cleanup and regression evidence is still required."
+            },
+            {
+              "evidenceId": "arm-traces",
+              "effect": "unaffected",
+              "tacticalFixRequired": false,
+              "rationale": "This is the scope if the design is applied, not a determination that remediation is complete. Direct cleanup and regression evidence is still required."
+            },
+            {
+              "evidenceId": "api-probe",
+              "effect": "unaffected",
+              "tacticalFixRequired": false,
+              "rationale": "This is the scope if the design is applied, not a determination that remediation is complete. Direct cleanup and regression evidence is still required."
+            }
+          ],
+          "tradeoffs": [
+            {
+              "dimension": "security",
+              "direction": "unknown",
+              "confidence": "medium",
+              "basis": "source-derived",
+              "assessment": "Long-term keys can be separated from the application, but the provider scratch contract is unverified.",
+              "validationPlan": "Review provider source/permissions/zeroization and IPC boundaries"
+            },
+            {
+              "dimension": "performance",
+              "direction": "unknown",
+              "confidence": "high",
+              "basis": "source-derived",
+              "assessment": "IPC serialization, queues, and copies are added.",
+              "validationPlan": "p50/p95/p99 and throughput under actual provider load"
+            },
+            {
+              "dimension": "memory",
+              "direction": "regresses",
+              "confidence": "medium",
+              "basis": "source-derived",
+              "assessment": "A process and IPC request buffers are added.",
+              "validationPlan": "Peak RSS of both processes and retained request volume"
+            },
+            {
+              "dimension": "reliability",
+              "direction": "unknown",
+              "confidence": "high",
+              "basis": "source-derived",
+              "assessment": "New timeout/restart/revoke states are introduced.",
+              "validationPlan": "Fault injection, close ack, duplicate request, and retry tests"
+            },
+            {
+              "dimension": "operability",
+              "direction": "regresses",
+              "confidence": "high",
+              "basis": "source-derived",
+              "assessment": "Provider deployment, authentication, observability, and recovery are required.",
+              "validationPlan": "Operational validation of key handle rotation, permissions, and failure recovery"
+            },
+            {
+              "dimension": "migration",
+              "direction": "regresses",
+              "confidence": "high",
+              "basis": "source-derived",
+              "assessment": "Local function boundaries must be replaced with restricted IPC and handles.",
+              "validationPlan": "Wire/signature policy/cancellation/revocation compatibility tests"
+            },
+            {
+              "dimension": "ergonomics",
+              "direction": "unknown",
+              "confidence": "medium",
+              "basis": "source-derived",
+              "assessment": "Key authority is centralized, but call failure states become more complex.",
+              "validationPlan": "Check client API usability and absence of arbitrary signing exposure"
+            },
+            {
+              "dimension": "rollback",
+              "direction": "unknown",
+              "confidence": "medium",
+              "basis": "source-derived",
+              "assessment": "Scope changes during deployment transitions that return keys to the application must be managed.",
+              "validationPlan": "Discard handles, explicitly deploy the previous version, and prohibit automatic fallback"
+            }
+          ],
+          "residualRisks": [
+            "Provider cleanup remains unverified.",
+            "Returned KDF keys and IPC copies remain app-owned."
+          ],
+          "implementationReadiness": {
+            "state": "proposed_not_selected_or_implemented",
+            "affectedComponents": [
+              "protocol_rust/src/identity.rs",
+              "protocol_rust/src/schedule.rs",
+              "proposed provider client/server and deployment boundary"
+            ],
+            "workPackages": [
+              "Provider source/cleanup and Ed25519 capability review",
+              "Authenticated bounded transcript/KDF IPC contract",
+              "Key handle close/revoke acknowledgement and duplicate/retry semantics",
+              "Timeout/restart/cancel and operational key lifecycle validation"
+            ],
+            "acceptanceCriteria": [
+              "Wire/signature/strict-policy behavior unchanged",
+              "Arbitrary message signing and revoked-handle reuse rejected",
+              "Close/revoke/in-flight request semantics preserved under fault injection",
+              "Provider scratch cleanup scope verified independently",
+              "IPC latency/resource and recovery budgets established before deployment"
+            ],
+            "migrationNotes": [
+              "Preserve caller output cleanup; provider return values and shared-secret IPC add app-owned copies.",
+              "No automatic fallback to the previous algorithm/provider on crypto failure."
+            ],
+            "rollback": "Revert the controlled deployment version, revoke provider handles and document keys returning to app memory; avoid automatic failover."
+          }
+        }
+      ],
+      "recommendedOptionId": "dependency-scopes",
+      "recommendation": "We recommend gradually improving named temporaries while preserving APIs/wire format, starting with the hash layer."
+    }
+  ],
+  "openQuestions": [
+    "Source-patch maintenance responsibility",
+    "Quantitative latency/memory budget",
+    "Whether backend scratch cleanup becomes a separate second-stage target"
+  ],
+  "status": {
+    "design_complete": true,
+    "option_selected_by_user": false,
+    "runtime_patch_implemented": false,
+    "constant_time_approved": false,
+    "production_memory_passed": false
+  }
+}

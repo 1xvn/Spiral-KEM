@@ -31,6 +31,11 @@ fixes the collector's post-compilation Git-dependency error. Subsequently, [actu
 confirmed 70 default tests and 160 Memcheck collection runs. Preserved 134 receive warnings and the existing
 48-byte memory item; constant-time/overall memory approval remain separate.
 
+The [HMAC/HKDF·signature temporary-copy erasure design](SECRET_COPY_DESIGN.md) compares caller outputs,
+dependency-internal lifetime guards, and separate-provider alternatives. It recommends dependency-internal supplements retaining existing APIs/wire format,
+and documents implementation units, features, cleanup observations, and regression criteria.
+Currently this is design and type-compilation comparison, not an implemented erasure patch.
+
 The [Rust frame and ClientHello fuzzing guide](FUZZ_PARSERS.md) uses a separately pinned nightly and
 the disabled-by-default `parser-fuzz` entry points to check actual parser coverage and compare saved inputs
 against the Python reference implementation. OCI ARM64 and WSL2 x86-64 results are collected separately.

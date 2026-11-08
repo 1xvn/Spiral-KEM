@@ -125,6 +125,11 @@ App wrappers or tests reading freed memory do not substitute for these.
 ARM instrumentation collection for the new features is complete in the follow-up record above. Temporary secret-copy erasure supplements and
 service-key storage, permissions, rotation, disposal, and recovery policies remain.
 
+The [temporary secret-copy erasure design](SECRET_COPY_DESIGN.md) specifies that follow-up scope.
+It recommends dependency-internal lifetime guards, including digest fixed-output temporaries; copies in the signature backend,
+registers, and past moved copies remain separately unfinished. This is a design/type-comparison stage,
+not a production erasure patch or completion of all of item 2.
+
 ## Optional reproduction
 
 Commands assume the repository root in an environment with existing Rust1.99.1, C/OpenSSL, and pinned Python requirements installed.
