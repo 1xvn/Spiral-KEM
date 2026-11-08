@@ -103,7 +103,7 @@ def completed(text,marker):
 def linked_instructions(text):
     instructions={}
     for line in text.splitlines():
-        match=re.match(r'^\s*([0-9a-f]+):\s+(?:[0-9a-f]{2}\s+)+\s*(.*)',line)
+        match=re.match(r'^\s*([0-9a-f]+):\s+(?:(?:[0-9a-f]{8}|[0-9a-f]{2})\s+)+\s*(.*)',line)
         if match and match[2]:instructions[int(match[1],16)]=match[2]
     return instructions
 
@@ -111,7 +111,7 @@ def linked_instructions(text):
 def annotate(record,bias,instructions):
     rva=record['runtime_ip']-bias if bias is not None else None
     asm=instructions.get(rva,'')
-    verified=bool(asm) and bool(re.match(r'(?:j(?!mp)[a-z]+|cmov[a-z]+|set[a-z]+)\b',asm))
+    verified=bool(asm) and bool(re.match(r'(?:j(?!mp)[a-z]+|cmov[a-z]+|set[a-z]+|b\.[a-z]+|cbn?z|tbn?z|csel|csinc|csinv|csneg|csetm?)\b',asm))
     return {**record,'elf_rva':rva,'instruction':asm,'instruction_mapped':bool(asm),'conditional_instruction_verified':verified,
       'classification':category(record,verified)}
 
@@ -124,7 +124,7 @@ def main():
     p.add_argument('--library-path',type=Path)
     p.add_argument('--output',type=Path,required=True)
     args=p.parse_args()
-    if platform.system()!='Linux' or platform.machine()!='x86_64':p.error('the test client-request ABI requires Linux x86-64')
+    if platform.system()!='Linux' or platform.machine() not in ('x86_64','aarch64'):p.error('requires Linux x86-64 or aarch64')
     if bool(args.loader)!=bool(args.library_path):p.error('loader/library-path must be paired')
     binary=args.rust_tests.resolve(); vg=shutil.which(args.valgrind)
     if not binary.is_file() or not vg:p.error('test executable and Valgrind must exist')
@@ -139,7 +139,7 @@ def main():
       'diagnostic_complete':False,'constant_time_approved':False,'production_memory_passed':False,
       'binary':{'path':str(binary),'sha256':digest(binary),'bytes':binary.stat().st_size},
       'runner_sha256':digest(Path(__file__)),'public_contract':'AEAD authentication bit and CLOSE reason-range validity bit; DATA plaintext and full CLOSE value remain secret.',
-      'declassification_used':False,'suppression_used':False,'positive_controls':[],'cases':[],'errors':[]}
+      'platform':platform.uname()._asdict(),'declassification_used':False,'suppression_used':False,'positive_controls':[],'cases':[],'errors':[]}
     prefix=[str(args.loader.resolve()),'--library-path',str(args.library_path.resolve())] if args.loader else []
     started=time.monotonic()
 
@@ -213,6 +213,12 @@ def main():
             record=measure('positive-'+kind,test,env,'RX_AUDIT_POSITIVE_COMPLETED '+kind)
             require(any(row['kind']==('conditional' if kind=='branch' else 'undefined_value_or_address') for row in record['warnings']),'positive control did not detect '+kind)
             report['positive_controls'].append({'kind':kind,**record})
+        report['derivation_seal_sign']=[]
+        for taint in ('public','secret'):
+            record=measure('derivation-'+taint,'ffi::taint_audit::rust_secret_derivation_sealing_and_signing',
+              dict(env,SPIRAL_DERIVATION_TAINT=taint),'DERIVATION_AUDIT_COMPLETED')
+            if taint=='public':require(not record['warnings'],'unexpected warning in public derivation baseline')
+            report['derivation_seal_sign'].append({'taint':taint,**record})
         matrix=variants();require(len(matrix)==78,'incomplete fixture matrix')
         for index,parameters in enumerate(matrix):
             for taint in ('public','secret'):
@@ -227,7 +233,7 @@ def main():
         require(digest(binary)==report['binary']['sha256'],'test executable changed during measurement')
         require(all(digest(ROOT/name)==value for name,value in report['source_sha256'].items()),'source changed during measurement')
         report['binary_and_source_unchanged']=True
-        measurements=report['positive_controls']+report['cases']
+        measurements=report['positive_controls']+report['cases']+report['derivation_seal_sign']
         report['instruction_mapping_complete']=all(row['instruction_mapping_complete'] for row in measurements)
         report['unclassified_warning_contexts']=sum(warning['classification']=='unclassified' for row in measurements for warning in row['warnings'])
         report['diagnostic_complete']=True

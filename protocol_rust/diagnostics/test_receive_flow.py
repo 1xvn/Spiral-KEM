@@ -89,5 +89,16 @@ class ReceiveFlowGates(unittest.TestCase):
           text.replace('0 ignored','1 ignored'),text.replace('running 1 test','running 0 tests')):
             self.assertFalse(runner.completed(changed,marker))
 
+    def test_arm_opcodes_keep_conditional_and_address_observations_distinct(self):
+        instructions=runner.linked_instructions('  10: 34000043 cbz w3, 18\n  14: 38636800 ldrb w0, [x0, x3]\n')
+        row=runner.annotate(self.warning(),0x1000,instructions)
+        self.assertTrue(row['conditional_instruction_verified'])
+        self.assertEqual(row['classification'],'authentication_decision_candidate')
+        address=self.warning(kind='undefined_value_or_address');address['runtime_ip']=0x1014
+        row=runner.annotate(address,0x1000,instructions)
+        self.assertTrue(row['instruction_mapped'])
+        self.assertFalse(row['conditional_instruction_verified'])
+        self.assertEqual(row['classification'],'unclassified')
+
 
 if __name__=='__main__':unittest.main()

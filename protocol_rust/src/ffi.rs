@@ -87,9 +87,9 @@ mod ownership_contract {
     static_assertions::assert_not_impl_any!(crate::handshake::Established: Clone,Copy);
 }
 
-// Valgrind's documented amd64 client-request ABI. Compiled only into tests;
+// Valgrind client requests compiled only into Linux amd64/arm64 tests;
 // normal binaries have neither client requests nor taint/fixed-seed entry points.
-#[cfg(all(test, target_arch = "x86_64"))]
+#[cfg(all(test, target_os = "linux", any(target_arch = "x86_64", target_arch = "aarch64")))]
 mod taint_audit {
     use crate::{
         buffer::Pool,
@@ -99,33 +99,11 @@ mod taint_audit {
         secret::{Plaintext, Secret},
     };
 
-    fn request(code: usize, address: usize, length: usize) -> usize {
-        let arguments = [code, address, length, 0, 0, 0];
-        let mut result = 0usize;
-        // SAFETY: exact valgrind.h amd64 request sequence; the live argument array
-        // is read synchronously. The request never changes actual byte values.
-        // RDI rotates by 128 total bits and RBX is exchanged with itself.
-        unsafe {
-            core::arch::asm!(
-                "rol rdi, 3", "rol rdi, 13", "rol rdi, 61", "rol rdi, 51",
-                "xchg rbx, rbx",
-                in("rax") arguments.as_ptr(), inout("rdx") result,
-                lateout("rdi") _, options(nostack),
-            );
-        }
-        result
-    }
-    fn require_valgrind() {
-        assert!(
-            request(0x1001, 0, 0) > 0,
-            "run this ignored test under Valgrind Memcheck"
-        );
-    }
+    use crate::valgrind_audit::{require_valgrind, mark_public as public, mark_secret};
     fn secret(bytes: &mut [u8]) {
-        request(0x4d43_0001, bytes.as_mut_ptr() as usize, bytes.len());
-    }
-    fn public(bytes: &mut [u8]) {
-        request(0x4d43_0002, bytes.as_mut_ptr() as usize, bytes.len());
+        let mode = std::env::var("SPIRAL_DERIVATION_TAINT").unwrap_or_else(|_| "secret".into());
+        assert!(mode == "secret" || mode == "public");
+        if mode == "secret" { mark_secret(bytes); }
     }
 
     #[test]
@@ -133,7 +111,7 @@ mod taint_audit {
     fn positive_control() {
         require_valgrind();
         let mut bit = [1u8];
-        secret(&mut bit);
+        mark_secret(&mut bit);
         if std::hint::black_box(bit[0]) != 0 {
             std::hint::black_box(1);
         }
@@ -200,5 +178,6 @@ mod taint_audit {
         }
         identity.close().unwrap();
         public(&mut seed);
+        println!("DERIVATION_AUDIT_COMPLETED");
     }
 }

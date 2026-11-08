@@ -52,3 +52,6 @@ pub mod transport;
 pub mod wire;
 pub mod worker;
 pub use error::{Error, Result};
+
+#[cfg(all(test, target_os = "linux", any(target_arch = "x86_64", target_arch = "aarch64")))]
+mod valgrind_audit;
