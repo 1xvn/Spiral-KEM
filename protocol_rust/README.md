@@ -25,11 +25,11 @@ Hash-state cleanup is distinguished from remaining local output and nonce copies
 confirmed passes on the same merge commit in each environment: Python85, diagnostics20, C9, Rust70, documentation6, and actualTLS35.
 This platform functional-validation phase is complete; constant-time and memory approval remain separate.
 
-[ARM secret-flow instrumentation preparation](ARM_SECRET_FLOW.md) adds Linux ARM64 client requests and
+[ARM secret-flow instrumentation](ARM_SECRET_FLOW.md) covers Linux ARM64 client requests and
 positive controls/receive/key-derivation/transmission/signing collectors. Local regressions and ARM request-module cross-
-compilation was confirmed. On OCI, the ARM build and 70 normal tests passed, but instrumentation did not start because of the collector's
-Git dependency error. We added a [corrected bundle and validation records](evidence/arm_standalone_fix_20261108/README.md),
-and actual OCI ARM instrumentation remains incomplete until rerun results are reviewed.
+fixes the collector's post-compilation Git-dependency error. Subsequently, [actual OCI ARM submissions](evidence/arm_secret_flow_20261108/README.md)
+confirmed 70 default tests and 160 Memcheck collection runs. Preserved 134 receive warnings and the existing
+48-byte memory item; constant-time/overall memory approval remain separate.
 
 The [Rust frame and ClientHello fuzzing guide](FUZZ_PARSERS.md) uses a separately pinned nightly and
 the disabled-by-default `parser-fuzz` entry points to check actual parser coverage and compare saved inputs
