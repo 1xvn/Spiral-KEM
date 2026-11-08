@@ -71,6 +71,6 @@
   "stdlib_gate_tests_passed": 17,
   "constant_time_approved": false,
   "security_approved": false,
-  "oci_status": "pending lifecycle archive; repeated record archive received",
+  "oci_status": "passed; see platform-review.json",
   "wsl_status": "passed; see platform-review.json"
 }
