@@ -4,6 +4,14 @@ Added the Valgrind client-request ABI for Linux ARM64. It uses a test-only commo
 preserving production keys/wire/cryptographic operations. x86-64 tests use the same module.
 Passing existing ARM functional tests is separate from completion of this secret-flow instrumentation.
 
+We confirmed that the collector in the earlier `26dd0d6` OCI submission required `.git` and stopped before instrumentation
+began. The originals are retained in the [fix record](evidence/arm_standalone_fix_20261108/README.md),
+and both collectors were fixed to share verified `SOURCE.json`.
+The normal Rust 70 tests passed, but there were 0 actual Memcheck runs at that time, so this does not count as ARM instrumentation completion.
+The [corrected download bundle](../downloads/arm-secret-flow-7bff0e4/README.md) was verified outside Git:
+641 source files verified, 70 basic tests, and 160 Memcheck collection runs. This revalidation is
+This was a local x86-64 run; actual OCI ARM results must be collected again.
+
 ## Collection scope
 
 1. Check70 Rust public-fixture tests and5 separate ignored tests.
@@ -40,9 +48,10 @@ Based on `PLAT_arm64_linux` in Valgrind3.24 `valgrind.h`. X4=request pointer,
 X3=default/result, X12 rotates by3/13/51/61 bits, using `orr x10,x10,x10`.
 Rust asm assumes neither memory nor flags preservation. Test ABI is absent from normal binaries.
 
-Local x86-64 functional/instrumentation regressions and ARM request-module cross-compilation with official Rust1.99.1
-were performed. This is not a full ARM-program link/execution result.
-**Actual OCI ARM diagnostics remain incomplete until submissions are reviewed**. ARM also gains ignored
+We performed local x86-64 functional/instrumentation regressions and cross-compiled the ARM request module with official Rust 1.99.1.
+Later OCI submissions confirmed an actual ARM audit build and 70 passing regular tests,
+but Memcheck did not run then because of the collector error.
+**Actual OCI ARM instrumentation remains incomplete until rerun material from the corrected bundle is reviewed**. On ARM too, ignored
 instrumentation tests numbering5, not added to70 normal functional passes.
 
 ## Execution

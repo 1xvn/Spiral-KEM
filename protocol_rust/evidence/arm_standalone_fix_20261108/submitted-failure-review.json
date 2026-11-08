@@ -1,0 +1,32 @@
+{
+  "archive_sha256": "a03feb72429901dc876d7a941d685b272d406cdc03383af1041b2feab223c660",
+  "source_commit": "26dd0d66f3fd5ed4297a190152dc5ec9a6e97c93",
+  "outer_manifest_files_verified": 12,
+  "nested_manifest_files_verified": 1,
+  "source_files_matched_to_git_blob": 63,
+  "arm_audit_build_exit": 0,
+  "arm_native_tests": {
+    "passed": 70,
+    "failed": 0,
+    "ignored": 5
+  },
+  "valgrind_version": "valgrind-3.22.0",
+  "memcheck_invocations_recorded": 0,
+  "failure_stage": "source identity before tool/positive-control/trace execution",
+  "raw_trace_errors": [
+    "CalledProcessError(128, ['git', 'rev-parse', 'HEAD'])"
+  ],
+  "arm_secret_flow_complete": false,
+  "constant_time_approved": false,
+  "production_memory_passed": false,
+  "privacy_redaction": {
+    "applied": true,
+    "historical_execution_repeated": false,
+    "integrity_values_describe_redacted_artifacts": true
+  },
+  "artifact_language_normalization": {
+    "applied": true,
+    "historical_execution_repeated": false,
+    "integrity_values_describe_translated_artifacts": true
+  }
+}

@@ -27,7 +27,9 @@ This platform functional-validation phase is complete; constant-time and memory 
 
 [ARM secret-flow instrumentation preparation](ARM_SECRET_FLOW.md) adds Linux ARM64 client requests and
 positive controls/receive/key-derivation/transmission/signing collectors. Local regressions and ARM request-module cross-
-compilation were confirmed; actual OCI ARM diagnostics remain incomplete until results are submitted.
+compilation was confirmed. On OCI, the ARM build and 70 normal tests passed, but instrumentation did not start because of the collector's
+Git dependency error. We added a [corrected bundle and validation records](evidence/arm_standalone_fix_20261108/README.md),
+and actual OCI ARM instrumentation remains incomplete until rerun results are reviewed.
 
 The [Rust frame and ClientHello fuzzing guide](FUZZ_PARSERS.md) uses a separately pinned nightly and
 the disabled-by-default `parser-fuzz` entry points to check actual parser coverage and compare saved inputs
