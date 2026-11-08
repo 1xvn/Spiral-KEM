@@ -28,7 +28,7 @@ enum Mode {
 }
 
 impl Mode {
-    #[cfg(target_arch = "x86_64")]
+    #[cfg(all(target_os = "linux", any(target_arch = "x86_64", target_arch = "aarch64")))]
     fn parse(value: &str) -> Self {
         match value {
             "data-valid" => Self::DataValid,
@@ -40,7 +40,7 @@ impl Mode {
         }
     }
 
-    #[cfg(target_arch = "x86_64")]
+    #[cfg(all(target_os = "linux", any(target_arch = "x86_64", target_arch = "aarch64")))]
     fn label(self) -> &'static str {
         match self {
             Self::DataValid => "data-valid",
@@ -62,7 +62,7 @@ struct Parameters {
 }
 
 impl Parameters {
-    #[cfg(target_arch = "x86_64")]
+    #[cfg(all(target_os = "linux", any(target_arch = "x86_64", target_arch = "aarch64")))]
     fn from_environment() -> Self {
         fn number(name: &str, fallback: &str) -> usize {
             std::env::var(name)
@@ -193,38 +193,10 @@ fn fixture(parameters: Parameters) -> Vec<u8> {
     }
 }
 
-#[cfg(target_arch = "x86_64")]
-fn request(code: usize, address: usize, length: usize) -> usize {
-    let arguments = [code, address, length, 0, 0, 0];
-    let mut result = 0usize;
-    // SAFETY: Valgrind's documented amd64 client-request sequence. The live
-    // argument array is read synchronously; requests change shadow state only.
-    // RDI rotates by 128 total bits and RBX is exchanged with itself.
-    unsafe {
-        core::arch::asm!(
-            "rol rdi, 3", "rol rdi, 13", "rol rdi, 61", "rol rdi, 51",
-            "xchg rbx, rbx",
-            in("rax") arguments.as_ptr(), inout("rdx") result,
-            lateout("rdi") _, options(nostack),
-        );
-    }
-    result
-}
+#[cfg(all(target_os = "linux", any(target_arch = "x86_64", target_arch = "aarch64")))]
+use crate::valgrind_audit::{require_valgrind, mark_secret};
 
-#[cfg(target_arch = "x86_64")]
-fn require_valgrind() {
-    assert!(
-        request(0x1001, 0, 0) > 0,
-        "run this ignored test under Valgrind Memcheck"
-    );
-}
-
-#[cfg(target_arch = "x86_64")]
-fn mark_secret(bytes: &mut [u8]) {
-    request(0x4d43_0001, bytes.as_mut_ptr() as usize, bytes.len());
-}
-
-#[cfg(target_arch = "x86_64")]
+#[cfg(all(target_os = "linux", any(target_arch = "x86_64", target_arch = "aarch64")))]
 #[test]
 #[ignore = "positive control: must report a secret-dependent conditional branch"]
 fn positive_secret_branch() {
@@ -237,7 +209,7 @@ fn positive_secret_branch() {
     println!("RX_AUDIT_POSITIVE_COMPLETED branch");
 }
 
-#[cfg(target_arch = "x86_64")]
+#[cfg(all(target_os = "linux", any(target_arch = "x86_64", target_arch = "aarch64")))]
 #[test]
 #[ignore = "positive control: must report a secret-dependent memory address"]
 fn positive_secret_address() {
@@ -253,7 +225,7 @@ fn positive_secret_address() {
     println!("RX_AUDIT_POSITIVE_COMPLETED address");
 }
 
-#[cfg(target_arch = "x86_64")]
+#[cfg(all(target_os = "linux", any(target_arch = "x86_64", target_arch = "aarch64")))]
 #[test]
 #[ignore = "raw key/prefix taint trace; authentication and cleanup warnings remain"]
 fn trace_actual_receive() {

@@ -1,0 +1,16 @@
+warning: function `require_valgrind` is never used
+  --> /workspace/spiral-arm-secret-flow-20261108/protocol_rust/src/valgrind_audit.rs:34:15
+   |
+34 | pub(crate) fn require_valgrind() {
+   |               ^^^^^^^^^^^^^^^^
+   |
+   = note: `#[warn(dead_code)]` (part of `#[warn(unused)]`) on by default
+
+warning: function `mark_public` is never used
+  --> /workspace/spiral-arm-secret-flow-20261108/protocol_rust/src/valgrind_audit.rs:44:15
+   |
+44 | pub(crate) fn mark_public(bytes: &mut [u8]) {
+   |               ^^^^^^^^^^^
+
+warning: 2 warnings emitted
+

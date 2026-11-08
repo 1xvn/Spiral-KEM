@@ -133,3 +133,6 @@ For the independent feature comparison, copy the evidence `probe/` to a fresh te
 The OFF failure is intentional. For receive tracing, follow the [receive guide](RECEIVE_SECRET.md#optional-reproduction),
 using a fresh executable and output path.
 Existing records retain their original source and environment provenance.
+
+For the next ARM step, see the [secret-flow instrumentation guide](ARM_SECRET_FLOW.md).
+Record existing functional passes on both platforms separately from new ARM instrumentation preparation/actual execution.

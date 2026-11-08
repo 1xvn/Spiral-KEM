@@ -1,0 +1,16 @@
+{
+  "local_runtime_source_commit": "041aa85903b1a6f1e90e5245bdb2e9aa70d6b17e",
+  "delivered_source_commit": "26dd0d66f3fd5ed4297a190152dc5ec9a6e97c93",
+  "runtime_source_same_between_commits": true,
+  "post_run_changes": "documentation and explicit declassification report scope only",
+  "local_diagnostic_complete": true,
+  "local_instruction_mapping_complete": true,
+  "local_receive_warning_contexts": 134,
+  "local_derivation_public_and_secret_branch_contexts": 0,
+  "valgrind_header_sha256": "8a9d93a3adad7eb9049a0a7bb8f948cda5e800be46ec838e5e9c01219a4806c1",
+  "actual_arm_runtime_verified": false,
+  "constant_time_approved": false,
+  "production_memory_passed": false,
+  "cross_compilation_scope": "actual client request module only; no full ARM link or execution",
+  "raw_report_scope_note": "v1 declassification_used=false refers to receive traces. Existing derivation/seal/sign test declassifies transmitted outputs. v2 explicitly distinguishes these scopes."
+}
