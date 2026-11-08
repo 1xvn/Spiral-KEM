@@ -1,0 +1,27 @@
+{
+  "reviewer_sha256": "ec8b915cf4cb82ce9fb082986b6e5e2e87a4dd723499f835ed3a65b236914deb",
+  "accepted_pair_report_sha256": "94a9267a2929e573d693a4f3b171bed38b019ebd4986b5d9c0b7a0ea0fede1e1",
+  "accepted_pair_complete": true,
+  "rejection_controls": [
+    {
+      "case": "empty WSL archive",
+      "rejected": true,
+      "reason": "expected one archive manifest"
+    },
+    {
+      "case": "previous source archive",
+      "rejected": true,
+      "reason": "expected one archive manifest"
+    },
+    {
+      "case": "mismatched environment label",
+      "rejected": true,
+      "reason": "environment label differs"
+    },
+    {
+      "case": "modified bytes with unchanged manifest",
+      "rejected": true,
+      "reason": "hash mismatch: functional/result.json"
+    }
+  ]
+}

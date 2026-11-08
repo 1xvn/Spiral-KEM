@@ -1,0 +1,120 @@
+{
+  "schema": "spiral-secret-state-platform-review/v1",
+  "source_commit": "fcf7ff07ecba260f6b446baa7f1efd55bbe11ec2",
+  "reviewer_sha256": "ec8b915cf4cb82ce9fb082986b6e5e2e87a4dd723499f835ed3a65b236914deb",
+  "reviewed_utc": "2026-11-08T06:15:05.842349+00:00",
+  "both_platforms_functional_complete": true,
+  "whole_memory_approved": false,
+  "constant_time_approved": false,
+  "cryptographic_security_approved": false,
+  "archive_files_executed": false,
+  "archive_files_extracted": false,
+  "provenance_limit": "Source verification is recorded by the hash-matched supplied launcher; the uploaded reports do not include all source files or a trusted remote-host signature.",
+  "environments": [
+    {
+      "environment": "oci",
+      "functional_accepted": true,
+      "archive": "Spiral-check-oci-aarch64-20261108-055618-lw5nw5c4.tar.gz",
+      "archive_sha256": "09728bbae70fcb1b5bd7a74fc8d55dd573c2b3969c902b00132a52f6241bbebe",
+      "manifest_files_verified": 21,
+      "source_verification_record": {
+        "commit": "fcf7ff07ecba260f6b446baa7f1efd55bbe11ec2",
+        "manifest_sha256": "29944b7d762c2e94f5bb6f9dfebcefbcd326ac1eaafe4af0ebc659dc40bbc146",
+        "files_verified": 603,
+        "runner_sha256": "7a796ec038db018367bf3f5861e67cfc0ee4a90ffbe37c338cccbe417e0d8151",
+        "cargo_lock_sha256": "d12949c1b2e3293041b75d0461e94ed133a6a78635a2cfb85c9710be02a603d2"
+      },
+      "launcher_sha256": "e06f4ca155d44acebf3a8246795e47c70dbab3105ecbe917a5729a9d38b766f3",
+      "platform": {
+        "system": "Linux",
+        "node": "tls-server",
+        "release": "7.0.0-1013-oracle",
+        "version": "#13~24.04.1-Ubuntu SMP PREEMPT Fri Sep 25 09:43:58 UTC 2026",
+        "machine": "aarch64",
+        "processor": "aarch64"
+      },
+      "rustc_verbose": "rustc 1.99.1 (58cf8f9c3 2026-10-13)\nbinary: rustc\ncommit-hash: 58cf8f9c35b355199727627d07ae34a4e2846d67\ncommit-date: 2026-10-13\nhost: aarch64-unknown-linux-gnu\nrelease: 1.99.1\nLLVM version: 23.1.1\n\n",
+      "python_version": "3.12.3 (main, Aug 31 2026, 10:18:26) [GCC 13.3.0]",
+      "python_dependencies": "{'cryptography': '50.0.2', 'pyOpenSSL': '26.4.0', 'cffi': '2.1.1', 'pycparser': '3.12', 'typing_extensions': '4.16.0'}",
+      "counts": {
+        "python-protocol": 85,
+        "diagnostic-parser": 20,
+        "native-kem": 9,
+        "rust-unit": 70,
+        "rust-doc": 6,
+        "rust-tls": 35
+      },
+      "ignored_taint_tests": 0,
+      "compiled_crypto_dependencies": {
+        "hmac": "0.13.0",
+        "hkdf": "0.13.0",
+        "sha2": "0.11.1",
+        "ed25519-dalek": "3.0.0",
+        "curve25519-dalek": "5.0.0"
+      },
+      "binary_sha256": "715711e9009ca2ea829d0ab697964426df3cdb3b2a35de22105ce5abcbcc4d6d",
+      "started_utc": "2026-11-08T05:56:18.357912+00:00",
+      "finished_utc": "2026-11-08T05:59:57.269550+00:00",
+      "commands_exit_zero": true,
+      "source_unchanged_recorded": true
+    },
+    {
+      "environment": "wsl",
+      "functional_accepted": true,
+      "archive": "Spiral-check-wsl-x86_64-20261108-060144-gyjqohv_.tar.gz",
+      "archive_sha256": "a4826110c6c8ad94948aee8a300efe65b493256aaf58cbf3f2212ef75c3a605e",
+      "manifest_files_verified": 21,
+      "source_verification_record": {
+        "commit": "fcf7ff07ecba260f6b446baa7f1efd55bbe11ec2",
+        "manifest_sha256": "29944b7d762c2e94f5bb6f9dfebcefbcd326ac1eaafe4af0ebc659dc40bbc146",
+        "files_verified": 603,
+        "runner_sha256": "7a796ec038db018367bf3f5861e67cfc0ee4a90ffbe37c338cccbe417e0d8151",
+        "cargo_lock_sha256": "d12949c1b2e3293041b75d0461e94ed133a6a78635a2cfb85c9710be02a603d2"
+      },
+      "launcher_sha256": "e06f4ca155d44acebf3a8246795e47c70dbab3105ecbe917a5729a9d38b766f3",
+      "platform": {
+        "system": "Linux",
+        "node": "wsl-host",
+        "release": "6.18.54.1-microsoft-standard-WSL2",
+        "version": "#1 SMP PREEMPT_DYNAMIC Tue Oct  6 19:13:07 UTC 2026",
+        "machine": "x86_64",
+        "processor": "x86_64"
+      },
+      "rustc_verbose": "rustc 1.99.1 (58cf8f9c3 2026-10-13)\nbinary: rustc\ncommit-hash: 58cf8f9c35b355199727627d07ae34a4e2846d67\ncommit-date: 2026-10-13\nhost: x86_64-unknown-linux-gnu\nrelease: 1.99.1\nLLVM version: 23.1.1\n\n",
+      "python_version": "3.12.3 (main, Aug 31 2026, 10:18:26) [GCC 13.3.0]",
+      "python_dependencies": "{'cryptography': '50.0.2', 'pyOpenSSL': '26.4.0', 'cffi': '2.1.1', 'pycparser': '3.12', 'typing_extensions': '4.16.0'}",
+      "counts": {
+        "python-protocol": 85,
+        "diagnostic-parser": 20,
+        "native-kem": 9,
+        "rust-unit": 70,
+        "rust-doc": 6,
+        "rust-tls": 35
+      },
+      "ignored_taint_tests": 5,
+      "compiled_crypto_dependencies": {
+        "hmac": "0.13.0",
+        "hkdf": "0.13.0",
+        "sha2": "0.11.1",
+        "ed25519-dalek": "3.0.0",
+        "curve25519-dalek": "5.0.0"
+      },
+      "binary_sha256": "c0f45ebd26640285e2beb4baf64f236ff1ac29a914586004eb0cb2fd68949933",
+      "started_utc": "2026-11-08T06:01:44.486172+00:00",
+      "finished_utc": "2026-11-08T06:03:16.668961+00:00",
+      "commands_exit_zero": true,
+      "source_unchanged_recorded": true
+    }
+  ],
+  "errors": [],
+  "privacy_redaction": {
+    "applied": true,
+    "historical_execution_repeated": false,
+    "integrity_values_describe_redacted_artifacts": true
+  },
+  "artifact_language_normalization": {
+    "applied": true,
+    "historical_execution_repeated": false,
+    "integrity_values_describe_translated_artifacts": true
+  }
+}

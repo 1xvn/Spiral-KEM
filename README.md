@@ -68,6 +68,10 @@ tests numbering 6, and 35 real TLS tests; the original authentication-branch war
 state zeroization features. The latest regular Rust and ASan tests each passed 70 tests, together with 35 real TLS tests and
 40 independent ring signing pairs. Local outputs, signing nonce copies, and incomplete overall validation remain in scope.
 
+[Post-update OCI and WSL functional regression](protocol_rust/evidence/secret_state_platforms_20261108/README.md)
+passed the full functional runner on both environments using the same `fcf7ff0` source, including 70 Rust tests, 6 documentation tests, and 35 real TLS tests each.
+This functional validation on the two platforms is complete.
+
 Rust–C v0.3 provides [running instructions](protocol_rust/README.md), an [implementation report](protocol_rust/HARDENING_v0.3.md), and a [validation record](protocol_rust/VALIDATION.md). It strengthens signing-key ownership and cancellable concurrent shutdown and passed 52 unit, 4 compile-rejection, and 35 real TLS tests. The [November 7 memory investigation](protocol_rust/MEMORY_FOLLOWUP.md) records 6 passes on OCI and 2 on WSL and reproduces a local Valgrind false-positive mechanism for the AES-GCM warning. The original WSL failure and the 48-byte possibly-lost item in Rust instrumentation tests are retained. These results do not establish production-service security validation or Spiral's own security.
 
 `results/results.zip` is a previously uploaded result bundle and does not imply that all measurement results are included. Only some fragments of the large original design files are retained, so they cannot be reconstructed from this repository alone. See the [temporary upload guide](imports/README.md).

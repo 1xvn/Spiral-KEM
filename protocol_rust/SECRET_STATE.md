@@ -8,6 +8,9 @@ Measured code: `fe52b62a146850927bcc62c09395adac3fcaafb2`.
 [Original evidence, hashes, and re-review records](evidence/secret_state_20261108/README.md) are preserved.
 The earlier [receive record](RECEIVE_SECRET.md) remains a result for previous dependencies/executables.
 
+The additionally submitted [OCI/WSL functional regression](evidence/secret_state_platforms_20261108/README.md)
+passed on both platforms at merge commit `fcf7ff07ecba260f6b446baa7f1efd55bbe11ec2`.
+
 ## Changes and zeroization contracts
 
 | Dependency | Previous → Current | Actual improvement |
@@ -70,9 +73,28 @@ Among158 receive runs, original exits were99 for156 and0 for2. The existing48-by
 runs. Its absence in a few controls does not establish resolution of the original issue.
 Overall memory/constant-time verdicts remain incomplete; the WSL AES-GCM failure and strict CI gates remain.
 
-These are local Linux x86-64 results with stable1.99.1·nightly-2026-11-07. Existing OCI ARM/WSL
-evidence concerns the previous code state. It does not mean the same tests ran after changes on those environments or GitHub runners;
-ASan does not instrument all prebuilt std/native C/OpenSSL code.
+The ASan/taint/fuzzing results above were measured on local Linux x86-64 with stable1.99.1 and nightly-2026-11-07.
+ASan does not instrument all prebuilt std or native C/OpenSSL code.
+
+### OCI/WSL functional regression
+
+Functional checks on both environments were additionally confirmed using pinned source with updated dependencies.
+
+| Item | OCI ARM | WSL2 x86-64 |
+|---|---|---|
+| Python/diagnostics/C | 85/20/9 passed | 85/20/9 passed |
+| Rust unit/documentation | 70/6 passed | 70/6 passed |
+| ignored instrumentation targets | 0 | 5, excluded from passes |
+| release/actual TLS | Build succeeded/35 passed | Build succeeded/35 passed |
+| Pinned source/tools | Same fcf7ff0/Rust/Cargo1.99.1 | Same fcf7ff0/Rust/Cargo1.99.1 |
+
+Each original archive manifest was compared against21 files; actual execution counts, errors, and exit codes were
+reviewed. Pinned-launcher records verifying603 source files and runner/Cargo.lock hashes also match.
+Old-source materials and an empty WSL archive were excluded from this verdict and stored separately.
+
+Thus **this functional regression on both target platforms after dependency updates is complete**. These results do not
+establish renewed completion of ASan, fuzzing, secret-branch, or overall memory checks on
+both platforms. Actual GitHub runner results are also separate from these user submissions.
 
 ## Remaining temporary secrets and follow-up criteria
 

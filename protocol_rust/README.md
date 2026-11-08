@@ -21,6 +21,10 @@ Original authentication-related warnings and exit 99 are retained; constant-time
 SHA/HMAC zeroization features, and additionally validate RFC vectors, 40 independent ring signature pairs, and 70 functional/ASan tests.
 Hash-state cleanup is distinguished from remaining local output and nonce copies.
 
+[OCI/WSL functional regression after dependency updates](evidence/secret_state_platforms_20261108/README.md)
+confirmed passes on the same merge commit in each environment: Python85, diagnostics20, C9, Rust70, documentation6, and actualTLS35.
+This platform functional-validation phase is complete; constant-time and memory approval remain separate.
+
 The [Rust frame and ClientHello fuzzing guide](FUZZ_PARSERS.md) uses a separately pinned nightly and
 the disabled-by-default `parser-fuzz` entry points to check actual parser coverage and compare saved inputs
 against the Python reference implementation. OCI ARM64 and WSL2 x86-64 results are collected separately.
