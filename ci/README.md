@@ -3,6 +3,11 @@
 This configuration checks functional regressions when changes are submitted and preserves memory warnings separately.
 Successful functionality checks do not mean overall memory, constant-time, or cryptographic security approval.
 
+Current functional CI also runs the [temporary-value cleanup matrix](../protocol_rust/SECRET_COPY_CLEANUP.md) after Rust unit tests.
+It verifies exact counts of 7 runs and 23 focused tests and feature ON/OFF status,
+rejecting 0 tests, omissions, failures, and ignored/filtered tests. It does not report this as running the full upstream dev suite,
+and retains existing memory warnings and strict gates.
+
 ## What runs and when
 
 | GitHub Actions name | Trigger | Checks and adjudication |

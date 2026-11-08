@@ -128,7 +128,10 @@ service-key storage, permissions, rotation, disposal, and recovery policies rema
 The [temporary secret-copy erasure design](SECRET_COPY_DESIGN.md) specifies that follow-up scope.
 It recommends dependency-internal lifetime guards, including digest fixed-output temporaries; copies in the signature backend,
 registers, and past moved copies remain separately unfinished. This is a design/type-comparison stage,
-not a production erasure patch or completion of all of item 2.
+At design time, this did not mean a production code erasure patch or full completion of item 2.
+We later added a [named temporary cleanup implementation](SECRET_COPY_CLEANUP.md) and validated it locally.
+The previous measurements and temporary lists below remain records of those pinned sources; see the new implementation record
+for current improvements and incomplete items such as backend/past copies.
 
 ## Optional reproduction
 

@@ -1,0 +1,297 @@
+{
+  "schema": "spiral-named-scratch-linked-review/v1",
+  "identity": {
+    "source_commit": "7f26fed5b8176ddd009d44264fb5e9ab08fb8d31",
+    "source_files_verified": 864,
+    "source_manifest_sha256": "36013f94f0cb3bca0d3482a775831f4037fac2a9e553e679fe0cabf9031c8d39",
+    "binary_sha256": "ec45420a6f818c9385365c7be337a11e617690fc9631a582285911d484a2dfce",
+    "binary_bytes": 26659536
+  },
+  "toolchain": "Rust 1.99.1 (58cf8f9c35b355199727627d07ae34a4e2846d67)",
+  "target": "local x86_64 Linux",
+  "profile": "audit, release opt-level3/thin LTO/codegen-units1, DWARF enabled",
+  "selected_disassemblies_verified": 15,
+  "named_scope_store_evidence": [
+    {
+      "label": "digest-sha256-full-res",
+      "named_scope": "digest full_res SHA-256",
+      "function_rva": "0x157b70",
+      "function_bytes": 558,
+      "disassembly_file": "digest-sha256-full-res.asm",
+      "zero_byte_store_count": 32,
+      "first_zero_store_rva": "0x157cd8",
+      "last_zero_store_rva": "0x157d72",
+      "source_inline_frames": [
+        "digest/src/block_api/ct_variable.rs:117",
+        "digest/src/secret_scratch.rs:30",
+        "src/lib.rs:465",
+        "src/lib.rs:763"
+      ],
+      "basis": "Observed immediate-zero byte stores with private guard Drop and zeroize DWARF inline context."
+    },
+    {
+      "label": "digest-sha512-full-res",
+      "named_scope": "digest full_res SHA-512",
+      "function_rva": "0x157da0",
+      "function_bytes": 938,
+      "disassembly_file": "digest-sha512-full-res.asm",
+      "zero_byte_store_count": 64,
+      "first_zero_store_rva": "0x157fe1",
+      "last_zero_store_rva": "0x15811b",
+      "source_inline_frames": [
+        "digest/src/block_api/ct_variable.rs:117",
+        "digest/src/secret_scratch.rs:30",
+        "src/lib.rs:465",
+        "src/lib.rs:763"
+      ],
+      "basis": "Observed immediate-zero byte stores with private guard Drop and zeroize DWARF inline context."
+    },
+    {
+      "label": "hmac-finalize",
+      "named_scope": "HMAC SHA256 inner output",
+      "function_rva": "0x159800",
+      "function_bytes": 615,
+      "disassembly_file": "hmac-finalize.asm",
+      "zero_byte_store_count": 32,
+      "first_zero_store_rva": "0x159884",
+      "last_zero_store_rva": "0x15991e",
+      "source_inline_frames": [
+        "digest/src/buffer_macros/fixed.rs:224",
+        "digest/src/lib.rs:104",
+        "hmac/src/block_api.rs:91",
+        "hmac/src/secret_scratch.rs:30",
+        "src/lib.rs:465",
+        "src/lib.rs:763"
+      ],
+      "basis": "Observed immediate-zero byte stores with private guard Drop and zeroize DWARF inline context."
+    },
+    {
+      "label": "hmac-constructor",
+      "named_scope": "HMAC pad through HKDF from_prk",
+      "function_rva": "0x13e220",
+      "function_bytes": 955,
+      "disassembly_file": "hmac-constructor.asm",
+      "zero_byte_store_count": 64,
+      "first_zero_store_rva": "0x13e392",
+      "last_zero_store_rva": "0x13e4cc",
+      "source_inline_frames": [
+        "hkdf/src/hmac_impl.rs:24",
+        "hkdf/src/lib.rs:117",
+        "hmac/src/block_api.rs:70",
+        "hmac/src/lib.rs:34",
+        "hmac/src/secret_scratch.rs:30",
+        "src/lib.rs:465",
+        "src/lib.rs:763"
+      ],
+      "basis": "Observed immediate-zero byte stores with private guard Drop and zeroize DWARF inline context."
+    },
+    {
+      "label": "hkdf-expand",
+      "named_scope": "HKDF two observed block cleanup sites",
+      "function_rva": "0x13d500",
+      "function_bytes": 1909,
+      "disassembly_file": "hkdf-expand.asm",
+      "zero_byte_store_count": 64,
+      "first_zero_store_rva": "0x13d886",
+      "last_zero_store_rva": "0x13dbdb",
+      "source_inline_frames": [
+        "hkdf/src/lib.rs:171",
+        "hkdf/src/lib.rs:175",
+        "hkdf/src/secret_bytes.rs:30",
+        "src/lib.rs:465",
+        "src/lib.rs:763"
+      ],
+      "basis": "Observed immediate-zero byte stores with private guard Drop and zeroize DWARF inline context."
+    },
+    {
+      "label": "hkdf-output-drop",
+      "named_scope": "HKDF owned output Drop",
+      "function_rva": "0xcabb0",
+      "function_bytes": 138,
+      "disassembly_file": "hkdf-output-drop.asm",
+      "zero_byte_store_count": 32,
+      "first_zero_store_rva": "0xcabb9",
+      "last_zero_store_rva": "0xcac35",
+      "source_inline_frames": [
+        "hkdf/src/secret_bytes.rs:30",
+        "src/lib.rs:465",
+        "src/lib.rs:763"
+      ],
+      "basis": "Observed immediate-zero byte stores with private guard Drop and zeroize DWARF inline context."
+    },
+    {
+      "label": "hkdf-previous-block-drop",
+      "named_scope": "HKDF previous-block Option Drop",
+      "function_rva": "0xca3c0",
+      "function_bytes": 138,
+      "disassembly_file": "hkdf-previous-block-drop.asm",
+      "zero_byte_store_count": 32,
+      "first_zero_store_rva": "0xca3c9",
+      "last_zero_store_rva": "0xca445",
+      "source_inline_frames": [
+        "hkdf/src/secret_bytes.rs:30",
+        "src/lib.rs:465",
+        "src/lib.rs:763"
+      ],
+      "basis": "Observed immediate-zero byte stores with private guard Drop and zeroize DWARF inline context."
+    },
+    {
+      "label": "ed-seed-digest",
+      "named_scope": "Ed25519 seed SHA512 output",
+      "function_rva": "0xa3f40",
+      "function_bytes": 513,
+      "disassembly_file": "ed-seed-digest.asm",
+      "zero_byte_store_count": 64,
+      "first_zero_store_rva": "0xa3ff6",
+      "last_zero_store_rva": "0xa4130",
+      "source_inline_frames": [
+        "ed25519-dalek/src/secret_scratch.rs:33",
+        "ed25519-dalek/src/signing.rs:869",
+        "src/lib.rs:465",
+        "src/lib.rs:763"
+      ],
+      "basis": "Observed immediate-zero byte stores with private guard Drop and zeroize DWARF inline context."
+    },
+    {
+      "label": "ed-expanded-key",
+      "named_scope": "Ed25519 named scalar/hash-prefix/clamped local slots",
+      "function_rva": "0xa2530",
+      "function_bytes": 1277,
+      "disassembly_file": "ed-expanded-key.asm",
+      "zero_byte_store_count": 128,
+      "first_zero_store_rva": "0xa279c",
+      "last_zero_store_rva": "0xa2a1a",
+      "source_inline_frames": [
+        "curve25519-dalek/src/scalar.rs:552",
+        "ed25519-dalek/src/hazmat.rs:103",
+        "ed25519-dalek/src/secret_scratch.rs:33",
+        "ed25519-dalek/src/secret_scratch.rs:56",
+        "src/lib.rs:275",
+        "src/lib.rs:345",
+        "src/lib.rs:358",
+        "src/lib.rs:465",
+        "src/lib.rs:737",
+        "src/lib.rs:763"
+      ],
+      "basis": "Observed immediate-zero byte stores with private guard Drop and zeroize DWARF inline context."
+    },
+    {
+      "label": "curve-nonce-hash",
+      "named_scope": "curve from_hash owned SHA512 output",
+      "function_rva": "0xa2280",
+      "function_bytes": 419,
+      "disassembly_file": "curve-nonce-hash.asm",
+      "zero_byte_store_count": 64,
+      "first_zero_store_rva": "0xa22c8",
+      "last_zero_store_rva": "0xa2402",
+      "source_inline_frames": [
+        "curve25519-dalek/src/scalar.rs:672",
+        "curve25519-dalek/src/secret_scratch.rs:24",
+        "src/lib.rs:465",
+        "src/lib.rs:763"
+      ],
+      "basis": "Observed immediate-zero byte stores with private guard Drop and zeroize DWARF inline context."
+    },
+    {
+      "label": "curve-nonce-output-drop",
+      "named_scope": "curve SHA512 output unwind Drop",
+      "function_rva": "0xa2430",
+      "function_bytes": 256,
+      "disassembly_file": "curve-nonce-output-drop.asm",
+      "zero_byte_store_count": 64,
+      "first_zero_store_rva": "0xa2430",
+      "last_zero_store_rva": "0xa252b",
+      "source_inline_frames": [
+        "curve25519-dalek/src/secret_scratch.rs:24",
+        "src/lib.rs:465",
+        "src/lib.rs:763"
+      ],
+      "basis": "Observed immediate-zero byte stores with private guard Drop and zeroize DWARF inline context."
+    },
+    {
+      "label": "ed-multipart-sign",
+      "named_scope": "Production nonce r and key_term owners",
+      "function_rva": "0xa34e0",
+      "function_bytes": 2413,
+      "disassembly_file": "ed-multipart-sign.asm",
+      "zero_byte_store_count": 64,
+      "first_zero_store_rva": "0xa39da",
+      "last_zero_store_rva": "0xa3b14",
+      "source_inline_frames": [
+        "curve25519-dalek/src/scalar.rs:552",
+        "ed25519-dalek/src/secret_scratch.rs:56",
+        "ed25519-dalek/src/signing.rs:609",
+        "ed25519-dalek/src/signing.rs:896",
+        "ed25519-dalek/src/signing.rs:941",
+        "src/lib.rs:275",
+        "src/lib.rs:345",
+        "src/lib.rs:358",
+        "src/lib.rs:737"
+      ],
+      "basis": "Nonce from_hash result is copied into rsp+0x20..0x3f; key_term multiplication result is moved to rsp+0..0x1f. Both exact 32-byte current owner slots receive immediate-zero stores before return.",
+      "production_call": {
+        "caller": "ServerIdentity::sign",
+        "call_rva": "0x1315a7",
+        "got_slot_rva": "0x250f50",
+        "resolved_callee_rva": "0xa34e0",
+        "relocation_kind": "R_X86_64_RELATIVE"
+      },
+      "unwind_call": {
+        "scalar_zeroize_got_slot_rva": "0x250f18",
+        "resolved_callee_rva": "0xa2170",
+        "basis": "Selected signer contains cleanup calls attributed to SecretScalar::drop at signing.rs:941 on unwind; actual generic error/unwind execution is separately covered by unit witnesses."
+      }
+    }
+  ],
+  "source_zeroize_basis": {
+    "path": "zeroize-1.9.1/src/lib.rs:455–465,748–763",
+    "semantics": "Slice Zeroize calls volatile_set; volatile_set uses ptr::write_volatile per byte. The observed stores remain in the optimized binary."
+  },
+  "standalone_review": {
+    "campaign_complete": true,
+    "trace_complete": true,
+    "errors": [],
+    "source_files_verified_from_bundle": 864,
+    "campaign_monitored_source_hashes": 189,
+    "trace_monitored_source_hashes": 179,
+    "manifest_files_verified": {
+      "SHA256.json": 494,
+      "trace/SHA256.json": 486
+    },
+    "memcheck_records": 160,
+    "raw_exits": {
+      "99": 160
+    },
+    "raw_summaries_stdout_stderr_match": true,
+    "receive_warning_classification_candidates": {
+      "authentication_decision_candidate": 64,
+      "authentication_result_propagation_candidate": 64,
+      "close_reason_validity_candidate": 6
+    },
+    "receive_public_warning_contexts": 0,
+    "derivation_warning_contexts": 0,
+    "possibly_lost_48_bytes_invocations": 160,
+    "suppression_used": false,
+    "instruction_mapping_complete": true,
+    "unclassified_warning_contexts_including_positives": 2
+  },
+  "limits": [
+    "This establishes selected current named-slot cleanup writes, not all copies, all paths or all registers.",
+    "Actual target is local x86_64; no new OCI ARM/WSL execution is inferred.",
+    "Long-key HMAC, every Simple/Reset variant, optional kdf and all prehash paths are not individually covered by this selected linked assembly set.",
+    "Source/functional witnesses cover more cases than this selected assembly review; neither substitutes for the other.",
+    "Scalar backend limbs/radix digits, argument copies, historical moves, unused SigningKey::to_scalar_bytes conversion path, OS/provider copies and process abort remain outside the guarantee."
+  ],
+  "constant_time_approved": false,
+  "production_memory_passed": false,
+  "privacy_redaction": {
+    "applied": true,
+    "historical_execution_repeated": false,
+    "integrity_values_describe_redacted_artifacts": true
+  },
+  "artifact_language_normalization": {
+    "applied": true,
+    "historical_execution_repeated": false,
+    "integrity_values_describe_translated_artifacts": true
+  }
+}

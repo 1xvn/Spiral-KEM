@@ -4,6 +4,9 @@ At baseline source `47c80c75cc93934836b2893905752fb3f13a0c23`, dependency-local 
 nonce lifetimes were investigated and three alternatives compared. This deliverable is a design and type-compilation
 comparison, not a zeroization patch or a declaration that all item2 is complete.
 
+We added subsequent [ownership/cleanup implementation and validation](SECRET_COPY_CLEANUP.md). The following
+compares alternatives at design time; subsequent records describe implemented slots, actual tests, and still-excluded scope.
+
 | Alternative | Scope and assessment |
 |---|---|
 | 1. Retain caller-output cleanup | Can narrow app-owned output error paths, but dependency-internal copies remain |

@@ -1,0 +1,22 @@
+{
+  "ed25519-sign": {
+    "median_ratio_across_lengths": 1.0041738489279597,
+    "min_ratio_across_lengths": 0.9866095641201821,
+    "max_ratio_across_lengths": 1.0273338676294899
+  },
+  "hkdf-sha256-extract-expand32": {
+    "median_ratio_across_lengths": 1.1153409117108264,
+    "min_ratio_across_lengths": 1.0009554068602065,
+    "max_ratio_across_lengths": 1.2093177148582153
+  },
+  "hmac-sha256": {
+    "median_ratio_across_lengths": 1.1061044539042855,
+    "min_ratio_across_lengths": 1.0033269587794458,
+    "max_ratio_across_lengths": 1.2075181019241261
+  },
+  "source_unchanged": true,
+  "case_count": 21,
+  "raw_sample_count": 294,
+  "all_public_outputs_identical": true,
+  "claim_limit": "Descriptive medians only; no significance or deployment-budget acceptance claim."
+}

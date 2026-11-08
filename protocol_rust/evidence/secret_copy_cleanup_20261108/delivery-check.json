@@ -1,0 +1,19 @@
+{
+  "source_commit": "7f26fed5b8176ddd009d44264fb5e9ab08fb8d31",
+  "source_bundle_sha256": "9d892ca31154a210640a4ce89bd2fe85311699e515ec78715daef8af0eba0a3a",
+  "clean_check_exit": 0,
+  "clean_stdout": "Fixed source verified: 7f26fed5b8176ddd009d44264fb5e9ab08fb8d31 files: 864\n",
+  "tamper_check_exit": 1,
+  "tamper_stderr": "changed source: third_party/rustcrypto/hkdf/src/lib.rs\n",
+  "full_standalone_collection_complete": true,
+  "privacy_redaction": {
+    "applied": true,
+    "historical_execution_repeated": false,
+    "integrity_values_describe_redacted_artifacts": true
+  },
+  "artifact_language_normalization": {
+    "applied": true,
+    "historical_execution_repeated": false,
+    "integrity_values_describe_translated_artifacts": true
+  }
+}

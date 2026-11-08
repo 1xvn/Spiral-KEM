@@ -1,0 +1,55 @@
+
+running 5 tests
+test cleanup_tests::discarded_prk_and_each_replaced_or_final_block_are_wiped ... ok
+test cleanup_tests::previous_block_is_wiped_when_a_generic_update_panics ... ok
+test cleanup_tests::unreturned_prk_is_wiped_when_a_generic_constructor_panics ... ok
+test secret_bytes::tests::guard_erases_before_the_owned_value_drops_normally_and_on_unwind ... ok
+test secret_bytes::tests::transfer_preserves_the_returned_output ... ok
+
+test result: ok. 5 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+
+running 2 tests
+test extract_constructor_and_split_info_preserve_rfc5869_case_one ... ok
+test generic_lengths_and_rejections_are_unchanged ... ok
+
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.01s
+
+
+warning: patch `curve25519-dalek v5.0.0 (/workspace/spiral-secret-copy-cleanup-20261108/third_party/rustcrypto/curve25519-dalek)` was not used in the crate graph
+warning: patch `ed25519-dalek v3.0.0 (/workspace/spiral-secret-copy-cleanup-20261108/third_party/rustcrypto/ed25519-dalek)` was not used in the crate graph
+warning: patch `hkdf v0.13.0 (/workspace/spiral-secret-copy-cleanup-20261108/third_party/rustcrypto/hkdf)` was not used in the crate graph
+help: Check that the patched package version and available features are compatible
+      with the dependency requirements. If the patch has a different version from
+      what is locked in the Cargo.lock file, run `cargo update` to use the new
+      version. This may also occur with an optional dependency that is not enabled.
+   Compiling digest v0.11.3 (/workspace/spiral-secret-copy-cleanup-20261108/third_party/rustcrypto/digest)
+   Compiling hmac v0.13.0 (/workspace/spiral-secret-copy-cleanup-20261108/third_party/rustcrypto/hmac)
+   Compiling sha2 v0.11.1
+   Compiling scratch-hkdf-compat v0.0.0 (/workspace/secret-copy-functional-ci/scratch-cleanup/harnesses/hkdf)
+warning: unexpected `cfg` condition value: `kdf`
+  --> /workspace/spiral-secret-copy-cleanup-20261108/third_party/rustcrypto/hkdf/src/lib.rs:24:7
+   |
+24 | #[cfg(feature = "kdf")]
+   |       ^^^^^^^^^^^^^^^
+   |
+   = note: expected values for `feature` are: `zeroize`
+   = help: consider adding `kdf` as a feature in `Cargo.toml`
+   = note: see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration
+   = note: `#[warn(unexpected_cfgs)]` on by default
+
+warning: unexpected `cfg` condition value: `kdf`
+  --> /workspace/spiral-secret-copy-cleanup-20261108/third_party/rustcrypto/hkdf/src/lib.rs:73:7
+   |
+73 | #[cfg(feature = "kdf")]
+   |       ^^^^^^^^^^^^^^^
+   |
+   = note: expected values for `feature` are: `zeroize`
+   = help: consider adding `kdf` as a feature in `Cargo.toml`
+   = note: see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration
+
+warning: `scratch-hkdf-compat` (lib) generated 2 warnings
+warning: `scratch-hkdf-compat` (lib test) generated 2 warnings (2 duplicates)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 0.85s
+     Running unittests /workspace/spiral-secret-copy-cleanup-20261108/third_party/rustcrypto/hkdf/src/lib.rs (/workspace/secret-copy-functional-ci/scratch-cleanup/target/debug/deps/hkdf-9eb3d72c84e05095)
+     Running /workspace/spiral-secret-copy-cleanup-20261108/third_party/rustcrypto/hkdf/tests/cleanup_compat.rs (/workspace/secret-copy-functional-ci/scratch-cleanup/target/debug/deps/cleanup_compat-9c55f4d777f13154)

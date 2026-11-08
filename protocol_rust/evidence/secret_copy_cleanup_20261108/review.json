@@ -1,0 +1,46 @@
+{
+  "implementation_source_commit": "7f26fed5b8176ddd009d44264fb5e9ab08fb8d31",
+  "source_bundle_files_verified": 864,
+  "report_source_hashes_independently_matched_to_git": 189,
+  "manifest_files_verified": {
+    "SHA256.json": 494,
+    "trace/SHA256.json": 486
+  },
+  "standalone_without_git_complete": true,
+  "functional_ci": "passed",
+  "rust_unit_passed": 70,
+  "rust_ignored": 5,
+  "scratch_matrix_cases": 7,
+  "scratch_tests_passed": 23,
+  "python_protocol_passed": 85,
+  "diagnostic_parser_passed": 24,
+  "native_c_passed": 9,
+  "rust_doc_passed": 6,
+  "actual_tls_passed": 35,
+  "asan_leak_tests_passed": 70,
+  "asan_sandbox_initial_exit": 101,
+  "asan_escalated_final_exit": 0,
+  "memcheck_invocations": 160,
+  "raw_memcheck_exits": {
+    "99": 160
+  },
+  "receive_classification_candidates": {
+    "authentication_decision_candidate": 64,
+    "authentication_result_propagation_candidate": 64,
+    "close_reason_validity_candidate": 6
+  },
+  "possibly_lost_48_bytes_invocations": 160,
+  "actual_arm_patch_execution_verified": false,
+  "actual_wsl_patch_execution_verified": false,
+  "constant_time_approved": false,
+  "production_memory_passed": false,
+  "limitations": [
+    "Named current owned slots only, not historical/backend/register/OS copies.",
+    "Unused dalek to_scalar_bytes/to_scalar conversion digest output remains outside this patch scope.",
+    "Complete upstream dev suites and optional kdf feature are not covered by the focused harness.",
+    "ASan covers instrumented Rust; native C/OpenSSL and prebuilt std are not fully instrumented.",
+    "Primitive timings are descriptive, not service-latency/RSS or deployment budget acceptance."
+  ],
+  "linked_review": "linked-review/review.json",
+  "optimized_scope": "Selected linked functions and named current slots only; not every variant/backend/old copy."
+}

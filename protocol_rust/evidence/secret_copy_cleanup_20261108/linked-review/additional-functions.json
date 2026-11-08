@@ -1,0 +1,8 @@
+{
+  "label": "ed-multipart-sign",
+  "address": 668896,
+  "size": 2413,
+  "demangled": "<ed25519_dalek::signing::SigningKey as signature::signer::MultipartSigner<ed25519::Signature>>::try_multipart_sign",
+  "file": "ed-multipart-sign.asm",
+  "disassembly_sha256": "3ea12c0e1d629cf259aee3e0e9358bd7166fe00b7194f1485fefd79fb0be5fd1"
+}

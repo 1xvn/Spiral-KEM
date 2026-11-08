@@ -13,8 +13,9 @@
   "evidence/api-probe-result.json": "01021ac9e4db4d160306371d28a86f0a492774b6106febd2add1162b2fbe6d69",
   "evidence/input-inventory.json": "273058d6e42032472d8528dd58b19b84df29c782bb79f5b1bc5739be2fc52572",
   "evidence/source-manifest.json": "ed263f344199654d4a5f5575ee3890fc81672c658d5de945df869583c19495dd",
-  "hardening.json": "e439a6568597154244c7413831c40c51b8f311ef59c9b7e5927ef9c1a8d56baa",
-  "hardening.md": "76d5b2804510acb3c678480e7f89d38159bf4f3e4fc2fce6562e5f311d27dbdc",
+  "hardening.json": "94fbc84f1e5efb5c052de418b78c69fecfd1609b795ce5beb5b25647e980d5ba",
+  "hardening.md": "6e607d1fee41a15b5ec304ba29aeba13794c9ee99948a087586260091f73df57",
+  "implementation/dependency-scopes.md": "5f77a16b8915019fc497b9c2ff2b12caee2d5cce18f8e5ae9327a990aca22e49",
   "proposals/secret-scratch-ownership.md": "ad3a44e717f5bc98eb03922c6e56f99eccc40826a7286e1d3aa52fe09227e91c",
   "validation.json": "4f092424510b5ea34a7cd25c1de478116487acc249997ee5e8eb1be93cf66037"
 }

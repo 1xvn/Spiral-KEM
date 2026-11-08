@@ -9,3 +9,8 @@ third_party/rustcrypto/digest/CHANGELOG.md -whitespace
 third_party/rustcrypto/ed25519-dalek/LICENSE -whitespace
 third_party/rustcrypto/hkdf/CHANGELOG.md -whitespace
 third_party/rustcrypto/hkdf/README.md -whitespace
+
+# Preserve captured console diagnostics and linked disassembly byte-for-byte.
+protocol_rust/evidence/secret_copy_cleanup_20261108/**/*.log -whitespace
+protocol_rust/evidence/secret_copy_cleanup_20261108/**/*.asm -whitespace
+protocol_rust/evidence/secret_copy_cleanup_20261108/linked-review/elf-headers.txt -whitespace

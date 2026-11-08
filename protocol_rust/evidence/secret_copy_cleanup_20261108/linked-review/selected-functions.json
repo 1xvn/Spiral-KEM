@@ -1,0 +1,137 @@
+{
+  "identity": {
+    "source_commit": "7f26fed5b8176ddd009d44264fb5e9ab08fb8d31",
+    "source_files_verified": 864,
+    "source_manifest_sha256": "36013f94f0cb3bca0d3482a775831f4037fac2a9e553e679fe0cabf9031c8d39",
+    "binary_sha256": "ec45420a6f818c9385365c7be337a11e617690fc9631a582285911d484a2dfce",
+    "binary_bytes": 26659536
+  },
+  "functions": [
+    {
+      "address": 1407856,
+      "size": 558,
+      "symbol": "_RNvXs6_NtNtCsaqjMK40uumc_6digest9block_api11ct_variableINtB5_12CtOutWrapperNtNtCs5Cxy0pKBgaY_4sha29block_api13Sha256VarCoreINtNtCscyHpLhKeJqC_7typenum4uint4UIntIB1Y_IB1Y_IB1Y_IB1Y_IB1Y_NtB20_5UTermNtNtB22_3bit2B1ENtB3b_2B0EB3p_EB3p_EB3p_EB3p_EENtB7_15FixedOutputCore19finalize_fixed_coreCs9LFm1b3AnVj_15spiral_protocol",
+      "demangled": "<digest::block_api::ct_variable::CtOutWrapper<sha2::block_api::Sha256VarCore, typenum::uint::UInt<typenum::uint::UInt<typenum::uint::UInt<typenum::uint::UInt<typenum::uint::UInt<typenum::uint::UInt<typenum::uint::UTerm, typenum::bit::B1>, typenum::bit::B0>, typenum::bit::B0>, typenum::bit::B0>, typenum::bit::B0>, typenum::bit::B0>> as digest::block_api::FixedOutputCore>::finalize_fixed_core",
+      "label": "digest-sha256-full-res",
+      "file": "digest-sha256-full-res.asm",
+      "disassembly_sha256": "9cb04f3c3d32bacbcbec4d1baa8c933481930952bd9d316c172e16cbcafc78bd"
+    },
+    {
+      "address": 1408416,
+      "size": 938,
+      "symbol": "_RNvXs6_NtNtCsaqjMK40uumc_6digest9block_api11ct_variableINtB5_12CtOutWrapperNtNtCs5Cxy0pKBgaY_4sha29block_api13Sha512VarCoreINtNtCscyHpLhKeJqC_7typenum4uint4UIntIB1Y_IB1Y_IB1Y_IB1Y_IB1Y_IB1Y_NtB20_5UTermNtNtB22_3bit2B1ENtB3g_2B0EB3u_EB3u_EB3u_EB3u_EB3u_EENtB7_15FixedOutputCore19finalize_fixed_coreCs9LFm1b3AnVj_15spiral_protocol",
+      "demangled": "<digest::block_api::ct_variable::CtOutWrapper<sha2::block_api::Sha512VarCore, typenum::uint::UInt<typenum::uint::UInt<typenum::uint::UInt<typenum::uint::UInt<typenum::uint::UInt<typenum::uint::UInt<typenum::uint::UInt<typenum::uint::UTerm, typenum::bit::B1>, typenum::bit::B0>, typenum::bit::B0>, typenum::bit::B0>, typenum::bit::B0>, typenum::bit::B0>, typenum::bit::B0>> as digest::block_api::FixedOutputCore>::finalize_fixed_core",
+      "label": "digest-sha512-full-res",
+      "file": "digest-sha512-full-res.asm",
+      "disassembly_sha256": "b79d1c33af1cab002eb36f577db10318a2b0216c15836004de5bbaddf7245bba"
+    },
+    {
+      "address": 1415168,
+      "size": 615,
+      "symbol": "_RNvYINtCslDJkwmSysbO_4hmac4HmacNtCs5Cxy0pKBgaY_4sha26Sha256ENtCsaqjMK40uumc_6digest11FixedOutput14finalize_fixedCs9LFm1b3AnVj_15spiral_protocol",
+      "demangled": "<hmac::Hmac<sha2::Sha256> as digest::FixedOutput>::finalize_fixed",
+      "label": "hmac-finalize",
+      "file": "hmac-finalize.asm",
+      "disassembly_sha256": "06e8994697a04a94cd2f57be34a24d634989beb6607539ebc2fb320d3c70ccc0"
+    },
+    {
+      "address": 1303072,
+      "size": 955,
+      "symbol": "_RNvMs_Cs2oK7hUsYZh0_4hkdfINtB4_11GenericHkdfINtCslDJkwmSysbO_4hmac4HmacNtCs5Cxy0pKBgaY_4sha26Sha256EE8from_prkCs9LFm1b3AnVj_15spiral_protocol",
+      "demangled": "<hkdf::GenericHkdf<hmac::Hmac<sha2::Sha256>>>::from_prk",
+      "label": "hmac-constructor",
+      "file": "hmac-constructor.asm",
+      "disassembly_sha256": "562433174c5cc033f3eed31e3bdca532887b03bde8353d5895abad709b1eefc7"
+    },
+    {
+      "address": 1299712,
+      "size": 1909,
+      "symbol": "_RNvMs_Cs2oK7hUsYZh0_4hkdfINtB4_11GenericHkdfINtCslDJkwmSysbO_4hmac4HmacNtCs5Cxy0pKBgaY_4sha26Sha256EE17expand_multi_infoCs9LFm1b3AnVj_15spiral_protocol",
+      "demangled": "<hkdf::GenericHkdf<hmac::Hmac<sha2::Sha256>>>::expand_multi_info",
+      "label": "hkdf-expand",
+      "file": "hkdf-expand.asm",
+      "disassembly_sha256": "6fa57e43be13830068627f8d0c7cd02d2912ea0cac264ddf920c7c6b2781de8f"
+    },
+    {
+      "address": 1301632,
+      "size": 1440,
+      "symbol": "_RNvMs_Cs2oK7hUsYZh0_4hkdfINtB4_11GenericHkdfINtCslDJkwmSysbO_4hmac4HmacNtCs5Cxy0pKBgaY_4sha26Sha256EE7extractCs9LFm1b3AnVj_15spiral_protocol",
+      "demangled": "<hkdf::GenericHkdf<hmac::Hmac<sha2::Sha256>>>::extract",
+      "label": "hkdf-extract",
+      "file": "hkdf-extract.asm",
+      "disassembly_sha256": "563cd5f4c4d6a2af2786f755754b1592d793a727d8cb771655eac495e7cd5f1b"
+    },
+    {
+      "address": 830384,
+      "size": 138,
+      "symbol": "_RINvNtCskADBYZwJmSU_4core3ptr9drop_glueINtNtCs2oK7hUsYZh0_4hkdf12secret_bytes11SecretBytesINtCs9XzT6EIGLGJ_12hybrid_array5ArrayhINtNtCscyHpLhKeJqC_7typenum4uint4UIntIB23_IB23_IB23_IB23_IB23_NtB25_5UTermNtNtB27_3bit2B1ENtB3g_2B0EB3u_EB3u_EB3u_EB3u_EEEECs9LFm1b3AnVj_15spiral_protocol",
+      "demangled": "core::ptr::drop_glue::<hkdf::secret_bytes::SecretBytes<hybrid_array::Array<u8, typenum::uint::UInt<typenum::uint::UInt<typenum::uint::UInt<typenum::uint::UInt<typenum::uint::UInt<typenum::uint::UInt<typenum::uint::UTerm, typenum::bit::B1>, typenum::bit::B0>, typenum::bit::B0>, typenum::bit::B0>, typenum::bit::B0>, typenum::bit::B0>>>>",
+      "label": "hkdf-output-drop",
+      "file": "hkdf-output-drop.asm",
+      "disassembly_sha256": "7894e1dc7396c9b604921b9954f5a47f7369034baeae2c3d070c4ef8527f3b7e"
+    },
+    {
+      "address": 828352,
+      "size": 138,
+      "symbol": "_RINvNtCskADBYZwJmSU_4core3ptr9drop_glueINtNtB4_6option6OptionINtNtCs2oK7hUsYZh0_4hkdf12secret_bytes11SecretBytesINtCs9XzT6EIGLGJ_12hybrid_array5ArrayhINtNtCscyHpLhKeJqC_7typenum4uint4UIntIB2p_IB2p_IB2p_IB2p_IB2p_NtB2r_5UTermNtNtB2t_3bit2B1ENtB3C_2B0EB3Q_EB3Q_EB3Q_EB3Q_EEEEECs9LFm1b3AnVj_15spiral_protocol",
+      "demangled": "core::ptr::drop_glue::<core::option::Option<hkdf::secret_bytes::SecretBytes<hybrid_array::Array<u8, typenum::uint::UInt<typenum::uint::UInt<typenum::uint::UInt<typenum::uint::UInt<typenum::uint::UInt<typenum::uint::UInt<typenum::uint::UTerm, typenum::bit::B1>, typenum::bit::B0>, typenum::bit::B0>, typenum::bit::B0>, typenum::bit::B0>, typenum::bit::B0>>>>>",
+      "label": "hkdf-previous-block-drop",
+      "file": "hkdf-previous-block-drop.asm",
+      "disassembly_sha256": "3cfcfb6726b441cfde42960be3891dc8416f0b6f2783221781cd626669febde6"
+    },
+    {
+      "address": 671552,
+      "size": 513,
+      "symbol": "_RNvXse_NtCsgxmkeHbIDMv_13ed25519_dalek7signingNtNtB7_6hazmat17ExpandedSecretKeyINtNtCskADBYZwJmSU_4core7convert4FromRAhj20_E4from",
+      "demangled": "<ed25519_dalek::hazmat::ExpandedSecretKey as core::convert::From<&[u8; 32]>>::from",
+      "label": "ed-seed-digest",
+      "file": "ed-seed-digest.asm",
+      "disassembly_sha256": "d074bac45c8b09f15953521f7719aa654e8e5bb8f1bc81dd6d1dfd08c2ca737a"
+    },
+    {
+      "address": 664880,
+      "size": 1277,
+      "symbol": "_RNvMs4_NtCsgxmkeHbIDMv_13ed25519_dalek6hazmatNtB5_17ExpandedSecretKey10from_bytes",
+      "demangled": "<ed25519_dalek::hazmat::ExpandedSecretKey>::from_bytes",
+      "label": "ed-expanded-key",
+      "file": "ed-expanded-key.asm",
+      "disassembly_sha256": "8adc9984f9f73c5b0b9d3e09fd94bc433032e7c94a177271533a0081ceafb774"
+    },
+    {
+      "address": 1250464,
+      "size": 624,
+      "symbol": "_RNvMNtCs9LFm1b3AnVj_15spiral_protocol8identityNtB2_14ServerIdentity4sign",
+      "demangled": "<spiral_protocol::identity::ServerIdentity>::sign",
+      "label": "ed-production-sign",
+      "file": "ed-production-sign.asm",
+      "disassembly_sha256": "e719b120ddc9c5e66250ef9aac06a4aea31e7c404ca9b52fafa8f29f006ee92c"
+    },
+    {
+      "address": 664192,
+      "size": 419,
+      "symbol": "_RINvMsm_NtCs10KygnP71e6_16curve25519_dalek6scalarNtB6_6Scalar9from_hashNtCs5Cxy0pKBgaY_4sha26Sha512ECsgxmkeHbIDMv_13ed25519_dalek",
+      "demangled": "<curve25519_dalek::scalar::Scalar>::from_hash::<sha2::Sha512>",
+      "label": "curve-nonce-hash",
+      "file": "curve-nonce-hash.asm",
+      "disassembly_sha256": "78430ee45bf59b6a7fba788f74a97ca30dfb7006b38f2a88ce7dc993f12e0f44"
+    },
+    {
+      "address": 664624,
+      "size": 256,
+      "symbol": "_RINvNtCskADBYZwJmSU_4core3ptr9drop_glueINtNtCs10KygnP71e6_16curve25519_dalek14secret_scratch11SecretBytesINtCs9XzT6EIGLGJ_12hybrid_array5ArrayhINtNtCscyHpLhKeJqC_7typenum4uint4UIntIB2i_IB2i_IB2i_IB2i_IB2i_IB2i_NtB2k_5UTermNtNtB2m_3bit2B1ENtB3A_2B0EB3O_EB3O_EB3O_EB3O_EB3O_EEEECsgxmkeHbIDMv_13ed25519_dalek",
+      "demangled": "core::ptr::drop_glue::<curve25519_dalek::secret_scratch::SecretBytes<hybrid_array::Array<u8, typenum::uint::UInt<typenum::uint::UInt<typenum::uint::UInt<typenum::uint::UInt<typenum::uint::UInt<typenum::uint::UInt<typenum::uint::UInt<typenum::uint::UTerm, typenum::bit::B1>, typenum::bit::B0>, typenum::bit::B0>, typenum::bit::B0>, typenum::bit::B0>, typenum::bit::B0>, typenum::bit::B0>>>>",
+      "label": "curve-nonce-output-drop",
+      "file": "curve-nonce-output-drop.asm",
+      "disassembly_sha256": "0f552ecec92bf0ad2d9a73e3bb5925f57e0133c0d4dbeda47129a0ad77401688"
+    },
+    {
+      "address": 663920,
+      "size": 128,
+      "symbol": "_RNvXsl_NtCs10KygnP71e6_16curve25519_dalek6scalarNtB5_6ScalarNtCsa3hkOc7539y_7zeroize7Zeroize7zeroize",
+      "demangled": "<curve25519_dalek::scalar::Scalar as zeroize::Zeroize>::zeroize",
+      "label": "scalar-zeroize",
+      "file": "scalar-zeroize.asm",
+      "disassembly_sha256": "5200b177491db09f2be9045d7d0e0b8bcb824f7f8bbee507e0e1825fc632e6e2"
+    }
+  ]
+}

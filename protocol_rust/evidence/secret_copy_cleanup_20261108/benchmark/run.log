@@ -1,0 +1,15 @@
+{"trial": 0, "variant": "baseline", "cases": 21}
+{"trial": 0, "variant": "candidate", "cases": 21}
+{"trial": 1, "variant": "candidate", "cases": 21}
+{"trial": 1, "variant": "baseline", "cases": 21}
+{"trial": 2, "variant": "baseline", "cases": 21}
+{"trial": 2, "variant": "candidate", "cases": 21}
+{"trial": 3, "variant": "candidate", "cases": 21}
+{"trial": 3, "variant": "baseline", "cases": 21}
+{"trial": 4, "variant": "baseline", "cases": 21}
+{"trial": 4, "variant": "candidate", "cases": 21}
+{"trial": 5, "variant": "candidate", "cases": 21}
+{"trial": 5, "variant": "baseline", "cases": 21}
+{"trial": 6, "variant": "baseline", "cases": 21}
+{"trial": 6, "variant": "candidate", "cases": 21}
+{"output": "/workspace/secret-copy-benchmark/result.json", "cases": 21, "samples": 294, "all_public_outputs_identical": true, "source_unchanged": true}

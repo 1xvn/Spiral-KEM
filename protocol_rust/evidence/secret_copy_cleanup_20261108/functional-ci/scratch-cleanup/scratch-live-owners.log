@@ -1,0 +1,23 @@
+
+running 5 tests
+test curve_owner::tests::hash_output_is_zero_before_inner_drop_on_return_and_unwind ... ok
+test digest_owner::tests::wipes_owned_bytes_before_value_drop_on_return_and_error ... ok
+test digest_owner::tests::wipes_owned_bytes_before_value_drop_on_unwind ... ok
+test hmac_owner::tests::wipes_owned_bytes_before_value_drop_on_return_and_error ... ok
+test hmac_owner::tests::wipes_owned_bytes_before_value_drop_on_unwind ... ok
+
+test result: ok. 5 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+
+warning: patch `curve25519-dalek v5.0.0 (/workspace/spiral-secret-copy-cleanup-20261108/third_party/rustcrypto/curve25519-dalek)` was not used in the crate graph
+warning: patch `ed25519-dalek v3.0.0 (/workspace/spiral-secret-copy-cleanup-20261108/third_party/rustcrypto/ed25519-dalek)` was not used in the crate graph
+warning: patch `hkdf v0.13.0 (/workspace/spiral-secret-copy-cleanup-20261108/third_party/rustcrypto/hkdf)` was not used in the crate graph
+warning: patch `hmac v0.13.0 (/workspace/spiral-secret-copy-cleanup-20261108/third_party/rustcrypto/hmac)` was not used in the crate graph
+help: Check that the patched package version and available features are compatible
+      with the dependency requirements. If the patch has a different version from
+      what is locked in the Cargo.lock file, run `cargo update` to use the new
+      version. This may also occur with an optional dependency that is not enabled.
+   Compiling digest v0.11.3 (/workspace/spiral-secret-copy-cleanup-20261108/third_party/rustcrypto/digest)
+   Compiling scratch-live-owners v0.0.0 (/workspace/secret-copy-functional-ci/scratch-cleanup/harnesses/owners)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 0.18s
+     Running unittests lib.rs (/workspace/secret-copy-functional-ci/scratch-cleanup/target/debug/deps/scratch_live_owners-8257bcb47ae9c502)
