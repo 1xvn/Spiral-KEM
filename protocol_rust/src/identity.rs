@@ -37,11 +37,13 @@ impl ServerIdentity {
     fn read_seed(mut reader: impl Read) -> Result<Arc<Self>> {
         let mut seed = Secret::<32>::zeros();
         reader.read_exact(seed.bytes_mut())?;
-        let mut extra = [0; 1];
-        if reader.read(&mut extra)? != 0 {
+        let mut extra = zeroize::Zeroizing::new([0; 1]);
+        if reader.read(extra.as_mut())? != 0 {
             return Err(Error::Input);
         }
+        drop(extra);
         let key = SigningKey::from_bytes(seed.bytes());
+        drop(seed);
         let public = key.verifying_key().to_bytes();
         Ok(Arc::new(Self {
             signing: Mutex::new(Some(key)),
@@ -70,7 +72,11 @@ impl ServerIdentity {
     }
     pub(crate) fn sign(&self, message: &[u8]) -> Result<Signature> {
         let state = self.signing.lock().map_err(|_| Error::Internal)?;
-        Ok(state.as_ref().ok_or(Error::Closed)?.sign(message))
+        state
+            .as_ref()
+            .ok_or(Error::Closed)?
+            .try_sign(message)
+            .map_err(|_| Error::Crypto)
     }
     #[cfg(test)]
     pub(crate) fn fixture(seed: &[u8; 32]) -> Arc<Self> {

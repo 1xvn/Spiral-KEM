@@ -41,6 +41,10 @@ mod schedule;
 pub mod secret;
 #[cfg(test)]
 mod secret_audit;
+#[cfg(test)]
+mod secret_state_tests;
+#[cfg(test)]
+mod signature_state_tests;
 #[cfg(feature = "parser-fuzz")]
 #[doc(hidden)]
 pub mod test_support;
