@@ -1,0 +1,560 @@
+{
+  "scope": "Pinned dependency source inventory, not a complete stack/register wipe proof or vulnerability verdict.",
+  "cargo_lock_sha256": "a7d9d4b8ec2637052566605e8e6a63aa587f54702b5ba33ded3a47e919e54bee",
+  "packages": [
+    {
+      "name": "hmac",
+      "version": "0.12.1",
+      "crate_sha256": "6c49c37c09c17a53d937dfbb742eb3a961d65a994e6bcdcf37e7399d0cc8ab5e",
+      "matches_lock": true,
+      "features": [],
+      "source_files_checked": 4,
+      "source_equals_crate": true,
+      "source_markers": [],
+      "excerpts": [
+        {
+          "file": "src/optim.rs",
+          "start": 17,
+          "end": 37,
+          "whole_file_sha256": "3c16b46effd4980cd2e98b5b2090aa57049dc9d4a9ea1c87e758875bf1ab0b63"
+        },
+        {
+          "file": "src/optim.rs",
+          "start": 49,
+          "end": 59,
+          "whole_file_sha256": "3c16b46effd4980cd2e98b5b2090aa57049dc9d4a9ea1c87e758875bf1ab0b63"
+        },
+        {
+          "file": "src/optim.rs",
+          "start": 202,
+          "end": 220,
+          "whole_file_sha256": "3c16b46effd4980cd2e98b5b2090aa57049dc9d4a9ea1c87e758875bf1ab0b63"
+        }
+      ]
+    },
+    {
+      "name": "hkdf",
+      "version": "0.12.4",
+      "crate_sha256": "7b5f8eb2ad728638ea2c7d47a21db23b7b58a72ed6a38256b8a1849f15fbbdf7",
+      "matches_lock": true,
+      "features": [],
+      "source_files_checked": 4,
+      "source_equals_crate": true,
+      "source_markers": [],
+      "excerpts": [
+        {
+          "file": "src/lib.rs",
+          "start": 163,
+          "end": 173,
+          "whole_file_sha256": "f0a1d6b58091b9690c168c8d772838c74f8c6937698af9fd81d2374a810bb07e"
+        },
+        {
+          "file": "src/lib.rs",
+          "start": 189,
+          "end": 197,
+          "whole_file_sha256": "f0a1d6b58091b9690c168c8d772838c74f8c6937698af9fd81d2374a810bb07e"
+        },
+        {
+          "file": "src/lib.rs",
+          "start": 234,
+          "end": 262,
+          "whole_file_sha256": "f0a1d6b58091b9690c168c8d772838c74f8c6937698af9fd81d2374a810bb07e"
+        }
+      ]
+    },
+    {
+      "name": "sha2",
+      "version": "0.10.9",
+      "crate_sha256": "a7507d819769d01a365ab707794a4084392c824f54a7a6a7862f8c3d0892b283",
+      "matches_lock": true,
+      "features": [
+        "default",
+        "std"
+      ],
+      "source_files_checked": 16,
+      "source_equals_crate": true,
+      "source_markers": [],
+      "excerpts": [
+        {
+          "file": "src/core_api.rs",
+          "start": 17,
+          "end": 24,
+          "whole_file_sha256": "73b160d98bfa6737688875ad73da5e3c2c93582604dc313d208200e12fdab676"
+        },
+        {
+          "file": "src/core_api.rs",
+          "start": 89,
+          "end": 96,
+          "whole_file_sha256": "73b160d98bfa6737688875ad73da5e3c2c93582604dc313d208200e12fdab676"
+        }
+      ]
+    },
+    {
+      "name": "digest",
+      "version": "0.10.7",
+      "crate_sha256": "9ed9a281f7bc9b7576e61468ba615a66a5c8cfdff42420a70aa82701a3b1e292",
+      "matches_lock": true,
+      "features": [
+        "alloc",
+        "block-buffer",
+        "core-api",
+        "default",
+        "mac",
+        "std",
+        "subtle"
+      ],
+      "source_files_checked": 15,
+      "source_equals_crate": true,
+      "source_markers": [],
+      "excerpts": [
+        {
+          "file": "src/core_api/wrapper.rs",
+          "start": 22,
+          "end": 33,
+          "whole_file_sha256": "033777bed7d140b158e15d50fda8a6e06557ce89bd0738fcca692be2c39e8b8a"
+        },
+        {
+          "file": "src/core_api/wrapper.rs",
+          "start": 162,
+          "end": 174,
+          "whole_file_sha256": "033777bed7d140b158e15d50fda8a6e06557ce89bd0738fcca692be2c39e8b8a"
+        }
+      ]
+    },
+    {
+      "name": "chacha20poly1305",
+      "version": "0.10.1",
+      "crate_sha256": "10cd79432192d1c0f4e1a0fef9527696cc039165d729fb41b3f4f4f354c2dc35",
+      "matches_lock": true,
+      "features": [
+        "alloc",
+        "default",
+        "getrandom",
+        "rand_core"
+      ],
+      "source_files_checked": 3,
+      "source_equals_crate": true,
+      "source_markers": [
+        {
+          "file": "src/lib.rs",
+          "line": 292,
+          "text": "impl<C, N> Drop for ChaChaPoly1305<C, N>"
+        },
+        {
+          "file": "src/lib.rs",
+          "line": 301,
+          "text": "impl<C, N: ArrayLength<u8>> ZeroizeOnDrop for ChaChaPoly1305<C, N> {}"
+        }
+      ],
+      "excerpts": [
+        {
+          "file": "src/cipher.rs",
+          "start": 27,
+          "end": 44,
+          "whole_file_sha256": "70f718a5fd9296f08b16fe42496103033b0150d7cfbb9baca012e2fb51fe8d4a"
+        },
+        {
+          "file": "src/cipher.rs",
+          "start": 82,
+          "end": 96,
+          "whole_file_sha256": "70f718a5fd9296f08b16fe42496103033b0150d7cfbb9baca012e2fb51fe8d4a"
+        },
+        {
+          "file": "src/lib.rs",
+          "start": 291,
+          "end": 301,
+          "whole_file_sha256": "e454914d6e98c3889cebc92c2eb9a1a43d23f60ca028df0954b55041bfed0d30"
+        }
+      ]
+    },
+    {
+      "name": "chacha20",
+      "version": "0.9.1",
+      "crate_sha256": "c3613f74bd2eac03dad61bd53dbe620703d4371614fe0bc3b9f04dd36fe4e818",
+      "matches_lock": true,
+      "features": [
+        "zeroize"
+      ],
+      "source_files_checked": 9,
+      "source_equals_crate": true,
+      "source_markers": [
+        {
+          "file": "src/legacy.rs",
+          "line": 76,
+          "text": "impl ZeroizeOnDrop for ChaCha20LegacyCore {}"
+        },
+        {
+          "file": "src/lib.rs",
+          "line": 309,
+          "text": "impl<R: Unsigned> Drop for ChaChaCore<R> {"
+        },
+        {
+          "file": "src/lib.rs",
+          "line": 317,
+          "text": "impl<R: Unsigned> ZeroizeOnDrop for ChaChaCore<R> {}"
+        },
+        {
+          "file": "src/xchacha.rs",
+          "line": 90,
+          "text": "impl<R: Unsigned> ZeroizeOnDrop for XChaChaCore<R> {}"
+        }
+      ],
+      "excerpts": [
+        {
+          "file": "src/lib.rs",
+          "start": 307,
+          "end": 317,
+          "whole_file_sha256": "4112893bb7a5eb6cdb269200c816befaeadecf7e932ab2612c0941b7f7d7c6c3"
+        }
+      ]
+    },
+    {
+      "name": "poly1305",
+      "version": "0.8.0",
+      "crate_sha256": "8159bd90725d2df49889a078b54f4f79e87f1f8a8444194cdca81d38f5393abf",
+      "matches_lock": true,
+      "features": [
+        "zeroize"
+      ],
+      "source_files_checked": 8,
+      "source_equals_crate": true,
+      "source_markers": [
+        {
+          "file": "src/backend/autodetect.rs",
+          "line": 98,
+          "text": "impl Drop for State {"
+        },
+        {
+          "file": "src/backend/soft.rs",
+          "line": 236,
+          "text": "impl Drop for State {"
+        }
+      ],
+      "excerpts": [
+        {
+          "file": "src/backend/autodetect.rs",
+          "start": 97,
+          "end": 105,
+          "whole_file_sha256": "7c1f9bbe82f27f506f1995ba1e2c12f6eb766e075ea71ebc203e6a57a8b0df57"
+        },
+        {
+          "file": "src/backend/soft.rs",
+          "start": 235,
+          "end": 243,
+          "whole_file_sha256": "fd77a8c9b0b35bb1514d8ce812caa2c89b8a1ccccb2394558e8471fb3201bf74"
+        }
+      ]
+    },
+    {
+      "name": "ed25519-dalek",
+      "version": "2.2.0",
+      "crate_sha256": "70e796c081cee67dc755e1a36a0a172b897fab85fc3f6bc48307991f64e4eca9",
+      "matches_lock": true,
+      "features": [
+        "alloc",
+        "default",
+        "fast",
+        "std",
+        "zeroize"
+      ],
+      "source_files_checked": 11,
+      "source_equals_crate": true,
+      "source_markers": [
+        {
+          "file": "src/hazmat.rs",
+          "line": 68,
+          "text": "impl Drop for ExpandedSecretKey {"
+        },
+        {
+          "file": "src/hazmat.rs",
+          "line": 76,
+          "text": "impl ZeroizeOnDrop for ExpandedSecretKey {}"
+        },
+        {
+          "file": "src/signing.rs",
+          "line": 659,
+          "text": "impl Drop for SigningKey {"
+        },
+        {
+          "file": "src/signing.rs",
+          "line": 666,
+          "text": "impl ZeroizeOnDrop for SigningKey {}"
+        }
+      ],
+      "excerpts": [
+        {
+          "file": "src/signing.rs",
+          "start": 658,
+          "end": 666,
+          "whole_file_sha256": "dcf83ccfaf98d9ab144ec7a6ec4576499ccdfe8308c0714b4e890a1aa7a22b82"
+        },
+        {
+          "file": "src/signing.rs",
+          "start": 809,
+          "end": 815,
+          "whole_file_sha256": "dcf83ccfaf98d9ab144ec7a6ec4576499ccdfe8308c0714b4e890a1aa7a22b82"
+        },
+        {
+          "file": "src/hazmat.rs",
+          "start": 66,
+          "end": 76,
+          "whole_file_sha256": "9f1fe8f5d1e0f949d49e50a3202f699b6a425685341584fc61459a4c955f4847"
+        }
+      ]
+    },
+    {
+      "name": "zeroize",
+      "version": "1.9.1",
+      "crate_sha256": "e13084392c5e4bc371903e2935a5eaeed24905a7511356b883835e18a78f6879",
+      "matches_lock": true,
+      "features": [
+        "alloc",
+        "default",
+        "derive",
+        "zeroize_derive"
+      ],
+      "source_files_checked": 6,
+      "source_equals_crate": true,
+      "source_markers": [
+        {
+          "file": "src/aarch64.rs",
+          "line": 10,
+          "text": "            impl Zeroize for $type {"
+        },
+        {
+          "file": "src/barrier.rs",
+          "line": 31,
+          "text": "/// impl Drop for DataToZeroize {"
+        },
+        {
+          "file": "src/barrier.rs",
+          "line": 40,
+          "text": "/// impl zeroize::ZeroizeOnDrop for DataToZeroize {}"
+        },
+        {
+          "file": "src/lib.rs",
+          "line": 25,
+          "text": "//! complex invariants, do NOT impl the [`Zeroize`] trait, but instead provide a [`Drop`] impl which"
+        },
+        {
+          "file": "src/lib.rs",
+          "line": 31,
+          "text": "//! Why not impl [`Zeroize`] for such types, e.g. a `SecretKey` type? The problem is [`Zeroize`]"
+        },
+        {
+          "file": "src/lib.rs",
+          "line": 57,
+          "text": "//! impl [`Default`], which implements [`Zeroize`] by overwriting a value with"
+        },
+        {
+          "file": "src/lib.rs",
+          "line": 125,
+          "text": "//! impls a `Drop` handler which calls `zeroize()` on its contents:"
+        },
+        {
+          "file": "src/lib.rs",
+          "line": 270,
+          "text": "impl<Z> Zeroize for Z"
+        },
+        {
+          "file": "src/lib.rs",
+          "line": 294,
+          "text": "impl ZeroizeOnDrop for PhantomPinned {}"
+        },
+        {
+          "file": "src/lib.rs",
+          "line": 297,
+          "text": "impl ZeroizeOnDrop for () {}"
+        },
+        {
+          "file": "src/lib.rs",
+          "line": 302,
+          "text": "            impl Zeroize for $type {"
+        },
+        {
+          "file": "src/lib.rs",
+          "line": 330,
+          "text": "impl<Z> Zeroize for num::Wrapping<Z>"
+        },
+        {
+          "file": "src/lib.rs",
+          "line": 339,
+          "text": "/// Impl [`Zeroize`] on arrays of types that impl [`Zeroize`]."
+        },
+        {
+          "file": "src/lib.rs",
+          "line": 340,
+          "text": "impl<Z, const N: usize> Zeroize for [Z; N]"
+        },
+        {
+          "file": "src/lib.rs",
+          "line": 349,
+          "text": "/// Impl [`ZeroizeOnDrop`] on arrays of types that impl [`ZeroizeOnDrop`]."
+        },
+        {
+          "file": "src/lib.rs",
+          "line": 350,
+          "text": "impl<Z, const N: usize> ZeroizeOnDrop for [Z; N] where Z: ZeroizeOnDrop {}"
+        },
+        {
+          "file": "src/lib.rs",
+          "line": 352,
+          "text": "impl<Z> Zeroize for IterMut<'_, Z>"
+        },
+        {
+          "file": "src/lib.rs",
+          "line": 363,
+          "text": "impl<Z> Zeroize for Option<Z>"
+        },
+        {
+          "file": "src/lib.rs",
+          "line": 405,
+          "text": "impl<Z> ZeroizeOnDrop for Option<Z> where Z: ZeroizeOnDrop {}"
+        },
+        {
+          "file": "src/lib.rs",
+          "line": 412,
+          "text": "impl<Z> Zeroize for MaybeUninit<Z> {"
+        },
+        {
+          "file": "src/lib.rs",
+          "line": 428,
+          "text": "impl<Z> Zeroize for [MaybeUninit<Z>] {"
+        },
+        {
+          "file": "src/lib.rs",
+          "line": 452,
+          "text": "impl<Z> Zeroize for [Z]"
+        },
+        {
+          "file": "src/lib.rs",
+          "line": 469,
+          "text": "impl Zeroize for str {"
+        },
+        {
+          "file": "src/lib.rs",
+          "line": 478,
+          "text": "impl<Z> Zeroize for PhantomData<Z> {"
+        },
+        {
+          "file": "src/lib.rs",
+          "line": 483,
+          "text": "impl<Z> ZeroizeOnDrop for PhantomData<Z> {}"
+        },
+        {
+          "file": "src/lib.rs",
+          "line": 487,
+          "text": "        impl<$($type_name: Zeroize),+> Zeroize for ($($type_name,)+) {"
+        },
+        {
+          "file": "src/lib.rs",
+          "line": 495,
+          "text": "        impl<$($type_name: ZeroizeOnDrop),+> ZeroizeOnDrop for ($($type_name,)+) { }"
+        },
+        {
+          "file": "src/lib.rs",
+          "line": 512,
+          "text": "impl<Z> Zeroize for Vec<Z>"
+        },
+        {
+          "file": "src/lib.rs",
+          "line": 536,
+          "text": "impl<Z> ZeroizeOnDrop for Vec<Z> where Z: ZeroizeOnDrop {}"
+        },
+        {
+          "file": "src/lib.rs",
+          "line": 539,
+          "text": "impl<Z> Zeroize for Box<[Z]>"
+        },
+        {
+          "file": "src/lib.rs",
+          "line": 551,
+          "text": "impl<Z> ZeroizeOnDrop for Box<[Z]> where Z: ZeroizeOnDrop {}"
+        },
+        {
+          "file": "src/lib.rs",
+          "line": 554,
+          "text": "impl Zeroize for Box<str> {"
+        },
+        {
+          "file": "src/lib.rs",
+          "line": 561,
+          "text": "impl Zeroize for String {"
+        },
+        {
+          "file": "src/lib.rs",
+          "line": 568,
+          "text": "impl Zeroize for CString {"
+        },
+        {
+          "file": "src/lib.rs",
+          "line": 601,
+          "text": "impl<Z: Zeroize + ?Sized> core::fmt::Debug for Zeroizing<Z> {"
+        },
+        {
+          "file": "src/lib.rs",
+          "line": 619,
+          "text": "impl<Z: Zeroize + Clone> Clone for Zeroizing<Z> {"
+        },
+        {
+          "file": "src/lib.rs",
+          "line": 686,
+          "text": "impl<Z> Zeroize for Zeroizing<Z>"
+        },
+        {
+          "file": "src/lib.rs",
+          "line": 695,
+          "text": "impl<Z> ZeroizeOnDrop for Zeroizing<Z> where Z: Zeroize + ?Sized {}"
+        },
+        {
+          "file": "src/lib.rs",
+          "line": 697,
+          "text": "impl<Z> Drop for Zeroizing<Z>"
+        },
+        {
+          "file": "src/lib.rs",
+          "line": 769,
+          "text": "/// type that already implements `ZeroizeOnDrop`."
+        },
+        {
+          "file": "src/lib.rs",
+          "line": 776,
+          "text": "///   It is advisable to call this function only in `impl Drop`."
+        },
+        {
+          "file": "src/lib.rs",
+          "line": 800,
+          "text": "/// impl Drop for DataToZeroize {"
+        },
+        {
+          "file": "src/lib.rs",
+          "line": 805,
+          "text": "/// impl ZeroizeOnDrop for DataToZeroize {}"
+        },
+        {
+          "file": "src/lib.rs",
+          "line": 836,
+          "text": "    impl<T: ZeroizeOnDrop + ?Sized> AssertZeroizeOnDrop for &&mut T {"
+        },
+        {
+          "file": "src/lib.rs",
+          "line": 845,
+          "text": "    impl<T: Zeroize + ?Sized> AssertZeroize for T {"
+        },
+        {
+          "file": "src/x86.rs",
+          "line": 13,
+          "text": "            impl Zeroize for $type {"
+        }
+      ],
+      "excerpts": [
+        {
+          "file": "src/lib.rs",
+          "start": 760,
+          "end": 772,
+          "whole_file_sha256": "0ec1dcf0d7c33b0bab02f85d79d37f29bbb8f034f648513797859a7b37bca637"
+        }
+      ]
+    }
+  ]
+}

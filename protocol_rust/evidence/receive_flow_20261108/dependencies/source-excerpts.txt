@@ -1,0 +1,295 @@
+Official crates.io locked sources; small excerpts for state-lifetime review.
+
+hmac-0.12.1/src/optim.rs:17-37
+17: pub type Hmac<D> = CoreWrapper<HmacCore<D>>;
+18: 
+19: /// Generic core HMAC instance, which operates over blocks.
+20: pub struct HmacCore<D>
+21: where
+22:     D: CoreProxy,
+23:     D::Core: HashMarker
+24:         + UpdateCore
+25:         + FixedOutputCore
+26:         + BufferKindUser<BufferKind = Eager>
+27:         + Default
+28:         + Clone,
+29:     <D::Core as BlockSizeUser>::BlockSize: IsLess<U256>,
+30:     Le<<D::Core as BlockSizeUser>::BlockSize, U256>: NonZero,
+31: {
+32:     digest: D::Core,
+33:     opad_digest: D::Core,
+34:     #[cfg(feature = "reset")]
+35:     ipad_digest: D::Core,
+36: }
+37: 
+
+hmac-0.12.1/src/optim.rs:49-59
+49: {
+50:     fn clone(&self) -> Self {
+51:         Self {
+52:             digest: self.digest.clone(),
+53:             opad_digest: self.opad_digest.clone(),
+54:             #[cfg(feature = "reset")]
+55:             ipad_digest: self.ipad_digest.clone(),
+56:         }
+57:     }
+58: }
+59: 
+
+hmac-0.12.1/src/optim.rs:202-220
+202:         + Clone,
+203:     <D::Core as BlockSizeUser>::BlockSize: IsLess<U256>,
+204:     Le<<D::Core as BlockSizeUser>::BlockSize, U256>: NonZero,
+205: {
+206:     #[inline(always)]
+207:     fn finalize_fixed_core(&mut self, buffer: &mut Buffer<Self>, out: &mut Output<Self>) {
+208:         let mut hash = Output::<D::Core>::default();
+209:         self.digest.finalize_fixed_core(buffer, &mut hash);
+210:         // finalize_fixed_core should reset the buffer as well, but
+211:         // to be extra safe we reset it explicitly again.
+212:         buffer.reset();
+213:         #[cfg(not(feature = "reset"))]
+214:         let h = &mut self.opad_digest;
+215:         #[cfg(feature = "reset")]
+216:         let mut h = self.opad_digest.clone();
+217:         buffer.digest_blocks(&hash, |b| h.update_blocks(b));
+218:         h.finalize_fixed_core(buffer, out);
+219:     }
+220: }
+
+hkdf-0.12.4/src/lib.rs:163-173
+163: 
+164:     /// Completes the HKDF-Extract operation, returning both the generated pseudorandom key and
+165:     /// `Hkdf` struct for expanding.
+166:     pub fn finalize(self) -> (Output<H>, Hkdf<H, I>) {
+167:         let prk = self.hmac.finalize();
+168:         let hkdf = Hkdf::from_prk(&prk).expect("PRK size is correct");
+169:         (prk, hkdf)
+170:     }
+171: }
+172: 
+173: impl<H, I> fmt::Debug for HkdfExtract<H, I>
+
+hkdf-0.12.4/src/lib.rs:189-197
+189: #[derive(Clone)]
+190: pub struct Hkdf<H: OutputSizeUser, I: HmacImpl<H> = Hmac<H>> {
+191:     hmac: I::Core,
+192:     _pd: PhantomData<H>,
+193: }
+194: 
+195: impl<H: OutputSizeUser, I: HmacImpl<H>> Hkdf<H, I> {
+196:     /// Convenience method for [`extract`][Hkdf::extract] when the generated
+197:     /// pseudorandom key can be ignored and only HKDF-Expand operation is needed. This is the most
+
+hkdf-0.12.4/src/lib.rs:234-262
+234: 
+235:         let chunk_len = <H as OutputSizeUser>::OutputSize::USIZE;
+236:         if okm.len() > chunk_len * 255 {
+237:             return Err(InvalidLength);
+238:         }
+239: 
+240:         for (block_n, block) in okm.chunks_mut(chunk_len).enumerate() {
+241:             let mut hmac = I::from_core(&self.hmac);
+242: 
+243:             if let Some(ref prev) = prev {
+244:                 hmac.update(prev)
+245:             };
+246: 
+247:             // Feed in the info components in sequence. This is equivalent to feeding in the
+248:             // concatenation of all the info components
+249:             for info in info_components {
+250:                 hmac.update(info);
+251:             }
+252: 
+253:             hmac.update(&[block_n as u8 + 1]);
+254: 
+255:             let output = hmac.finalize();
+256: 
+257:             let block_len = block.len();
+258:             block.copy_from_slice(&output[..block_len]);
+259: 
+260:             prev = Some(output);
+261:         }
+262: 
+
+sha2-0.10.9/src/core_api.rs:17-24
+17: #[derive(Clone)]
+18: pub struct Sha256VarCore {
+19:     state: consts::State256,
+20:     block_len: u64,
+21: }
+22: 
+23: impl HashMarker for Sha256VarCore {}
+24: 
+
+sha2-0.10.9/src/core_api.rs:89-96
+89: #[derive(Clone)]
+90: pub struct Sha512VarCore {
+91:     state: consts::State512,
+92:     block_len: u128,
+93: }
+94: 
+95: impl HashMarker for Sha512VarCore {}
+96: 
+
+digest-0.10.7/src/core_api/wrapper.rs:22-33
+22: /// It handles data buffering and implements the slice-based traits.
+23: #[derive(Clone, Default)]
+24: pub struct CoreWrapper<T>
+25: where
+26:     T: BufferKindUser,
+27:     T::BlockSize: IsLess<U256>,
+28:     Le<T::BlockSize, U256>: NonZero,
+29: {
+30:     core: T,
+31:     buffer: BlockBuffer<T::BlockSize, T::BufferKind>,
+32: }
+33: 
+
+digest-0.10.7/src/core_api/wrapper.rs:162-174
+162: 
+163: impl<T> FixedOutput for CoreWrapper<T>
+164: where
+165:     T: FixedOutputCore,
+166:     T::BlockSize: IsLess<U256>,
+167:     Le<T::BlockSize, U256>: NonZero,
+168: {
+169:     #[inline]
+170:     fn finalize_into(mut self, out: &mut Output<Self>) {
+171:         let Self { core, buffer } = &mut self;
+172:         core.finalize_fixed_core(buffer, out);
+173:     }
+174: }
+
+chacha20poly1305-0.10.1/src/cipher.rs:27-44
+27:     mac: Poly1305,
+28: }
+29: 
+30: impl<C> Cipher<C>
+31: where
+32:     C: StreamCipher + StreamCipherSeek,
+33: {
+34:     /// Instantiate the underlying cipher with a particular nonce
+35:     pub(crate) fn new(mut cipher: C) -> Self {
+36:         // Derive Poly1305 key from the first 32-bytes of the ChaCha20 keystream
+37:         let mut mac_key = poly1305::Key::default();
+38:         cipher.apply_keystream(&mut *mac_key);
+39: 
+40:         let mac = Poly1305::new(GenericArray::from_slice(&*mac_key));
+41:         mac_key.zeroize();
+42: 
+43:         // Set ChaCha20 counter to 1
+44:         cipher.seek(BLOCK_SIZE as u64);
+
+chacha20poly1305-0.10.1/src/cipher.rs:82-96
+82:         self.mac.update_padded(associated_data);
+83:         self.mac.update_padded(buffer);
+84:         self.authenticate_lengths(associated_data, buffer)?;
+85: 
+86:         // This performs a constant-time comparison using the `subtle` crate
+87:         if self.mac.verify(tag).is_ok() {
+88:             // TODO(tarcieri): interleave decryption with Poly1305
+89:             // See: <https://github.com/RustCrypto/AEADs/issues/74>
+90:             self.cipher.apply_keystream(buffer);
+91:             Ok(())
+92:         } else {
+93:             Err(Error)
+94:         }
+95:     }
+96: 
+
+chacha20poly1305-0.10.1/src/lib.rs:291-301
+291: 
+292: impl<C, N> Drop for ChaChaPoly1305<C, N>
+293: where
+294:     N: ArrayLength<u8>,
+295: {
+296:     fn drop(&mut self) {
+297:         self.key.as_mut_slice().zeroize();
+298:     }
+299: }
+300: 
+301: impl<C, N: ArrayLength<u8>> ZeroizeOnDrop for ChaChaPoly1305<C, N> {}
+
+chacha20-0.9.1/src/lib.rs:307-317
+307: #[cfg(feature = "zeroize")]
+308: #[cfg_attr(docsrs, doc(cfg(feature = "zeroize")))]
+309: impl<R: Unsigned> Drop for ChaChaCore<R> {
+310:     fn drop(&mut self) {
+311:         self.state.zeroize();
+312:     }
+313: }
+314: 
+315: #[cfg(feature = "zeroize")]
+316: #[cfg_attr(docsrs, doc(cfg(feature = "zeroize")))]
+317: impl<R: Unsigned> ZeroizeOnDrop for ChaChaCore<R> {}
+
+poly1305-0.8.0/src/backend/autodetect.rs:97-105
+97: #[cfg(feature = "zeroize")]
+98: impl Drop for State {
+99:     fn drop(&mut self) {
+100:         use zeroize::Zeroize;
+101:         const SIZE: usize = core::mem::size_of::<State>();
+102:         let state = unsafe { &mut *(self as *mut State as *mut [u8; SIZE]) };
+103:         state.zeroize();
+104:     }
+105: }
+
+poly1305-0.8.0/src/backend/soft.rs:235-243
+235: #[cfg(feature = "zeroize")]
+236: impl Drop for State {
+237:     fn drop(&mut self) {
+238:         use zeroize::Zeroize;
+239:         self.r.zeroize();
+240:         self.h.zeroize();
+241:         self.pad.zeroize();
+242:     }
+243: }
+
+ed25519-dalek-2.2.0/src/signing.rs:658-666
+658: #[cfg(feature = "zeroize")]
+659: impl Drop for SigningKey {
+660:     fn drop(&mut self) {
+661:         self.secret_key.zeroize();
+662:     }
+663: }
+664: 
+665: #[cfg(feature = "zeroize")]
+666: impl ZeroizeOnDrop for SigningKey {}
+
+ed25519-dalek-2.2.0/src/signing.rs:809-815
+809: impl From<&SecretKey> for ExpandedSecretKey {
+810:     #[allow(clippy::unwrap_used)]
+811:     fn from(secret_key: &SecretKey) -> ExpandedSecretKey {
+812:         let hash = Sha512::default().chain_update(secret_key).finalize();
+813:         ExpandedSecretKey::from_bytes(hash.as_ref())
+814:     }
+815: }
+
+ed25519-dalek-2.2.0/src/hazmat.rs:66-76
+66: 
+67: #[cfg(feature = "zeroize")]
+68: impl Drop for ExpandedSecretKey {
+69:     fn drop(&mut self) {
+70:         self.scalar.zeroize();
+71:         self.hash_prefix.zeroize()
+72:     }
+73: }
+74: 
+75: #[cfg(feature = "zeroize")]
+76: impl ZeroizeOnDrop for ExpandedSecretKey {}
+
+zeroize-1.9.1/src/lib.rs:760-772
+760:         //
+761:         // This is safe, because the pointer is valid and because `dst` is well aligned for `T` and
+762:         // `ptr` is an offset of `dst` by a multiple of `size_of::<T>()` bytes.
+763:         unsafe { ptr::write_volatile(ptr, src) };
+764:     }
+765: }
+766: 
+767: /// Zeroizes a flat type/struct. Only zeroizes the values that it owns, and it does not work on
+768: /// dynamically sized values or trait objects. It would be inefficient to use this function on a
+769: /// type that already implements `ZeroizeOnDrop`.
+770: ///
+771: /// # Safety
+772: /// - The type must not contain references to outside data or dynamically sized data, such as

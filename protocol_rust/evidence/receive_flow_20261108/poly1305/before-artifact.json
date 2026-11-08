@@ -1,0 +1,33 @@
+{
+  "reason": "compiler-artifact",
+  "package_id": "registry+https://github.com/rust-lang/crates.io-index#poly1305@0.8.0",
+  "manifest_path": "/workspace/rust48-tools/cargo-cache/registry/src/index.crates.io-1949cf8c6b5b557f/poly1305-0.8.0/Cargo.toml",
+  "target": {
+    "kind": [
+      "lib"
+    ],
+    "crate_types": [
+      "lib"
+    ],
+    "name": "poly1305",
+    "src_path": "/workspace/rust48-tools/cargo-cache/registry/src/index.crates.io-1949cf8c6b5b557f/poly1305-0.8.0/src/lib.rs",
+    "edition": "2021",
+    "doc": true,
+    "doctest": true,
+    "test": true
+  },
+  "profile": {
+    "opt_level": "3",
+    "debuginfo": 2,
+    "debug_assertions": false,
+    "overflow_checks": false,
+    "test": false
+  },
+  "features": [],
+  "filenames": [
+    "/workspace/Spiral-KEM/protocol_rust/target/audit/deps/libpoly1305-ce0c05e30a4c4c7e.rlib",
+    "/workspace/Spiral-KEM/protocol_rust/target/audit/deps/libpoly1305-ce0c05e30a4c4c7e.rmeta"
+  ],
+  "executable": null,
+  "fresh": false
+}

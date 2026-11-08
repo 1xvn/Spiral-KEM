@@ -1,0 +1,16 @@
+   Compiling poly1305 v0.8.0
+   Compiling chacha20poly1305 v0.10.1
+   Compiling spiral-protocol v0.3.0 (/workspace/Spiral-KEM/protocol_rust)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 3.38s
+     Running unittests src/lib.rs (protocol_rust/target/debug/deps/spiral_protocol-ef326b8e9ba30243)
+
+running 5 tests
+test receive_audit::poly1305_state_requires_drop ... ok
+test receive_audit::positive_secret_address ... ignored, positive control: must report a secret-dependent memory address
+test receive_audit::positive_secret_branch ... ignored, positive control: must report a secret-dependent conditional branch
+test receive_audit::public_fixture_contract ... RX_FUNCTIONAL_CASE {"fixtures_checked":78,"id":"public_fixture_contract","scope":"defined public fixtures; separate from raw key-taint traces","status":"passed"}
+ok
+test receive_audit::trace_actual_receive ... ignored, raw key/prefix taint trace; authentication and cleanup warnings remain
+
+test result: ok. 2 passed; 0 failed; 3 ignored; 0 measured; 66 filtered out; finished in 0.13s
+

@@ -1,0 +1,21 @@
+{
+  "argv": [
+    "/workspace/rust48-tools/debian/usr/bin/valgrind",
+    "--command-line-only=yes",
+    "--tool=memcheck",
+    "--leak-check=full",
+    "--show-leak-kinds=all",
+    "--errors-for-leak-kinds=definite,indirect,possible",
+    "--error-exitcode=99",
+    "--num-callers=32",
+    "--log-file=/workspace/receive-flow-wipe-memcheck-20261108/memcheck.log",
+    "/workspace/rust48-tools/runtime/ld-linux-x86-64.so.2",
+    "--library-path",
+    "/workspace/rust48-tools/debian/usr/lib/x86_64-linux-gnu",
+    "/workspace/Spiral-KEM/protocol_rust/target/audit/deps/spiral_protocol-27dc97f0435f0970",
+    "secret_audit::",
+    "--test-threads=1",
+    "--nocapture"
+  ],
+  "exit": 99
+}

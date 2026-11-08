@@ -13,6 +13,10 @@ The [2026-11-07 memory follow-up record](MEMORY_FOLLOWUP.md) adds user OCI/WSL r
 shutdown-lifetime controls and 216 observations of actual receive-buffer disposal. It distinguishes
 the completed scope from remaining validation for constant time and secret management.
 
+[Actual receive-path and temporary secret-state validation](RECEIVE_SECRET.md) adds 78 receive-function controls and
+78 pairs of public/key taint traces, and enables Poly1305 0.8.0 state zeroization.
+Original authentication-related warnings and exit 99 are retained; constant-time and overall memory approval are not granted.
+
 The [Rust frame and ClientHello fuzzing guide](FUZZ_PARSERS.md) uses a separately pinned nightly and
 the disabled-by-default `parser-fuzz` entry points to check actual parser coverage and compare saved inputs
 against the Python reference implementation. OCI ARM64 and WSL2 x86-64 results are collected separately.
@@ -113,6 +117,7 @@ Keys and plaintext are not logged. Output consists of local test aggregates such
 - `ss` is output directly into a Rust heap secret buffer and zeroized after PRK derivation.
 - PRK, Finished keys, and application master are zeroized by Drop after their final use.
 - Directional data keys are tied to the corresponding record-state lifetime. The ChaCha20Poly1305 key state also provides Drop zeroization.
+- Poly1305 0.8.0 internal authentication-state zeroization is also enabled. This integrates a feature of the same version and does not guarantee zeroization of all temporary copies or registers.
 - Plaintext pool buffers have their full capacity wiped with `zeroize` before return. Secret types provide no Copy/Clone/content Debug.
 
 No claim is made that all temporary state inside HKDF/HMAC, signing, or TLS providers, registers, previous copies, swap, or core dumps is erased.
@@ -145,7 +150,7 @@ Interoperability tests use four connections each for Python→Rust and Rust→Py
 eight senders, and 32 messages. They check actual exporters/transcripts at both ends, session independence, and normal/abnormal shutdown.
 Bursts of 16/64 connections from the same IP are rejection/cleanup tests, not capacity tests of 16/64 successful connections.
 
-The Python baseline for basic functional regression is 85 tests. After adding receive-buffer disposal tests, Rust unit 64 + compile-fail 6 and the existing 35 actual TLS negative/interoperability tests are recorded separately. See the separate guidance and evidence above for the latest subsequent validation results.
+Basic functional regressions passed Python 85, diagnostic assessment 20, C 9, Rust unit 66, compile-fail 6, and actual TLS 35 tests. The 5 ignored x86-64 instrumentation targets are not added to normal pass counts. See the separate guidance and evidence above for the latest subsequent validation results.
 The [mapping](REGRESSION_MAP.md) distinguishes 72 requirements with execution tests, 8 addressed structurally, and 5 with different API/test scope.
 See `VALIDATION.json` and `evidence/` for final environments, counts, check logs, and performance figures.
 The initial v0.3 validation bundle excludes coverage-guided fuzzing, long soaks, validation on other OS/CPU combinations, and independent code audits. Follow-up fuzzing and platform validation are recorded separately at the links above.
@@ -153,7 +158,7 @@ The initial v0.3 validation bundle excludes coverage-guided fuzzing, long soaks,
 `examples/tls_control.rs` is TLS-only diagnostic code for distinguishing memory-check warnings. It does not run Spiral or C KEM and is not used as a runtime algorithm fallback.
 
 **Memory validation status:** On 11/6, v0.3 normal TLS communication failed with 4 Valgrind errors in release and 6 in audit. TLS-only controls had 4 each for default/AES128/AES256 and 0 for ChaCha. Separately, 6,102 public AEAD/offset-buffer/hash/HKDF/signature vector cases matched OpenSSL/Python with 0 warnings. The 11/7 follow-up confirmed 6 user OCI passes and 2 WSL passes and isolated the definedness false-positive mechanism in local GHASH copies, branches, and XOR. The original WSL failure was not changed to a pass. See `MEMORY_FOLLOWUP.md` for evidence and scope.
-Rust secret-branch instrumentation produced 0 secret-dependent branch/address warnings in inspected operations, but a 48-byte possibly-lost entry points to libtest thread state, so the full memory check remains failed. C branch instrumentation and memory checks passed. See `VALIDATION.md` for detailed scope and logs. The default cipher was not changed and warnings were not suppressed.
+Existing Rust KDF/MAC, transmission, and signing instrumentation samples had 0 branch/address warnings, but separate actual-receive instrumentation retained 134 warning contexts corresponding to authentication decisions, result propagation, and CLOSE checks. The libtest thread-state 48-byte possibly-lost item remains unresolved. C branch instrumentation and memory checks passed within their existing scope. See `VALIDATION.md` for the initial scope and `RECEIVE_SECRET.md` for additional receive scope and limitations. The default cipher was not changed and warnings were not suppressed.
 
 To reproduce optional memory checks, install Valgrind and Python test dependencies, then run. The script exits with failure if the unresolved warnings above recur.
 

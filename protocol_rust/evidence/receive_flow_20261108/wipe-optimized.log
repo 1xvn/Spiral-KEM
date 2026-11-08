@@ -1,0 +1,13 @@
+
+running 4 tests
+test secret_audit::authenticated_invalid_close_reason_wipes_decrypted_bytes_and_poisoned_retry ... SECRET_AUDIT_CASE {"buffers_checked":8,"id":"authenticated_invalid_close_reason_wipes_decrypted_bytes_and_poisoned_retry","scope":"initialized live pooled allocation; no key/register-copy claim","status":"passed"}
+ok
+test secret_audit::authentication_and_syntax_failures_wipe_full_capacity_and_remain_poisoned ... SECRET_AUDIT_CASE {"buffers_checked":168,"id":"authentication_and_syntax_failures_wipe_full_capacity_and_remain_poisoned","scope":"initialized live pooled allocation; no key/register-copy claim","status":"passed"}
+ok
+test secret_audit::valid_close_and_post_close_rejection_wipe_full_capacity_before_reuse ... SECRET_AUDIT_CASE {"buffers_checked":12,"id":"valid_close_and_post_close_rejection_wipe_full_capacity_before_reuse","scope":"initialized live pooled allocation; no key/register-copy claim","status":"passed"}
+ok
+test secret_audit::valid_data_and_following_close_wipe_full_capacity_before_reuse ... SECRET_AUDIT_CASE {"buffers_checked":28,"id":"valid_data_and_following_close_wipe_full_capacity_before_reuse","scope":"initialized live pooled allocation; no key/register-copy claim","status":"passed"}
+ok
+
+test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 67 filtered out; finished in 0.00s
+
