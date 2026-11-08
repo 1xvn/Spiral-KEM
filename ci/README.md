@@ -38,7 +38,7 @@ TLS AES-GCM, full Rust taint/memory checks, and long-running fuzzing are outside
 - Save each run's results in a new folder; do not overwrite existing evidence folders.
 - Upload only dedicated logs/JSON/generated public test sources and public fuzz inputs; do not upload executables, temporary authentication keys, or certificates.
 
-## This Local Validation
+## Initial local validation on 2026-11-07
 
 The GitHub runner itself was not run in this environment. Below are actual results from running the same `ci/validate.py`
 in the current Linux environment with verified Rust 1.99.1 and the existing Python venv.
@@ -57,6 +57,13 @@ in the current Linux environment with verified Rust 1.99.1 and the existing Pyth
 The initial local run uncovered a runner bug that resolved the venv executable symlink and ran system Python.
 After fixing it to preserve the venv path, the full run passed. Original failure logs and post-fix results
 are both preserved in `local_ci_20261107/`. These local results are distinct from actual successful execution on GitHub.
+
+The final functional runner in the November 8 [receive follow-up validation](../protocol_rust/RECEIVE_SECRET.md)
+passed Python 85·diagnostic adjudication 20·C 9·Rust unit 66·documentation 6·real TLS 35 tests.
+The 5 ignored x86-64 tests are taint-only and excluded from normal pass counts. Diagnostic adjudication includes
+address mapping, missing data, suppression, and original exit code checks, and runs in push/PR functional CI.
+The full actual receive taint run is a separate manual diagnostic. Completion is not treated as memory/constant-time
+approval, and the weekly clean-memory gate above remains.
 
 ## When manual reproduction is needed
 

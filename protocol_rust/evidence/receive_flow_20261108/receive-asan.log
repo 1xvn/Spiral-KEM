@@ -1,0 +1,13 @@
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 0.05s
+     Running unittests src/lib.rs (/workspace/receive-flow-asan-target/x86_64-unknown-linux-gnu/debug/build/spiral-protocol/9c3fc9f52e610227/out/spiral_protocol-9c3fc9f52e610227)
+
+running 5 tests
+test receive_audit::poly1305_state_requires_drop ... ok
+test receive_audit::positive_secret_address ... ignored, positive control: must report a secret-dependent memory address
+test receive_audit::positive_secret_branch ... ignored, positive control: must report a secret-dependent conditional branch
+test receive_audit::public_fixture_contract ... RX_FUNCTIONAL_CASE {"fixtures_checked":78,"id":"public_fixture_contract","scope":"defined public fixtures; separate from raw key-taint traces","status":"passed"}
+ok
+test receive_audit::trace_actual_receive ... ignored, raw key/prefix taint trace; authentication and cleanup warnings remain
+
+test result: ok. 2 passed; 0 failed; 3 ignored; 0 measured; 66 filtered out; finished in 0.21s
+

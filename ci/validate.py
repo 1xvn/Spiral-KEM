@@ -80,7 +80,7 @@ def main():
 
     try:
         run('python-protocol', [python, '-m', 'unittest', 'discover', '-s', 'protocol_v01/tests', '-v'], 300, minimum=85)
-        run('diagnostic-parser', [python, '-m', 'unittest', 'discover', '-s', 'protocol_rust/diagnostics', '-p', 'test_libtest_memory.py', '-v'], 60, minimum=6)
+        run('diagnostic-parser', [python, '-m', 'unittest', 'discover', '-s', 'protocol_rust/diagnostics', '-p', 'test_*.py', '-v'], 60, minimum=20)
         run('native-kem', ['make', '-C', 'native_research', 'check', 'PYTHON=' + python], 300, minimum=9)
         if not cargo:
             raise RuntimeError('cargo executable not found')
@@ -94,7 +94,8 @@ def main():
         if not cargo_version.startswith('cargo 1.99.1 '):
             raise RuntimeError('CI requires Cargo 1.99.1')
         cargo_base = ['--locked', '--manifest-path', str(ROOT / 'protocol_rust/Cargo.toml'), '--target-dir', str(ROOT / 'protocol_rust/target'), '-j', '2']
-        run('rust-unit', [cargo, 'test', '--lib', *cargo_base], 1200, rust_minimum=52, expected_ignored=2)
+        ignored = 5 if re.search(r'(?m)^host: x86_64-', version) else 0
+        run('rust-unit', [cargo, 'test', '--lib', *cargo_base], 1200, rust_minimum=66, expected_ignored=ignored)
         run('rust-doc', [cargo, 'test', '--doc', *cargo_base], 300, rust_minimum=4)
         run('rust-release', [cargo, 'build', '--release', *cargo_base], 1200)
         binary = ROOT / 'protocol_rust/target/release/spiral-lab'

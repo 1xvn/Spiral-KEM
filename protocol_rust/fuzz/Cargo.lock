@@ -511,6 +511,7 @@ dependencies = [
  "cpufeatures",
  "opaque-debug",
  "universal-hash",
+ "zeroize",
 ]
 
 [[package]]
@@ -735,6 +736,7 @@ dependencies = [
  "hex",
  "hkdf",
  "hmac",
+ "poly1305",
  "rustls",
  "rustls-pemfile",
  "serde_json",

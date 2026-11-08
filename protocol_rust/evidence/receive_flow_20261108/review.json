@@ -1,0 +1,998 @@
+{
+  "code_commit": "832e996842b2d0c746dd7b65e388907207c5b72c",
+  "measurement_source_matches_git_blob": true,
+  "source_sha256_verified": {
+    "native_research/spiral_native.c": "ccb29fe8b1f428c25a93c8cb967f1090eea619ad36dcba7d53dc9bfaedc1cd0f",
+    "native_research/spiral_native.h": "85f0454ee626cc0c38cdd6b60b12453f90276b6681dd91ab634d48c20bb1597b",
+    "protocol_rust/Cargo.lock": "a7d9d4b8ec2637052566605e8e6a63aa587f54702b5ba33ded3a47e919e54bee",
+    "protocol_rust/Cargo.toml": "94a2afa9527f2db5ec33ad2f778413d44e7198bdaa2c78ce9b32007faf586dce",
+    "protocol_rust/build.rs": "9124a4764196d3147fed056dc9d18d29f3e1e775334c234848fc9728554ad6a8",
+    "protocol_rust/fuzz/Cargo.lock": "be82c65f3122f2809a28133c03b189026dad86aed671d30b040d3e4075895077",
+    "protocol_rust/fuzz/Cargo.toml": "23cfdd5b1750c9e3576c5f26bc8b3be5076bca6809045b715f58061d38361914",
+    "protocol_rust/fuzz/checks.rs": "133c702379d2ca87cabb810f15c486078902df24c35e51260eac27787b9e06e4",
+    "protocol_rust/fuzz/frame_target.rs": "2ff98f099e84b62f70e0d7d92d4da635fb6a6da526fd8de86c3c8e710d8fff07",
+    "protocol_rust/fuzz/hello_target.rs": "7e2f2a7ccd7e9ae383c2c3ff63dce7b61e61e7bca8725c883e63cf58d1a4c223",
+    "protocol_rust/fuzz/oracles.rs": "c01304ae9390a6809f7c5d7335b02837c2739b4cc88a18a63dfb0c66c4eb8200",
+    "protocol_rust/fuzz/record_checks.rs": "2beb5dddaa8335c1d05ea3ef6ddb8495bac8fec70a22921fbad689924886e3e8",
+    "protocol_rust/fuzz/record_model.rs": "014d253adc8d2d33a6c6b70546cf0651c55124448ad5c27c91e3aee5ecfc536e",
+    "protocol_rust/fuzz/record_replay.rs": "05cbf63099b81a304b1fab96188e9efdf2b597317c454f7daa8bcbef996eafcb",
+    "protocol_rust/fuzz/record_target.rs": "959f3c75b6a33802951c7f7661a69096411e280afaba856ffd91cc520e18d20c",
+    "protocol_rust/fuzz/replay_target.rs": "f7b88ff783d24ce45cfff12c5cca0df5ea73a935a7248c1964b980a89f4e3b62",
+    "protocol_rust/fuzzing/campaign.py": "9cb80f11d528f24b24c18b1f7583c4c2fd3a5d275cff4aab5e915ed8d0278a21",
+    "protocol_rust/fuzzing/coverage_evidence.py": "2dcf19abaf10bdf3145c002d3be2422864d607504486017944cc5e999fdfcda6",
+    "protocol_rust/fuzzing/inputs.py": "4d9d6693071d63077301f7f9d3e83a92d6a9e448efe3eae2aa7f6ae8e088633a",
+    "protocol_rust/fuzzing/install_toolchain.py": "a61ec0217cd5c789c3b4af0d2410fe638bb54ac0951bfd69a89faea9bedf819c",
+    "protocol_rust/fuzzing/record_inputs.py": "1765d5f4751a285f7b30bfe09b0a703c3d24e7c5276fdd3256a2813dd15e50a9",
+    "protocol_rust/fuzzing/reference_aead.py": "e24f0bb9936d2a60277776d2cba1f381617f18d859cf9c55c7f9d77d1219231a",
+    "protocol_rust/fuzzing/rustc_wrapper.py": "ab72ca176d9e6c9113354ae55650f22ed77002274b79c009d7a4529fd91451bf",
+    "protocol_rust/fuzzing/test_campaign.py": "dfcee3970472be13030634a738eabb053bbfa74fad250eb50af128f27eb6cd16",
+    "protocol_rust/fuzzing/test_coverage_evidence.py": "d3769e7eff1b6efe902d3ceff5581b6afc084cf3e8c7bde92d0a5d970f34bba3",
+    "protocol_rust/fuzzing/test_inputs.py": "f6b8074ace4cdfaba3455ae234e6bfa447f1226f6d4741938a976f090c37cb76",
+    "protocol_rust/fuzzing/test_install_toolchain.py": "505349f79ad96ad76ace3c401c58b85185dfc80c9587dddf06247a0369b1159e",
+    "protocol_rust/fuzzing/test_record_coverage.py": "f9ab1ae9fd2b708931c89cfdd12c59e7091bddaba9bbcc13a5e780967db8ee73",
+    "protocol_rust/fuzzing/test_record_inputs.py": "d78239c53b6cd1dff9d2d6f3906250bfa3209facebbd96d85618e0ecf9131936",
+    "protocol_rust/fuzzing/test_reference_aead.py": "ca534298e434f9f1a666ea738237c7cc29bbf518ffaf91d0a08808ff4aa9e0ed",
+    "protocol_rust/src/admission.rs": "07fe88b8f3985cfb082445e50ab0c96f12ba7d60c06fa10f87ad5b0756f7513a",
+    "protocol_rust/src/buffer.rs": "5365ce69f805e05eec1ed7fc6530a71cd384b40ac67c685302dd32ea83b94626",
+    "protocol_rust/src/channel.rs": "2255e076c700f530d9eac6d6ced2c9f823bea456fe05d00405d639e58ed4bdee",
+    "protocol_rust/src/channel/lifecycle_tests.rs": "6e0eaafe94bb1a8f4b6e1764600a654e888c66567fb82a700550eb9817bfebc1",
+    "protocol_rust/src/error.rs": "cad570f7b7bbd2d4e3413648298679fd7218285a6f188e455a778a2f72e754ab",
+    "protocol_rust/src/ffi.rs": "92b7dd0c32c18a7f88b1447490c938eca4964b20d6c23a0a7506d93c6f148791",
+    "protocol_rust/src/handshake.rs": "731d5d4d048ab56c9e386340ee96929e46a2f4876569d0503bd5dc4c2c463492",
+    "protocol_rust/src/identity.rs": "f8de104ec385fa1b15ee00e13cb77f3157d6d34c8e79b2b005893220e877f0b7",
+    "protocol_rust/src/lib.rs": "cef25fae70511ffcfd154e48951e340588455457678975c2e26b07b83c3fcbd1",
+    "protocol_rust/src/main.rs": "6fd34f294352fbe4257577be8281be3c59d816d941e9f9eabd324117acd7701b",
+    "protocol_rust/src/receive_audit.rs": "38c12efc9cbf192427afd77d26ce3e22e14d1011abf35d4fad313c19020314c5",
+    "protocol_rust/src/records.rs": "e90a64fb41013b107e6eff9df843f020570212b73aeb591228ae5695b66bf574",
+    "protocol_rust/src/records/fuzz_support.rs": "20eb134da7025e213e569b08c3806f7be25a40351e2601abe283ea19e93d07e7",
+    "protocol_rust/src/schedule.rs": "d3e5b57d293cfb5129c638912dda74c4f704548ff5a6de0cf0073d1e7a5049ea",
+    "protocol_rust/src/secret.rs": "b24ab189e8688951e2bf000bf0c7d14ed5e4d688cbcdc4b0926182bb5582765e",
+    "protocol_rust/src/secret_audit.rs": "766267f939b68c28b75e20011f5568b05c177ca5e8147c8e1d3f175383c7f027",
+    "protocol_rust/src/test_support.rs": "4748cbadd46d66c4e2a9c38d222f1401955073275a8f99b57fecb348694383ed",
+    "protocol_rust/src/transport.rs": "d7cc8e1527f7065bf7ec6ea3b18d095d0170f94ae32e958ee859a798f871a0e7",
+    "protocol_rust/src/wire.rs": "4cb125a7e84f488864763825f9f2662ea2a1feb936113bcb405aed9b80409d21",
+    "protocol_rust/src/worker.rs": "eed5c4f026ab4944a704e4a32eed0600f29b7378f466af5f459e7720f35799fb",
+    "protocol_v01/tests/fixtures/test_vectors_v0.1.json": "b556ca8741a649dfe3346d2033a2685492470beedbc601dbb36877f4c5881ee8",
+    "rust-toolchain.toml": "ca67e66659a82661386e5a08471c913cb8b3f7c7ce37592207d3f513589a41c2",
+    "protocol_rust/diagnostics/receive_flow.py": "4695ba12c483057b9604b8c5168724af21b985eea3f272344610a5a377d30ebf",
+    "protocol_rust/diagnostics/libtest_memory.py": "0dfa8b7c4bed792afd932860d65036c22430a99dbb6bf100ca8dd318e82de654",
+    "protocol_rust/diagnostics/test_receive_flow.py": "59aab3e638f5aedd1581f0f782d584a4d25e5a30b6240ec58b9c7e6775f2dd57"
+  },
+  "runner_and_parser_match_committed_source": true,
+  "binary_unchanged_after_measurement": true,
+  "diagnostic_complete": true,
+  "instruction_mapping_complete": true,
+  "constant_time_approved": false,
+  "production_memory_passed": false,
+  "original_48_byte_finding_resolved": false,
+  "declassification_used": false,
+  "suppression_used": false,
+  "counts": {
+    "fixture_variants": 78,
+    "public_baselines": 78,
+    "key_prefix_taint_traces": 78,
+    "positive_controls": 2
+  },
+  "by_mode": [
+    {
+      "mode": "close-invalid-reason",
+      "taint": "public",
+      "fixtures": 4,
+      "warning_contexts": {},
+      "possibly_lost_byte_counts": {
+        "48": 4
+      }
+    },
+    {
+      "mode": "close-invalid-reason",
+      "taint": "secret",
+      "fixtures": 4,
+      "warning_contexts": {
+        "authentication_decision_candidate": 4,
+        "authentication_result_propagation_candidate": 4,
+        "close_reason_validity_candidate": 4
+      },
+      "possibly_lost_byte_counts": {
+        "48": 4
+      }
+    },
+    {
+      "mode": "close-valid",
+      "taint": "public",
+      "fixtures": 2,
+      "warning_contexts": {},
+      "possibly_lost_byte_counts": {
+        "48": 2
+      }
+    },
+    {
+      "mode": "close-valid",
+      "taint": "secret",
+      "fixtures": 2,
+      "warning_contexts": {
+        "authentication_decision_candidate": 2,
+        "authentication_result_propagation_candidate": 2,
+        "close_reason_validity_candidate": 2
+      },
+      "possibly_lost_byte_counts": {
+        "48": 2
+      }
+    },
+    {
+      "mode": "data-bad-header",
+      "taint": "public",
+      "fixtures": 14,
+      "warning_contexts": {},
+      "possibly_lost_byte_counts": {
+        "48": 14
+      }
+    },
+    {
+      "mode": "data-bad-header",
+      "taint": "secret",
+      "fixtures": 14,
+      "warning_contexts": {},
+      "possibly_lost_byte_counts": {
+        "48": 14
+      }
+    },
+    {
+      "mode": "data-bad-tag",
+      "taint": "public",
+      "fixtures": 44,
+      "warning_contexts": {},
+      "possibly_lost_byte_counts": {
+        "48": 44
+      }
+    },
+    {
+      "mode": "data-bad-tag",
+      "taint": "secret",
+      "fixtures": 44,
+      "warning_contexts": {
+        "authentication_decision_candidate": 44,
+        "authentication_result_propagation_candidate": 44
+      },
+      "possibly_lost_byte_counts": {
+        "48": 43,
+        "0": 1
+      }
+    },
+    {
+      "mode": "data-valid",
+      "taint": "public",
+      "fixtures": 14,
+      "warning_contexts": {},
+      "possibly_lost_byte_counts": {
+        "48": 14
+      }
+    },
+    {
+      "mode": "data-valid",
+      "taint": "secret",
+      "fixtures": 14,
+      "warning_contexts": {
+        "authentication_decision_candidate": 14,
+        "authentication_result_propagation_candidate": 14
+      },
+      "possibly_lost_byte_counts": {
+        "48": 13,
+        "0": 1
+      }
+    }
+  ],
+  "raw_memcheck_exits": {
+    "99": 158
+  },
+  "actual_receive_unclassified_warning_contexts": 0,
+  "actual_receive_warning_contexts": 134,
+  "positive_controls": [
+    {
+      "kind": "branch",
+      "exit": 99,
+      "warnings": [
+        {
+          "kind": "conditional",
+          "message": "==260268== Conditional jump or move depends on uninitialised value(s)",
+          "stack": [
+            "==260268==    at 0x494AD76: positive_secret_branch (receive_audit.rs:234)",
+            "==260268==    by 0x494AD76: {closure#0} (receive_audit.rs:230)",
+            "==260268==    by 0x494AD76: <spiral_protocol::receive_audit::positive_secret_branch::{closure#0} as core::ops::function::FnOnce<()>>::call_once (library/core/src/ops/function.rs:250)",
+            "==260268==    by 0x49A63DA: call_once<fn() -> core::result::Result<(), alloc::string::String>, ()> (function.rs:250)",
+            "==260268==    by 0x49A63DA: test::__rust_begin_short_backtrace::<core::result::Result<(), alloc::string::String>, fn() -> core::result::Result<(), alloc::string::String>> (lib.rs:733)",
+            "==260268==    by 0x49B4530: run (types.rs:145)",
+            "==260268==    by 0x49B4530: {closure#0} (lib.rs:756)",
+            "==260268==    by 0x49B4530: call_once<core::result::Result<(), alloc::string::String>, test::run_test_in_process::{closure_env#0}> (unwind_safe.rs:275)",
+            "==260268==    by 0x49B4530: do_call<core::panic::unwind_safe::AssertUnwindSafe<test::run_test_in_process::{closure_env#0}>, core::result::Result<(), alloc::string::String>> (panicking.rs:576)",
+            "==260268==    by 0x49B4530: catch_unwind<core::result::Result<(), alloc::string::String>, core::panic::unwind_safe::AssertUnwindSafe<test::run_test_in_process::{closure_env#0}>> (panicking.rs:544)",
+            "==260268==    by 0x49B4530: catch_unwind<core::panic::unwind_safe::AssertUnwindSafe<test::run_test_in_process::{closure_env#0}>, core::result::Result<(), alloc::string::String>> (panic.rs:359)",
+            "==260268==    by 0x49B4530: run_test_in_process (lib.rs:756)",
+            "==260268==    by 0x49B4530: test::run_test::{closure#0} (lib.rs:677)",
+            "==260268==    by 0x49AD793: {closure#1} (lib.rs:707)",
+            "==260268==    by 0x49AD793: std::sys::backtrace::__rust_begin_short_backtrace::<test::run_test::{closure#1}, ()> (backtrace.rs:166)",
+            "==260268==    by 0x49B8351: {closure#0}<test::run_test::{closure_env#1}, ()> (lifecycle.rs:70)",
+            "==260268==    by 0x49B8351: call_once<(), std::thread::lifecycle::spawn_unchecked::{closure#1}::{closure_env#0}<test::run_test::{closure_env#1}, ()>> (unwind_safe.rs:275)",
+            "==260268==    by 0x49B8351: do_call<core::panic::unwind_safe::AssertUnwindSafe<std::thread::lifecycle::spawn_unchecked::{closure#1}::{closure_env#0}<test::run_test::{closure_env#1}, ()>>, ()> (panicking.rs:576)",
+            "==260268==    by 0x49B8351: catch_unwind<(), core::panic::unwind_safe::AssertUnwindSafe<std::thread::lifecycle::spawn_unchecked::{closure#1}::{closure_env#0}<test::run_test::{closure_env#1}, ()>>> (panicking.rs:544)",
+            "==260268==    by 0x49B8351: catch_unwind<core::panic::unwind_safe::AssertUnwindSafe<std::thread::lifecycle::spawn_unchecked::{closure#1}::{closure_env#0}<test::run_test::{closure_env#1}, ()>>, ()> (panic.rs:359)",
+            "==260268==    by 0x49B8351: {closure#1}<test::run_test::{closure_env#1}, ()> (lifecycle.rs:68)",
+            "==260268==    by 0x49B8351: <std::thread::lifecycle::spawn_unchecked<test::run_test::{closure#1}, ()>::{closure#1} as core::ops::function::FnOnce<()>>::call_once::{shim:vtable#0} (function.rs:250)",
+            "==260268==    by 0x499E84D: call_once<(), (dyn core::ops::function::FnOnce<(), Output=()> + core::marker::Send), alloc::alloc::Global> (boxed.rs:2320)",
+            "==260268==    by 0x499E84D: <std::sys::thread::unix::Thread>::new::thread_start (unix.rs:123)",
+            "==260268==    by 0x524E8BA: start_thread (pthread_create.c:448)",
+            "==260268==    by 0x52CC36F: clone (clone.S:100)"
+          ],
+          "runtime_ip": 76852598,
+          "elf_rva": 1355126,
+          "instruction": "je     14ad81 <_RNvYNCNvNtCsqnGsIHVYzk_15spiral_protocol13receive_audit22positive_secret_branch0INtNtNtCskADBYZwJmSU_4core3ops8function6FnOnceuE9call_onceB8_+0xb1>",
+          "instruction_mapped": true,
+          "conditional_instruction_verified": true,
+          "classification": "unclassified"
+        }
+      ]
+    },
+    {
+      "kind": "address",
+      "exit": 99,
+      "warnings": [
+        {
+          "kind": "undefined_value_or_address",
+          "message": "==260270== Use of uninitialised value of size 8",
+          "stack": [
+            "==260270==    at 0x494AE64: read_volatile<u8> (library/core/src/ptr/mod.rs:2160)",
+            "==260270==    by 0x494AE64: positive_secret_address (receive_audit.rs:251)",
+            "==260270==    by 0x494AE64: {closure#0} (receive_audit.rs:243)",
+            "==260270==    by 0x494AE64: <spiral_protocol::receive_audit::positive_secret_address::{closure#0} as core::ops::function::FnOnce<()>>::call_once (library/core/src/ops/function.rs:250)",
+            "==260270==    by 0x49A63DA: call_once<fn() -> core::result::Result<(), alloc::string::String>, ()> (function.rs:250)",
+            "==260270==    by 0x49A63DA: test::__rust_begin_short_backtrace::<core::result::Result<(), alloc::string::String>, fn() -> core::result::Result<(), alloc::string::String>> (lib.rs:733)",
+            "==260270==    by 0x49B4530: run (types.rs:145)",
+            "==260270==    by 0x49B4530: {closure#0} (lib.rs:756)",
+            "==260270==    by 0x49B4530: call_once<core::result::Result<(), alloc::string::String>, test::run_test_in_process::{closure_env#0}> (unwind_safe.rs:275)",
+            "==260270==    by 0x49B4530: do_call<core::panic::unwind_safe::AssertUnwindSafe<test::run_test_in_process::{closure_env#0}>, core::result::Result<(), alloc::string::String>> (panicking.rs:576)",
+            "==260270==    by 0x49B4530: catch_unwind<core::result::Result<(), alloc::string::String>, core::panic::unwind_safe::AssertUnwindSafe<test::run_test_in_process::{closure_env#0}>> (panicking.rs:544)",
+            "==260270==    by 0x49B4530: catch_unwind<core::panic::unwind_safe::AssertUnwindSafe<test::run_test_in_process::{closure_env#0}>, core::result::Result<(), alloc::string::String>> (panic.rs:359)",
+            "==260270==    by 0x49B4530: run_test_in_process (lib.rs:756)",
+            "==260270==    by 0x49B4530: test::run_test::{closure#0} (lib.rs:677)",
+            "==260270==    by 0x49AD793: {closure#1} (lib.rs:707)",
+            "==260270==    by 0x49AD793: std::sys::backtrace::__rust_begin_short_backtrace::<test::run_test::{closure#1}, ()> (backtrace.rs:166)",
+            "==260270==    by 0x49B8351: {closure#0}<test::run_test::{closure_env#1}, ()> (lifecycle.rs:70)",
+            "==260270==    by 0x49B8351: call_once<(), std::thread::lifecycle::spawn_unchecked::{closure#1}::{closure_env#0}<test::run_test::{closure_env#1}, ()>> (unwind_safe.rs:275)",
+            "==260270==    by 0x49B8351: do_call<core::panic::unwind_safe::AssertUnwindSafe<std::thread::lifecycle::spawn_unchecked::{closure#1}::{closure_env#0}<test::run_test::{closure_env#1}, ()>>, ()> (panicking.rs:576)",
+            "==260270==    by 0x49B8351: catch_unwind<(), core::panic::unwind_safe::AssertUnwindSafe<std::thread::lifecycle::spawn_unchecked::{closure#1}::{closure_env#0}<test::run_test::{closure_env#1}, ()>>> (panicking.rs:544)",
+            "==260270==    by 0x49B8351: catch_unwind<core::panic::unwind_safe::AssertUnwindSafe<std::thread::lifecycle::spawn_unchecked::{closure#1}::{closure_env#0}<test::run_test::{closure_env#1}, ()>>, ()> (panic.rs:359)",
+            "==260270==    by 0x49B8351: {closure#1}<test::run_test::{closure_env#1}, ()> (lifecycle.rs:68)",
+            "==260270==    by 0x49B8351: <std::thread::lifecycle::spawn_unchecked<test::run_test::{closure#1}, ()>::{closure#1} as core::ops::function::FnOnce<()>>::call_once::{shim:vtable#0} (function.rs:250)",
+            "==260270==    by 0x499E84D: call_once<(), (dyn core::ops::function::FnOnce<(), Output=()> + core::marker::Send), alloc::alloc::Global> (boxed.rs:2320)",
+            "==260270==    by 0x499E84D: <std::sys::thread::unix::Thread>::new::thread_start (unix.rs:123)",
+            "==260270==    by 0x524E8BA: start_thread (pthread_create.c:448)",
+            "==260270==    by 0x52CC36F: clone (clone.S:100)"
+          ],
+          "runtime_ip": 76852836,
+          "elf_rva": 1355364,
+          "instruction": "movzbl 0xe(%rsp,%rax,1),%eax",
+          "instruction_mapped": true,
+          "conditional_instruction_verified": false,
+          "classification": "unclassified"
+        }
+      ]
+    }
+  ],
+  "receive-flow-20261108": {
+    "manifest_files_verified": 480,
+    "archive_sha256": "1582b6f98fb3fb8b3aa5bf4bf1e01cbd31c3526b8d696f23fe8f5a73014f40de"
+  },
+  "receive-flow-record-fuzz-20261108": {
+    "manifest_files_verified": 695,
+    "archive_sha256": "5fbfd537c346555f84059910a15387eb8d1371b92c0076d0589ac67835bb146c"
+  },
+  "functional": {
+    "python-protocol": {
+      "passed": true,
+      "exit": 0,
+      "tests_run": 85
+    },
+    "diagnostic-parser": {
+      "passed": true,
+      "exit": 0,
+      "tests_run": 20
+    },
+    "native-kem": {
+      "passed": true,
+      "exit": 0,
+      "tests_run": 9
+    },
+    "rustc-version": {
+      "passed": true,
+      "exit": 0
+    },
+    "cargo-version": {
+      "passed": true,
+      "exit": 0
+    },
+    "rust-unit": {
+      "passed": true,
+      "exit": 0,
+      "test_groups": [
+        {
+          "passed": 66,
+          "failed": 0,
+          "ignored": 5
+        }
+      ]
+    },
+    "rust-doc": {
+      "passed": true,
+      "exit": 0,
+      "test_groups": [
+        {
+          "passed": 6,
+          "failed": 0,
+          "ignored": 0
+        }
+      ]
+    },
+    "rust-release": {
+      "passed": true,
+      "exit": 0
+    },
+    "rust-tls": {
+      "passed": true,
+      "exit": 0,
+      "tests_run": 35,
+      "structured_tests": {
+        "tests": 35,
+        "failures": 0,
+        "errors": 0
+      }
+    }
+  },
+  "wipe_memcheck": {
+    "summary": {
+      "errors": 1,
+      "contexts": 1,
+      "suppressed_errors": 0,
+      "suppressed_contexts": 0
+    },
+    "leaks": {
+      "definitely lost": {
+        "bytes": 0,
+        "blocks": 0
+      },
+      "indirectly lost": {
+        "bytes": 0,
+        "blocks": 0
+      },
+      "possibly lost": {
+        "bytes": 48,
+        "blocks": 1
+      },
+      "still reachable": {
+        "bytes": 548,
+        "blocks": 2
+      },
+      "suppressed": {
+        "bytes": 0,
+        "blocks": 0
+      }
+    },
+    "possibly_lost_48_records": [
+      {
+        "stack": "==267657== 48 bytes in 1 blocks are possibly lost in loss record 2 of 3\n==267657==    at 0x4A28818: malloc (vg_replace_malloc.c:446)\n==267657==    by 0x4998927: alloc (unix.rs:31)\n==267657==    by 0x4998927: alloc_impl (alloc.rs:161)\n==267657==    by 0x4998927: allocate (alloc.rs:223)\n==267657==    by 0x4998927: {closure#0}<std::thread::thread::Inner, std::alloc::System> (sync.rs:823)\n==267657==    by 0x4998927: allocate_for_layout<core::mem::maybe_uninit::MaybeUninit<std::thread::thread::Inner>, alloc::sync::{impl#17}::new_uninit_in::{closure_env#0}<std::thread::thread::Inner, std::alloc::System>, fn(*mut u8) -> *mut alloc::sync::ArcInner<core::mem::maybe_uninit::MaybeUninit<std::thread::thread::Inner>>> (sync.rs:2191)\n==267657==    by 0x4998927: new_uninit_in<std::thread::thread::Inner, std::alloc::System> (sync.rs:821)\n==267657==    by 0x4998927: new (thread.rs:102)\n==267657==    by 0x4998927: std::thread::current::init_current (current.rs:294)\n==267657==    by 0x497D7E9: current_or_unnamed (current.rs:251)\n==267657==    by 0x497D7E9: <std::sync::mpmc::context::Context>::new (context.rs:72)\n==267657==    by 0x49A6CAB: __rust_std_internal_init_fn (context.rs:43)\n==267657==    by 0x49A6CAB: call_once<fn() -> core::cell::Cell<core::option::Option<std::sync::mpmc::context::Context>>, ()> (function.rs:250)\n==267657==    by 0x49A6CAB: unwrap_or_else<core::cell::Cell<core::option::Option<std::sync::mpmc::context::Context>>, fn() -> core::cell::Cell<core::option::Option<std::sync::mpmc::context::Context>>> (option.rs:1065)\n==267657==    by 0x49A6CAB: <std::sys::thread_local::native::lazy::Storage<core::cell::Cell<core::option::Option<std::sync::mpmc::context::Context>>, ()>>::get_or_init_slow::<<std::sync::mpmc::context::Context>::with::CONTEXT::__rust_std_internal_init_fn> (lazy.rs:80)\n==267657==    by 0x49C2042: get_or_init<core::cell::Cell<core::option::Option<std::sync::mpmc::context::Context>>, (), fn() -> core::cell::Cell<core::option::Option<std::sync::mpmc::context::Context>>> (lazy.rs:62)\n==267657==    by 0x49C2042: {closure#0} (mod.rs:97)\n==267657==    by 0x49C2042: call_once<std::sync::mpmc::context::{impl#0}::with::CONTEXT::{constant#0}::{closure_env#0}, (core::option::Option<&mut core::option::Option<core::cell::Cell<core::option::Option<std::sync::mpmc::context::Context>>>>)> (function.rs:250)\n==267657==    by 0x49C2042: try_with<core::cell::Cell<core::option::Option<std::sync::mpmc::context::Context>>, std::sync::mpmc::context::{impl#0}::with::{closure_env#1}<std::sync::mpmc::list::{impl#3}::recv::{closure_env#1}<test::event::CompletedTest>, ()>, ()> (local.rs:462)\n==267657==    by 0x49C2042: with<std::sync::mpmc::list::{impl#3}::recv::{closure_env#1}<test::event::CompletedTest>, ()> (context.rs:53)\n==267657==    by 0x49C2042: <std::sync::mpmc::list::Channel<test::event::CompletedTest>>::recv (list.rs:442)\n==267657==    by 0x49CDFB8: recv<test::event::CompletedTest> (mod.rs:1025)\n==267657==    by 0x49CDFB8: recv<test::event::CompletedTest> (mpsc.rs:890)\n==267657==    by 0x49CDFB8: run_tests<test::console::run_tests_console::{closure_env#2}> (lib.rs:445)\n==267657==    by 0x49CDFB8: test::console::run_tests_console (console.rs:328)\n==267657==    by 0x49BA359: test_main_inner<test::test_main_static::{closure_env#0}> (lib.rs:170)\n==267657==    by 0x49BA359: test::test_main_static (lib.rs:195)\n==267657==    by 0x48D0922: call_once<fn(), ()> (library/core/src/ops/function.rs:250)\n==267657==    by 0x48D0922: std::sys::backtrace::__rust_begin_short_backtrace::<fn(), ()> (library/std/src/sys/backtrace.rs:166)\n==267657==    by 0x48E9DF8: std::rt::lang_start::<()>::{closure#0} (library/std/src/rt.rs:206)\n==267657==    by 0x49967A8: call_once<(), (dyn core::ops::function::Fn<(), Output=i32> + core::marker::Sync + core::panic::unwind_safe::RefUnwindSafe)> (function.rs:287)\n==267657==    by 0x49967A8: do_call<&(dyn core::ops::function::Fn<(), Output=i32> + core::marker::Sync + core::panic::unwind_safe::RefUnwindSafe), i32> (panicking.rs:576)\n==267657==    by 0x49967A8: catch_unwind<i32, &(dyn core::ops::function::Fn<(), Output=i32> + core::marker::Sync + core::panic::unwind_safe::RefUnwindSafe)> (panicking.rs:544)\n==267657==    by 0x49967A8: catch_unwind<&(dyn core::ops::function::Fn<(), Output=i32> + core::marker::Sync + core::panic::unwind_safe::RefUnwindSafe), i32> (panic.rs:359)\n==267657==    by 0x49967A8: {closure#0} (rt.rs:175)\n==267657==    by 0x49967A8: do_call<std::rt::lang_start_internal::{closure_env#0}, isize> (panicking.rs:576)\n==267657==    by 0x49967A8: catch_unwind<isize, std::rt::lang_start_internal::{closure_env#0}> (panicking.rs:544)\n==267657==    by 0x49967A8: catch_unwind<std::rt::lang_start_internal::{closure_env#0}, isize> (panic.rs:359)\n==267657==    by 0x49967A8: std::rt::lang_start_internal (rt.rs:171)\n==267657==    by 0x496852B: main (in /workspace/Spiral-KEM/protocol_rust/target/audit/deps/spiral_protocol-27dc97f0435f0970)",
+        "std_thread_frame": true,
+        "std_channel_frame": true,
+        "libtest_frame": true,
+        "classification": "std_thread_and_libtest"
+      }
+    ],
+    "raw_exit": 99,
+    "memory_passed": false
+  },
+  "poly1305_before": {
+    "features": [],
+    "artifact_sha256": {
+      "/workspace/Spiral-KEM/protocol_rust/target/audit/deps/libpoly1305-ce0c05e30a4c4c7e.rlib": "ce7d7fe2908f6bdd9adda1f8d304307f3cb69e357d3b7b6e23e8c1ce4477eef8",
+      "/workspace/Spiral-KEM/protocol_rust/target/audit/deps/libpoly1305-ce0c05e30a4c4c7e.rmeta": "3f64ece3a92205213bb6aa27c3ec74e1391dd5f3dae466cb69ffe0224bef904c"
+    },
+    "result": "POLY1305_NEEDS_DROP false"
+  },
+  "poly1305_after": {
+    "features": [
+      "zeroize"
+    ],
+    "artifact_sha256": {
+      "/workspace/Spiral-KEM/protocol_rust/target/audit/deps/libpoly1305-cb40ae7f020836d3.rlib": "ff73ad0e92bde3d08a1f62282e0a7cb000711c7060ec7e815630564f30ce0946",
+      "/workspace/Spiral-KEM/protocol_rust/target/audit/deps/libpoly1305-cb40ae7f020836d3.rmeta": "e219919e58627a44daf2f03f2d41175a55fd077bf3eb34ef9ff64265ae8cde82"
+    },
+    "result": "POLY1305_NEEDS_DROP true"
+  },
+  "dependencies": {
+    "scope": "Pinned dependency source inventory, not a complete stack/register wipe proof or vulnerability verdict.",
+    "cargo_lock_sha256": "a7d9d4b8ec2637052566605e8e6a63aa587f54702b5ba33ded3a47e919e54bee",
+    "packages": [
+      {
+        "name": "hmac",
+        "version": "0.12.1",
+        "crate_sha256": "6c49c37c09c17a53d937dfbb742eb3a961d65a994e6bcdcf37e7399d0cc8ab5e",
+        "matches_lock": true,
+        "features": [],
+        "source_files_checked": 4,
+        "source_equals_crate": true,
+        "source_markers": [],
+        "excerpts": [
+          {
+            "file": "src/optim.rs",
+            "start": 17,
+            "end": 37,
+            "whole_file_sha256": "3c16b46effd4980cd2e98b5b2090aa57049dc9d4a9ea1c87e758875bf1ab0b63"
+          },
+          {
+            "file": "src/optim.rs",
+            "start": 49,
+            "end": 59,
+            "whole_file_sha256": "3c16b46effd4980cd2e98b5b2090aa57049dc9d4a9ea1c87e758875bf1ab0b63"
+          },
+          {
+            "file": "src/optim.rs",
+            "start": 202,
+            "end": 220,
+            "whole_file_sha256": "3c16b46effd4980cd2e98b5b2090aa57049dc9d4a9ea1c87e758875bf1ab0b63"
+          }
+        ]
+      },
+      {
+        "name": "hkdf",
+        "version": "0.12.4",
+        "crate_sha256": "7b5f8eb2ad728638ea2c7d47a21db23b7b58a72ed6a38256b8a1849f15fbbdf7",
+        "matches_lock": true,
+        "features": [],
+        "source_files_checked": 4,
+        "source_equals_crate": true,
+        "source_markers": [],
+        "excerpts": [
+          {
+            "file": "src/lib.rs",
+            "start": 163,
+            "end": 173,
+            "whole_file_sha256": "f0a1d6b58091b9690c168c8d772838c74f8c6937698af9fd81d2374a810bb07e"
+          },
+          {
+            "file": "src/lib.rs",
+            "start": 189,
+            "end": 197,
+            "whole_file_sha256": "f0a1d6b58091b9690c168c8d772838c74f8c6937698af9fd81d2374a810bb07e"
+          },
+          {
+            "file": "src/lib.rs",
+            "start": 234,
+            "end": 262,
+            "whole_file_sha256": "f0a1d6b58091b9690c168c8d772838c74f8c6937698af9fd81d2374a810bb07e"
+          }
+        ]
+      },
+      {
+        "name": "sha2",
+        "version": "0.10.9",
+        "crate_sha256": "a7507d819769d01a365ab707794a4084392c824f54a7a6a7862f8c3d0892b283",
+        "matches_lock": true,
+        "features": [
+          "default",
+          "std"
+        ],
+        "source_files_checked": 16,
+        "source_equals_crate": true,
+        "source_markers": [],
+        "excerpts": [
+          {
+            "file": "src/core_api.rs",
+            "start": 17,
+            "end": 24,
+            "whole_file_sha256": "73b160d98bfa6737688875ad73da5e3c2c93582604dc313d208200e12fdab676"
+          },
+          {
+            "file": "src/core_api.rs",
+            "start": 89,
+            "end": 96,
+            "whole_file_sha256": "73b160d98bfa6737688875ad73da5e3c2c93582604dc313d208200e12fdab676"
+          }
+        ]
+      },
+      {
+        "name": "digest",
+        "version": "0.10.7",
+        "crate_sha256": "9ed9a281f7bc9b7576e61468ba615a66a5c8cfdff42420a70aa82701a3b1e292",
+        "matches_lock": true,
+        "features": [
+          "alloc",
+          "block-buffer",
+          "core-api",
+          "default",
+          "mac",
+          "std",
+          "subtle"
+        ],
+        "source_files_checked": 15,
+        "source_equals_crate": true,
+        "source_markers": [],
+        "excerpts": [
+          {
+            "file": "src/core_api/wrapper.rs",
+            "start": 22,
+            "end": 33,
+            "whole_file_sha256": "033777bed7d140b158e15d50fda8a6e06557ce89bd0738fcca692be2c39e8b8a"
+          },
+          {
+            "file": "src/core_api/wrapper.rs",
+            "start": 162,
+            "end": 174,
+            "whole_file_sha256": "033777bed7d140b158e15d50fda8a6e06557ce89bd0738fcca692be2c39e8b8a"
+          }
+        ]
+      },
+      {
+        "name": "chacha20poly1305",
+        "version": "0.10.1",
+        "crate_sha256": "10cd79432192d1c0f4e1a0fef9527696cc039165d729fb41b3f4f4f354c2dc35",
+        "matches_lock": true,
+        "features": [
+          "alloc",
+          "default",
+          "getrandom",
+          "rand_core"
+        ],
+        "source_files_checked": 3,
+        "source_equals_crate": true,
+        "source_markers": [
+          {
+            "file": "src/lib.rs",
+            "line": 292,
+            "text": "impl<C, N> Drop for ChaChaPoly1305<C, N>"
+          },
+          {
+            "file": "src/lib.rs",
+            "line": 301,
+            "text": "impl<C, N: ArrayLength<u8>> ZeroizeOnDrop for ChaChaPoly1305<C, N> {}"
+          }
+        ],
+        "excerpts": [
+          {
+            "file": "src/cipher.rs",
+            "start": 27,
+            "end": 44,
+            "whole_file_sha256": "70f718a5fd9296f08b16fe42496103033b0150d7cfbb9baca012e2fb51fe8d4a"
+          },
+          {
+            "file": "src/cipher.rs",
+            "start": 82,
+            "end": 96,
+            "whole_file_sha256": "70f718a5fd9296f08b16fe42496103033b0150d7cfbb9baca012e2fb51fe8d4a"
+          },
+          {
+            "file": "src/lib.rs",
+            "start": 291,
+            "end": 301,
+            "whole_file_sha256": "e454914d6e98c3889cebc92c2eb9a1a43d23f60ca028df0954b55041bfed0d30"
+          }
+        ]
+      },
+      {
+        "name": "chacha20",
+        "version": "0.9.1",
+        "crate_sha256": "c3613f74bd2eac03dad61bd53dbe620703d4371614fe0bc3b9f04dd36fe4e818",
+        "matches_lock": true,
+        "features": [
+          "zeroize"
+        ],
+        "source_files_checked": 9,
+        "source_equals_crate": true,
+        "source_markers": [
+          {
+            "file": "src/legacy.rs",
+            "line": 76,
+            "text": "impl ZeroizeOnDrop for ChaCha20LegacyCore {}"
+          },
+          {
+            "file": "src/lib.rs",
+            "line": 309,
+            "text": "impl<R: Unsigned> Drop for ChaChaCore<R> {"
+          },
+          {
+            "file": "src/lib.rs",
+            "line": 317,
+            "text": "impl<R: Unsigned> ZeroizeOnDrop for ChaChaCore<R> {}"
+          },
+          {
+            "file": "src/xchacha.rs",
+            "line": 90,
+            "text": "impl<R: Unsigned> ZeroizeOnDrop for XChaChaCore<R> {}"
+          }
+        ],
+        "excerpts": [
+          {
+            "file": "src/lib.rs",
+            "start": 307,
+            "end": 317,
+            "whole_file_sha256": "4112893bb7a5eb6cdb269200c816befaeadecf7e932ab2612c0941b7f7d7c6c3"
+          }
+        ]
+      },
+      {
+        "name": "poly1305",
+        "version": "0.8.0",
+        "crate_sha256": "8159bd90725d2df49889a078b54f4f79e87f1f8a8444194cdca81d38f5393abf",
+        "matches_lock": true,
+        "features": [
+          "zeroize"
+        ],
+        "source_files_checked": 8,
+        "source_equals_crate": true,
+        "source_markers": [
+          {
+            "file": "src/backend/autodetect.rs",
+            "line": 98,
+            "text": "impl Drop for State {"
+          },
+          {
+            "file": "src/backend/soft.rs",
+            "line": 236,
+            "text": "impl Drop for State {"
+          }
+        ],
+        "excerpts": [
+          {
+            "file": "src/backend/autodetect.rs",
+            "start": 97,
+            "end": 105,
+            "whole_file_sha256": "7c1f9bbe82f27f506f1995ba1e2c12f6eb766e075ea71ebc203e6a57a8b0df57"
+          },
+          {
+            "file": "src/backend/soft.rs",
+            "start": 235,
+            "end": 243,
+            "whole_file_sha256": "fd77a8c9b0b35bb1514d8ce812caa2c89b8a1ccccb2394558e8471fb3201bf74"
+          }
+        ]
+      },
+      {
+        "name": "ed25519-dalek",
+        "version": "2.2.0",
+        "crate_sha256": "70e796c081cee67dc755e1a36a0a172b897fab85fc3f6bc48307991f64e4eca9",
+        "matches_lock": true,
+        "features": [
+          "alloc",
+          "default",
+          "fast",
+          "std",
+          "zeroize"
+        ],
+        "source_files_checked": 11,
+        "source_equals_crate": true,
+        "source_markers": [
+          {
+            "file": "src/hazmat.rs",
+            "line": 68,
+            "text": "impl Drop for ExpandedSecretKey {"
+          },
+          {
+            "file": "src/hazmat.rs",
+            "line": 76,
+            "text": "impl ZeroizeOnDrop for ExpandedSecretKey {}"
+          },
+          {
+            "file": "src/signing.rs",
+            "line": 659,
+            "text": "impl Drop for SigningKey {"
+          },
+          {
+            "file": "src/signing.rs",
+            "line": 666,
+            "text": "impl ZeroizeOnDrop for SigningKey {}"
+          }
+        ],
+        "excerpts": [
+          {
+            "file": "src/signing.rs",
+            "start": 658,
+            "end": 666,
+            "whole_file_sha256": "dcf83ccfaf98d9ab144ec7a6ec4576499ccdfe8308c0714b4e890a1aa7a22b82"
+          },
+          {
+            "file": "src/signing.rs",
+            "start": 809,
+            "end": 815,
+            "whole_file_sha256": "dcf83ccfaf98d9ab144ec7a6ec4576499ccdfe8308c0714b4e890a1aa7a22b82"
+          },
+          {
+            "file": "src/hazmat.rs",
+            "start": 66,
+            "end": 76,
+            "whole_file_sha256": "9f1fe8f5d1e0f949d49e50a3202f699b6a425685341584fc61459a4c955f4847"
+          }
+        ]
+      },
+      {
+        "name": "zeroize",
+        "version": "1.9.1",
+        "crate_sha256": "e13084392c5e4bc371903e2935a5eaeed24905a7511356b883835e18a78f6879",
+        "matches_lock": true,
+        "features": [
+          "alloc",
+          "default",
+          "derive",
+          "zeroize_derive"
+        ],
+        "source_files_checked": 6,
+        "source_equals_crate": true,
+        "source_markers": [
+          {
+            "file": "src/aarch64.rs",
+            "line": 10,
+            "text": "            impl Zeroize for $type {"
+          },
+          {
+            "file": "src/barrier.rs",
+            "line": 31,
+            "text": "/// impl Drop for DataToZeroize {"
+          },
+          {
+            "file": "src/barrier.rs",
+            "line": 40,
+            "text": "/// impl zeroize::ZeroizeOnDrop for DataToZeroize {}"
+          },
+          {
+            "file": "src/lib.rs",
+            "line": 25,
+            "text": "//! complex invariants, do NOT impl the [`Zeroize`] trait, but instead provide a [`Drop`] impl which"
+          },
+          {
+            "file": "src/lib.rs",
+            "line": 31,
+            "text": "//! Why not impl [`Zeroize`] for such types, e.g. a `SecretKey` type? The problem is [`Zeroize`]"
+          },
+          {
+            "file": "src/lib.rs",
+            "line": 57,
+            "text": "//! impl [`Default`], which implements [`Zeroize`] by overwriting a value with"
+          },
+          {
+            "file": "src/lib.rs",
+            "line": 125,
+            "text": "//! impls a `Drop` handler which calls `zeroize()` on its contents:"
+          },
+          {
+            "file": "src/lib.rs",
+            "line": 270,
+            "text": "impl<Z> Zeroize for Z"
+          },
+          {
+            "file": "src/lib.rs",
+            "line": 294,
+            "text": "impl ZeroizeOnDrop for PhantomPinned {}"
+          },
+          {
+            "file": "src/lib.rs",
+            "line": 297,
+            "text": "impl ZeroizeOnDrop for () {}"
+          },
+          {
+            "file": "src/lib.rs",
+            "line": 302,
+            "text": "            impl Zeroize for $type {"
+          },
+          {
+            "file": "src/lib.rs",
+            "line": 330,
+            "text": "impl<Z> Zeroize for num::Wrapping<Z>"
+          },
+          {
+            "file": "src/lib.rs",
+            "line": 339,
+            "text": "/// Impl [`Zeroize`] on arrays of types that impl [`Zeroize`]."
+          },
+          {
+            "file": "src/lib.rs",
+            "line": 340,
+            "text": "impl<Z, const N: usize> Zeroize for [Z; N]"
+          },
+          {
+            "file": "src/lib.rs",
+            "line": 349,
+            "text": "/// Impl [`ZeroizeOnDrop`] on arrays of types that impl [`ZeroizeOnDrop`]."
+          },
+          {
+            "file": "src/lib.rs",
+            "line": 350,
+            "text": "impl<Z, const N: usize> ZeroizeOnDrop for [Z; N] where Z: ZeroizeOnDrop {}"
+          },
+          {
+            "file": "src/lib.rs",
+            "line": 352,
+            "text": "impl<Z> Zeroize for IterMut<'_, Z>"
+          },
+          {
+            "file": "src/lib.rs",
+            "line": 363,
+            "text": "impl<Z> Zeroize for Option<Z>"
+          },
+          {
+            "file": "src/lib.rs",
+            "line": 405,
+            "text": "impl<Z> ZeroizeOnDrop for Option<Z> where Z: ZeroizeOnDrop {}"
+          },
+          {
+            "file": "src/lib.rs",
+            "line": 412,
+            "text": "impl<Z> Zeroize for MaybeUninit<Z> {"
+          },
+          {
+            "file": "src/lib.rs",
+            "line": 428,
+            "text": "impl<Z> Zeroize for [MaybeUninit<Z>] {"
+          },
+          {
+            "file": "src/lib.rs",
+            "line": 452,
+            "text": "impl<Z> Zeroize for [Z]"
+          },
+          {
+            "file": "src/lib.rs",
+            "line": 469,
+            "text": "impl Zeroize for str {"
+          },
+          {
+            "file": "src/lib.rs",
+            "line": 478,
+            "text": "impl<Z> Zeroize for PhantomData<Z> {"
+          },
+          {
+            "file": "src/lib.rs",
+            "line": 483,
+            "text": "impl<Z> ZeroizeOnDrop for PhantomData<Z> {}"
+          },
+          {
+            "file": "src/lib.rs",
+            "line": 487,
+            "text": "        impl<$($type_name: Zeroize),+> Zeroize for ($($type_name,)+) {"
+          },
+          {
+            "file": "src/lib.rs",
+            "line": 495,
+            "text": "        impl<$($type_name: ZeroizeOnDrop),+> ZeroizeOnDrop for ($($type_name,)+) { }"
+          },
+          {
+            "file": "src/lib.rs",
+            "line": 512,
+            "text": "impl<Z> Zeroize for Vec<Z>"
+          },
+          {
+            "file": "src/lib.rs",
+            "line": 536,
+            "text": "impl<Z> ZeroizeOnDrop for Vec<Z> where Z: ZeroizeOnDrop {}"
+          },
+          {
+            "file": "src/lib.rs",
+            "line": 539,
+            "text": "impl<Z> Zeroize for Box<[Z]>"
+          },
+          {
+            "file": "src/lib.rs",
+            "line": 551,
+            "text": "impl<Z> ZeroizeOnDrop for Box<[Z]> where Z: ZeroizeOnDrop {}"
+          },
+          {
+            "file": "src/lib.rs",
+            "line": 554,
+            "text": "impl Zeroize for Box<str> {"
+          },
+          {
+            "file": "src/lib.rs",
+            "line": 561,
+            "text": "impl Zeroize for String {"
+          },
+          {
+            "file": "src/lib.rs",
+            "line": 568,
+            "text": "impl Zeroize for CString {"
+          },
+          {
+            "file": "src/lib.rs",
+            "line": 601,
+            "text": "impl<Z: Zeroize + ?Sized> core::fmt::Debug for Zeroizing<Z> {"
+          },
+          {
+            "file": "src/lib.rs",
+            "line": 619,
+            "text": "impl<Z: Zeroize + Clone> Clone for Zeroizing<Z> {"
+          },
+          {
+            "file": "src/lib.rs",
+            "line": 686,
+            "text": "impl<Z> Zeroize for Zeroizing<Z>"
+          },
+          {
+            "file": "src/lib.rs",
+            "line": 695,
+            "text": "impl<Z> ZeroizeOnDrop for Zeroizing<Z> where Z: Zeroize + ?Sized {}"
+          },
+          {
+            "file": "src/lib.rs",
+            "line": 697,
+            "text": "impl<Z> Drop for Zeroizing<Z>"
+          },
+          {
+            "file": "src/lib.rs",
+            "line": 769,
+            "text": "/// type that already implements `ZeroizeOnDrop`."
+          },
+          {
+            "file": "src/lib.rs",
+            "line": 776,
+            "text": "///   It is advisable to call this function only in `impl Drop`."
+          },
+          {
+            "file": "src/lib.rs",
+            "line": 800,
+            "text": "/// impl Drop for DataToZeroize {"
+          },
+          {
+            "file": "src/lib.rs",
+            "line": 805,
+            "text": "/// impl ZeroizeOnDrop for DataToZeroize {}"
+          },
+          {
+            "file": "src/lib.rs",
+            "line": 836,
+            "text": "    impl<T: ZeroizeOnDrop + ?Sized> AssertZeroizeOnDrop for &&mut T {"
+          },
+          {
+            "file": "src/lib.rs",
+            "line": 845,
+            "text": "    impl<T: Zeroize + ?Sized> AssertZeroize for T {"
+          },
+          {
+            "file": "src/x86.rs",
+            "line": 13,
+            "text": "            impl Zeroize for $type {"
+          }
+        ],
+        "excerpts": [
+          {
+            "file": "src/lib.rs",
+            "start": 760,
+            "end": 772,
+            "whole_file_sha256": "0ec1dcf0d7c33b0bab02f85d79d37f29bbb8f034f648513797859a7b37bca637"
+          }
+        ]
+      }
+    ]
+  },
+  "dependency_versions_and_checksums_unchanged_from_main": true,
+  "asan_binary": {
+    "path": "/workspace/receive-flow-asan-target/x86_64-unknown-linux-gnu/debug/build/spiral-protocol/9c3fc9f52e610227/out/spiral_protocol-9c3fc9f52e610227",
+    "sha256": "f8c0e8fc74b959487986ab74b62fa27f35917ef7e9f525b375a07e27d8e1f4a9",
+    "asan_init_symbol_present": true,
+    "rustc": "rustc 1.101.0-nightly (c980177d8 2026-11-06)\nbinary: rustc\ncommit-hash: c980177d81d16f843a500905ac98c0cf3af1fd8d\ncommit-date: 2026-11-06\nhost: x86_64-unknown-linux-gnu\nrelease: 1.101.0-nightly\nLLVM version: 23.1.5\n",
+    "rustflags": "-Zsanitizer=address -Cdebuginfo=1 -Cforce-frame-pointers=yes -Coverflow-checks=yes -Cdebug-assertions=yes",
+    "asan_options": "detect_leaks=1:abort_on_error=1"
+  },
+  "fuzz_targets": [
+    {
+      "name": "record",
+      "feedback": {
+        "initialization_executed": 578,
+        "executed": 2496,
+        "initial_cov": 462,
+        "final_cov": 464,
+        "final_features": 2191,
+        "new_corpus_events": 51
+      },
+      "differential": {
+        "status": "passed",
+        "expected_files": 637,
+        "checked_files": 637,
+        "accepted_checked": 97,
+        "rejected_checked": 540,
+        "mismatches": []
+      }
+    }
+  ]
+}
