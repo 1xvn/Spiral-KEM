@@ -19,6 +19,7 @@ import tempfile
 ROOT=Path(__file__).resolve().parents[2]
 if __package__ in (None,''):sys.path.insert(0,str(ROOT))
 from protocol_rust.diagnostics.receive_flow import digest,require
+from protocol_rust.diagnostics.provenance import source_identity
 from protocol_rust.fuzzing.campaign import source_names,write_report,bundle
 
 
@@ -72,12 +73,7 @@ def main():
         run('valgrind-version',[args.valgrind,'--version'],30)
         names=set(source_names())|{str(p.relative_to(ROOT)) for p in (ROOT/'protocol_rust/diagnostics').glob('*.py')}
         report['source_sha256']={name:digest(ROOT/name) for name in sorted(names)}
-        saved=ROOT/'SOURCE.json'
-        if saved.is_file():
-            data=json.loads(saved.read_text());report['source_commit']=data['source_commit']
-            require(all(digest(ROOT/name)==value for name,value in data['files'].items()),'bundled source differs')
-            report['bundle_manifest_sha256']=digest(saved)
-        else:report['source_commit']=subprocess.check_output(['git','rev-parse','HEAD'],cwd=ROOT,text=True).strip()
+        report.update(source_identity(ROOT))
         text=run('audit-build',[tools['cargo'],'test','--locked','--profile','audit','--manifest-path',str(ROOT/'protocol_rust/Cargo.toml'),
           '--target-dir',str(out/'build'),'--lib','--no-run','--message-format=json-render-diagnostics','-j','2'],1200)
         artifacts=[]

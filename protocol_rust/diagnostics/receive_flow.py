@@ -21,6 +21,7 @@ import sys
 if __package__ in (None,''):
     sys.path.insert(0,str(ROOT))
 from protocol_rust.diagnostics.libtest_memory import parse_memcheck
+from protocol_rust.diagnostics.provenance import source_identity
 from protocol_rust.fuzzing.campaign import bundle,write_report,source_names
 
 TRACE='receive_audit::trace_actual_receive'
@@ -162,7 +163,7 @@ def main():
           'binary_mappings':maps},stdout.read_text(errors='replace'),stderr.read_text(errors='replace')
 
     try:
-        report['git_commit']=subprocess.check_output(['git','rev-parse','HEAD'],cwd=ROOT,text=True).strip()
+        report.update(source_identity(ROOT))
         report['source_sha256']={name:digest(ROOT/name) for name in source_names()}
         report['tools']={}
         for name,command in (('valgrind',[vg,'--version']),('objdump',['objdump','--version']),
