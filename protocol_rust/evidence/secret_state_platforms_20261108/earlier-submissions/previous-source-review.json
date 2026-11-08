@@ -1,0 +1,206 @@
+{
+  "reviewed_utc": "2026-11-08T05:39:53.996512+00:00",
+  "expected_source_commit": "fcf7ff07ecba260f6b446baa7f1efd55bbe11ec2",
+  "expected_runner_sha256": "7a796ec038db018367bf3f5861e67cfc0ee4a90ffbe37c338cccbe417e0d8151",
+  "expected_cargo_lock_sha256": "d12949c1b2e3293041b75d0461e94ed133a6a78635a2cfb85c9710be02a603d2",
+  "latest_change_validation_accepted": false,
+  "memory_approved": false,
+  "constant_time_approved": false,
+  "cases": [
+    {
+      "environment_label": "oci",
+      "original_archive": "Spiral-check-aarch64-20261108-053036.tar.gz",
+      "archive_sha256": "6f70c6bdd0ddda65484fd8066a735c5d4dd1e9d747a25bb29dc1ca106466db70",
+      "archive_regular_files": 7,
+      "archive_paths_checked": true,
+      "submitted_status": "failed",
+      "rustc_host": "aarch64-unknown-linux-gnu",
+      "rustc_release": "1.99.1",
+      "runner_sha256": "ecff1569d2e59e7750fe99f0484b5703295bbf51d1a2e4597e696b13ec4ee0e0",
+      "matches_latest_runner": false,
+      "matches_aaa96ee_runner": true,
+      "actual_rust_unit": {
+        "passed": 60,
+        "failed": 0,
+        "ignored": 0
+      },
+      "reported_checks": [
+        {
+          "name": "python-protocol",
+          "passed": true,
+          "exit": 0,
+          "tests_run": 85
+        },
+        {
+          "name": "diagnostic-parser",
+          "passed": true,
+          "exit": 0,
+          "tests_run": 6
+        },
+        {
+          "name": "native-kem",
+          "passed": true,
+          "exit": 0,
+          "tests_run": 9
+        },
+        {
+          "name": "rustc-version",
+          "passed": true,
+          "exit": 0
+        },
+        {
+          "name": "cargo-version",
+          "passed": true,
+          "exit": 0
+        },
+        {
+          "name": "rust-unit",
+          "passed": false,
+          "exit": 0,
+          "test_groups": [
+            {
+              "passed": 60,
+              "failed": 0,
+              "ignored": 0
+            }
+          ]
+        }
+      ],
+      "latest_change_validation_accepted": false,
+      "whole_source_commit_verified": false,
+      "reason": "Previous runner and dependency versions were used, so the latest source has not been tested here.",
+      "compiled_crypto_dependencies": [
+        {
+          "name": "hmac",
+          "version_seen_compiling": "0.12.1"
+        },
+        {
+          "name": "hkdf",
+          "version_seen_compiling": "0.12.4"
+        },
+        {
+          "name": "ed25519-dalek",
+          "version_seen_compiling": "2.2.0"
+        },
+        {
+          "name": "curve25519-dalek",
+          "version_seen_compiling": "4.1.3"
+        }
+      ],
+      "failure_explanation": "The previous runner requires ignored=2 on all hosts; this ARM run has ignored=0. No Rust unit test failed. Later doc, release and TLS checks were not run."
+    },
+    {
+      "environment_label": "wsl",
+      "original_archive": "Spiral-check-x86_64-20261108-143036.tar.gz",
+      "archive_sha256": "7c04dc0c1e29644317044d280ed4e219ef5b19e1a1056043e4accc9881c22504",
+      "archive_regular_files": 11,
+      "archive_paths_checked": true,
+      "submitted_status": "passed",
+      "rustc_host": "x86_64-unknown-linux-gnu",
+      "rustc_release": "1.99.1",
+      "runner_sha256": "ecff1569d2e59e7750fe99f0484b5703295bbf51d1a2e4597e696b13ec4ee0e0",
+      "matches_latest_runner": false,
+      "matches_aaa96ee_runner": true,
+      "actual_rust_unit": {
+        "passed": 60,
+        "failed": 0,
+        "ignored": 2
+      },
+      "reported_checks": [
+        {
+          "name": "python-protocol",
+          "passed": true,
+          "exit": 0,
+          "tests_run": 85
+        },
+        {
+          "name": "diagnostic-parser",
+          "passed": true,
+          "exit": 0,
+          "tests_run": 6
+        },
+        {
+          "name": "native-kem",
+          "passed": true,
+          "exit": 0,
+          "tests_run": 9
+        },
+        {
+          "name": "rustc-version",
+          "passed": true,
+          "exit": 0
+        },
+        {
+          "name": "cargo-version",
+          "passed": true,
+          "exit": 0
+        },
+        {
+          "name": "rust-unit",
+          "passed": true,
+          "exit": 0,
+          "test_groups": [
+            {
+              "passed": 60,
+              "failed": 0,
+              "ignored": 2
+            }
+          ]
+        },
+        {
+          "name": "rust-doc",
+          "passed": true,
+          "exit": 0,
+          "test_groups": [
+            {
+              "passed": 6,
+              "failed": 0,
+              "ignored": 0
+            }
+          ]
+        },
+        {
+          "name": "rust-release",
+          "passed": true,
+          "exit": 0
+        },
+        {
+          "name": "rust-tls",
+          "passed": true,
+          "exit": 0,
+          "tests_run": 35,
+          "structured_tests": {
+            "tests": 35,
+            "failures": 0,
+            "errors": 0
+          }
+        }
+      ],
+      "latest_change_validation_accepted": false,
+      "whole_source_commit_verified": false,
+      "reason": "Previous runner and dependency versions were used, so the latest source has not been tested here.",
+      "compiled_crypto_dependencies": [
+        {
+          "name": "hmac",
+          "version_seen_compiling": "0.12.1"
+        },
+        {
+          "name": "hkdf",
+          "version_seen_compiling": "0.12.4"
+        },
+        {
+          "name": "ed25519-dalek",
+          "version_seen_compiling": "2.2.0"
+        },
+        {
+          "name": "curve25519-dalek",
+          "version_seen_compiling": "4.1.3"
+        }
+      ],
+      "cargo_lock_sha256": "19eb708fbf0c56f42704bd0a699c0f687f2b1516fc38e52c4c5d721a81889aca",
+      "matches_previous_9367c76_lock": true,
+      "matches_latest_lock": false,
+      "legacy_tls_checked": 35
+    }
+  ]
+}

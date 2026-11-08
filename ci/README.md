@@ -69,6 +69,11 @@ The subsequent [HMAC·HKDF·signature state cleanup](../protocol_rust/SECRET_STA
 raised the minimum Rust pass count to 70, including new RFC and independent ring signature regressions.
 Rerunning the same functional runner passed Python 85·diagnostics 20·C9·Rust 70·documentation 6·TLS 35.
 
+The subsequently submitted [OCI ARM·WSL2 functional results](../protocol_rust/evidence/secret_state_platforms_20261108/README.md) also
+each passed those counts on the same `fcf7ff0` source. Compared 21 internal manifest entries per platform and
+launcher/source verification records/runner/lock hashes. The 5 WSL ignored tests and instrumentation targets
+for x86-64 that are not compiled on ARM were excluded from functionality pass counts.
+
 ## When manual reproduction is needed
 
 In a normal environment, install pinned Python requirements and use the runner below.
