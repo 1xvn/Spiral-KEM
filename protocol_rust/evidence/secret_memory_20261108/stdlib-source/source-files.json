@@ -1,0 +1,106 @@
+{
+  "std/src/thread/current.rs": {
+    "sha256": "1084535565799fa30c42320309fa2cf4d95aacdfb022ce301b17b0a299e52109",
+    "bytes": 10501,
+    "excerpt_ranges": [
+      [
+        275,
+        300
+      ],
+      [
+        322,
+        332
+      ]
+    ]
+  },
+  "std/src/thread/thread.rs": {
+    "sha256": "d011159a57f3501648af6f7010b8b19bdf6430a1725af87847a8753dcc718539",
+    "bytes": 10410,
+    "excerpt_ranges": [
+      [
+        48,
+        53
+      ],
+      [
+        80,
+        107
+      ],
+      [
+        270,
+        304
+      ]
+    ]
+  },
+  "alloc/src/sync.rs": {
+    "sha256": "b2f806b0f696a181018072625dceed25304aa97dfef6a79bac9800d529afdd0e",
+    "bytes": 179132,
+    "excerpt_ranges": [
+      [
+        392,
+        405
+      ],
+      [
+        1806,
+        1814
+      ],
+      [
+        1916,
+        1924
+      ]
+    ]
+  },
+  "std/src/sys/thread_local/guard/key.rs": {
+    "sha256": "9be6259e8bec36bec3c34922e2d51e9f031e74064f594247b291302ba1c6d0a3",
+    "bytes": 2447,
+    "excerpt_ranges": [
+      [
+        8,
+        29
+      ]
+    ]
+  },
+  "std/src/rt.rs": {
+    "sha256": "ff3d8dab421d35123cce1a8fc54e579ed9f5a13b55f34c39d92be9371394e426",
+    "bytes": 7541,
+    "excerpt_ranges": [
+      [
+        120,
+        148
+      ],
+      [
+        185,
+        193
+      ]
+    ]
+  },
+  "std/src/sys/thread_local/key/unix.rs": {
+    "sha256": "73df7d0d62586674efbb6cd7998cc643b139719ea603cad030315ad55a90003c",
+    "bytes": 1620,
+    "excerpt_ranges": [
+      [
+        25,
+        41
+      ]
+    ]
+  },
+  "std/src/sys/thread_local/native/mod.rs": {
+    "sha256": "80455e951287068bb871a14582595aa187b031bb7385787af3eb4c34d97de979",
+    "bytes": 5382,
+    "excerpt_ranges": [
+      [
+        114,
+        138
+      ]
+    ]
+  },
+  "std/src/sys/pal/unix/mod.rs": {
+    "sha256": "6c706c9a79d6a6ca3870a605800d7a74ba98cf41764c12cd4538a37812bba6aa",
+    "bytes": 13904,
+    "excerpt_ranges": [
+      [
+        210,
+        218
+      ]
+    ]
+  }
+}

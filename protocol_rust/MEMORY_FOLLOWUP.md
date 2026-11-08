@@ -1,5 +1,8 @@
 # v0.3 memory investigation follow-up record · 2026-11-07
 
+The follow-up investigation of the 48-byte std/libtest entry is in the [2026-11-08 ownership and secret buffer record](SECRET_MEMORY.md).
+This document preserves the WSL AES-GCM results and diagnostic GHASH controls as assessed at the time.
+
 All 6 submitted memory checks passed on OCI ARM, while only 2 passed on WSL x86-64.
 We reproduced the same AES-GCM warning pattern as WSL locally and identified a false-positive mechanism in
 Valgrind definedness tracking for GHASH copy/branch/XOR operations. **The original WSL check remains a failure.**

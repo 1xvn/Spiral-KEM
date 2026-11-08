@@ -1,0 +1,409 @@
+{
+  "code_commit": "063d090219af0367eb6631d76283d32a78c47f67",
+  "scope": "Local x86-64 ownership attribution and actual initialized-live-buffer wipe observations; not full memory or constant-time approval.",
+  "diagnostic_complete": true,
+  "thread_ownership_comparison": {
+    "classification": "supports_thread_local_ownership_and_exit_lifetime",
+    "checks": {
+      "empty_rust_main_clean": true,
+      "one_current_call_retains_one_thread_block": true,
+      "ten_thousand_current_calls_still_one_block": true,
+      "joined_workers_clean": true,
+      "foreign_empty_return_clean": true,
+      "foreign_empty_pthread_exit_clean": true,
+      "foreign_touch_return_retains_one_block": true,
+      "foreign_touch_pthread_exit_releases_block": true
+    },
+    "scoped_thread_48_blocks": {
+      "empty-main": 0,
+      "current-once": 1,
+      "current-many": 1,
+      "workers-1": 0,
+      "workers-8": 0,
+      "workers-64": 0,
+      "foreign-empty-return": 0,
+      "foreign-touch-return": 1,
+      "foreign-empty-pthread-exit": 0,
+      "foreign-touch-pthread-exit": 0
+    },
+    "production_memory_passed": false,
+    "original_finding_resolved": false
+  },
+  "thread_cases": [
+    {
+      "name": "empty-main",
+      "native_exit": 0,
+      "memcheck_exit": 0,
+      "thread48_blocks": 0,
+      "summary": {
+        "errors": 0,
+        "contexts": 0,
+        "suppressed_errors": 0,
+        "suppressed_contexts": 0
+      },
+      "leaks": {
+        "definitely lost": {
+          "bytes": 0,
+          "blocks": 0
+        },
+        "indirectly lost": {
+          "bytes": 0,
+          "blocks": 0
+        },
+        "possibly lost": {
+          "bytes": 0,
+          "blocks": 0
+        },
+        "still reachable": {
+          "bytes": 548,
+          "blocks": 2
+        },
+        "suppressed": {
+          "bytes": 0,
+          "blocks": 0
+        }
+      }
+    },
+    {
+      "name": "current-once",
+      "native_exit": 0,
+      "memcheck_exit": 99,
+      "thread48_blocks": 1,
+      "summary": {
+        "errors": 1,
+        "contexts": 1,
+        "suppressed_errors": 0,
+        "suppressed_contexts": 0
+      },
+      "leaks": {
+        "definitely lost": {
+          "bytes": 0,
+          "blocks": 0
+        },
+        "indirectly lost": {
+          "bytes": 0,
+          "blocks": 0
+        },
+        "possibly lost": {
+          "bytes": 48,
+          "blocks": 1
+        },
+        "still reachable": {
+          "bytes": 548,
+          "blocks": 2
+        },
+        "suppressed": {
+          "bytes": 0,
+          "blocks": 0
+        }
+      }
+    },
+    {
+      "name": "current-many",
+      "native_exit": 0,
+      "memcheck_exit": 99,
+      "thread48_blocks": 1,
+      "summary": {
+        "errors": 1,
+        "contexts": 1,
+        "suppressed_errors": 0,
+        "suppressed_contexts": 0
+      },
+      "leaks": {
+        "definitely lost": {
+          "bytes": 0,
+          "blocks": 0
+        },
+        "indirectly lost": {
+          "bytes": 0,
+          "blocks": 0
+        },
+        "possibly lost": {
+          "bytes": 48,
+          "blocks": 1
+        },
+        "still reachable": {
+          "bytes": 548,
+          "blocks": 2
+        },
+        "suppressed": {
+          "bytes": 0,
+          "blocks": 0
+        }
+      }
+    },
+    {
+      "name": "workers-1",
+      "native_exit": 0,
+      "memcheck_exit": 0,
+      "thread48_blocks": 0,
+      "summary": {
+        "errors": 0,
+        "contexts": 0,
+        "suppressed_errors": 0,
+        "suppressed_contexts": 0
+      },
+      "leaks": {
+        "definitely lost": {
+          "bytes": 0,
+          "blocks": 0
+        },
+        "indirectly lost": {
+          "bytes": 0,
+          "blocks": 0
+        },
+        "possibly lost": {
+          "bytes": 0,
+          "blocks": 0
+        },
+        "still reachable": {
+          "bytes": 548,
+          "blocks": 2
+        },
+        "suppressed": {
+          "bytes": 0,
+          "blocks": 0
+        }
+      }
+    },
+    {
+      "name": "workers-8",
+      "native_exit": 0,
+      "memcheck_exit": 0,
+      "thread48_blocks": 0,
+      "summary": {
+        "errors": 0,
+        "contexts": 0,
+        "suppressed_errors": 0,
+        "suppressed_contexts": 0
+      },
+      "leaks": {
+        "definitely lost": {
+          "bytes": 0,
+          "blocks": 0
+        },
+        "indirectly lost": {
+          "bytes": 0,
+          "blocks": 0
+        },
+        "possibly lost": {
+          "bytes": 0,
+          "blocks": 0
+        },
+        "still reachable": {
+          "bytes": 548,
+          "blocks": 2
+        },
+        "suppressed": {
+          "bytes": 0,
+          "blocks": 0
+        }
+      }
+    },
+    {
+      "name": "workers-64",
+      "native_exit": 0,
+      "memcheck_exit": 0,
+      "thread48_blocks": 0,
+      "summary": {
+        "errors": 0,
+        "contexts": 0,
+        "suppressed_errors": 0,
+        "suppressed_contexts": 0
+      },
+      "leaks": {
+        "definitely lost": {
+          "bytes": 0,
+          "blocks": 0
+        },
+        "indirectly lost": {
+          "bytes": 0,
+          "blocks": 0
+        },
+        "possibly lost": {
+          "bytes": 0,
+          "blocks": 0
+        },
+        "still reachable": {
+          "bytes": 548,
+          "blocks": 2
+        },
+        "suppressed": {
+          "bytes": 0,
+          "blocks": 0
+        }
+      }
+    },
+    {
+      "name": "foreign-empty-return",
+      "native_exit": 0,
+      "memcheck_exit": 0,
+      "thread48_blocks": 0,
+      "summary": {
+        "errors": 0,
+        "contexts": 0,
+        "suppressed_errors": 0,
+        "suppressed_contexts": 0
+      },
+      "leaks": {
+        "definitely lost": {
+          "bytes": 0,
+          "blocks": 0
+        },
+        "indirectly lost": {
+          "bytes": 0,
+          "blocks": 0
+        },
+        "possibly lost": {
+          "bytes": 0,
+          "blocks": 0
+        },
+        "still reachable": {
+          "bytes": 0,
+          "blocks": 0
+        },
+        "suppressed": {
+          "bytes": 0,
+          "blocks": 0
+        }
+      }
+    },
+    {
+      "name": "foreign-touch-return",
+      "native_exit": 0,
+      "memcheck_exit": 99,
+      "thread48_blocks": 1,
+      "summary": {
+        "errors": 1,
+        "contexts": 1,
+        "suppressed_errors": 0,
+        "suppressed_contexts": 0
+      },
+      "leaks": {
+        "definitely lost": {
+          "bytes": 0,
+          "blocks": 0
+        },
+        "indirectly lost": {
+          "bytes": 0,
+          "blocks": 0
+        },
+        "possibly lost": {
+          "bytes": 48,
+          "blocks": 1
+        },
+        "still reachable": {
+          "bytes": 0,
+          "blocks": 0
+        },
+        "suppressed": {
+          "bytes": 0,
+          "blocks": 0
+        }
+      }
+    },
+    {
+      "name": "foreign-empty-pthread-exit",
+      "native_exit": 0,
+      "memcheck_exit": 0,
+      "thread48_blocks": 0,
+      "summary": {
+        "errors": 0,
+        "contexts": 0,
+        "suppressed_errors": 0,
+        "suppressed_contexts": 0
+      },
+      "leaks": {
+        "definitely lost": {
+          "bytes": 0,
+          "blocks": 0
+        },
+        "indirectly lost": {
+          "bytes": 0,
+          "blocks": 0
+        },
+        "possibly lost": {
+          "bytes": 0,
+          "blocks": 0
+        },
+        "still reachable": {
+          "bytes": 0,
+          "blocks": 0
+        },
+        "suppressed": {
+          "bytes": 0,
+          "blocks": 0
+        }
+      }
+    },
+    {
+      "name": "foreign-touch-pthread-exit",
+      "native_exit": 0,
+      "memcheck_exit": 0,
+      "thread48_blocks": 0,
+      "summary": {
+        "errors": 0,
+        "contexts": 0,
+        "suppressed_errors": 0,
+        "suppressed_contexts": 0
+      },
+      "leaks": {
+        "definitely lost": {
+          "bytes": 0,
+          "blocks": 0
+        },
+        "indirectly lost": {
+          "bytes": 0,
+          "blocks": 0
+        },
+        "possibly lost": {
+          "bytes": 0,
+          "blocks": 0
+        },
+        "still reachable": {
+          "bytes": 0,
+          "blocks": 0
+        },
+        "suppressed": {
+          "bytes": 0,
+          "blocks": 0
+        }
+      }
+    }
+  ],
+  "source_archive": {
+    "url": "https://static.rust-lang.org/dist/2026-10-15/rust-src-1.99.1.tar.xz",
+    "sha256": "e485a88c45db546b73571df7bebfcb4454ba4fb552c492e25fc5b00eeb5bf22d",
+    "bytes": 5863216,
+    "manifest_sha256": "fb152be80975c194aa5fc684b2aec3a6e14e2b855efe2faa4e5f8ae6e590f463",
+    "rustc_commit": "58cf8f9c35b355199727627d07ae34a4e2846d67"
+  },
+  "wipe_tests": {
+    "methods": 4,
+    "buffer_observations_per_run": 216,
+    "normal_stable_passed": true,
+    "optimized_stable_passed": true,
+    "asan_passed": true,
+    "asan_exit": 0,
+    "memcheck_assertions_passed": true,
+    "memcheck_exit": 99,
+    "memcheck_warning": "one 48-byte std_thread_and_libtest loss record; no additional memory-use error observed"
+  },
+  "diagnostic_gate_tests_passed": 13,
+  "ci_memory_gate_tests_passed": 7,
+  "functional_status": "passed",
+  "rust_unit_passed": 64,
+  "rust_unit_ignored": 2,
+  "compile_fail_passed": 6,
+  "tls_regression_passed": 35,
+  "production_memory_passed": false,
+  "original_finding_resolved": false,
+  "constant_time_approved": false,
+  "remaining": [
+    "Rust authenticated-open secret-branch scope with explicit public authentication decision",
+    "ARM secret-taint instrumentation",
+    "library-internal transient secrets and register copies",
+    "service key storage/rotation/recovery policy",
+    "WSL AES-GCM original warning status unchanged"
+  ]
+}
