@@ -85,6 +85,12 @@ def source_names():
     paths += list((ROOT/'protocol_rust/src').rglob('*.rs'))
     paths += list((ROOT/'protocol_rust/fuzz').rglob('*.rs'))
     paths += list((ROOT/'protocol_rust/fuzzing').glob('*.py'))
+    # Local dependency patches are compiled source, not opaque registry crates.
+    vendor = ROOT/'third_party/rustcrypto'
+    paths += [path for path in vendor.rglob('*') if path.is_file()
+              and 'target' not in path.relative_to(vendor).parts
+              and (path.suffix == '.rs' or path.name in ('Cargo.toml', 'README.md',
+                                                       'upstream-provenance.json', 'patch-manifest.json'))]
     return sorted(str(path.relative_to(ROOT)) for path in set(paths))
 
 

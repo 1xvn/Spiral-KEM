@@ -3,6 +3,15 @@ use crate::{secret::Secret, Error, Result};
 use hmac::{Hmac, KeyInit, Mac};
 use sha2::{Digest, Sha256};
 use zeroize::Zeroize;
+
+// Borrow the original returned PRK slot, avoiding an extra output-array copy.
+// The source array remains alive until this guard has wiped it, including unwind.
+struct PrkWipe<'a>(&'a mut [u8]);
+impl Drop for PrkWipe<'_> {
+    fn drop(&mut self) {
+        self.0.zeroize();
+    }
+}
 // Keep the selected hash-state cleanup contract in ordinary release builds too.
 // This covers owned hash state/buffers, not output arrays or historical copies.
 const _: fn() = || {
@@ -69,9 +78,12 @@ pub fn schedule(
 ) -> Result<Schedule> {
     let h = hash_parts(&[ch, sh, ck_header, ct]);
     let (mut raw, _) = hkdf::Hkdf::<Sha256>::extract(Some(&h), ss.bytes());
+    // Own the returned PRK before any further fallible work; this guard covers
+    // this caller slot, while the dependency guards own its private scratch.
+    let raw = PrkWipe(raw.as_mut_slice());
     let mut prk = Secret::zeros();
-    prk.bytes_mut().copy_from_slice(&raw);
-    raw.as_mut_slice().zeroize();
+    prk.bytes_mut().copy_from_slice(raw.0);
+    drop(raw);
     drop(ss);
     let cf_key = expand::<32>(prk.bytes(), b"client-finished", &h)?;
     let sf = expand::<32>(prk.bytes(), b"server-finished", &h)?;
@@ -115,6 +127,41 @@ mod tests {
     use super::*;
     #[test]
     fn original_key_schedule_vector() {
+        // Observe the original live PRK slot on success, Result error and unwind.
+        fn exit_with_prk(bytes: &mut [u8], fail: bool) -> Result<()> {
+            let _guard = PrkWipe(bytes);
+            if fail {
+                return Err(Error::Crypto);
+            }
+            Ok(())
+        }
+        for fail in [false, true] {
+            let mut bytes = [0xa5; 32];
+            assert_eq!(exit_with_prk(&mut bytes, fail).is_err(), fail);
+            assert_eq!(bytes, [0; 32]);
+        }
+        let mut bytes = [0xa5; 32];
+        let unwind = std::panic::catch_unwind(std::panic::AssertUnwindSafe(|| {
+            let _guard = PrkWipe(&mut bytes);
+            panic!("injected PRK scope unwind");
+        }));
+        assert!(unwind.is_err());
+        assert_eq!(bytes, [0; 32]);
+
+        // The app's bounded helper is intentionally narrower than generic HKDF.
+        assert!(matches!(
+            expand::<0>(&[7; 32], b"x", &[0; 32]),
+            Err(Error::Input)
+        ));
+        assert!(matches!(
+            expand::<33>(&[7; 32], b"x", &[0; 32]),
+            Err(Error::Input)
+        ));
+        assert!(matches!(
+            expand::<32>(&[7; 32], &vec![0; 65536], &[0; 32]),
+            Err(Error::Input)
+        ));
+
         let v: serde_json::Value = serde_json::from_str(include_str!(
             "../../protocol_v01/tests/fixtures/test_vectors_v0.1.json"
         ))

@@ -51,3 +51,11 @@ name = "replay_target"
 path = "replay_target.rs"
 test = false
 doc = false
+
+# A nested workspace must opt into the same pinned local patches explicitly.
+[patch.crates-io]
+digest = { path = "../../third_party/rustcrypto/digest" }
+hmac = { path = "../../third_party/rustcrypto/hmac" }
+hkdf = { path = "../../third_party/rustcrypto/hkdf" }
+ed25519-dalek = { path = "../../third_party/rustcrypto/ed25519-dalek" }
+curve25519-dalek = { path = "../../third_party/rustcrypto/curve25519-dalek" }
