@@ -1,0 +1,12 @@
+{
+  "archive_sha256": "8e710c56e4b6c74d7d4f1864151e334ade419005bf425bf29987a5269e24d649",
+  "clean_bundle_check": {
+    "exit": 0,
+    "stdout": "Fixed source verified: 7bff0e49132b76e6c4271ebb3c219f625a46d816 files: 641"
+  },
+  "modified_source_check": {
+    "exit": 1,
+    "stderr": "changed source: protocol_rust/diagnostics/receive_flow.py"
+  },
+  "full_rerun_required_for_tamper_control": false
+}

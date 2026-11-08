@@ -1,0 +1,28 @@
+{
+  "review_type": "independent read-only local standalone result review",
+  "source_commit": "7bff0e49132b76e6c4271ebb3c219f625a46d816",
+  "source_files_verified": 641,
+  "outer_manifest_files_verified": 494,
+  "trace_manifest_files_verified": 486,
+  "memcheck_records_compared_to_raw_logs": 160,
+  "raw_exits": {
+    "99": 159,
+    "0": 1
+  },
+  "positive_branch_detected": true,
+  "positive_address_detected": true,
+  "receive_public_warning_contexts": 0,
+  "receive_secret_warning_contexts": 134,
+  "receive_secret_classification_candidates": {
+    "authentication_decision": 64,
+    "authentication_result_propagation": 64,
+    "close_reason_validity": 6
+  },
+  "derivation_public_warning_contexts": 0,
+  "derivation_secret_warning_contexts": 0,
+  "source_bundle_and_report_identity_matched": true,
+  "platform": "local x86_64",
+  "arm_execution_verified": false,
+  "constant_time_approved": false,
+  "production_memory_passed": false
+}

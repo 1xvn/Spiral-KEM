@@ -1,0 +1,74 @@
+{
+  "schema": "spiral-standalone-delivery-review/v1",
+  "source_commit": "7bff0e49132b76e6c4271ebb3c219f625a46d816",
+  "source_identity_kind": "bundle_manifest",
+  "source_bundle_files_verified": 641,
+  "source_files_matched_to_git_blob": 641,
+  "bundle_manifest_sha256": "f3bb6dd0965fdd1208c5008d0fe93a3b758cf66cb014ffc64d17db6d0f9639fe",
+  "git_outside_checkout_probe": {
+    "exit": 128,
+    "stderr": "fatal: not a git repository (or any of the parent directories): .git"
+  },
+  "platform": "x86_64",
+  "counts_as_arm_execution": false,
+  "native_tests": {
+    "passed": 70,
+    "failed": 0,
+    "ignored": 5
+  },
+  "diagnostic_tests_passed": 24,
+  "campaign_complete": true,
+  "trace_complete": true,
+  "positive_controls": [
+    {
+      "kind": "branch",
+      "raw_exit": 99,
+      "warning_contexts": 1
+    },
+    {
+      "kind": "address",
+      "raw_exit": 99,
+      "warning_contexts": 1
+    }
+  ],
+  "memcheck_invocations": 160,
+  "memcheck_raw_exits": {
+    "99": 159,
+    "0": 1
+  },
+  "receive_cases": 156,
+  "derivation_seal_sign_cases": 2,
+  "receive_warning_classifications": {
+    "authentication_decision_candidate": 64,
+    "authentication_result_propagation_candidate": 64,
+    "close_reason_validity_candidate": 6
+  },
+  "instruction_mapping_complete": true,
+  "raw_report_unclassified_warning_contexts": 2,
+  "suppression_used": false,
+  "source_and_binary_unchanged": true,
+  "result_manifest_files_verified": {
+    "SHA256.json": 494,
+    "trace/SHA256.json": 486
+  },
+  "local_archive": "arm-standalone-fixed-local-20261108.tar.gz",
+  "local_archive_sha256": "ea8581757adb09d6868a44324e52ee1c2937f4017baa91d363fdcfdf2ab80281",
+  "arm_secret_flow_complete": false,
+  "constant_time_approved": false,
+  "production_memory_passed": false,
+  "limits": [
+    "Local x86_64 collection verifies standalone delivery, not ARM behavior.",
+    "Raw warnings, exit 99 and the existing 48-byte possibly-lost allocation remain in evidence.",
+    "Classification candidates do not establish timing safety or full memory approval."
+  ],
+  "privacy_redaction": {
+    "applied": true,
+    "historical_execution_repeated": false,
+    "integrity_values_describe_redacted_artifacts": true
+  },
+  "artifact_language_normalization": {
+    "applied": true,
+    "historical_execution_repeated": false,
+    "integrity_values_describe_translated_artifacts": true
+  }
+}

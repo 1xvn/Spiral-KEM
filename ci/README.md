@@ -76,6 +76,11 @@ for x86-64 that are not compiled on ARM were excluded from functionality pass co
 
 ## When manual reproduction is needed
 
+After fixing the ARM source bundle's Git dependency, there are 24 diagnostic regression tests. They include execution using `SOURCE.json`
+and tampering rejection; functional CI's minimum expected count was also updated to 24.
+The [actual bundle revalidation record](../protocol_rust/evidence/arm_standalone_fix_20261108/README.md)
+retains full collection run outside Git and original prior OCI failures.
+
 In a normal environment, install pinned Python requirements and use the runner below.
 The functional runner requires loopback TCP socket permissions, C/OpenSSL development tools, and Rust/Cargo 1.99.1.
 Use a new output path. The runner does not automatically install missing tools or hide failures.

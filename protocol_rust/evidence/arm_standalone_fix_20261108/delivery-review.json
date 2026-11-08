@@ -1,0 +1,21 @@
+{
+  "source_commit": "7bff0e49132b76e6c4271ebb3c219f625a46d816",
+  "archive": "Spiral-arm-secret-flow-7bff0e4.tar.gz",
+  "archive_sha256": "8e710c56e4b6c74d7d4f1864151e334ade419005bf425bf29987a5269e24d649",
+  "archive_file_count": 644,
+  "source_manifest_files_verified": 641,
+  "contains_git_metadata": false,
+  "contains_compiled_targets": false,
+  "launcher_and_manifest_same_as_full_standalone_run": true,
+  "note": "README wording only was expanded after the full run; launcher and source bytes are unchanged.",
+  "privacy_redaction": {
+    "applied": true,
+    "historical_execution_repeated": false,
+    "integrity_values_describe_redacted_artifacts": true
+  },
+  "artifact_language_normalization": {
+    "applied": true,
+    "historical_execution_repeated": false,
+    "integrity_values_describe_translated_artifacts": true
+  }
+}
