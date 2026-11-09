@@ -62,8 +62,10 @@ cross-checked 318 source files and original test logs. Overall operational readi
 
 [Encrypted backup, recovery, and rotation-failure drills](protocol_rust/KEY_RECOVERY.md) add recovery of authentication seeds and TLS
 private keys based on external fingerprints. Local checks passed 94 Rust, 11 existing key management, and 20 recovery tests, along with
-The full functional CI passed. An [OCI/WSL execution bundle](downloads/key-recovery-d4c46bc/README.md) is
-provided; results for this new code on the two platforms await submission.
+the full functional CI. With the pinned `d4c46bc` source, OCI and WSL also each passed 94 Rust tests
+(plus 5 ignored), 11 existing key management tests, and 20 recovery tests;
+the [original submissions and review](protocol_rust/evidence/key_recovery_20261110/README.md) cross-checked 324 source files and
+original logs. Overall operational readiness, deployment, constant-time, and full memory approvals remain incomplete.
 
 [Coverage-guided fuzzing](fuzzing/README.md): checks Python frames, ClientHello, KEM encoding, and record
 state using Atheris and stores failing inputs and coverage feedback in separate Actions runs.

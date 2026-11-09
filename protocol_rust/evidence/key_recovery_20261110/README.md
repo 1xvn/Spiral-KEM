@@ -1,4 +1,63 @@
-# Local validation of encrypted backup/recovery and replacement-failure drills
+# Validation record for encrypted backup/recovery and replacement-failure drills
+
+The original OCI ARM/WSL submissions received on 2026-11-10 were reviewed. For the pinned
+`d4c46bc81012e095ab8c78ac6e362ce2b6a63798` source, **research encrypted backup/recovery platform
+functional validation is complete**. The original archive and `.sha256` are preserved unchanged.
+
+| Check | OCI ARM64 | WSL x86-64 |
+|---|---|---|
+| Rust library | 94 passed, failed0, ignored5, measured/filtered0 | Same |
+| Existing key management | 11 passed, failure/error/skip0 | Same |
+| New encrypted recovery/replacement drills | 20 passed, failure/error/skip0 | Same |
+| source provenance | source324, existing nested182, recovery nested193 match Git | Same |
+| Result integrity | 43 file hashes + SHA256.json =44 public files | Same |
+| Execution | Rust/Cargo1.99.1/Python3.12.3, 18 commands exit0 | Same |
+| User/kernel | UID1001, 7.0.0-1013-oracle | UID1000, 6.18.54.1-microsoft-standard-WSL2 |
+
+Names and statuses of the original 99 Rust tests (94 passed, ignored5) were compared against local originals from the same pinned source.
+The existing 11 KeyOperations tests and new 20 KeyRecovery tests are separate. The AST
+method list from pinned Git source was checked against each original `ok`, the final `OK`, and EOF; original stdout JSON was checked
+against saved JSON. Timeouts, additional failures/skips, and duplicate tests are not counted as successes.
+The ignored5 are existing taint/Valgrind-only items and are not added to normal passes.
+
+The source manifest324, nested182/193, and values before/after execution were compared against Git. The Rust compiler
+commit is `58cf8f9c35b355199727627d07ae34a4e2846d67`; Cargo is
+`5f94df4789f005f9a352888e8355ffc645b7ed0e`. Compiled package/version entries
+match Cargo.lock, with 5 local RustCrypto patches present in test/release logs.
+The 5 pinned Python packages, freeze, venv, pip check, and nested/outer host information also match.
+
+Recorded binary hashes match before/after values for each run and both nested reports.
+
+* OCI: `07546bbeeb8b606f2d4a5996b260806c2cab6e5c77d0168a9c22586ee0ea59ef`
+* WSL: `7f121dcb81d182224af53afe02eb68d7be548d73a4547b0292f11b437cf085e4`
+
+`oci-review.json`, `wsl-review.json`, and `platform-summary.json` record archive hashes, comparison results, and
+scope. The review tool `review_uploaded_results.py` reads only tar, JSON, original logs, and Git;
+it neither executes nor extracts uploaded code. This is distinct from newly executing target tests.
+
+Re-review originals from the repository root as follows. Reviewer status-parsing regression tests are separate and
+are not added to OCI/WSL Rust94, existing11, or new20 counts.
+All 10 reviewer regressions passed (`receipt-verifier-tests.log`), confirming rejection of duplicates, failures, skips, appended content, and invalid
+summary/JSON, and invalidation of a previous successful summary when re-review fails.
+
+```bash
+SPIRAL_RECOVERY_EVIDENCE="protocol_rust/evidence/key_recovery_20261110"
+python3 -I -B "$SPIRAL_RECOVERY_EVIDENCE/review_uploaded_results.py" \
+  --oci "$SPIRAL_RECOVERY_EVIDENCE/Spiral-key-recovery-oci-aarch64-20261109T222241Z-dsg9u_3d.tar.gz" \
+  --wsl "$SPIRAL_RECOVERY_EVIDENCE/Spiral-key-recovery-wsl-x86_64-20261109T222238Z-5anl7i28.tar.gz" \
+  --output-dir /tmp/spiral-key-recovery-receipt-review
+python3 -I -B "$SPIRAL_RECOVERY_EVIDENCE/test_review_uploaded_results.py" -v
+```
+
+**Scope:** Encrypted backup of temporary research keys, recovery based on external fingerprints, and finite loopback replacement-failure
+drills. `foreign_owner_checks_exercised=false` is retained; the actual chown
+branch for files owned by another UID was not exercised. OCI metadata does not independently authenticate the provider/remote machine; actual
+ELF/tool binaries are absent, so their physical hashes cannot be recomputed. Full functional CI, scratch matrix,
+documentation, separate TLS35, fuzzing, Memcheck/ASan, and long-term load were not rerun in these two collections.
+Actual service accounts, recovery-key custody/vault, approved pin distribution, power/storage failures, production-service
+recovery/deployment, and all of item5 remain outstanding; memory, constant-time, overall goals2/5, and deployment gates are false.
+
+## Earlier local validation
 
 Pinned source is `d4c46bc81012e095ab8c78ac6e362ce2b6a63798`, based on main
 `d2f19b9e733359f14331d7064a41697c851a1d80`. The new key-management module encrypts authentication seeds and TLS
@@ -67,7 +126,7 @@ These materials are not converted to successes, and failed initial runs are not 
 
 ## Target environments and remaining scope
 
-New-code OCI ARM/WSL results are still awaiting submission.
+New-code OCI ARM/WSL results were submitted later and separately confirmed above.
 Use the [execution bundle and commands](../../../downloads/key-recovery-d4c46bc/README.md).
 Previous `0b0db39` key-management results or local runs are not counted as execution of new code on both platforms.
 

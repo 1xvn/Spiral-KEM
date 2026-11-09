@@ -106,13 +106,16 @@ Cleanup of owned buffers is also distinct from erasing all parser/provider/OS/pr
 No secret-export method is added to the server authentication key's opaque owner.
 
 Actual test counts/completion are recorded after reviewing execution results, pinned source, tool versions, and original logs.
-OCI ARM/WSL execution of this new code is confirmed through separate submissions after local validation.
+These runs of the new code on OCI ARM/WSL were separately confirmed through subsequent submissions.
 
 Local functional CI passed Python85, diagnostics24, C9, Rust94 (separate ignored5), cleanup matrix23, documentation6, existing
 key management11, recovery20, and actual TLS35. Subsequently, expanded recovery tests also passed with the same release binary:
 20 tests compared PKCS8/PKCS1/SEC1 fingerprints and original-byte recovery for Ed25519/RSA/ECDSA P256/P384.
 These20 count individual methods, with additional algorithm/tampering/boundary subtests.
-Results from both target environments are still pending.
+Subsequent OCI ARM/WSL submissions of the same `d4c46bc` source each also passed Rust94 tests (plus 5 ignored),
+the existing 11 key management tests, and 20 recovery tests. We compared hashes of 324 sources and 182/193 nested files with Git
+and checked original test names, status, tools, and exit codes. This completion scope covers research
+backup/recovery and rotation failure drills; actual key custody, vaults, pin deployment, full operational readiness, and deployment approval remain outstanding.
 
-We provide [local originals and pinned bundle validation](evidence/key_recovery_20261110/README.md),
+We provide [local originals, pinned bundle, and OCI/WSL submission review](evidence/key_recovery_20261110/README.md),
 and [OCI/WSL downloads and commands](../downloads/key-recovery-d4c46bc/README.md).
