@@ -8,10 +8,15 @@ It verifies exact counts of 7 runs and 23 focused tests and feature ON/OFF statu
 rejecting 0 tests, omissions, failures, and ignored/filtered tests. It does not report this as running the full upstream dev suite,
 and retains existing memory warnings and strict gates.
 
-[Operational key management checks](../protocol_rust/KEY_OPERATIONS.md) check at least 81 default Rust tests and
+[Operational key management checks](../protocol_rust/KEY_OPERATIONS.md) check at least 94 default Rust tests and
 11 separate CLI/TLS rotation tests. They cover private-key permissions, paths, FIFO watchdog, NOREPLACE creation,
 recovery files, and rejection of old pins; 0 tests, omissions, and skips fail. An environment exposing actual Linux UIDs
 and loopback permission is required; policy is not automatically relaxed for rootless UID mappings.
+
+[Encrypted backup, recovery, and rotation-failure drills](../protocol_rust/KEY_RECOVERY.md) are checked through 20 separate
+CLI/TLS tests. They cover authentication seed/TLS PEM recovery, external fingerprint comparison, tampered/oversized input
+rejection, normal previous-generation restart, and recovery of both new-generation keys. 0 tests, failures, and skips
+fail; this is not approval of external vaults, actual service rollback, overall operational readiness, constant-time behavior, or memory safety.
 
 ## What runs and when
 

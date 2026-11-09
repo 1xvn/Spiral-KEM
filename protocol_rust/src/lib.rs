@@ -31,6 +31,7 @@ pub mod error;
 mod ffi;
 pub mod handshake;
 pub mod identity;
+pub mod key_backup;
 mod keyfiles;
 pub mod records;
 #[cfg(feature = "record-fuzz")]

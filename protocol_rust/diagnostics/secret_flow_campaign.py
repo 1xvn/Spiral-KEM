@@ -85,7 +85,7 @@ def main():
         binary=Path(artifacts[0]['executable']);report['binary_sha256']=digest(binary)
         native=run('native-functional',[str(binary),'--test-threads=1','--nocapture'],120)
         count=re.search(r'test result: ok\. (\d+) passed; 0 failed; 5 ignored;',native)
-        require(count is not None and int(count[1])>=81,'native fixture count differs')
+        require(count is not None and int(count[1])>=94,'native fixture count differs')
         report['native_tests']={'passed':int(count[1]),'failed':0,'ignored':5}
         command=[sys.executable,str(ROOT/'protocol_rust/diagnostics/receive_flow.py'),'--rust-tests',str(binary),
           '--valgrind',args.valgrind,'--output',str(out/'trace')]

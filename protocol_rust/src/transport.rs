@@ -20,17 +20,49 @@ use tokio_rustls::{TlsAcceptor, TlsConnector, TlsStream};
 use x509_parser::prelude::*;
 pub const ALPN: &[u8] = b"spiral-opt2/0.1";
 pub const EXPORTER: &[u8] = b"EXPORTER-SpiralOPT2-v0.1";
+pub(crate) const MAX_TLS_PEM: usize = 64 * 1024;
+
+/// Parsed DER is erased unless ownership is transferred to the TLS provider.
+pub(crate) struct ParsedPrivateKey {
+    key: zeroize::Zeroizing<Option<rustls::pki_types::PrivateKeyDer<'static>>>,
+}
+impl ParsedPrivateKey {
+    pub(crate) fn der(&self) -> &rustls::pki_types::PrivateKeyDer<'static> {
+        self.key.as_ref().expect("parsed key is owned")
+    }
+    fn into_der(mut self) -> rustls::pki_types::PrivateKeyDer<'static> {
+        self.key.take().expect("parsed key is owned")
+    }
+}
+
+/// Preserve the loader's policy: one recognized private key, with other PEM
+/// items skipped by rustls-pemfile. Both DER owners are erased on rejection.
+pub(crate) fn parse_one_private_key(input: &[u8]) -> Result<ParsedPrivateKey> {
+    if input.is_empty() || input.len() > MAX_TLS_PEM {
+        return Err(Error::Input);
+    }
+    let mut reader = input;
+    let key = ParsedPrivateKey {
+        key: zeroize::Zeroizing::new(Some(
+            rustls_pemfile::private_key(&mut reader)?.ok_or(Error::Input)?,
+        )),
+    };
+    let second = rustls_pemfile::private_key(&mut reader)?.map(zeroize::Zeroizing::new);
+    if second.is_some() {
+        return Err(Error::Input);
+    }
+    Ok(key)
+}
 
 /// Read one recognized TLS private-key item through the protected file boundary.
 /// The initialized PEM input buffer is erased; parser/provider copies are separate.
 pub fn load_tls_private_key(path: &Path) -> Result<rustls::pki_types::PrivateKeyDer<'static>> {
-    const MAX_PEM: usize = 64 * 1024;
     let mut file = crate::keyfiles::open_private(path)?;
-    if file.metadata()?.len() > MAX_PEM as u64 {
+    if file.metadata()?.len() > MAX_TLS_PEM as u64 {
         return Err(Error::Input);
     }
     // Fixed initialized length: reads cannot grow/reallocate this secret buffer.
-    let mut input = zeroize::Zeroizing::new(vec![0u8; MAX_PEM + 1]);
+    let mut input = zeroize::Zeroizing::new(vec![0u8; MAX_TLS_PEM + 1]);
     let mut used = 0;
     while used < input.len() {
         let count = file.read(&mut input[used..])?;
@@ -39,15 +71,10 @@ pub fn load_tls_private_key(path: &Path) -> Result<rustls::pki_types::PrivateKey
         }
         used += count;
     }
-    if used > MAX_PEM {
+    if used > MAX_TLS_PEM {
         return Err(Error::Input);
     }
-    let mut reader = &input[..used];
-    let key = rustls_pemfile::private_key(&mut reader)?.ok_or(Error::Input)?;
-    if rustls_pemfile::private_key(&mut reader)?.is_some() {
-        return Err(Error::Input);
-    }
-    Ok(key)
+    Ok(parse_one_private_key(&input[..used])?.into_der())
 }
 
 pub fn server_config(cert: &Path, key: &Path) -> Result<Arc<ServerConfig>> {

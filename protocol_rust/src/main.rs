@@ -5,6 +5,7 @@ use spiral_protocol::{
     admission::Admission,
     handshake::{self, Pin},
     identity::ServerIdentity,
+    key_backup::{self, KeyKind},
     transport::{self, Transport},
     worker::KemPool,
     Error, Result,
@@ -47,6 +48,9 @@ impl Args {
                 "--auth",
                 "--ca",
                 "--pin",
+                "--recovery-key",
+                "--backup",
+                "--expected-public-key-sha256",
             ]
             .contains(&k.as_str())
                 || values.contains_key(&k)
@@ -67,6 +71,80 @@ impl Args {
         self.values
             .get(name)
             .map_or(Ok(default), |v| v.parse().map_err(|_| Error::Input))
+    }
+}
+fn require_options(a: &Args, expected: &[&str]) -> Result<()> {
+    if a.values.len() != expected.len()
+        || expected.iter().any(|name| !a.values.contains_key(*name))
+    {
+        return Err(Error::Input);
+    }
+    Ok(())
+}
+fn administration(a: &Args) -> Result<Value> {
+    match a.mode.as_str() {
+        "auth-keygen" | "auth-public" => {
+            require_options(a, &["--auth"])?;
+            let path = Path::new(a.get("--auth")?);
+            let public = if a.mode == "auth-keygen" {
+                ServerIdentity::generate(path)?
+            } else {
+                let identity = ServerIdentity::load(path)?;
+                let public = identity.public_key();
+                identity.close()?;
+                public
+            };
+            use sha2::{Digest, Sha256};
+            Ok(json!({
+                "status": if a.mode == "auth-keygen" { "created" } else { "loaded" },
+                "public_key_hex": hex::encode(public),
+                "public_key_sha256": hex::encode(Sha256::digest(public)),
+            }))
+        }
+        "recovery-keygen" => {
+            require_options(a, &["--recovery-key"])?;
+            key_backup::generate_recovery_key(Path::new(a.get("--recovery-key")?))?;
+            Ok(json!({"status":"created", "operation":"recovery-keygen"}))
+        }
+        "tls-public" => {
+            require_options(a, &["--key"])?;
+            let fingerprint =
+                key_backup::public_fingerprint(KeyKind::TlsPem, Path::new(a.get("--key")?))?;
+            Ok(json!({"status":"loaded", "key_kind":"tls-private-key",
+                      "public_key_sha256":hex::encode(fingerprint)}))
+        }
+        "auth-backup" | "tls-backup" | "auth-restore" | "tls-restore" => {
+            let (kind, source_option, kind_name) = if a.mode.starts_with("auth-") {
+                (KeyKind::AuthSeed, "--auth", "auth-seed")
+            } else {
+                (KeyKind::TlsPem, "--key", "tls-private-key")
+            };
+            let restoring = a.mode.ends_with("-restore");
+            let mut options = vec![source_option, "--recovery-key", "--backup"];
+            if restoring {
+                options.push("--expected-public-key-sha256");
+            }
+            require_options(a, &options)?;
+            let key = Path::new(a.get(source_option)?);
+            let recovery = Path::new(a.get("--recovery-key")?);
+            let backup = Path::new(a.get("--backup")?);
+            let fingerprint = if restoring {
+                let text = a.get("--expected-public-key-sha256")?;
+                if text.len() != 64 {
+                    return Err(Error::Input);
+                }
+                let expected: [u8; 32] = hex::decode(text)
+                    .map_err(|_| Error::Input)?
+                    .try_into()
+                    .map_err(|_| Error::Input)?;
+                key_backup::restore(kind, backup, recovery, key, expected)?
+            } else {
+                key_backup::backup(kind, key, recovery, backup)?
+            };
+            Ok(json!({"status":if restoring {"restored"} else {"backed-up"},
+                      "key_kind":kind_name,"public_key_sha256":hex::encode(fingerprint)}))
+        }
+        _ => Err(Error::Input),
     }
 }
 fn pin(path: &Path, name: &str, service: &str) -> Result<Pin> {
@@ -255,28 +333,12 @@ async fn run(a: &Args, pool: &KemPool) -> Result<Value> {
 async fn main() -> Result<()> {
     let a = Args::read()?;
     // File-only administration never initializes KEM workers or opens a listener.
-    if matches!(a.mode.as_str(), "auth-keygen" | "auth-public") {
-        let result = (|| {
-            if a.values.len() != 1 {
-                return Err(Error::Input);
-            }
-            let path = Path::new(a.get("--auth")?);
-            let public = if a.mode == "auth-keygen" {
-                ServerIdentity::generate(path)?
-            } else {
-                let identity = ServerIdentity::load(path)?;
-                let public = identity.public_key();
-                identity.close()?;
-                public
-            };
-            use sha2::{Digest, Sha256};
-            Ok::<_, Error>(json!({
-                "status": if a.mode == "auth-keygen" { "created" } else { "loaded" },
-                "public_key_hex": hex::encode(public),
-                "public_key_sha256": hex::encode(Sha256::digest(public)),
-            }))
-        })();
-        match result {
+    if matches!(
+        a.mode.as_str(),
+        "auth-keygen" | "auth-public" | "recovery-keygen" | "tls-public"
+            | "auth-backup" | "tls-backup" | "auth-restore" | "tls-restore"
+    ) {
+        match administration(&a) {
             Ok(report) => {
                 println!("{report}");
                 return Ok(());
@@ -286,6 +348,13 @@ async fn main() -> Result<()> {
                 return Err(error);
             }
         }
+    }
+    if !matches!(a.mode.as_str(), "server" | "client")
+        || ["--recovery-key", "--backup", "--expected-public-key-sha256"]
+            .iter()
+            .any(|name| a.values.contains_key(*name))
+    {
+        return Err(Error::Input);
     }
     let pool = KemPool::new(a.number("--workers", KemPool::default_workers())?)?;
     let result = run(&a, &pool).await;
