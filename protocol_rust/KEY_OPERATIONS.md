@@ -121,12 +121,14 @@ historical70-test materials remain records of their pinned source.
 
 In this cloud sandbox's UID namespace, root-owned directories may appear as65534,
 causing strict-policy rejection. Tests ran outside the sandbox with a normal UID view, without relaxing policy.
-Actual OCI ARM/WSL key-operations tests for the new code require separate submissions.
+Subsequently submitted OCI ARM/WSL key-operations tests on pinned `0b0db39` source were reviewed.
+Each environment passed81 Rust tests (5 ignored separately) and11 key-management/actual TLS replacement tests;
+source manifest318 and nested input181 hashes were compared against Git.
 See [original validation records and scope](evidence/key_operations_20261109/README.md).
 Provided for new platform runs: [pinned validation bundle and commands](../downloads/key-operations-0b0db39/README.md),
 [collection scope](KEY_OPERATIONS_PLATFORMS.md),
-and [local preliminary bundle validation](evidence/key_operations_platforms_20261109/README.md).
-This preliminary validation is not counted as OCI/WSL execution.
+and [local prevalidation/OCI/WSL submission review](evidence/key_operations_platforms_20261109/README.md).
+Completion here covers pinned-source key-management functional checks, not all operational-readiness item5 or deployment approval.
 
 ## Remaining operational readiness
 

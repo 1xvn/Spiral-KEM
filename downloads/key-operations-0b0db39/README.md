@@ -63,4 +63,6 @@ The generated result archives are the home-directory files `Spiral-key-ops-oci-a
 Preserve result files even on failure. Review raw logs and failure verdicts without altering them.
 
 Expected tests are 81 Rust tests (5 ignored separately) and 11 key management/real TLS rotation tests.
-Results from both target environments are still pending. Local prevalidation does not count as OCI/WSL execution.
+Results from both target environments were submitted, and [original log/source hash comparison is complete](../../protocol_rust/evidence/key_operations_platforms_20261109/README.md).
+Each passed 81 Rust tests (5 ignored separately) and 11 key management/real TLS rotation tests.
+Local prevalidation and both target runs are recorded separately; all of production readiness item 5 and deployment approval remain incomplete.
