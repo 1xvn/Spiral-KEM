@@ -36,7 +36,9 @@ dependency-internal lifetime guards, and separate-provider alternatives. It reco
 and documents implementation units, features, cleanup observations, and regression criteria.
 After the design, we applied the [temporary secret copy cleanup implementation](SECRET_COPY_CLEANUP.md).
 We locally confirmed cleanup of specified owning slots, functionality, 23 focused tests, ASan, and optimized erasure instructions.
-confirmed. Backend, previous copies, registers, and new OCI/WSL runs are separate matters.
+Subsequent [OCI ARM/WSL collection of the same patch](evidence/secret_copy_platforms_20261109/README.md)
+confirmed completion of 70 basic tests and 160 Memcheck runs on each platform. Backend, previous copies, registers, and
+constant-time/full memory approval remain separate.
 
 The [Rust frame and ClientHello fuzzing guide](FUZZ_PARSERS.md) uses a separately pinned nightly and
 the disabled-by-default `parser-fuzz` entry points to check actual parser coverage and compare saved inputs

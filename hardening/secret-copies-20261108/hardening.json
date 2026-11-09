@@ -604,6 +604,19 @@
     "planPath": "implementation/dependency-scopes.md",
     "reportRepositoryPath": "protocol_rust/SECRET_COPY_CLEANUP.md",
     "scope": "named current owned slots only",
-    "actualNewArmOrWslRunVerified": false
+    "actualNewArmOrWslRunVerified": true,
+    "platformCollectionScope": {
+      "sourceCommit": "7f26fed5b8176ddd009d44264fb5e9ab08fb8d31",
+      "nativeTestsPassedEach": 70,
+      "memcheckRunsEach": 160,
+      "platforms": [
+        "oci_arm",
+        "wsl2_x86_64"
+      ],
+      "reportRepositoryPath": "protocol_rust/evidence/secret_copy_platforms_20261109/README.md",
+      "fullGoal2Complete": false,
+      "constantTimeApproved": false,
+      "productionMemoryPassed": false
+    }
   }
 }

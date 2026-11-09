@@ -8,7 +8,9 @@ This document designs explicit ownership for the latter; it declares neither a n
 The subsequent implementation selected option 2 and strengthened named owned slots. Implementation code is
 `7f26fed5b8176ddd009d44264fb5e9ab08fb8d31`; scope and validation criteria are linked in the [implementation plan](implementation/dependency-scopes.md).
 We checked local functionality, the focused matrix, ASan, standalone collection, and selected
-Optimized erasure instructions were confirmed, but backend/past copies, registers, and actual new OCI/WSL runs are separate matters.
+optimized erasure instructions. Subsequent OCI ARM/WSL submissions using the same source each also
+confirmed collection of 70 basic tests and 160 instrumented runs. Backend/past copies, registers, constant-time and
+full memory approval remain separate.
 
 ## Evidence Basis
 

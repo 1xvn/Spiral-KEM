@@ -132,6 +132,9 @@ At design time, this did not mean a production code erasure patch or full comple
 We later added a [named temporary cleanup implementation](SECRET_COPY_CLEANUP.md) and validated it locally.
 The previous measurements and temporary lists below remain records of those pinned sources; see the new implementation record
 for current improvements and incomplete items such as backend/past copies.
+Subsequent [patch remeasurement on both platforms](evidence/secret_copy_platforms_20261109/README.md) also
+confirmed 70 basic tests and 160 Memcheck runs on the same sources for each. This completes that collection phase,
+without extending to full item 2 or constant-time/full memory approval.
 
 ## Optional reproduction
 

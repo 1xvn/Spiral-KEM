@@ -1,0 +1,79 @@
+{
+  "artifact": "/workspace/attachments/06acda1c-92d3-43d3-8cf0-f2e4c8a1456c/Spiral-secret-flow-x86_64-20261109-071708-4p3376tb.tar.gz",
+  "review_mode": "Read-only archive/data analysis; no archive code executed; repo unchanged",
+  "raw_json_warning_differences": [],
+  "instruction_mapping": {
+    "load_bias": "0x108000",
+    "validated_contexts": 136,
+    "all_instruction_text_matches": true,
+    "all_mapping_biases_match": true,
+    "classifications": [
+      {
+        "classification": "authentication_decision_candidate",
+        "contexts": 64,
+        "runtime_ip": "0x256820",
+        "elf_rva": "0x14e820",
+        "instruction": "je     14e83d <_RNvXs1_CsiWLtNIdj7QC_16chacha20poly1305INtB5_14ChaChaPoly1305INtNtCs6biVIjM606e_6cipher14stream_wrapper23StreamCipherCoreWrapperINtCs7zS1j1bvOh7_8chacha2010ChaChaCoreINtNtCscyHpLhKeJqC_7typenum4uint4UIntIB2F_IB2F_IB2F_NtB2H_5UTermNtNtB2J_3bit2B1ENtB3I_2B0EB3G_EB3W_EEEENtCsaExTs0u627d_4aead11AeadInPlace25decrypt_in_place_detachedCsloxNTQt3D96_15spiral_protocol+0x59d>",
+        "instruction_mapped": true,
+        "conditional_instruction_verified": true
+      },
+      {
+        "classification": "authentication_result_propagation_candidate",
+        "contexts": 64,
+        "runtime_ip": "0x24658f",
+        "elf_rva": "0x13e58f",
+        "instruction": "jne    13e354 <_RNvMs_NtCsloxNTQt3D96_15spiral_protocol7recordsNtB4_2Rx6decode+0xa4>",
+        "instruction_mapped": true,
+        "conditional_instruction_verified": true
+      },
+      {
+        "classification": "close_reason_validity_candidate",
+        "contexts": 6,
+        "runtime_ip": "0x2465b0",
+        "elf_rva": "0x13e5b0",
+        "instruction": "ja     13e351 <_RNvMs_NtCsloxNTQt3D96_15spiral_protocol7recordsNtB4_2Rx6decode+0xa1>",
+        "instruction_mapped": true,
+        "conditional_instruction_verified": true
+      },
+      {
+        "classification": "unclassified",
+        "contexts": 1,
+        "runtime_ip": "0x267886",
+        "elf_rva": "0x15f886",
+        "instruction": "je     15f891 <_RNvYNCNvNtCsloxNTQt3D96_15spiral_protocol13receive_audit22positive_secret_branch0INtNtNtCskADBYZwJmSU_4core3ops8function6FnOnceuE9call_onceB8_+0xb1>",
+        "instruction_mapped": true,
+        "conditional_instruction_verified": true
+      },
+      {
+        "classification": "unclassified",
+        "contexts": 1,
+        "runtime_ip": "0x267974",
+        "elf_rva": "0x15f974",
+        "instruction": "movzbl 0xe(%rsp,%rax,1),%eax",
+        "instruction_mapped": true,
+        "conditional_instruction_verified": false
+      }
+    ]
+  },
+  "receive_contexts": {
+    "total": 134,
+    "authentication_decision_candidate": 64,
+    "authentication_result_propagation_candidate": 64,
+    "close_reason_validity_candidate": 6,
+    "unclassified": 0
+  },
+  "positive_control_contexts": 2,
+  "derivation_contexts": 0,
+  "public_baseline_contexts": 0,
+  "matches_prior_local_134": true,
+  "limitations": [
+    "Candidate classifications describe source locations and conditional opcodes; they do not prove only declared public bits influence control flow.",
+    "The two unclassified contexts are the expected branch and address positive controls; receive unclassified contexts are zero.",
+    "Finite synthetic key/prefix/record values and fixture variants on one WSL x86_64 build cannot establish a universal constant-time claim.",
+    "No binary was included for independent re-disassembly; mapping is corroborated across archived ELF program headers, mappings, symbols, raw logs, and disassembly."
+  ],
+  "approval": {
+    "constant_time_approved": false,
+    "production_memory_passed": false
+  }
+}
