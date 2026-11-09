@@ -123,6 +123,10 @@ In this cloud sandbox's UID namespace, root-owned directories may appear as65534
 causing strict-policy rejection. Tests ran outside the sandbox with a normal UID view, without relaxing policy.
 Actual OCI ARM/WSL key-operations tests for the new code require separate submissions.
 See [original validation records and scope](evidence/key_operations_20261109/README.md).
+Provided for new platform runs: [pinned validation bundle and commands](../downloads/key-operations-0b0db39/README.md),
+[collection scope](KEY_OPERATIONS_PLATFORMS.md),
+and [local preliminary bundle validation](evidence/key_operations_platforms_20261109/README.md).
+This preliminary validation is not counted as OCI/WSL execution.
 
 ## Remaining operational readiness
 

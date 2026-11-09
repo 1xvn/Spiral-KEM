@@ -1,0 +1,13 @@
+key operations: rustc-version
+key operations: cargo-version
+key operations: cc-version
+key operations: ar-version
+key operations: openssl-version
+key operations: python-version
+key operations: python-pins
+key operations: python-pip-check
+key operations: python-freeze
+key operations: rust-library-tests
+key operations: release-build
+key operations: key-operations
+{"archive": "/workspace/key-ops-platform-validation/Spiral-key-ops-local-x86_64-20261109T123503Z-or6bhpgw.tar.gz", "archive_sha256": "d2e255e85855babcb5df4ce69455ef078a02e4e05895884390254818df2fabbf", "result_directory": "/workspace/key-ops-platform-validation/Spiral-key-ops-local-x86_64-20261109T123503Z-or6bhpgw", "result_manifest_sha256": "51e6cffe42d47b44d7197c3443f505e87c6832b4832bc067c67acf4051e7ec74", "status": "passed"}

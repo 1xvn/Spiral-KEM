@@ -1,0 +1,25 @@
+{
+  "schema": "spiral-key-operations-delivery-review/v1",
+  "source_commit": "0b0db39d36b9a6f243486615ca2624a6b76ce02b",
+  "runtime_base_commit": "486697682beb66db1af05bdc45867d122a25d145",
+  "archive_sha256": "ef11e2be82944e7cad1fea88cea09f4c8f2de1319367860786dbae4107f054bd",
+  "deterministic_archive_rebuild": true,
+  "delivery_checks": [
+    {
+      "case": "changed source rejected before commands",
+      "passed": true,
+      "failure_archive": "Spiral-key-ops-local-x86_64-20261109T123600Z-83z3gk_0.tar.gz"
+    },
+    {
+      "case": "changed manifest rejected by launcher",
+      "passed": true
+    }
+  ],
+  "source_files": 318,
+  "status": "passed",
+  "artifact_language_normalization": {
+    "applied": true,
+    "historical_execution_repeated": false,
+    "integrity_values_describe_translated_artifacts": true
+  }
+}
