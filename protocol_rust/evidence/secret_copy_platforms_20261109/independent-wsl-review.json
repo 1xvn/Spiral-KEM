@@ -1,0 +1,2629 @@
+{
+  "archive": "/workspace/attachments/06acda1c-92d3-43d3-8cf0-f2e4c8a1456c/Spiral-secret-flow-x86_64-20261109-071708-4p3376tb.tar.gz",
+  "archive_sha256": "7ce2a699163b4166065c1ddab6a1b4630a9a9b19cded3eb9192f2f47e2b92177",
+  "archive_layout": {
+    "root": "Spiral-secret-flow-x86_64-20261109-071708-4p3376tb",
+    "members": 501,
+    "files": 499,
+    "directories": 2
+  },
+  "archive_manifests": {
+    "SHA256.json": {
+      "entries": 497,
+      "hash_mismatches": [],
+      "omitted_files": [
+        "trace/SHA256.json"
+      ]
+    },
+    "trace/SHA256.json": {
+      "entries": 486,
+      "hash_mismatches": [],
+      "omitted_files": []
+    }
+  },
+  "nested_trace": {
+    "layout": {
+      "root": "trace",
+      "members": 488,
+      "files": 487,
+      "directories": 1
+    },
+    "identical_to_outer_trace": true
+  },
+  "distributed_bundle": {
+    "path": "/workspace/spiral-secret-copy-cleanup-20261108/downloads/secret-copy-7f26fed/Spiral-secret-copy-7f26fed.tar.gz",
+    "sha256": "9d892ca31154a210640a4ce89bd2fe85311699e515ec78715daef8af0eba0a3a",
+    "layout": {
+      "root": "Spiral-secret-copy-7f26fed",
+      "members": 867,
+      "files": 867,
+      "directories": 0
+    },
+    "source_manifest_sha256": "36013f94f0cb3bca0d3482a775831f4037fac2a9e553e679fe0cabf9031c8d39",
+    "source_manifest_files": 864,
+    "manifest_hash_mismatches": []
+  },
+  "expected_source_commit": "7f26fed5b8176ddd009d44264fb5e9ab08fb8d31",
+  "source_checks": {
+    "outer": {
+      "source_files": 189,
+      "bundle_mismatches": [],
+      "git_commit_mismatches": []
+    },
+    "trace": {
+      "source_files": 179,
+      "bundle_mismatches": [],
+      "git_commit_mismatches": []
+    }
+  },
+  "platform": {
+    "system": "Linux",
+    "node": "wsl-host",
+    "release": "6.18.54.1-microsoft-standard-WSL2",
+    "version": "#1 SMP PREEMPT_DYNAMIC Tue Oct  6 19:13:07 UTC 2026",
+    "machine": "x86_64",
+    "processor": "x86_64"
+  },
+  "native_summary_70_passed_5_ignored": true,
+  "campaign_commands": [
+    {
+      "name": "locate-cargo",
+      "exit": 0
+    },
+    {
+      "name": "locate-rustc",
+      "exit": 0
+    },
+    {
+      "name": "locate-rustdoc",
+      "exit": 0
+    },
+    {
+      "name": "rustc-version",
+      "exit": 0
+    },
+    {
+      "name": "cargo-version",
+      "exit": 0
+    },
+    {
+      "name": "valgrind-version",
+      "exit": 0
+    },
+    {
+      "name": "audit-build",
+      "exit": 0
+    },
+    {
+      "name": "native-functional",
+      "exit": 0
+    },
+    {
+      "name": "secret-flow",
+      "exit": 0
+    }
+  ],
+  "binary": {
+    "path": "/home/user/Spiral-secret-flow-x86_64-20261109-071708-4p3376tb/build/audit/deps/spiral_protocol-f7b2bcf9fd07af00",
+    "sha256": "c7234a2c8649ccbdaa2a267d750cdb9413441c19a4bf40ec3547c4f332988b43",
+    "bytes": 26639792
+  },
+  "binary_in_receipt_archive": false,
+  "counts": {
+    "memcheck_runs": 160,
+    "receive_runs": 156,
+    "public_receive": 78,
+    "secret_receive": 78,
+    "positive_controls": 2,
+    "derivation": 2,
+    "all_raw_stderr_empty": true,
+    "completed": {
+      "receive": 156,
+      "positive": 2,
+      "derivation": 2
+    },
+    "reported_exit_counts": {
+      "receive/99": 156,
+      "positive/99": 2,
+      "derivation/99": 2
+    },
+    "raw_summary_totals": {
+      "errors": 296,
+      "contexts": 296,
+      "suppressed_errors": 0,
+      "suppressed_contexts": 0
+    },
+    "warning_contexts": {
+      "receive/secret/authentication_decision_candidate": 64,
+      "receive/secret/authentication_result_propagation_candidate": 64,
+      "receive/secret/close_reason_validity_candidate": 6,
+      "positive/control/unclassified": 2
+    },
+    "raw_leak_summary_counts": {
+      "definitely lost/0/0": 160,
+      "indirectly lost/0/0": 160,
+      "possibly lost/48/1": 160,
+      "still reachable/548/2": 160,
+      "suppressed/0/0": 160
+    },
+    "possible_loss_stacks": {
+      "std_thread_current_arc_and_libtest": 160
+    }
+  },
+  "raw_json_mismatches": {
+    "summary": [],
+    "leaks": [],
+    "warning_messages": []
+  },
+  "approvals": {
+    "diagnostic_complete": true,
+    "constant_time_approved": false,
+    "production_memory_passed": false,
+    "instruction_mapping_complete": true,
+    "declassification_used": true,
+    "receive_declassification_used": false,
+    "derivation_wire_output_declassification_used": true,
+    "suppression_used": false,
+    "unclassified_warning_contexts": 2
+  },
+  "issues": [],
+  "rows": [
+    {
+      "log": "case-000-public.log",
+      "group": "receive",
+      "taint": "public",
+      "exit": 99,
+      "summary": {
+        "errors": 1,
+        "contexts": 1,
+        "suppressed_errors": 0,
+        "suppressed_contexts": 0
+      },
+      "warning_contexts": 0,
+      "completed": true,
+      "stderr_bytes": 0
+    },
+    {
+      "log": "case-000-secret.log",
+      "group": "receive",
+      "taint": "secret",
+      "exit": 99,
+      "summary": {
+        "errors": 3,
+        "contexts": 3,
+        "suppressed_errors": 0,
+        "suppressed_contexts": 0
+      },
+      "warning_contexts": 2,
+      "completed": true,
+      "stderr_bytes": 0
+    },
+    {
+      "log": "case-001-public.log",
+      "group": "receive",
+      "taint": "public",
+      "exit": 99,
+      "summary": {
+        "errors": 1,
+        "contexts": 1,
+        "suppressed_errors": 0,
+        "suppressed_contexts": 0
+      },
+      "warning_contexts": 0,
+      "completed": true,
+      "stderr_bytes": 0
+    },
+    {
+      "log": "case-001-secret.log",
+      "group": "receive",
+      "taint": "secret",
+      "exit": 99,
+      "summary": {
+        "errors": 3,
+        "contexts": 3,
+        "suppressed_errors": 0,
+        "suppressed_contexts": 0
+      },
+      "warning_contexts": 2,
+      "completed": true,
+      "stderr_bytes": 0
+    },
+    {
+      "log": "case-002-public.log",
+      "group": "receive",
+      "taint": "public",
+      "exit": 99,
+      "summary": {
+        "errors": 1,
+        "contexts": 1,
+        "suppressed_errors": 0,
+        "suppressed_contexts": 0
+      },
+      "warning_contexts": 0,
+      "completed": true,
+      "stderr_bytes": 0
+    },
+    {
+      "log": "case-002-secret.log",
+      "group": "receive",
+      "taint": "secret",
+      "exit": 99,
+      "summary": {
+        "errors": 1,
+        "contexts": 1,
+        "suppressed_errors": 0,
+        "suppressed_contexts": 0
+      },
+      "warning_contexts": 0,
+      "completed": true,
+      "stderr_bytes": 0
+    },
+    {
+      "log": "case-003-public.log",
+      "group": "receive",
+      "taint": "public",
+      "exit": 99,
+      "summary": {
+        "errors": 1,
+        "contexts": 1,
+        "suppressed_errors": 0,
+        "suppressed_contexts": 0
+      },
+      "warning_contexts": 0,
+      "completed": true,
+      "stderr_bytes": 0
+    },
+    {
+      "log": "case-003-secret.log",
+      "group": "receive",
+      "taint": "secret",
+      "exit": 99,
+      "summary": {
+        "errors": 3,
+        "contexts": 3,
+        "suppressed_errors": 0,
+        "suppressed_contexts": 0
+      },
+      "warning_contexts": 2,
+      "completed": true,
+      "stderr_bytes": 0
+    },
+    {
+      "log": "case-004-public.log",
+      "group": "receive",
+      "taint": "public",
+      "exit": 99,
+      "summary": {
+        "errors": 1,
+        "contexts": 1,
+        "suppressed_errors": 0,
+        "suppressed_contexts": 0
+      },
+      "warning_contexts": 0,
+      "completed": true,
+      "stderr_bytes": 0
+    },
+    {
+      "log": "case-004-secret.log",
+      "group": "receive",
+      "taint": "secret",
+      "exit": 99,
+      "summary": {
+        "errors": 3,
+        "contexts": 3,
+        "suppressed_errors": 0,
+        "suppressed_contexts": 0
+      },
+      "warning_contexts": 2,
+      "completed": true,
+      "stderr_bytes": 0
+    },
+    {
+      "log": "case-005-public.log",
+      "group": "receive",
+      "taint": "public",
+      "exit": 99,
+      "summary": {
+        "errors": 1,
+        "contexts": 1,
+        "suppressed_errors": 0,
+        "suppressed_contexts": 0
+      },
+      "warning_contexts": 0,
+      "completed": true,
+      "stderr_bytes": 0
+    },
+    {
+      "log": "case-005-secret.log",
+      "group": "receive",
+      "taint": "secret",
+      "exit": 99,
+      "summary": {
+        "errors": 1,
+        "contexts": 1,
+        "suppressed_errors": 0,
+        "suppressed_contexts": 0
+      },
+      "warning_contexts": 0,
+      "completed": true,
+      "stderr_bytes": 0
+    },
+    {
+      "log": "case-006-public.log",
+      "group": "receive",
+      "taint": "public",
+      "exit": 99,
+      "summary": {
+        "errors": 1,
+        "contexts": 1,
+        "suppressed_errors": 0,
+        "suppressed_contexts": 0
+      },
+      "warning_contexts": 0,
+      "completed": true,
+      "stderr_bytes": 0
+    },
+    {
+      "log": "case-006-secret.log",
+      "group": "receive",
+      "taint": "secret",
+      "exit": 99,
+      "summary": {
+        "errors": 3,
+        "contexts": 3,
+        "suppressed_errors": 0,
+        "suppressed_contexts": 0
+      },
+      "warning_contexts": 2,
+      "completed": true,
+      "stderr_bytes": 0
+    },
+    {
+      "log": "case-007-public.log",
+      "group": "receive",
+      "taint": "public",
+      "exit": 99,
+      "summary": {
+        "errors": 1,
+        "contexts": 1,
+        "suppressed_errors": 0,
+        "suppressed_contexts": 0
+      },
+      "warning_contexts": 0,
+      "completed": true,
+      "stderr_bytes": 0
+    },
+    {
+      "log": "case-007-secret.log",
+      "group": "receive",
+      "taint": "secret",
+      "exit": 99,
+      "summary": {
+        "errors": 3,
+        "contexts": 3,
+        "suppressed_errors": 0,
+        "suppressed_contexts": 0
+      },
+      "warning_contexts": 2,
+      "completed": true,
+      "stderr_bytes": 0
+    },
+    {
+      "log": "case-008-public.log",
+      "group": "receive",
+      "taint": "public",
+      "exit": 99,
+      "summary": {
+        "errors": 1,
+        "contexts": 1,
+        "suppressed_errors": 0,
+        "suppressed_contexts": 0
+      },
+      "warning_contexts": 0,
+      "completed": true,
+      "stderr_bytes": 0
+    },
+    {
+      "log": "case-008-secret.log",
+      "group": "receive",
+      "taint": "secret",
+      "exit": 99,
+      "summary": {
+        "errors": 1,
+        "contexts": 1,
+        "suppressed_errors": 0,
+        "suppressed_contexts": 0
+      },
+      "warning_contexts": 0,
+      "completed": true,
+      "stderr_bytes": 0
+    },
+    {
+      "log": "case-009-public.log",
+      "group": "receive",
+      "taint": "public",
+      "exit": 99,
+      "summary": {
+        "errors": 1,
+        "contexts": 1,
+        "suppressed_errors": 0,
+        "suppressed_contexts": 0
+      },
+      "warning_contexts": 0,
+      "completed": true,
+      "stderr_bytes": 0
+    },
+    {
+      "log": "case-009-secret.log",
+      "group": "receive",
+      "taint": "secret",
+      "exit": 99,
+      "summary": {
+        "errors": 3,
+        "contexts": 3,
+        "suppressed_errors": 0,
+        "suppressed_contexts": 0
+      },
+      "warning_contexts": 2,
+      "completed": true,
+      "stderr_bytes": 0
+    },
+    {
+      "log": "case-010-public.log",
+      "group": "receive",
+      "taint": "public",
+      "exit": 99,
+      "summary": {
+        "errors": 1,
+        "contexts": 1,
+        "suppressed_errors": 0,
+        "suppressed_contexts": 0
+      },
+      "warning_contexts": 0,
+      "completed": true,
+      "stderr_bytes": 0
+    },
+    {
+      "log": "case-010-secret.log",
+      "group": "receive",
+      "taint": "secret",
+      "exit": 99,
+      "summary": {
+        "errors": 3,
+        "contexts": 3,
+        "suppressed_errors": 0,
+        "suppressed_contexts": 0
+      },
+      "warning_contexts": 2,
+      "completed": true,
+      "stderr_bytes": 0
+    },
+    {
+      "log": "case-011-public.log",
+      "group": "receive",
+      "taint": "public",
+      "exit": 99,
+      "summary": {
+        "errors": 1,
+        "contexts": 1,
+        "suppressed_errors": 0,
+        "suppressed_contexts": 0
+      },
+      "warning_contexts": 0,
+      "completed": true,
+      "stderr_bytes": 0
+    },
+    {
+      "log": "case-011-secret.log",
+      "group": "receive",
+      "taint": "secret",
+      "exit": 99,
+      "summary": {
+        "errors": 1,
+        "contexts": 1,
+        "suppressed_errors": 0,
+        "suppressed_contexts": 0
+      },
+      "warning_contexts": 0,
+      "completed": true,
+      "stderr_bytes": 0
+    },
+    {
+      "log": "case-012-public.log",
+      "group": "receive",
+      "taint": "public",
+      "exit": 99,
+      "summary": {
+        "errors": 1,
+        "contexts": 1,
+        "suppressed_errors": 0,
+        "suppressed_contexts": 0
+      },
+      "warning_contexts": 0,
+      "completed": true,
+      "stderr_bytes": 0
+    },
+    {
+      "log": "case-012-secret.log",
+      "group": "receive",
+      "taint": "secret",
+      "exit": 99,
+      "summary": {
+        "errors": 3,
+        "contexts": 3,
+        "suppressed_errors": 0,
+        "suppressed_contexts": 0
+      },
+      "warning_contexts": 2,
+      "completed": true,
+      "stderr_bytes": 0
+    },
+    {
+      "log": "case-013-public.log",
+      "group": "receive",
+      "taint": "public",
+      "exit": 99,
+      "summary": {
+        "errors": 1,
+        "contexts": 1,
+        "suppressed_errors": 0,
+        "suppressed_contexts": 0
+      },
+      "warning_contexts": 0,
+      "completed": true,
+      "stderr_bytes": 0
+    },
+    {
+      "log": "case-013-secret.log",
+      "group": "receive",
+      "taint": "secret",
+      "exit": 99,
+      "summary": {
+        "errors": 3,
+        "contexts": 3,
+        "suppressed_errors": 0,
+        "suppressed_contexts": 0
+      },
+      "warning_contexts": 2,
+      "completed": true,
+      "stderr_bytes": 0
+    },
+    {
+      "log": "case-014-public.log",
+      "group": "receive",
+      "taint": "public",
+      "exit": 99,
+      "summary": {
+        "errors": 1,
+        "contexts": 1,
+        "suppressed_errors": 0,
+        "suppressed_contexts": 0
+      },
+      "warning_contexts": 0,
+      "completed": true,
+      "stderr_bytes": 0
+    },
+    {
+      "log": "case-014-secret.log",
+      "group": "receive",
+      "taint": "secret",
+      "exit": 99,
+      "summary": {
+        "errors": 1,
+        "contexts": 1,
+        "suppressed_errors": 0,
+        "suppressed_contexts": 0
+      },
+      "warning_contexts": 0,
+      "completed": true,
+      "stderr_bytes": 0
+    },
+    {
+      "log": "case-015-public.log",
+      "group": "receive",
+      "taint": "public",
+      "exit": 99,
+      "summary": {
+        "errors": 1,
+        "contexts": 1,
+        "suppressed_errors": 0,
+        "suppressed_contexts": 0
+      },
+      "warning_contexts": 0,
+      "completed": true,
+      "stderr_bytes": 0
+    },
+    {
+      "log": "case-015-secret.log",
+      "group": "receive",
+      "taint": "secret",
+      "exit": 99,
+      "summary": {
+        "errors": 3,
+        "contexts": 3,
+        "suppressed_errors": 0,
+        "suppressed_contexts": 0
+      },
+      "warning_contexts": 2,
+      "completed": true,
+      "stderr_bytes": 0
+    },
+    {
+      "log": "case-016-public.log",
+      "group": "receive",
+      "taint": "public",
+      "exit": 99,
+      "summary": {
+        "errors": 1,
+        "contexts": 1,
+        "suppressed_errors": 0,
+        "suppressed_contexts": 0
+      },
+      "warning_contexts": 0,
+      "completed": true,
+      "stderr_bytes": 0
+    },
+    {
+      "log": "case-016-secret.log",
+      "group": "receive",
+      "taint": "secret",
+      "exit": 99,
+      "summary": {
+        "errors": 3,
+        "contexts": 3,
+        "suppressed_errors": 0,
+        "suppressed_contexts": 0
+      },
+      "warning_contexts": 2,
+      "completed": true,
+      "stderr_bytes": 0
+    },
+    {
+      "log": "case-017-public.log",
+      "group": "receive",
+      "taint": "public",
+      "exit": 99,
+      "summary": {
+        "errors": 1,
+        "contexts": 1,
+        "suppressed_errors": 0,
+        "suppressed_contexts": 0
+      },
+      "warning_contexts": 0,
+      "completed": true,
+      "stderr_bytes": 0
+    },
+    {
+      "log": "case-017-secret.log",
+      "group": "receive",
+      "taint": "secret",
+      "exit": 99,
+      "summary": {
+        "errors": 1,
+        "contexts": 1,
+        "suppressed_errors": 0,
+        "suppressed_contexts": 0
+      },
+      "warning_contexts": 0,
+      "completed": true,
+      "stderr_bytes": 0
+    },
+    {
+      "log": "case-018-public.log",
+      "group": "receive",
+      "taint": "public",
+      "exit": 99,
+      "summary": {
+        "errors": 1,
+        "contexts": 1,
+        "suppressed_errors": 0,
+        "suppressed_contexts": 0
+      },
+      "warning_contexts": 0,
+      "completed": true,
+      "stderr_bytes": 0
+    },
+    {
+      "log": "case-018-secret.log",
+      "group": "receive",
+      "taint": "secret",
+      "exit": 99,
+      "summary": {
+        "errors": 3,
+        "contexts": 3,
+        "suppressed_errors": 0,
+        "suppressed_contexts": 0
+      },
+      "warning_contexts": 2,
+      "completed": true,
+      "stderr_bytes": 0
+    },
+    {
+      "log": "case-019-public.log",
+      "group": "receive",
+      "taint": "public",
+      "exit": 99,
+      "summary": {
+        "errors": 1,
+        "contexts": 1,
+        "suppressed_errors": 0,
+        "suppressed_contexts": 0
+      },
+      "warning_contexts": 0,
+      "completed": true,
+      "stderr_bytes": 0
+    },
+    {
+      "log": "case-019-secret.log",
+      "group": "receive",
+      "taint": "secret",
+      "exit": 99,
+      "summary": {
+        "errors": 3,
+        "contexts": 3,
+        "suppressed_errors": 0,
+        "suppressed_contexts": 0
+      },
+      "warning_contexts": 2,
+      "completed": true,
+      "stderr_bytes": 0
+    },
+    {
+      "log": "case-020-public.log",
+      "group": "receive",
+      "taint": "public",
+      "exit": 99,
+      "summary": {
+        "errors": 1,
+        "contexts": 1,
+        "suppressed_errors": 0,
+        "suppressed_contexts": 0
+      },
+      "warning_contexts": 0,
+      "completed": true,
+      "stderr_bytes": 0
+    },
+    {
+      "log": "case-020-secret.log",
+      "group": "receive",
+      "taint": "secret",
+      "exit": 99,
+      "summary": {
+        "errors": 1,
+        "contexts": 1,
+        "suppressed_errors": 0,
+        "suppressed_contexts": 0
+      },
+      "warning_contexts": 0,
+      "completed": true,
+      "stderr_bytes": 0
+    },
+    {
+      "log": "case-021-public.log",
+      "group": "receive",
+      "taint": "public",
+      "exit": 99,
+      "summary": {
+        "errors": 1,
+        "contexts": 1,
+        "suppressed_errors": 0,
+        "suppressed_contexts": 0
+      },
+      "warning_contexts": 0,
+      "completed": true,
+      "stderr_bytes": 0
+    },
+    {
+      "log": "case-021-secret.log",
+      "group": "receive",
+      "taint": "secret",
+      "exit": 99,
+      "summary": {
+        "errors": 3,
+        "contexts": 3,
+        "suppressed_errors": 0,
+        "suppressed_contexts": 0
+      },
+      "warning_contexts": 2,
+      "completed": true,
+      "stderr_bytes": 0
+    },
+    {
+      "log": "case-022-public.log",
+      "group": "receive",
+      "taint": "public",
+      "exit": 99,
+      "summary": {
+        "errors": 1,
+        "contexts": 1,
+        "suppressed_errors": 0,
+        "suppressed_contexts": 0
+      },
+      "warning_contexts": 0,
+      "completed": true,
+      "stderr_bytes": 0
+    },
+    {
+      "log": "case-022-secret.log",
+      "group": "receive",
+      "taint": "secret",
+      "exit": 99,
+      "summary": {
+        "errors": 3,
+        "contexts": 3,
+        "suppressed_errors": 0,
+        "suppressed_contexts": 0
+      },
+      "warning_contexts": 2,
+      "completed": true,
+      "stderr_bytes": 0
+    },
+    {
+      "log": "case-023-public.log",
+      "group": "receive",
+      "taint": "public",
+      "exit": 99,
+      "summary": {
+        "errors": 1,
+        "contexts": 1,
+        "suppressed_errors": 0,
+        "suppressed_contexts": 0
+      },
+      "warning_contexts": 0,
+      "completed": true,
+      "stderr_bytes": 0
+    },
+    {
+      "log": "case-023-secret.log",
+      "group": "receive",
+      "taint": "secret",
+      "exit": 99,
+      "summary": {
+        "errors": 3,
+        "contexts": 3,
+        "suppressed_errors": 0,
+        "suppressed_contexts": 0
+      },
+      "warning_contexts": 2,
+      "completed": true,
+      "stderr_bytes": 0
+    },
+    {
+      "log": "case-024-public.log",
+      "group": "receive",
+      "taint": "public",
+      "exit": 99,
+      "summary": {
+        "errors": 1,
+        "contexts": 1,
+        "suppressed_errors": 0,
+        "suppressed_contexts": 0
+      },
+      "warning_contexts": 0,
+      "completed": true,
+      "stderr_bytes": 0
+    },
+    {
+      "log": "case-024-secret.log",
+      "group": "receive",
+      "taint": "secret",
+      "exit": 99,
+      "summary": {
+        "errors": 3,
+        "contexts": 3,
+        "suppressed_errors": 0,
+        "suppressed_contexts": 0
+      },
+      "warning_contexts": 2,
+      "completed": true,
+      "stderr_bytes": 0
+    },
+    {
+      "log": "case-025-public.log",
+      "group": "receive",
+      "taint": "public",
+      "exit": 99,
+      "summary": {
+        "errors": 1,
+        "contexts": 1,
+        "suppressed_errors": 0,
+        "suppressed_contexts": 0
+      },
+      "warning_contexts": 0,
+      "completed": true,
+      "stderr_bytes": 0
+    },
+    {
+      "log": "case-025-secret.log",
+      "group": "receive",
+      "taint": "secret",
+      "exit": 99,
+      "summary": {
+        "errors": 3,
+        "contexts": 3,
+        "suppressed_errors": 0,
+        "suppressed_contexts": 0
+      },
+      "warning_contexts": 2,
+      "completed": true,
+      "stderr_bytes": 0
+    },
+    {
+      "log": "case-026-public.log",
+      "group": "receive",
+      "taint": "public",
+      "exit": 99,
+      "summary": {
+        "errors": 1,
+        "contexts": 1,
+        "suppressed_errors": 0,
+        "suppressed_contexts": 0
+      },
+      "warning_contexts": 0,
+      "completed": true,
+      "stderr_bytes": 0
+    },
+    {
+      "log": "case-026-secret.log",
+      "group": "receive",
+      "taint": "secret",
+      "exit": 99,
+      "summary": {
+        "errors": 3,
+        "contexts": 3,
+        "suppressed_errors": 0,
+        "suppressed_contexts": 0
+      },
+      "warning_contexts": 2,
+      "completed": true,
+      "stderr_bytes": 0
+    },
+    {
+      "log": "case-027-public.log",
+      "group": "receive",
+      "taint": "public",
+      "exit": 99,
+      "summary": {
+        "errors": 1,
+        "contexts": 1,
+        "suppressed_errors": 0,
+        "suppressed_contexts": 0
+      },
+      "warning_contexts": 0,
+      "completed": true,
+      "stderr_bytes": 0
+    },
+    {
+      "log": "case-027-secret.log",
+      "group": "receive",
+      "taint": "secret",
+      "exit": 99,
+      "summary": {
+        "errors": 3,
+        "contexts": 3,
+        "suppressed_errors": 0,
+        "suppressed_contexts": 0
+      },
+      "warning_contexts": 2,
+      "completed": true,
+      "stderr_bytes": 0
+    },
+    {
+      "log": "case-028-public.log",
+      "group": "receive",
+      "taint": "public",
+      "exit": 99,
+      "summary": {
+        "errors": 1,
+        "contexts": 1,
+        "suppressed_errors": 0,
+        "suppressed_contexts": 0
+      },
+      "warning_contexts": 0,
+      "completed": true,
+      "stderr_bytes": 0
+    },
+    {
+      "log": "case-028-secret.log",
+      "group": "receive",
+      "taint": "secret",
+      "exit": 99,
+      "summary": {
+        "errors": 3,
+        "contexts": 3,
+        "suppressed_errors": 0,
+        "suppressed_contexts": 0
+      },
+      "warning_contexts": 2,
+      "completed": true,
+      "stderr_bytes": 0
+    },
+    {
+      "log": "case-029-public.log",
+      "group": "receive",
+      "taint": "public",
+      "exit": 99,
+      "summary": {
+        "errors": 1,
+        "contexts": 1,
+        "suppressed_errors": 0,
+        "suppressed_contexts": 0
+      },
+      "warning_contexts": 0,
+      "completed": true,
+      "stderr_bytes": 0
+    },
+    {
+      "log": "case-029-secret.log",
+      "group": "receive",
+      "taint": "secret",
+      "exit": 99,
+      "summary": {
+        "errors": 3,
+        "contexts": 3,
+        "suppressed_errors": 0,
+        "suppressed_contexts": 0
+      },
+      "warning_contexts": 2,
+      "completed": true,
+      "stderr_bytes": 0
+    },
+    {
+      "log": "case-030-public.log",
+      "group": "receive",
+      "taint": "public",
+      "exit": 99,
+      "summary": {
+        "errors": 1,
+        "contexts": 1,
+        "suppressed_errors": 0,
+        "suppressed_contexts": 0
+      },
+      "warning_contexts": 0,
+      "completed": true,
+      "stderr_bytes": 0
+    },
+    {
+      "log": "case-030-secret.log",
+      "group": "receive",
+      "taint": "secret",
+      "exit": 99,
+      "summary": {
+        "errors": 3,
+        "contexts": 3,
+        "suppressed_errors": 0,
+        "suppressed_contexts": 0
+      },
+      "warning_contexts": 2,
+      "completed": true,
+      "stderr_bytes": 0
+    },
+    {
+      "log": "case-031-public.log",
+      "group": "receive",
+      "taint": "public",
+      "exit": 99,
+      "summary": {
+        "errors": 1,
+        "contexts": 1,
+        "suppressed_errors": 0,
+        "suppressed_contexts": 0
+      },
+      "warning_contexts": 0,
+      "completed": true,
+      "stderr_bytes": 0
+    },
+    {
+      "log": "case-031-secret.log",
+      "group": "receive",
+      "taint": "secret",
+      "exit": 99,
+      "summary": {
+        "errors": 3,
+        "contexts": 3,
+        "suppressed_errors": 0,
+        "suppressed_contexts": 0
+      },
+      "warning_contexts": 2,
+      "completed": true,
+      "stderr_bytes": 0
+    },
+    {
+      "log": "case-032-public.log",
+      "group": "receive",
+      "taint": "public",
+      "exit": 99,
+      "summary": {
+        "errors": 1,
+        "contexts": 1,
+        "suppressed_errors": 0,
+        "suppressed_contexts": 0
+      },
+      "warning_contexts": 0,
+      "completed": true,
+      "stderr_bytes": 0
+    },
+    {
+      "log": "case-032-secret.log",
+      "group": "receive",
+      "taint": "secret",
+      "exit": 99,
+      "summary": {
+        "errors": 3,
+        "contexts": 3,
+        "suppressed_errors": 0,
+        "suppressed_contexts": 0
+      },
+      "warning_contexts": 2,
+      "completed": true,
+      "stderr_bytes": 0
+    },
+    {
+      "log": "case-033-public.log",
+      "group": "receive",
+      "taint": "public",
+      "exit": 99,
+      "summary": {
+        "errors": 1,
+        "contexts": 1,
+        "suppressed_errors": 0,
+        "suppressed_contexts": 0
+      },
+      "warning_contexts": 0,
+      "completed": true,
+      "stderr_bytes": 0
+    },
+    {
+      "log": "case-033-secret.log",
+      "group": "receive",
+      "taint": "secret",
+      "exit": 99,
+      "summary": {
+        "errors": 3,
+        "contexts": 3,
+        "suppressed_errors": 0,
+        "suppressed_contexts": 0
+      },
+      "warning_contexts": 2,
+      "completed": true,
+      "stderr_bytes": 0
+    },
+    {
+      "log": "case-034-public.log",
+      "group": "receive",
+      "taint": "public",
+      "exit": 99,
+      "summary": {
+        "errors": 1,
+        "contexts": 1,
+        "suppressed_errors": 0,
+        "suppressed_contexts": 0
+      },
+      "warning_contexts": 0,
+      "completed": true,
+      "stderr_bytes": 0
+    },
+    {
+      "log": "case-034-secret.log",
+      "group": "receive",
+      "taint": "secret",
+      "exit": 99,
+      "summary": {
+        "errors": 3,
+        "contexts": 3,
+        "suppressed_errors": 0,
+        "suppressed_contexts": 0
+      },
+      "warning_contexts": 2,
+      "completed": true,
+      "stderr_bytes": 0
+    },
+    {
+      "log": "case-035-public.log",
+      "group": "receive",
+      "taint": "public",
+      "exit": 99,
+      "summary": {
+        "errors": 1,
+        "contexts": 1,
+        "suppressed_errors": 0,
+        "suppressed_contexts": 0
+      },
+      "warning_contexts": 0,
+      "completed": true,
+      "stderr_bytes": 0
+    },
+    {
+      "log": "case-035-secret.log",
+      "group": "receive",
+      "taint": "secret",
+      "exit": 99,
+      "summary": {
+        "errors": 3,
+        "contexts": 3,
+        "suppressed_errors": 0,
+        "suppressed_contexts": 0
+      },
+      "warning_contexts": 2,
+      "completed": true,
+      "stderr_bytes": 0
+    },
+    {
+      "log": "case-036-public.log",
+      "group": "receive",
+      "taint": "public",
+      "exit": 99,
+      "summary": {
+        "errors": 1,
+        "contexts": 1,
+        "suppressed_errors": 0,
+        "suppressed_contexts": 0
+      },
+      "warning_contexts": 0,
+      "completed": true,
+      "stderr_bytes": 0
+    },
+    {
+      "log": "case-036-secret.log",
+      "group": "receive",
+      "taint": "secret",
+      "exit": 99,
+      "summary": {
+        "errors": 4,
+        "contexts": 4,
+        "suppressed_errors": 0,
+        "suppressed_contexts": 0
+      },
+      "warning_contexts": 3,
+      "completed": true,
+      "stderr_bytes": 0
+    },
+    {
+      "log": "case-037-public.log",
+      "group": "receive",
+      "taint": "public",
+      "exit": 99,
+      "summary": {
+        "errors": 1,
+        "contexts": 1,
+        "suppressed_errors": 0,
+        "suppressed_contexts": 0
+      },
+      "warning_contexts": 0,
+      "completed": true,
+      "stderr_bytes": 0
+    },
+    {
+      "log": "case-037-secret.log",
+      "group": "receive",
+      "taint": "secret",
+      "exit": 99,
+      "summary": {
+        "errors": 4,
+        "contexts": 4,
+        "suppressed_errors": 0,
+        "suppressed_contexts": 0
+      },
+      "warning_contexts": 3,
+      "completed": true,
+      "stderr_bytes": 0
+    },
+    {
+      "log": "case-038-public.log",
+      "group": "receive",
+      "taint": "public",
+      "exit": 99,
+      "summary": {
+        "errors": 1,
+        "contexts": 1,
+        "suppressed_errors": 0,
+        "suppressed_contexts": 0
+      },
+      "warning_contexts": 0,
+      "completed": true,
+      "stderr_bytes": 0
+    },
+    {
+      "log": "case-038-secret.log",
+      "group": "receive",
+      "taint": "secret",
+      "exit": 99,
+      "summary": {
+        "errors": 4,
+        "contexts": 4,
+        "suppressed_errors": 0,
+        "suppressed_contexts": 0
+      },
+      "warning_contexts": 3,
+      "completed": true,
+      "stderr_bytes": 0
+    },
+    {
+      "log": "case-039-public.log",
+      "group": "receive",
+      "taint": "public",
+      "exit": 99,
+      "summary": {
+        "errors": 1,
+        "contexts": 1,
+        "suppressed_errors": 0,
+        "suppressed_contexts": 0
+      },
+      "warning_contexts": 0,
+      "completed": true,
+      "stderr_bytes": 0
+    },
+    {
+      "log": "case-039-secret.log",
+      "group": "receive",
+      "taint": "secret",
+      "exit": 99,
+      "summary": {
+        "errors": 3,
+        "contexts": 3,
+        "suppressed_errors": 0,
+        "suppressed_contexts": 0
+      },
+      "warning_contexts": 2,
+      "completed": true,
+      "stderr_bytes": 0
+    },
+    {
+      "log": "case-040-public.log",
+      "group": "receive",
+      "taint": "public",
+      "exit": 99,
+      "summary": {
+        "errors": 1,
+        "contexts": 1,
+        "suppressed_errors": 0,
+        "suppressed_contexts": 0
+      },
+      "warning_contexts": 0,
+      "completed": true,
+      "stderr_bytes": 0
+    },
+    {
+      "log": "case-040-secret.log",
+      "group": "receive",
+      "taint": "secret",
+      "exit": 99,
+      "summary": {
+        "errors": 3,
+        "contexts": 3,
+        "suppressed_errors": 0,
+        "suppressed_contexts": 0
+      },
+      "warning_contexts": 2,
+      "completed": true,
+      "stderr_bytes": 0
+    },
+    {
+      "log": "case-041-public.log",
+      "group": "receive",
+      "taint": "public",
+      "exit": 99,
+      "summary": {
+        "errors": 1,
+        "contexts": 1,
+        "suppressed_errors": 0,
+        "suppressed_contexts": 0
+      },
+      "warning_contexts": 0,
+      "completed": true,
+      "stderr_bytes": 0
+    },
+    {
+      "log": "case-041-secret.log",
+      "group": "receive",
+      "taint": "secret",
+      "exit": 99,
+      "summary": {
+        "errors": 1,
+        "contexts": 1,
+        "suppressed_errors": 0,
+        "suppressed_contexts": 0
+      },
+      "warning_contexts": 0,
+      "completed": true,
+      "stderr_bytes": 0
+    },
+    {
+      "log": "case-042-public.log",
+      "group": "receive",
+      "taint": "public",
+      "exit": 99,
+      "summary": {
+        "errors": 1,
+        "contexts": 1,
+        "suppressed_errors": 0,
+        "suppressed_contexts": 0
+      },
+      "warning_contexts": 0,
+      "completed": true,
+      "stderr_bytes": 0
+    },
+    {
+      "log": "case-042-secret.log",
+      "group": "receive",
+      "taint": "secret",
+      "exit": 99,
+      "summary": {
+        "errors": 3,
+        "contexts": 3,
+        "suppressed_errors": 0,
+        "suppressed_contexts": 0
+      },
+      "warning_contexts": 2,
+      "completed": true,
+      "stderr_bytes": 0
+    },
+    {
+      "log": "case-043-public.log",
+      "group": "receive",
+      "taint": "public",
+      "exit": 99,
+      "summary": {
+        "errors": 1,
+        "contexts": 1,
+        "suppressed_errors": 0,
+        "suppressed_contexts": 0
+      },
+      "warning_contexts": 0,
+      "completed": true,
+      "stderr_bytes": 0
+    },
+    {
+      "log": "case-043-secret.log",
+      "group": "receive",
+      "taint": "secret",
+      "exit": 99,
+      "summary": {
+        "errors": 3,
+        "contexts": 3,
+        "suppressed_errors": 0,
+        "suppressed_contexts": 0
+      },
+      "warning_contexts": 2,
+      "completed": true,
+      "stderr_bytes": 0
+    },
+    {
+      "log": "case-044-public.log",
+      "group": "receive",
+      "taint": "public",
+      "exit": 99,
+      "summary": {
+        "errors": 1,
+        "contexts": 1,
+        "suppressed_errors": 0,
+        "suppressed_contexts": 0
+      },
+      "warning_contexts": 0,
+      "completed": true,
+      "stderr_bytes": 0
+    },
+    {
+      "log": "case-044-secret.log",
+      "group": "receive",
+      "taint": "secret",
+      "exit": 99,
+      "summary": {
+        "errors": 1,
+        "contexts": 1,
+        "suppressed_errors": 0,
+        "suppressed_contexts": 0
+      },
+      "warning_contexts": 0,
+      "completed": true,
+      "stderr_bytes": 0
+    },
+    {
+      "log": "case-045-public.log",
+      "group": "receive",
+      "taint": "public",
+      "exit": 99,
+      "summary": {
+        "errors": 1,
+        "contexts": 1,
+        "suppressed_errors": 0,
+        "suppressed_contexts": 0
+      },
+      "warning_contexts": 0,
+      "completed": true,
+      "stderr_bytes": 0
+    },
+    {
+      "log": "case-045-secret.log",
+      "group": "receive",
+      "taint": "secret",
+      "exit": 99,
+      "summary": {
+        "errors": 3,
+        "contexts": 3,
+        "suppressed_errors": 0,
+        "suppressed_contexts": 0
+      },
+      "warning_contexts": 2,
+      "completed": true,
+      "stderr_bytes": 0
+    },
+    {
+      "log": "case-046-public.log",
+      "group": "receive",
+      "taint": "public",
+      "exit": 99,
+      "summary": {
+        "errors": 1,
+        "contexts": 1,
+        "suppressed_errors": 0,
+        "suppressed_contexts": 0
+      },
+      "warning_contexts": 0,
+      "completed": true,
+      "stderr_bytes": 0
+    },
+    {
+      "log": "case-046-secret.log",
+      "group": "receive",
+      "taint": "secret",
+      "exit": 99,
+      "summary": {
+        "errors": 3,
+        "contexts": 3,
+        "suppressed_errors": 0,
+        "suppressed_contexts": 0
+      },
+      "warning_contexts": 2,
+      "completed": true,
+      "stderr_bytes": 0
+    },
+    {
+      "log": "case-047-public.log",
+      "group": "receive",
+      "taint": "public",
+      "exit": 99,
+      "summary": {
+        "errors": 1,
+        "contexts": 1,
+        "suppressed_errors": 0,
+        "suppressed_contexts": 0
+      },
+      "warning_contexts": 0,
+      "completed": true,
+      "stderr_bytes": 0
+    },
+    {
+      "log": "case-047-secret.log",
+      "group": "receive",
+      "taint": "secret",
+      "exit": 99,
+      "summary": {
+        "errors": 1,
+        "contexts": 1,
+        "suppressed_errors": 0,
+        "suppressed_contexts": 0
+      },
+      "warning_contexts": 0,
+      "completed": true,
+      "stderr_bytes": 0
+    },
+    {
+      "log": "case-048-public.log",
+      "group": "receive",
+      "taint": "public",
+      "exit": 99,
+      "summary": {
+        "errors": 1,
+        "contexts": 1,
+        "suppressed_errors": 0,
+        "suppressed_contexts": 0
+      },
+      "warning_contexts": 0,
+      "completed": true,
+      "stderr_bytes": 0
+    },
+    {
+      "log": "case-048-secret.log",
+      "group": "receive",
+      "taint": "secret",
+      "exit": 99,
+      "summary": {
+        "errors": 3,
+        "contexts": 3,
+        "suppressed_errors": 0,
+        "suppressed_contexts": 0
+      },
+      "warning_contexts": 2,
+      "completed": true,
+      "stderr_bytes": 0
+    },
+    {
+      "log": "case-049-public.log",
+      "group": "receive",
+      "taint": "public",
+      "exit": 99,
+      "summary": {
+        "errors": 1,
+        "contexts": 1,
+        "suppressed_errors": 0,
+        "suppressed_contexts": 0
+      },
+      "warning_contexts": 0,
+      "completed": true,
+      "stderr_bytes": 0
+    },
+    {
+      "log": "case-049-secret.log",
+      "group": "receive",
+      "taint": "secret",
+      "exit": 99,
+      "summary": {
+        "errors": 3,
+        "contexts": 3,
+        "suppressed_errors": 0,
+        "suppressed_contexts": 0
+      },
+      "warning_contexts": 2,
+      "completed": true,
+      "stderr_bytes": 0
+    },
+    {
+      "log": "case-050-public.log",
+      "group": "receive",
+      "taint": "public",
+      "exit": 99,
+      "summary": {
+        "errors": 1,
+        "contexts": 1,
+        "suppressed_errors": 0,
+        "suppressed_contexts": 0
+      },
+      "warning_contexts": 0,
+      "completed": true,
+      "stderr_bytes": 0
+    },
+    {
+      "log": "case-050-secret.log",
+      "group": "receive",
+      "taint": "secret",
+      "exit": 99,
+      "summary": {
+        "errors": 1,
+        "contexts": 1,
+        "suppressed_errors": 0,
+        "suppressed_contexts": 0
+      },
+      "warning_contexts": 0,
+      "completed": true,
+      "stderr_bytes": 0
+    },
+    {
+      "log": "case-051-public.log",
+      "group": "receive",
+      "taint": "public",
+      "exit": 99,
+      "summary": {
+        "errors": 1,
+        "contexts": 1,
+        "suppressed_errors": 0,
+        "suppressed_contexts": 0
+      },
+      "warning_contexts": 0,
+      "completed": true,
+      "stderr_bytes": 0
+    },
+    {
+      "log": "case-051-secret.log",
+      "group": "receive",
+      "taint": "secret",
+      "exit": 99,
+      "summary": {
+        "errors": 3,
+        "contexts": 3,
+        "suppressed_errors": 0,
+        "suppressed_contexts": 0
+      },
+      "warning_contexts": 2,
+      "completed": true,
+      "stderr_bytes": 0
+    },
+    {
+      "log": "case-052-public.log",
+      "group": "receive",
+      "taint": "public",
+      "exit": 99,
+      "summary": {
+        "errors": 1,
+        "contexts": 1,
+        "suppressed_errors": 0,
+        "suppressed_contexts": 0
+      },
+      "warning_contexts": 0,
+      "completed": true,
+      "stderr_bytes": 0
+    },
+    {
+      "log": "case-052-secret.log",
+      "group": "receive",
+      "taint": "secret",
+      "exit": 99,
+      "summary": {
+        "errors": 3,
+        "contexts": 3,
+        "suppressed_errors": 0,
+        "suppressed_contexts": 0
+      },
+      "warning_contexts": 2,
+      "completed": true,
+      "stderr_bytes": 0
+    },
+    {
+      "log": "case-053-public.log",
+      "group": "receive",
+      "taint": "public",
+      "exit": 99,
+      "summary": {
+        "errors": 1,
+        "contexts": 1,
+        "suppressed_errors": 0,
+        "suppressed_contexts": 0
+      },
+      "warning_contexts": 0,
+      "completed": true,
+      "stderr_bytes": 0
+    },
+    {
+      "log": "case-053-secret.log",
+      "group": "receive",
+      "taint": "secret",
+      "exit": 99,
+      "summary": {
+        "errors": 1,
+        "contexts": 1,
+        "suppressed_errors": 0,
+        "suppressed_contexts": 0
+      },
+      "warning_contexts": 0,
+      "completed": true,
+      "stderr_bytes": 0
+    },
+    {
+      "log": "case-054-public.log",
+      "group": "receive",
+      "taint": "public",
+      "exit": 99,
+      "summary": {
+        "errors": 1,
+        "contexts": 1,
+        "suppressed_errors": 0,
+        "suppressed_contexts": 0
+      },
+      "warning_contexts": 0,
+      "completed": true,
+      "stderr_bytes": 0
+    },
+    {
+      "log": "case-054-secret.log",
+      "group": "receive",
+      "taint": "secret",
+      "exit": 99,
+      "summary": {
+        "errors": 3,
+        "contexts": 3,
+        "suppressed_errors": 0,
+        "suppressed_contexts": 0
+      },
+      "warning_contexts": 2,
+      "completed": true,
+      "stderr_bytes": 0
+    },
+    {
+      "log": "case-055-public.log",
+      "group": "receive",
+      "taint": "public",
+      "exit": 99,
+      "summary": {
+        "errors": 1,
+        "contexts": 1,
+        "suppressed_errors": 0,
+        "suppressed_contexts": 0
+      },
+      "warning_contexts": 0,
+      "completed": true,
+      "stderr_bytes": 0
+    },
+    {
+      "log": "case-055-secret.log",
+      "group": "receive",
+      "taint": "secret",
+      "exit": 99,
+      "summary": {
+        "errors": 3,
+        "contexts": 3,
+        "suppressed_errors": 0,
+        "suppressed_contexts": 0
+      },
+      "warning_contexts": 2,
+      "completed": true,
+      "stderr_bytes": 0
+    },
+    {
+      "log": "case-056-public.log",
+      "group": "receive",
+      "taint": "public",
+      "exit": 99,
+      "summary": {
+        "errors": 1,
+        "contexts": 1,
+        "suppressed_errors": 0,
+        "suppressed_contexts": 0
+      },
+      "warning_contexts": 0,
+      "completed": true,
+      "stderr_bytes": 0
+    },
+    {
+      "log": "case-056-secret.log",
+      "group": "receive",
+      "taint": "secret",
+      "exit": 99,
+      "summary": {
+        "errors": 1,
+        "contexts": 1,
+        "suppressed_errors": 0,
+        "suppressed_contexts": 0
+      },
+      "warning_contexts": 0,
+      "completed": true,
+      "stderr_bytes": 0
+    },
+    {
+      "log": "case-057-public.log",
+      "group": "receive",
+      "taint": "public",
+      "exit": 99,
+      "summary": {
+        "errors": 1,
+        "contexts": 1,
+        "suppressed_errors": 0,
+        "suppressed_contexts": 0
+      },
+      "warning_contexts": 0,
+      "completed": true,
+      "stderr_bytes": 0
+    },
+    {
+      "log": "case-057-secret.log",
+      "group": "receive",
+      "taint": "secret",
+      "exit": 99,
+      "summary": {
+        "errors": 3,
+        "contexts": 3,
+        "suppressed_errors": 0,
+        "suppressed_contexts": 0
+      },
+      "warning_contexts": 2,
+      "completed": true,
+      "stderr_bytes": 0
+    },
+    {
+      "log": "case-058-public.log",
+      "group": "receive",
+      "taint": "public",
+      "exit": 99,
+      "summary": {
+        "errors": 1,
+        "contexts": 1,
+        "suppressed_errors": 0,
+        "suppressed_contexts": 0
+      },
+      "warning_contexts": 0,
+      "completed": true,
+      "stderr_bytes": 0
+    },
+    {
+      "log": "case-058-secret.log",
+      "group": "receive",
+      "taint": "secret",
+      "exit": 99,
+      "summary": {
+        "errors": 3,
+        "contexts": 3,
+        "suppressed_errors": 0,
+        "suppressed_contexts": 0
+      },
+      "warning_contexts": 2,
+      "completed": true,
+      "stderr_bytes": 0
+    },
+    {
+      "log": "case-059-public.log",
+      "group": "receive",
+      "taint": "public",
+      "exit": 99,
+      "summary": {
+        "errors": 1,
+        "contexts": 1,
+        "suppressed_errors": 0,
+        "suppressed_contexts": 0
+      },
+      "warning_contexts": 0,
+      "completed": true,
+      "stderr_bytes": 0
+    },
+    {
+      "log": "case-059-secret.log",
+      "group": "receive",
+      "taint": "secret",
+      "exit": 99,
+      "summary": {
+        "errors": 1,
+        "contexts": 1,
+        "suppressed_errors": 0,
+        "suppressed_contexts": 0
+      },
+      "warning_contexts": 0,
+      "completed": true,
+      "stderr_bytes": 0
+    },
+    {
+      "log": "case-060-public.log",
+      "group": "receive",
+      "taint": "public",
+      "exit": 99,
+      "summary": {
+        "errors": 1,
+        "contexts": 1,
+        "suppressed_errors": 0,
+        "suppressed_contexts": 0
+      },
+      "warning_contexts": 0,
+      "completed": true,
+      "stderr_bytes": 0
+    },
+    {
+      "log": "case-060-secret.log",
+      "group": "receive",
+      "taint": "secret",
+      "exit": 99,
+      "summary": {
+        "errors": 3,
+        "contexts": 3,
+        "suppressed_errors": 0,
+        "suppressed_contexts": 0
+      },
+      "warning_contexts": 2,
+      "completed": true,
+      "stderr_bytes": 0
+    },
+    {
+      "log": "case-061-public.log",
+      "group": "receive",
+      "taint": "public",
+      "exit": 99,
+      "summary": {
+        "errors": 1,
+        "contexts": 1,
+        "suppressed_errors": 0,
+        "suppressed_contexts": 0
+      },
+      "warning_contexts": 0,
+      "completed": true,
+      "stderr_bytes": 0
+    },
+    {
+      "log": "case-061-secret.log",
+      "group": "receive",
+      "taint": "secret",
+      "exit": 99,
+      "summary": {
+        "errors": 3,
+        "contexts": 3,
+        "suppressed_errors": 0,
+        "suppressed_contexts": 0
+      },
+      "warning_contexts": 2,
+      "completed": true,
+      "stderr_bytes": 0
+    },
+    {
+      "log": "case-062-public.log",
+      "group": "receive",
+      "taint": "public",
+      "exit": 99,
+      "summary": {
+        "errors": 1,
+        "contexts": 1,
+        "suppressed_errors": 0,
+        "suppressed_contexts": 0
+      },
+      "warning_contexts": 0,
+      "completed": true,
+      "stderr_bytes": 0
+    },
+    {
+      "log": "case-062-secret.log",
+      "group": "receive",
+      "taint": "secret",
+      "exit": 99,
+      "summary": {
+        "errors": 3,
+        "contexts": 3,
+        "suppressed_errors": 0,
+        "suppressed_contexts": 0
+      },
+      "warning_contexts": 2,
+      "completed": true,
+      "stderr_bytes": 0
+    },
+    {
+      "log": "case-063-public.log",
+      "group": "receive",
+      "taint": "public",
+      "exit": 99,
+      "summary": {
+        "errors": 1,
+        "contexts": 1,
+        "suppressed_errors": 0,
+        "suppressed_contexts": 0
+      },
+      "warning_contexts": 0,
+      "completed": true,
+      "stderr_bytes": 0
+    },
+    {
+      "log": "case-063-secret.log",
+      "group": "receive",
+      "taint": "secret",
+      "exit": 99,
+      "summary": {
+        "errors": 3,
+        "contexts": 3,
+        "suppressed_errors": 0,
+        "suppressed_contexts": 0
+      },
+      "warning_contexts": 2,
+      "completed": true,
+      "stderr_bytes": 0
+    },
+    {
+      "log": "case-064-public.log",
+      "group": "receive",
+      "taint": "public",
+      "exit": 99,
+      "summary": {
+        "errors": 1,
+        "contexts": 1,
+        "suppressed_errors": 0,
+        "suppressed_contexts": 0
+      },
+      "warning_contexts": 0,
+      "completed": true,
+      "stderr_bytes": 0
+    },
+    {
+      "log": "case-064-secret.log",
+      "group": "receive",
+      "taint": "secret",
+      "exit": 99,
+      "summary": {
+        "errors": 3,
+        "contexts": 3,
+        "suppressed_errors": 0,
+        "suppressed_contexts": 0
+      },
+      "warning_contexts": 2,
+      "completed": true,
+      "stderr_bytes": 0
+    },
+    {
+      "log": "case-065-public.log",
+      "group": "receive",
+      "taint": "public",
+      "exit": 99,
+      "summary": {
+        "errors": 1,
+        "contexts": 1,
+        "suppressed_errors": 0,
+        "suppressed_contexts": 0
+      },
+      "warning_contexts": 0,
+      "completed": true,
+      "stderr_bytes": 0
+    },
+    {
+      "log": "case-065-secret.log",
+      "group": "receive",
+      "taint": "secret",
+      "exit": 99,
+      "summary": {
+        "errors": 3,
+        "contexts": 3,
+        "suppressed_errors": 0,
+        "suppressed_contexts": 0
+      },
+      "warning_contexts": 2,
+      "completed": true,
+      "stderr_bytes": 0
+    },
+    {
+      "log": "case-066-public.log",
+      "group": "receive",
+      "taint": "public",
+      "exit": 99,
+      "summary": {
+        "errors": 1,
+        "contexts": 1,
+        "suppressed_errors": 0,
+        "suppressed_contexts": 0
+      },
+      "warning_contexts": 0,
+      "completed": true,
+      "stderr_bytes": 0
+    },
+    {
+      "log": "case-066-secret.log",
+      "group": "receive",
+      "taint": "secret",
+      "exit": 99,
+      "summary": {
+        "errors": 3,
+        "contexts": 3,
+        "suppressed_errors": 0,
+        "suppressed_contexts": 0
+      },
+      "warning_contexts": 2,
+      "completed": true,
+      "stderr_bytes": 0
+    },
+    {
+      "log": "case-067-public.log",
+      "group": "receive",
+      "taint": "public",
+      "exit": 99,
+      "summary": {
+        "errors": 1,
+        "contexts": 1,
+        "suppressed_errors": 0,
+        "suppressed_contexts": 0
+      },
+      "warning_contexts": 0,
+      "completed": true,
+      "stderr_bytes": 0
+    },
+    {
+      "log": "case-067-secret.log",
+      "group": "receive",
+      "taint": "secret",
+      "exit": 99,
+      "summary": {
+        "errors": 3,
+        "contexts": 3,
+        "suppressed_errors": 0,
+        "suppressed_contexts": 0
+      },
+      "warning_contexts": 2,
+      "completed": true,
+      "stderr_bytes": 0
+    },
+    {
+      "log": "case-068-public.log",
+      "group": "receive",
+      "taint": "public",
+      "exit": 99,
+      "summary": {
+        "errors": 1,
+        "contexts": 1,
+        "suppressed_errors": 0,
+        "suppressed_contexts": 0
+      },
+      "warning_contexts": 0,
+      "completed": true,
+      "stderr_bytes": 0
+    },
+    {
+      "log": "case-068-secret.log",
+      "group": "receive",
+      "taint": "secret",
+      "exit": 99,
+      "summary": {
+        "errors": 3,
+        "contexts": 3,
+        "suppressed_errors": 0,
+        "suppressed_contexts": 0
+      },
+      "warning_contexts": 2,
+      "completed": true,
+      "stderr_bytes": 0
+    },
+    {
+      "log": "case-069-public.log",
+      "group": "receive",
+      "taint": "public",
+      "exit": 99,
+      "summary": {
+        "errors": 1,
+        "contexts": 1,
+        "suppressed_errors": 0,
+        "suppressed_contexts": 0
+      },
+      "warning_contexts": 0,
+      "completed": true,
+      "stderr_bytes": 0
+    },
+    {
+      "log": "case-069-secret.log",
+      "group": "receive",
+      "taint": "secret",
+      "exit": 99,
+      "summary": {
+        "errors": 3,
+        "contexts": 3,
+        "suppressed_errors": 0,
+        "suppressed_contexts": 0
+      },
+      "warning_contexts": 2,
+      "completed": true,
+      "stderr_bytes": 0
+    },
+    {
+      "log": "case-070-public.log",
+      "group": "receive",
+      "taint": "public",
+      "exit": 99,
+      "summary": {
+        "errors": 1,
+        "contexts": 1,
+        "suppressed_errors": 0,
+        "suppressed_contexts": 0
+      },
+      "warning_contexts": 0,
+      "completed": true,
+      "stderr_bytes": 0
+    },
+    {
+      "log": "case-070-secret.log",
+      "group": "receive",
+      "taint": "secret",
+      "exit": 99,
+      "summary": {
+        "errors": 3,
+        "contexts": 3,
+        "suppressed_errors": 0,
+        "suppressed_contexts": 0
+      },
+      "warning_contexts": 2,
+      "completed": true,
+      "stderr_bytes": 0
+    },
+    {
+      "log": "case-071-public.log",
+      "group": "receive",
+      "taint": "public",
+      "exit": 99,
+      "summary": {
+        "errors": 1,
+        "contexts": 1,
+        "suppressed_errors": 0,
+        "suppressed_contexts": 0
+      },
+      "warning_contexts": 0,
+      "completed": true,
+      "stderr_bytes": 0
+    },
+    {
+      "log": "case-071-secret.log",
+      "group": "receive",
+      "taint": "secret",
+      "exit": 99,
+      "summary": {
+        "errors": 3,
+        "contexts": 3,
+        "suppressed_errors": 0,
+        "suppressed_contexts": 0
+      },
+      "warning_contexts": 2,
+      "completed": true,
+      "stderr_bytes": 0
+    },
+    {
+      "log": "case-072-public.log",
+      "group": "receive",
+      "taint": "public",
+      "exit": 99,
+      "summary": {
+        "errors": 1,
+        "contexts": 1,
+        "suppressed_errors": 0,
+        "suppressed_contexts": 0
+      },
+      "warning_contexts": 0,
+      "completed": true,
+      "stderr_bytes": 0
+    },
+    {
+      "log": "case-072-secret.log",
+      "group": "receive",
+      "taint": "secret",
+      "exit": 99,
+      "summary": {
+        "errors": 3,
+        "contexts": 3,
+        "suppressed_errors": 0,
+        "suppressed_contexts": 0
+      },
+      "warning_contexts": 2,
+      "completed": true,
+      "stderr_bytes": 0
+    },
+    {
+      "log": "case-073-public.log",
+      "group": "receive",
+      "taint": "public",
+      "exit": 99,
+      "summary": {
+        "errors": 1,
+        "contexts": 1,
+        "suppressed_errors": 0,
+        "suppressed_contexts": 0
+      },
+      "warning_contexts": 0,
+      "completed": true,
+      "stderr_bytes": 0
+    },
+    {
+      "log": "case-073-secret.log",
+      "group": "receive",
+      "taint": "secret",
+      "exit": 99,
+      "summary": {
+        "errors": 3,
+        "contexts": 3,
+        "suppressed_errors": 0,
+        "suppressed_contexts": 0
+      },
+      "warning_contexts": 2,
+      "completed": true,
+      "stderr_bytes": 0
+    },
+    {
+      "log": "case-074-public.log",
+      "group": "receive",
+      "taint": "public",
+      "exit": 99,
+      "summary": {
+        "errors": 1,
+        "contexts": 1,
+        "suppressed_errors": 0,
+        "suppressed_contexts": 0
+      },
+      "warning_contexts": 0,
+      "completed": true,
+      "stderr_bytes": 0
+    },
+    {
+      "log": "case-074-secret.log",
+      "group": "receive",
+      "taint": "secret",
+      "exit": 99,
+      "summary": {
+        "errors": 3,
+        "contexts": 3,
+        "suppressed_errors": 0,
+        "suppressed_contexts": 0
+      },
+      "warning_contexts": 2,
+      "completed": true,
+      "stderr_bytes": 0
+    },
+    {
+      "log": "case-075-public.log",
+      "group": "receive",
+      "taint": "public",
+      "exit": 99,
+      "summary": {
+        "errors": 1,
+        "contexts": 1,
+        "suppressed_errors": 0,
+        "suppressed_contexts": 0
+      },
+      "warning_contexts": 0,
+      "completed": true,
+      "stderr_bytes": 0
+    },
+    {
+      "log": "case-075-secret.log",
+      "group": "receive",
+      "taint": "secret",
+      "exit": 99,
+      "summary": {
+        "errors": 4,
+        "contexts": 4,
+        "suppressed_errors": 0,
+        "suppressed_contexts": 0
+      },
+      "warning_contexts": 3,
+      "completed": true,
+      "stderr_bytes": 0
+    },
+    {
+      "log": "case-076-public.log",
+      "group": "receive",
+      "taint": "public",
+      "exit": 99,
+      "summary": {
+        "errors": 1,
+        "contexts": 1,
+        "suppressed_errors": 0,
+        "suppressed_contexts": 0
+      },
+      "warning_contexts": 0,
+      "completed": true,
+      "stderr_bytes": 0
+    },
+    {
+      "log": "case-076-secret.log",
+      "group": "receive",
+      "taint": "secret",
+      "exit": 99,
+      "summary": {
+        "errors": 4,
+        "contexts": 4,
+        "suppressed_errors": 0,
+        "suppressed_contexts": 0
+      },
+      "warning_contexts": 3,
+      "completed": true,
+      "stderr_bytes": 0
+    },
+    {
+      "log": "case-077-public.log",
+      "group": "receive",
+      "taint": "public",
+      "exit": 99,
+      "summary": {
+        "errors": 1,
+        "contexts": 1,
+        "suppressed_errors": 0,
+        "suppressed_contexts": 0
+      },
+      "warning_contexts": 0,
+      "completed": true,
+      "stderr_bytes": 0
+    },
+    {
+      "log": "case-077-secret.log",
+      "group": "receive",
+      "taint": "secret",
+      "exit": 99,
+      "summary": {
+        "errors": 4,
+        "contexts": 4,
+        "suppressed_errors": 0,
+        "suppressed_contexts": 0
+      },
+      "warning_contexts": 3,
+      "completed": true,
+      "stderr_bytes": 0
+    },
+    {
+      "log": "positive-branch.log",
+      "group": "positive",
+      "taint": null,
+      "exit": 99,
+      "summary": {
+        "errors": 2,
+        "contexts": 2,
+        "suppressed_errors": 0,
+        "suppressed_contexts": 0
+      },
+      "warning_contexts": 1,
+      "completed": true,
+      "stderr_bytes": 0
+    },
+    {
+      "log": "positive-address.log",
+      "group": "positive",
+      "taint": null,
+      "exit": 99,
+      "summary": {
+        "errors": 2,
+        "contexts": 2,
+        "suppressed_errors": 0,
+        "suppressed_contexts": 0
+      },
+      "warning_contexts": 1,
+      "completed": true,
+      "stderr_bytes": 0
+    },
+    {
+      "log": "derivation-public.log",
+      "group": "derivation",
+      "taint": "public",
+      "exit": 99,
+      "summary": {
+        "errors": 1,
+        "contexts": 1,
+        "suppressed_errors": 0,
+        "suppressed_contexts": 0
+      },
+      "warning_contexts": 0,
+      "completed": true,
+      "stderr_bytes": 0
+    },
+    {
+      "log": "derivation-secret.log",
+      "group": "derivation",
+      "taint": "secret",
+      "exit": 99,
+      "summary": {
+        "errors": 1,
+        "contexts": 1,
+        "suppressed_errors": 0,
+        "suppressed_contexts": 0
+      },
+      "warning_contexts": 0,
+      "completed": true,
+      "stderr_bytes": 0
+    }
+  ],
+  "matrix": {
+    "exact_expected_matrix": true,
+    "modes_per_taint": {
+      "data-valid": 14,
+      "data-bad-tag": 44,
+      "data-bad-header": 14,
+      "close-valid": 2,
+      "close-invalid-reason": 4
+    },
+    "data_lengths": [
+      1,
+      16,
+      63,
+      64,
+      65,
+      1024,
+      16384
+    ],
+    "roles": [
+      0,
+      1
+    ],
+    "bad_tag_positions": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12,
+      13,
+      14,
+      15
+    ],
+    "close_reasons": [
+      0,
+      3,
+      255
+    ],
+    "fixed_sequence": 0,
+    "fixed_synthetic_key": true,
+    "taint": "entire 32-byte receive key and 4-byte prefix; pre-generated packets remain defined"
+  },
+  "limits": [
+    "Receipt has no binary bytes, so binary hash and unchanged claims cannot be independently recomputed; archived instruction data is internally consistent.",
+    "WSL identity and subprocess exit statuses are recorded by runner, not independently attested hardware or supervisor receipts.",
+    "Finite fixed synthetic key/prefix, sequence zero and fixture matrix do not prove universal constant-time behavior or whole-production memory safety.",
+    "Receive warnings preserved with no receive declassification. Derivation declares wire-output declassification.",
+    "Every raw run retains one 48-byte possible-loss std::thread::current/ArcInner/mpmc/libtest stack; stack attribution is not a clean Memcheck result or general resolution."
+  ],
+  "instruction_mapping_review": "/workspace/new-wsl-mapping-review.json"
+}

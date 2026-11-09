@@ -1,0 +1,123 @@
+{
+  "archive": "Spiral-secret-flow-aarch64-20261109-071117-lw2ei7sl.tar.gz",
+  "archive_bytes": 484414,
+  "archive_sha256": "4e34fd8bf510277ed017f938afb2735659ddf0d825afdda4f29d3f8b3b5b8a85",
+  "source_commit": "7f26fed5b8176ddd009d44264fb5e9ab08fb8d31",
+  "source_identity_kind": "bundle_manifest",
+  "bundle_manifest_sha256": "36013f94f0cb3bca0d3482a775831f4037fac2a9e553e679fe0cabf9031c8d39",
+  "bundle_verified_files_as_reported": 864,
+  "unique_reported_source_hashes_matched_to_git": 189,
+  "campaign_source_hashes": 189,
+  "trace_source_hashes": 179,
+  "outer_manifest_files_verified": 497,
+  "trace_manifest_files_verified": 486,
+  "nested_trace_byte_identical": true,
+  "platform": {
+    "system": "Linux",
+    "node": "tls-server",
+    "release": "7.0.0-1013-oracle",
+    "version": "#13~24.04.1-Ubuntu SMP PREEMPT Fri Sep 25 09:43:58 UTC 2026",
+    "machine": "aarch64",
+    "processor": "aarch64"
+  },
+  "rustc_version": "rustc 1.99.1 (58cf8f9c3 2026-10-13)\nbinary: rustc\ncommit-hash: 58cf8f9c35b355199727627d07ae34a4e2846d67\ncommit-date: 2026-10-13\nhost: aarch64-unknown-linux-gnu\nrelease: 1.99.1\nLLVM version: 23.1.1",
+  "valgrind_version": "valgrind-3.22.0",
+  "local_patched_build_artifacts": {
+    "digest": {
+      "version": "0.11.3",
+      "package_id": "path+file:///home/ubuntu/Spiral-secret-copy-7f26fed/source/third_party/rustcrypto/digest#0.11.3",
+      "features": [
+        "alloc",
+        "block-api",
+        "default",
+        "mac",
+        "oid",
+        "zeroize"
+      ]
+    },
+    "curve25519-dalek": {
+      "version": "5.0.0",
+      "package_id": "path+file:///home/ubuntu/Spiral-secret-copy-7f26fed/source/third_party/rustcrypto/curve25519-dalek#5.0.0",
+      "features": [
+        "digest",
+        "precomputed-tables",
+        "zeroize"
+      ]
+    },
+    "hmac": {
+      "version": "0.13.0",
+      "package_id": "path+file:///home/ubuntu/Spiral-secret-copy-7f26fed/source/third_party/rustcrypto/hmac#0.13.0",
+      "features": [
+        "zeroize"
+      ]
+    },
+    "hkdf": {
+      "version": "0.13.0",
+      "package_id": "path+file:///home/ubuntu/Spiral-secret-copy-7f26fed/source/third_party/rustcrypto/hkdf#0.13.0",
+      "features": [
+        "zeroize"
+      ]
+    },
+    "ed25519-dalek": {
+      "version": "3.0.0",
+      "package_id": "path+file:///home/ubuntu/Spiral-secret-copy-7f26fed/source/third_party/rustcrypto/ed25519-dalek#3.0.0",
+      "features": [
+        "default",
+        "fast",
+        "zeroize"
+      ]
+    }
+  },
+  "binary_sha256_as_recorded": "82423957a759f32088bd8d946d4f53e17b0672c946ef4b44c5acab90ccd3b220",
+  "native_tests": {
+    "passed": 70,
+    "failed": 0,
+    "ignored": 5
+  },
+  "diagnostic_complete": true,
+  "memcheck_invocations": 160,
+  "raw_exits": {
+    "99": 160
+  },
+  "positive_controls_detected": [
+    "branch",
+    "address"
+  ],
+  "fixture_variants": 78,
+  "public_receive_cases": 78,
+  "secret_receive_cases": 78,
+  "receive_public_warning_contexts": 0,
+  "receive_secret_warning_candidates": {
+    "authentication_decision_candidate": 64,
+    "authentication_result_propagation_candidate": 64,
+    "close_reason_validity_candidate": 6
+  },
+  "receive_unclassified_warning_contexts": 0,
+  "total_unclassified_warning_contexts": 2,
+  "derivation_warning_contexts": 0,
+  "warning_contexts_instruction_mapped": 136,
+  "unique_warning_instruction_sites": 5,
+  "possibly_lost_48_bytes_invocations": 160,
+  "suppression_used": false,
+  "receive_declassification_used": false,
+  "derivation_declassification_used": true,
+  "secret_flow_collection_complete": true,
+  "constant_time_approved": false,
+  "production_memory_passed": false,
+  "limits": [
+    "Measured source tree and original ELF are excluded; 189 submitted hashes match Git, and the reported 864-file manifest matches the distributed source archive.",
+    "Raw binary digest cannot be independently recomputed without the ELF.",
+    "Finite taint traces do not prove all erasure, constant time, cache or speculative-execution independence.",
+    "Focused23/ASan/TLS35/full-service tests are not rerun by this platform collection."
+  ],
+  "privacy_redaction": {
+    "applied": true,
+    "historical_execution_repeated": false,
+    "integrity_values_describe_redacted_artifacts": true
+  },
+  "artifact_language_normalization": {
+    "applied": true,
+    "historical_execution_repeated": false,
+    "integrity_values_describe_translated_artifacts": true
+  }
+}

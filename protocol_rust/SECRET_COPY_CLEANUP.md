@@ -5,6 +5,11 @@ We implemented dependency-internal lifetime guards, the recommended option in th
 Existing high-level APIs, wire format, KEM/signature bytes, and strict verification policy are preserved.
 **This cleans the specified currently owned slots; it does not complete all of item 2 or erase all copies.**
 
+We reviewed the subsequent [OCI ARM/WSL submissions](evidence/secret_copy_platforms_20261109/README.md).
+Each completed 70 basic tests and 160 Memcheck runs on the same patched sources,
+**completing this basic functionality/secret-flow collection phase on both platforms**. Warnings, exit99, and
+the determination that constant-time/full memory approval remains incomplete are preserved.
+
 ## Actual improvement scope
 
 | Path | Implemented cleanup |
@@ -72,5 +77,7 @@ is not guaranteed. Service key storage/rotation/disposal/recovery policies are s
 
 We retained [originals and review records](evidence/secret_copy_cleanup_20261108/README.md) and
 a [remeasurement bundle including sources](../downloads/secret-copy-7f26fed/README.md).
-We do not yet count this new patch as executed on actual OCI ARM/WSL. Previous material from both platforms
-remains a record of the corresponding earlier sources; submitted results for the new bundle are reviewed separately.
+We subsequently confirmed [OCI ARM/WSL remeasurement](evidence/secret_copy_platforms_20261109/README.md)
+on the same sources. We record completion of 70 basic tests and 160 instrumented runs in each environment; these attachments do not count as rerunning the 23 cleanup-only tests,
+ASan, TLS35 tests, or actual erasure instructions of every cleanup function in each environment.
+Previous material remains a record of its corresponding sources and is available for review.

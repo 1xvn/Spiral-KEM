@@ -1,0 +1,67 @@
+{
+  "sites": [
+    {
+      "classification": "authentication_decision_candidate",
+      "runtime_ip": "0x1d43ec",
+      "elf_rva": "0xcc3ec",
+      "instruction": "cbz\tw8, cc40c <_RNvXs1_CsfsCNV6gYDNe_16chacha20poly1305INtB5_14ChaChaPoly1305INtNtCsi3YHlGHaRSn_6cipher14stream_wrapper23StreamCipherCoreWrapperINtCs9UpNDisPNkA_8chacha2010ChaChaCoreINtNtCs1bCklM3FpyN_7typenum4uint4UIntIB2F_IB2F_IB2F_NtB2H_5UTermNtNtB2J_3bit2B1ENtB3I_2B0EB3G_EB3W_EEEENtCsfhiNpe7FFkA_4aead11AeadInPlace25decrypt_in_place_detachedCsaYeZLtiO14U_15spiral_protocol+0x37c>",
+      "source_frames": [
+        "==71079==    at 0x1D43EC: decrypt_in_place_detached<cipher::stream_wrapper::StreamCipherCoreWrapper<chacha20::ChaChaCore<typenum::uint::UInt<typenum::uint::UInt<typenum::uint::UInt<typenum::uint::UInt<typenum::uint::UTerm, typenum::bit::B1>, typenum::bit::B0>, typenum::bit::B1>, typenum::bit::B0>>>> (src/cipher.rs:87)",
+        "==71079==    by 0x1D43EC: <chacha20poly1305::ChaChaPoly1305<cipher::stream_wrapper::StreamCipherCoreWrapper<chacha20::ChaChaCore<typenum::uint::UInt<typenum::uint::UInt<typenum::uint::UInt<typenum::uint::UInt<typenum::uint::UTerm, typenum::bit::B1>, typenum::bit::B0>, typenum::bit::B1>, typenum::bit::B0>>>> as aead::AeadInPlace>::decrypt_in_place_detached (src/lib.rs:271)",
+        "==71079==    by 0x1CA23B: {closure#0} (records.rs:209)"
+      ],
+      "contexts": 64
+    },
+    {
+      "classification": "authentication_result_propagation_candidate",
+      "runtime_ip": "0x1ca240",
+      "elf_rva": "0xc2240",
+      "instruction": "tbz\tw0, #0, c224c <_RNvMs_NtCsaYeZLtiO14U_15spiral_protocol7recordsNtB4_2Rx6decode+0x294>",
+      "source_frames": [
+        "==71079==    at 0x1CA240: map_err<(), aead::Error, spiral_protocol::error::Error, spiral_protocol::records::{impl#1}::decode::{closure#0}::{closure_env#0}> (library/core/src/result.rs:965)",
+        "==71079==    by 0x1CA240: {closure#0} (records.rs:215)",
+        "==71079==    by 0x1CA240: <spiral_protocol::records::Rx>::decode (records.rs:190)"
+      ],
+      "contexts": 64
+    },
+    {
+      "classification": "close_reason_validity_candidate",
+      "runtime_ip": "0x1ca264",
+      "elf_rva": "0xc2264",
+      "instruction": "b.hi\tc2030 <_RNvMs_NtCsaYeZLtiO14U_15spiral_protocol7recordsNtB4_2Rx6decode+0x78>  // b.pmore",
+      "source_frames": [
+        "==71226==    at 0x1CA264: {closure#0} (records.rs:216)",
+        "==71226==    by 0x1CA264: <spiral_protocol::records::Rx>::decode (records.rs:190)",
+        "==71226==    by 0x1E31BB: trace_actual_receive (receive_audit.rs:246)"
+      ],
+      "contexts": 6
+    },
+    {
+      "classification": "unclassified",
+      "runtime_ip": "0x1e36e0",
+      "elf_rva": "0xdb6e0",
+      "instruction": "cbz\tw8, db6f0 <_RNvYNCNvNtCsaYeZLtiO14U_15spiral_protocol13receive_audit22positive_secret_branch0INtNtNtCsaWcbhsS8OaW_4core3ops8function6FnOnceuE9call_onceB8_+0xa8>",
+      "source_frames": [
+        "==71069==    at 0x1E36E0: positive_secret_branch (receive_audit.rs:206)",
+        "==71069==    by 0x1E36E0: {closure#0} (receive_audit.rs:202)",
+        "==71069==    by 0x1E36E0: <spiral_protocol::receive_audit::positive_secret_branch::{closure#0} as core::ops::function::FnOnce<()>>::call_once (library/core/src/ops/function.rs:250)"
+      ],
+      "contexts": 1
+    },
+    {
+      "classification": "unclassified",
+      "runtime_ip": "0x1e37d4",
+      "elf_rva": "0xdb7d4",
+      "instruction": "ldrb\tw8, [x9, x8]",
+      "source_frames": [
+        "==71071==    at 0x1E37D4: read_volatile<u8> (library/core/src/ptr/mod.rs:2160)",
+        "==71071==    by 0x1E37D4: positive_secret_address (receive_audit.rs:223)",
+        "==71071==    by 0x1E37D4: {closure#0} (receive_audit.rs:215)"
+      ],
+      "contexts": 1
+    }
+  ],
+  "contexts_mapped": 136,
+  "source_commit": "7f26fed5b8176ddd009d44264fb5e9ab08fb8d31",
+  "scope": "Observed warning sites in selected Rx and positive-control functions, not all cleanup functions or the entire binary."
+}

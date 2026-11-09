@@ -1,0 +1,29 @@
+{
+  "source_commit": "7f26fed5b8176ddd009d44264fb5e9ab08fb8d31",
+  "source_hash_maps_match_across_platforms": true,
+  "bundle_manifest_sha256": "36013f94f0cb3bca0d3482a775831f4037fac2a9e553e679fe0cabf9031c8d39",
+  "reported_source_files": 864,
+  "same_patched_packages_and_cleanup_features": true,
+  "platform_collections_complete": [
+    "oci_arm",
+    "wsl"
+  ],
+  "native_tests_passed_per_platform": 70,
+  "memcheck_invocations_per_platform": 160,
+  "total_memcheck_invocations": 320,
+  "total_raw_exit_99": 320,
+  "raw_warnings_and_48_byte_items_preserved": true,
+  "constant_time_approved": false,
+  "production_memory_passed": false,
+  "whole_goal_2_complete": false,
+  "privacy_redaction": {
+    "applied": true,
+    "historical_execution_repeated": false,
+    "integrity_values_describe_redacted_artifacts": true
+  },
+  "artifact_language_normalization": {
+    "applied": true,
+    "historical_execution_repeated": false,
+    "integrity_values_describe_translated_artifacts": true
+  }
+}

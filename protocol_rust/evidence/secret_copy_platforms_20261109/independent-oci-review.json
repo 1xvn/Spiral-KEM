@@ -1,0 +1,228 @@
+{
+  "schema": "spiral-secret-flow-artifact-review/v1",
+  "scope": "Read-only offline consistency review of supplied OCI ARM receipt; no embedded code executed and no repository files modified.",
+  "artifact": {
+    "path": "/workspace/attachments/b999c7b9-bc88-4875-bfb4-10d669ad8076/Spiral-secret-flow-aarch64-20261109-071117-lw2ei7sl.tar.gz",
+    "sha256": "4e34fd8bf510277ed017f938afb2735659ddf0d825afdda4f29d3f8b3b5b8a85",
+    "bytes": 484414,
+    "members": 501,
+    "regular_files": 499,
+    "directories": 2,
+    "expanded_regular_bytes": 5474129,
+    "unsafe_members": [],
+    "duplicate_member_names": 0
+  },
+  "manifests": {
+    "root": {
+      "entries": 497,
+      "hash_mismatches": 0,
+      "excluded_manifest_names": [
+        "SHA256.json",
+        "trace/SHA256.json"
+      ],
+      "sha256": "cb121b9b6895108110a23ac926b12feca5900a6275344307a8a8f4ed542efd02"
+    },
+    "trace": {
+      "entries": 486,
+      "hash_mismatches": 0,
+      "excluded_manifest_names": [
+        "SHA256.json"
+      ],
+      "sha256": "57f92b4d12bc367915ae8bbe73995490a9f7df473d078cacd7828de38a0330a4"
+    },
+    "nested_trace": {
+      "archive_sha256": "dcf6ba19bd33bff378b3230c2b5d407f0ed2ea8022ec80181025f116a9fba784",
+      "members": 488,
+      "regular_files": 487,
+      "directories": 1,
+      "unsafe_members": 0,
+      "byte_mismatches_against_trace_directory": 0,
+      "includes_trace_manifest": true
+    }
+  },
+  "provenance": {
+    "source_commit": "7f26fed5b8176ddd009d44264fb5e9ab08fb8d31",
+    "source_bundle_path": "/workspace/spiral-secret-copy-cleanup-20261108/downloads/secret-copy-7f26fed/Spiral-secret-copy-7f26fed.tar.gz",
+    "source_bundle_sha256": "9d892ca31154a210640a4ce89bd2fe85311699e515ec78715daef8af0eba0a3a",
+    "source_manifest_sha256": "36013f94f0cb3bca0d3482a775831f4037fac2a9e553e679fe0cabf9031c8d39",
+    "source_manifest_files": 864,
+    "bundle_content_mismatches": 0,
+    "source_manifest_mismatches_against_git_commit": 0,
+    "root_source_hashes": 189,
+    "trace_source_hashes": 179,
+    "root_and_trace_overlap": 179,
+    "root_and_trace_overlap_mismatches": 0,
+    "receipt_source_hash_mismatches_against_git_and_bundle": 0,
+    "receipt_source_sets_complete": true,
+    "root_runner_sha256": "219ec1f9fd80cd2db5c9d06560301f597ae0d3292cc75a18ea0590b13809413a",
+    "trace_runner_sha256": "af7dd3b2724b509ca5337ca35ad40953ca757ee0b870c4ece0ef1f4a05c8d5a9",
+    "both_runner_hashes_match_git_and_bundle": true,
+    "reported_binary_sha256": "82423957a759f32088bd8d946d4f53e17b0672c946ef4b44c5acab90ccd3b220",
+    "reported_binary_bytes": 25525320,
+    "binary_present_in_artifact": false,
+    "reported_root_and_trace_binary_hashes_agree": true
+  },
+  "native_functional": {
+    "running_tests": 75,
+    "passed": 70,
+    "failed": 0,
+    "ignored": 5,
+    "command_exit_reported": 0,
+    "receive_functional_passed": 2,
+    "receive_functional_ignored": 3,
+    "functional_fixture_marker": 78,
+    "native_injected_panics_match_passing_panic_test_names": true
+  },
+  "matrix": {
+    "expected_fixture_variants": 78,
+    "variants_per_role": 39,
+    "roles": [
+      0,
+      1
+    ],
+    "data_lengths": [
+      1,
+      16,
+      63,
+      64,
+      65,
+      1024,
+      16384
+    ],
+    "fixture_modes": {
+      "data-valid": 14,
+      "data-bad-tag": 44,
+      "data-bad-header": 14,
+      "close-valid": 2,
+      "close-invalid-reason": 4
+    },
+    "public_receive_calls": 78,
+    "secret_receive_calls": 78,
+    "derivation_calls": 2,
+    "positive_control_calls": 2,
+    "total_memcheck_calls": 160,
+    "exact_parameters_and_order_verified": true
+  },
+  "raw_consistency": {
+    "unique_memcheck_logs": 160,
+    "stdout_completion_markers_verified": 160,
+    "one_passed_test_results_verified": 160,
+    "empty_stderr_files": 160,
+    "single_error_summaries_verified": 160,
+    "raw_summaries_match_receipt": true,
+    "raw_leaks_match_receipt": true,
+    "raw_commands_match_receipt_test_argv": true,
+    "raw_valgrind_version": "3.22.0",
+    "all_recorded_memcheck_exits": 99,
+    "error_exitcode_option": 99,
+    "recorded_exit_codes_consistent_with_raw_errors": true,
+    "summary_distribution": [
+      {
+        "errors": 1,
+        "contexts": 1,
+        "calls": 94
+      },
+      {
+        "errors": 2,
+        "contexts": 2,
+        "calls": 2
+      },
+      {
+        "errors": 3,
+        "contexts": 3,
+        "calls": 58
+      },
+      {
+        "errors": 4,
+        "contexts": 4,
+        "calls": 6
+      }
+    ],
+    "summed_raw_errors": 296,
+    "summed_raw_error_contexts": 296,
+    "branch_or_address_warning_contexts": 136,
+    "48_byte_possible_loss_contexts": 160,
+    "definite_or_indirect_lost_bytes_per_call": 0,
+    "possible_loss_per_call": {
+      "bytes": 48,
+      "blocks": 1
+    },
+    "still_reachable_per_call": {
+      "bytes": 548,
+      "blocks": 2
+    },
+    "heap_at_exit_per_call": {
+      "bytes": 596,
+      "blocks": 3
+    },
+    "possible_loss_stack_std_thread_arcinner_and_libtest_verified": 160,
+    "possible_loss_stack_normalized_unique_count": 1,
+    "suppressed_errors": 0,
+    "suppressed_contexts": 0,
+    "suppressed_leak_bytes": 0,
+    "unexpected_invalid_access_or_syscall_or_fatal_diagnostics": 0
+  },
+  "instruction_mapping": {
+    "raw_warnings_match_json": 136,
+    "raw_warning_mapping_mismatches": 0,
+    "load_bias": "0x108000",
+    "conditional_warning_contexts": 135,
+    "address_warning_contexts": 1,
+    "candidate_classifications": {
+      "authentication_decision_candidate": 64,
+      "authentication_result_propagation_candidate": 64,
+      "close_reason_validity_candidate": 6,
+      "unclassified_positive_controls": 2
+    },
+    "positive_branch": {
+      "runtime_ip": "0x1e36e0",
+      "elf_rva": "0xdb6e0",
+      "opcode": "34000088",
+      "instruction": "cbz w8, db6f0",
+      "symbol_start": "0xdb648",
+      "source": "receive_audit.rs:206"
+    },
+    "positive_address": {
+      "runtime_ip": "0x1e37d4",
+      "elf_rva": "0xdb7d4",
+      "opcode": "38686928",
+      "instruction": "ldrb w8, [x9, x8]",
+      "symbol_start": "0xdb730",
+      "source": "receive_audit.rs:223"
+    },
+    "supplied_disassembly_verified_only": true
+  },
+  "reported_flags": {
+    "root_diagnostic_complete": true,
+    "trace_diagnostic_complete": true,
+    "root_errors": [],
+    "trace_errors": [],
+    "root_constant_time_approved": false,
+    "trace_constant_time_approved": false,
+    "root_production_memory_passed": false,
+    "trace_production_memory_passed": false,
+    "receive_declassification_used": false,
+    "derivation_wire_output_declassification_used": true,
+    "suppression_used": false
+  },
+  "review_errors": [],
+  "limitations": [
+    "This is supplied textual evidence checked offline, not independent reproduction of an OCI execution.",
+    "The measured binary and tools are absent; reported binary/tool hashes cannot be recalculated and disassembly cannot be regenerated here.",
+    "Recorded process exit codes are cross-checked against raw summaries and configured --error-exitcode=99; archive text cannot independently prove operating-system process status.",
+    "Hash manifests provide integrity and source consistency, not signed provenance or proof of the recorded execution environment.",
+    "Receive traces retain authentication and CLOSE validity warnings. Candidate classifications are descriptive, not accepted-warning filters.",
+    "48-byte possible loss remains in every raw log and exit99 remains recorded. No production-memory or constant-time approval is given.",
+    "No claim of complete erasure of keys, register copies, stack copies, native/OpenSSL paths, or compiler temporaries is established."
+  ],
+  "privacy_redaction": {
+    "applied": true,
+    "historical_execution_repeated": false,
+    "integrity_values_describe_redacted_artifacts": true
+  },
+  "artifact_language_normalization": {
+    "applied": true,
+    "historical_execution_repeated": false,
+    "integrity_values_describe_translated_artifacts": true
+  }
+}
