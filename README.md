@@ -56,8 +56,9 @@ Passing functional checks is not treated as approval of overall memory safety, c
 
 The [operational key management platform verification bundle](downloads/key-operations-0b0db39/README.md)
 allows reverification of PR #28's key-file policy, generation, and rotation features on OCI ARM and WSL.
-The new source bundle passed 81 local Rust tests, 11 key management/TLS rotation tests, and 25 collector tests.
-Fresh OCI/WSL run results await submission; overall operational readiness and deployment approvals remain incomplete.
+With the pinned `0b0db39` source, OCI and WSL each passed 81 Rust tests (plus 5 ignored) and 11 key management/TLS rotation tests.
+The [original submissions and review](protocol_rust/evidence/key_operations_platforms_20261109/README.md)
+cross-checked 318 source files and original test logs. Overall operational readiness, constant-time, memory, and deployment approvals remain incomplete.
 
 [Coverage-guided fuzzing](fuzzing/README.md): checks Python frames, ClientHello, KEM encoding, and record
 state using Atheris and stores failing inputs and coverage feedback in separate Actions runs.

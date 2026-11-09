@@ -1,0 +1,77 @@
+{
+  "schema": "spiral-key-operations-receipt-review/v1",
+  "status": "accepted",
+  "reviewer_sha256": "bdfb76603d13ae034302290d6d24e8805e2ff564d8315b1bbe57890f00bff54b",
+  "archive": "Spiral-key-ops-wsl-x86_64-20261109T130652Z-m3oa5fpk.tar.gz",
+  "archive_sha256": "5f7f408c0847ecf1bfca9d30ffd52b040aef919249d2257cb4ff076659e7b42b",
+  "archive_bytes": 75812,
+  "archive_members": 41,
+  "result_hashes_verified": 40,
+  "source_commit": "0b0db39d36b9a6f243486615ca2624a6b76ce02b",
+  "runtime_base_commit": "486697682beb66db1af05bdc45867d122a25d145",
+  "manifest_sha256": "e60c9fe1da07e0db98fb20327646a0c4837a550419d7fee4ca080ba433e9730b",
+  "source_files_matched_to_git": 318,
+  "nested_source_files_matched_to_git": 181,
+  "source_before_after_equal": true,
+  "reported_binary_hashes_agree": true,
+  "binary_sha256": "d472174fa9b5b88c983745db96d1b1394b83de13b18a2c8beddc5ddf9cc03525",
+  "requested_platform": "wsl",
+  "architecture": "x86_64",
+  "effective_uid": 1000,
+  "kernel": "6.18.54.1-microsoft-standard-WSL2",
+  "rustc_commit": "58cf8f9c35b355199727627d07ae34a4e2846d67",
+  "cargo_commit": "5f94df4789f005f9a352888e8355ffc645b7ed0e",
+  "rust_tests": {
+    "failed": 0,
+    "filtered_out": 0,
+    "ignored": 5,
+    "measured": 0,
+    "passed": 81
+  },
+  "key_operations": {
+    "errors": 0,
+    "failures": 0,
+    "skipped": 0,
+    "status": "passed",
+    "tests": 11
+  },
+  "raw_test_identities_verified": true,
+  "commands_passed": 17,
+  "compiled_package_versions_match_lock": true,
+  "local_dependency_patches_compiled": 5,
+  "python_version": [
+    3,
+    12,
+    3
+  ],
+  "pinned_python_packages": {
+    "cryptography": "50.0.2",
+    "pyOpenSSL": "26.4.0",
+    "cffi": "2.1.1",
+    "pycparser": "3.12",
+    "typing_extensions": "4.16.0"
+  },
+  "gates": {
+    "memory_checked": false,
+    "memory_cleanup_approved": false,
+    "production_memory_passed": false,
+    "constant_time_approved": false,
+    "whole_goal_2_approved": false,
+    "whole_goal_5_approved": false,
+    "deployment_approved": false
+  },
+  "scope": "Linux key-file policy, public-only CLI output, local restored-file agreement, and loopback TLS key rotation",
+  "machine_identity_independently_attested": false,
+  "binary_and_tool_bytes_included": false,
+  "new_full_ci_or_memory_or_fuzz_or_load_tests": false,
+  "privacy_redaction": {
+    "applied": true,
+    "historical_execution_repeated": false,
+    "integrity_values_describe_redacted_artifacts": true
+  },
+  "artifact_language_normalization": {
+    "applied": true,
+    "historical_execution_repeated": false,
+    "integrity_values_describe_translated_artifacts": true
+  }
+}

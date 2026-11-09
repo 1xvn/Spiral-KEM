@@ -1,0 +1,8 @@
+test_duplicate_and_failed_rust_statuses_are_rejected (__main__.ReceiptStatusRegression.test_duplicate_and_failed_rust_statuses_are_rejected) ... ok
+test_failed_skipped_duplicate_and_trailing_key_statuses_are_rejected (__main__.ReceiptStatusRegression.test_failed_skipped_duplicate_and_trailing_key_statuses_are_rejected) ... ok
+test_real_receipt_statuses_pass (__main__.ReceiptStatusRegression.test_real_receipt_statuses_pass) ... ok
+
+----------------------------------------------------------------------
+Ran 3 tests in 0.013s
+
+OK

@@ -1,0 +1,45 @@
+{
+  "schema": "spiral-key-operations-two-platform-review/v1",
+  "status": "accepted",
+  "reviewer_sha256": "bdfb76603d13ae034302290d6d24e8805e2ff564d8315b1bbe57890f00bff54b",
+  "reviewed_utc": "2026-11-09T13:38:12.924709+00:00",
+  "source_commit": "0b0db39d36b9a6f243486615ca2624a6b76ce02b",
+  "runtime_base_commit": "486697682beb66db1af05bdc45867d122a25d145",
+  "platform_key_operations_validation_complete": true,
+  "source_files_verified_per_platform": 318,
+  "rust_passed_per_platform": 81,
+  "rust_ignored_per_platform": 5,
+  "key_operations_passed_per_platform": 11,
+  "key_operations_failed_or_skipped": 0,
+  "platforms": {
+    "oci": {
+      "archive": "Spiral-key-ops-oci-aarch64-20261109T130652Z-rv8uq0i0.tar.gz",
+      "archive_sha256": "f09b006a7ee23d37148846445209b4cde1506f35da3367851f5241d5c6977c71",
+      "review": "oci-review.json"
+    },
+    "wsl": {
+      "archive": "Spiral-key-ops-wsl-x86_64-20261109T130652Z-m3oa5fpk.tar.gz",
+      "archive_sha256": "5f7f408c0847ecf1bfca9d30ffd52b040aef919249d2257cb4ff076659e7b42b",
+      "review": "wsl-review.json"
+    }
+  },
+  "gates": {
+    "memory_checked": false,
+    "memory_cleanup_approved": false,
+    "production_memory_passed": false,
+    "constant_time_approved": false,
+    "whole_goal_2_approved": false,
+    "whole_goal_5_approved": false,
+    "deployment_approved": false
+  },
+  "privacy_redaction": {
+    "applied": true,
+    "historical_execution_repeated": false,
+    "integrity_values_describe_redacted_artifacts": true
+  },
+  "artifact_language_normalization": {
+    "applied": true,
+    "historical_execution_repeated": false,
+    "integrity_values_describe_translated_artifacts": true
+  }
+}

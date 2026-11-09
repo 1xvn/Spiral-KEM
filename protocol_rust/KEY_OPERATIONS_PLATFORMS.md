@@ -96,3 +96,14 @@ binary hash, and original logs together before deciding whether both platforms a
 runs or check-only results to successes or count local runs as OCI/WSL runs.
 
 See [operational key management phase1](KEY_OPERATIONS.md) for current file policies and operational scope.
+
+## 2026-11-09 submission review completed
+
+With pinned `0b0db39` sources, each OCI ARM/WSL submission passed Rust81 tests (plus 5 ignored), and key management/loopback
+actual TLS rotation11 tests. We compared hashes of 40 files, 318 sources, and 181 nested files in both archives
+against the pinned manifest and Git, and confirmed test names, original logs, tool versions, and exit0 for 17 commands.
+Each archive contains 41 public files including the SHA256 manifest, and excludes BUILD, test keys, and venvs.
+
+See [original submissions and detailed scope](evidence/key_operations_platforms_20261109/README.md).
+This review read and compared submitted results without rerunning tests. Full functional CI,
+memory, constant-time, long-term load, actual operational recovery, and deployment approval are outside this completion scope.
