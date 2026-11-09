@@ -1,0 +1,9 @@
+hmac-on
+hmac-off
+hkdf-on
+hkdf-off
+signing-on
+signing-off
+scratch-live-owners
+{"status": "passed", "tests": 23, "output": "/workspace/key-backup-functional-ci/scratch-cleanup"}
+

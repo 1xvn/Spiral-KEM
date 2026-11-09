@@ -1,0 +1,319 @@
+{
+  "binary_sha256_after": "7bd1f1cf698a8896afd74e7f433cdb2b4ac4552ec580738a352a9e7f343d8542",
+  "binary_sha256_before": "7bd1f1cf698a8896afd74e7f433cdb2b4ac4552ec580738a352a9e7f343d8542",
+  "check_only": false,
+  "commands": [
+    {
+      "command": [
+        "/workspace/rust48-tools/rust/bin/rustc",
+        "-vV"
+      ],
+      "elapsed_seconds": 0.017,
+      "name": "rustc-version",
+      "returncode": 0,
+      "status": "passed",
+      "stderr": "logs/rustc-version.stderr.log",
+      "stdout": "logs/rustc-version.stdout.log",
+      "timeout_seconds": 120
+    },
+    {
+      "command": [
+        "/workspace/rust48-tools/rust/bin/cargo",
+        "-Vv"
+      ],
+      "elapsed_seconds": 0.017,
+      "name": "cargo-version",
+      "returncode": 0,
+      "status": "passed",
+      "stderr": "logs/cargo-version.stderr.log",
+      "stdout": "logs/cargo-version.stdout.log",
+      "timeout_seconds": 120
+    },
+    {
+      "command": [
+        "/usr/bin/cc",
+        "--version"
+      ],
+      "elapsed_seconds": 0.005,
+      "name": "cc-version",
+      "returncode": 0,
+      "status": "passed",
+      "stderr": "logs/cc-version.stderr.log",
+      "stdout": "logs/cc-version.stdout.log",
+      "timeout_seconds": 120
+    },
+    {
+      "command": [
+        "/usr/bin/ar",
+        "--version"
+      ],
+      "elapsed_seconds": 0.005,
+      "name": "ar-version",
+      "returncode": 0,
+      "status": "passed",
+      "stderr": "logs/ar-version.stderr.log",
+      "stdout": "logs/ar-version.stdout.log",
+      "timeout_seconds": 120
+    },
+    {
+      "command": [
+        "/usr/bin/openssl",
+        "version"
+      ],
+      "elapsed_seconds": 0.008,
+      "name": "openssl-version",
+      "returncode": 0,
+      "status": "passed",
+      "stderr": "logs/openssl-version.stderr.log",
+      "stdout": "logs/openssl-version.stdout.log",
+      "timeout_seconds": 120
+    },
+    {
+      "command": [
+        "/workspace/spiral-protocol-v01/venv/bin/python",
+        "-I",
+        "-c",
+        "import json,sys,ssl;print(json.dumps(dict(version=list(sys.version_info[:3]),executable=sys.executable,prefix=sys.prefix,base_prefix=sys.base_prefix,openssl=ssl.OPENSSL_VERSION)))"
+      ],
+      "elapsed_seconds": 0.065,
+      "name": "python-version",
+      "returncode": 0,
+      "status": "passed",
+      "stderr": "logs/python-version.stderr.log",
+      "stdout": "logs/python-version.stdout.log",
+      "timeout_seconds": 120
+    },
+    {
+      "command": [
+        "/workspace/spiral-protocol-v01/venv/bin/python",
+        "-I",
+        "-c",
+        "import importlib.metadata,json;print(json.dumps({name:importlib.metadata.version(name) for name in ['cryptography', 'pyOpenSSL', 'cffi', 'pycparser', 'typing_extensions']}))"
+      ],
+      "elapsed_seconds": 0.115,
+      "name": "python-pins",
+      "returncode": 0,
+      "status": "passed",
+      "stderr": "logs/python-pins.stderr.log",
+      "stdout": "logs/python-pins.stdout.log",
+      "timeout_seconds": 120
+    },
+    {
+      "command": [
+        "/workspace/spiral-protocol-v01/venv/bin/python",
+        "-I",
+        "-m",
+        "pip",
+        "--isolated",
+        "check"
+      ],
+      "elapsed_seconds": 0.315,
+      "name": "python-pip-check",
+      "returncode": 0,
+      "status": "passed",
+      "stderr": "logs/python-pip-check.stderr.log",
+      "stdout": "logs/python-pip-check.stdout.log",
+      "timeout_seconds": 120
+    },
+    {
+      "command": [
+        "/workspace/spiral-protocol-v01/venv/bin/python",
+        "-I",
+        "-m",
+        "pip",
+        "--isolated",
+        "freeze",
+        "--all"
+      ],
+      "elapsed_seconds": 0.315,
+      "name": "python-freeze",
+      "returncode": 0,
+      "status": "passed",
+      "stderr": "logs/python-freeze.stderr.log",
+      "stdout": "logs/python-freeze.stdout.log",
+      "timeout_seconds": 120
+    },
+    {
+      "command": [
+        "/workspace/rust48-tools/rust/bin/cargo",
+        "test",
+        "--lib",
+        "--locked",
+        "-j",
+        "2",
+        "--target-dir",
+        "/tmp/spiral-key-recovery-private-4ppote6z/BUILD",
+        "--manifest-path",
+        "/workspace/key-recovery-final-validation/Spiral-key-recovery-d4c46bc/source/protocol_rust/Cargo.toml",
+        "--offline"
+      ],
+      "elapsed_seconds": 50.647,
+      "name": "rust-library-tests",
+      "returncode": 0,
+      "status": "passed",
+      "stderr": "logs/rust-library-tests.stderr.log",
+      "stdout": "logs/rust-library-tests.stdout.log",
+      "timeout_seconds": 1800
+    },
+    {
+      "command": [
+        "/workspace/rust48-tools/rust/bin/cargo",
+        "build",
+        "--release",
+        "--locked",
+        "-j",
+        "2",
+        "--target-dir",
+        "/tmp/spiral-key-recovery-private-4ppote6z/BUILD",
+        "--manifest-path",
+        "/workspace/key-recovery-final-validation/Spiral-key-recovery-d4c46bc/source/protocol_rust/Cargo.toml",
+        "--offline"
+      ],
+      "elapsed_seconds": 79.392,
+      "name": "release-build",
+      "returncode": 0,
+      "status": "passed",
+      "stderr": "logs/release-build.stderr.log",
+      "stdout": "logs/release-build.stdout.log",
+      "timeout_seconds": 1800
+    },
+    {
+      "command": [
+        "/workspace/spiral-protocol-v01/venv/bin/python",
+        "-I",
+        "-B",
+        "/workspace/key-recovery-final-validation/Spiral-key-recovery-d4c46bc/source/protocol_rust/key_ops_tests.py",
+        "--binary",
+        "/tmp/spiral-key-recovery-private-4ppote6z/BUILD/release/spiral-lab",
+        "--json",
+        "/workspace/key-recovery-final-validation/Spiral-key-recovery-local-x86_64-20261109T212757Z-1m3ydfz5/key_operations.json"
+      ],
+      "elapsed_seconds": 0.872,
+      "name": "key-operations",
+      "returncode": 0,
+      "status": "passed",
+      "stderr": "logs/key-operations.stderr.log",
+      "stdout": "logs/key-operations.stdout.log",
+      "timeout_seconds": 600
+    },
+    {
+      "command": [
+        "/workspace/spiral-protocol-v01/venv/bin/python",
+        "-I",
+        "-B",
+        "/workspace/key-recovery-final-validation/Spiral-key-recovery-d4c46bc/source/protocol_rust/key_recovery_tests.py",
+        "--binary",
+        "/tmp/spiral-key-recovery-private-4ppote6z/BUILD/release/spiral-lab",
+        "--json",
+        "/workspace/key-recovery-final-validation/Spiral-key-recovery-local-x86_64-20261109T212757Z-1m3ydfz5/key_recovery.json"
+      ],
+      "elapsed_seconds": 4.588,
+      "name": "key-recovery",
+      "returncode": 0,
+      "status": "passed",
+      "stderr": "logs/key-recovery.stderr.log",
+      "stdout": "logs/key-recovery.stdout.log",
+      "timeout_seconds": 600
+    }
+  ],
+  "constant_time_approved": false,
+  "deployment_approved": false,
+  "finished_utc": "2026-11-09T21:30:14.584659+00:00",
+  "host": {
+    "architecture": "x86_64",
+    "effective_uid": 1000,
+    "evidence_label": "local",
+    "microsoft_kernel_evidence": false,
+    "oci_provider_attested": false,
+    "proc_version": "Linux version 6.18.57 (root@84c140011298) (gcc (Ubuntu 11.4.0-1ubuntu1~22.04.3) 11.4.0, GNU ld (GNU Binutils for Ubuntu) 2.38) #1 SMP Tue Oct 20 21:56:04 UTC 2026",
+    "requested_platform": "local",
+    "uname": {
+      "machine": "x86_64",
+      "node": "2ca7bb04bb19",
+      "processor": "",
+      "release": "6.18.57",
+      "system": "Linux",
+      "version": "#1 SMP Tue Oct 20 21:56:04 UTC 2026"
+    }
+  },
+  "key_operations": {
+    "errors": 0,
+    "failures": 0,
+    "skipped": 0,
+    "status": "passed",
+    "tests": 11
+  },
+  "key_recovery": {
+    "errors": 0,
+    "failures": 0,
+    "skipped": 0,
+    "status": "passed",
+    "tests": 20
+  },
+  "manifest_sha256": "20707a5119e58d55fd8f133120b2a70bdca2ed17b5d787972c9101084d9f8c63",
+  "memory_checked": false,
+  "memory_cleanup_approved": false,
+  "offline": true,
+  "platform_tests_passed": true,
+  "production_memory_passed": false,
+  "profile": "key-recovery",
+  "python": {
+    "base_prefix": "/opt/codex/runtimes/codex-primary-runtime/dependencies/python",
+    "distributions_log": "logs/python-freeze.stdout.log",
+    "executable": "/workspace/spiral-protocol-v01/venv/bin/python",
+    "installed_pins": {
+      "cffi": "2.1.1",
+      "cryptography": "50.0.2",
+      "pyOpenSSL": "26.4.0",
+      "pycparser": "3.12",
+      "typing_extensions": "4.16.0"
+    },
+    "openssl": "OpenSSL 3.5.8 25 Aug 2026",
+    "pinned_requirements": {
+      "cffi": "2.1.1",
+      "cryptography": "50.0.2",
+      "pyOpenSSL": "26.4.0",
+      "pycparser": "3.12",
+      "typing_extensions": "4.16.0"
+    },
+    "pip_check": "passed",
+    "prefix": "/workspace/spiral-protocol-v01/venv",
+    "requirements_sha256": "5c20730447b13a925e6f8f33948441ccddf719a9067cd0ce9837f6d74445078b",
+    "version": [
+      3,
+      12,
+      14
+    ]
+  },
+  "requested_platform": "local",
+  "runtime_base_commit": "d2f19b9e733359f14331d7064a41697c851a1d80",
+  "rust_library_tests": {
+    "failed": 0,
+    "filtered_out": 0,
+    "ignored": 5,
+    "measured": 0,
+    "passed": 94
+  },
+  "schema": "spiral-key-recovery-platform/v1",
+  "scope": "encrypted auth-seed and TLS-PEM backup/restore and cold rotation recovery lab",
+  "source_commit": "d4c46bc81012e095ab8c78ac6e362ce2b6a63798",
+  "source_tree_sha256_after": "3c1e2ba981f7e01ad52eec1c2223bd6565afafb7696e4b3e9b42bc256f611f32",
+  "source_tree_sha256_before": "3c1e2ba981f7e01ad52eec1c2223bd6565afafb7696e4b3e9b42bc256f611f32",
+  "source_unchanged": true,
+  "started_utc": "2026-11-09T21:27:57.771495+00:00",
+  "status": "passed",
+  "toolchain": {
+    "cargo": "cargo 1.99.1 (5f94df478 2026-08-27)\nrelease: 1.99.1\ncommit-hash: 5f94df4789f005f9a352888e8355ffc645b7ed0e\ncommit-date: 2026-08-27\nhost: x86_64-unknown-linux-gnu\nlibgit2: 1.9.6 (sys:0.21.0 vendored)\nlibcurl: 8.21.0-DEV (sys:0.4.90+curl-8.21.0 vendored ssl:OpenSSL/3.6.3)\nssl: OpenSSL 3.6.3 9 Jun 2026\nos: Debian 13.0.0 (trixie) [64-bit]",
+    "cargo_sha256": "a670e02cfa39ac2e53f77a2d911ca1fc9e2c479b0603ec956625be1daf24e3af",
+    "host": "x86_64-unknown-linux-gnu",
+    "rustc": "rustc 1.99.1 (58cf8f9c3 2026-10-13)\nbinary: rustc\ncommit-hash: 58cf8f9c35b355199727627d07ae34a4e2846d67\ncommit-date: 2026-10-13\nhost: x86_64-unknown-linux-gnu\nrelease: 1.99.1\nLLVM version: 23.1.1",
+    "rustc_sha256": "b53b780f77f952062f8ca8a3b70aef2390b1e45ad91939be94afdc9543026853"
+  },
+  "whole_goal_2_approved": false,
+  "whole_goal_5_approved": false,
+  "artifact_language_normalization": {
+    "applied": true,
+    "historical_execution_repeated": false,
+    "integrity_values_describe_translated_artifacts": true
+  }
+}

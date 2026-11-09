@@ -1,0 +1,23 @@
+{
+  "schema": "spiral-key-recovery-delivery-review/v1",
+  "source_commit": "d4c46bc81012e095ab8c78ac6e362ce2b6a63798",
+  "archive_sha256": "fafa96381b1cca98b9ae9e87e04880f84d19440bfbc93df3e5c7c149878dbc10",
+  "deterministic_archive_rebuild": true,
+  "checks": [
+    {
+      "case": "manifest change rejected before collector execution",
+      "passed": true
+    },
+    {
+      "case": "helper change rejected before collector execution",
+      "passed": true
+    }
+  ],
+  "source_files": 324,
+  "status": "passed",
+  "artifact_language_normalization": {
+    "applied": true,
+    "historical_execution_repeated": false,
+    "integrity_values_describe_translated_artifacts": true
+  }
+}

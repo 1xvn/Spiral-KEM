@@ -1,0 +1,41 @@
+{
+  "scope": "Actual production source plus new scratch tests; two upstream-only dev test modules disabled in this copy.",
+  "source_files": {
+    "batch/transcript.rs": "83ebd944a9f12596efdccb82ff257ee33378948e4c4ce87078b7e2fe3a8546c6",
+    "batch.rs": "84e422c5b145950c6c33e402cc33deab7e0ab987ff814e60a4970d80476efed2",
+    "constants.rs": "95ae51f859483bf58654338e13b9c9bff90cce51ca0375657ff167be5935b19e",
+    "context.rs": "e7ecc6a13a97d6f537e52ffdb81592db8b9b3b104d43b9199bca36879286f28d",
+    "errors.rs": "ae6bd78bdc52484f3e985f3f01cd469d25255de1df22f2591c7c46a33d12b4a2",
+    "hazmat.rs": "ced8d336e4b14491e26037ee1b15d3bfe1a21483974ea8d26e13d8d5ae8d3cd3",
+    "lib.rs": "491825472bc24d6df8b883035bbd02962341e3fedfd19f265dfc87961773edc5",
+    "secret_scratch.rs": "ca9a1e8d4a212b2cf3af1bcdc29844a1a60dbf6d0d108c1797a5cdb9c24c9d17",
+    "signature.rs": "f0e6f5a964a092727a84adef682d047e4ae60812c27e2f2a1a5c2ac06f082739",
+    "signing.rs": "a0410d78ba9475c2955f5340721c1255eabda66ddbdf4aa9587a521bbb5c9c44",
+    "verifying/stream.rs": "24d49832fb2c32757c927eec12e016efed817f3652d33116db0ebe592380ee96",
+    "verifying.rs": "f3cd43f2968f09f513591c9e2ebc8939e2d578ff5492c6b9e4f72e89366667e5"
+  },
+  "prepared_files": {
+    "batch/transcript.rs": "83ebd944a9f12596efdccb82ff257ee33378948e4c4ce87078b7e2fe3a8546c6",
+    "batch.rs": "84e422c5b145950c6c33e402cc33deab7e0ab987ff814e60a4970d80476efed2",
+    "constants.rs": "95ae51f859483bf58654338e13b9c9bff90cce51ca0375657ff167be5935b19e",
+    "context.rs": "d9eb7ab1b69b5ca18dda97ed16f2ea24191acc82b9d40f2aad3651d2cd765dab",
+    "errors.rs": "ae6bd78bdc52484f3e985f3f01cd469d25255de1df22f2591c7c46a33d12b4a2",
+    "hazmat.rs": "3f60f3b77924809b7af31e1172fef7a0135c2be3092c46971e8701fc2daba8ba",
+    "lib.rs": "491825472bc24d6df8b883035bbd02962341e3fedfd19f265dfc87961773edc5",
+    "secret_scratch.rs": "ca9a1e8d4a212b2cf3af1bcdc29844a1a60dbf6d0d108c1797a5cdb9c24c9d17",
+    "signature.rs": "f0e6f5a964a092727a84adef682d047e4ae60812c27e2f2a1a5c2ac06f082739",
+    "signing.rs": "a0410d78ba9475c2955f5340721c1255eabda66ddbdf4aa9587a521bbb5c9c44",
+    "verifying/stream.rs": "24d49832fb2c32757c927eec12e016efed817f3652d33116db0ebe592380ee96",
+    "verifying.rs": "f3cd43f2968f09f513591c9e2ebc8939e2d578ff5492c6b9e4f72e89366667e5"
+  },
+  "exact_test_only_replacements": {
+    "hazmat.rs": {
+      "from": "#[cfg(test)]\nmod test {",
+      "to": "#[cfg(any())]\nmod test {"
+    },
+    "context.rs": {
+      "from": "#[cfg(all(test, feature = \"digest\"))]\nmod test {",
+      "to": "#[cfg(any())]\nmod test {"
+    }
+  }
+}

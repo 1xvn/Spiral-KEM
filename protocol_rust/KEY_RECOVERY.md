@@ -113,3 +113,6 @@ key management11, recovery20, and actual TLS35. Subsequently, expanded recovery 
 20 tests compared PKCS8/PKCS1/SEC1 fingerprints and original-byte recovery for Ed25519/RSA/ECDSA P256/P384.
 These20 count individual methods, with additional algorithm/tampering/boundary subtests.
 Results from both target environments are still pending.
+
+We provide [local originals and pinned bundle validation](evidence/key_recovery_20261110/README.md),
+and [OCI/WSL downloads and commands](../downloads/key-recovery-d4c46bc/README.md).

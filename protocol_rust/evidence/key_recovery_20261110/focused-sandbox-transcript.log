@@ -1,0 +1,106 @@
+Command: CARGO_HOME=/workspace/rust48-tools/cargo-cache RUSTC=/workspace/rust48-tools/rust/bin/rustc RUSTDOC=/workspace/rust48-tools/rust/bin/rustdoc /workspace/rust48-tools/rust/bin/cargo test --offline --manifest-path protocol_rust/Cargo.toml --target-dir /workspace/key-backup-target --lib key_backup::tests
+Working directory: /workspace/spiral-key-backup-20261110
+Execution: default sandbox; exit 101. Initial build completed successfully.
+Observed ownership: uid=1000(agent), / UID 65534 mode 0755, /tmp UID 65534 mode 1777.
+Transcript retained from original tool result (dependency compilation lines omitted):
+
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 25.25s
+     Running unittests src/lib.rs (/workspace/key-backup-target/debug/deps/spiral_protocol-3fdb47f90d236e84)
+
+running 13 tests
+test key_backup::tests::auth_round_trip_and_public_digest ... FAILED
+test key_backup::tests::auth_source_and_recovery_sizes_and_self_encryption_are_rejected ... FAILED
+test key_backup::tests::every_envelope_byte_is_authenticated ... FAILED
+test key_backup::tests::recovery_generation_is_private_random_and_no_replace ... FAILED
+test key_backup::tests::existing_destinations_are_not_replaced ... FAILED
+test key_backup::tests::authenticated_plaintext_identity_must_match_header_and_external ... ok
+test key_backup::tests::fresh_nonces_for_repeated_backups ... FAILED
+test key_backup::tests::tls_round_trip_preserves_original_pem_and_spki_digest ... FAILED
+test key_backup::tests::tls_size_bounds_apply_to_source_and_restored_payload ... FAILED
+test key_backup::tests::truncated_and_trailing_envelopes_are_rejected ... FAILED
+test key_backup::tests::unknown_format_kind_and_invalid_lengths_are_rejected ... FAILED
+test key_backup::tests::wrong_key_and_expected_identity_leave_no_destination ... FAILED
+test key_backup::tests::tls_parser_policy_preserves_single_private_key ... FAILED
+
+failures:
+
+---- key_backup::tests::auth_round_trip_and_public_digest stdout ----
+
+thread 'key_backup::tests::auth_round_trip_and_public_digest' (7303) panicked at src/key_backup.rs:272:84:
+called `Result::unwrap()` on an `Err` value: Input
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+---- key_backup::tests::auth_source_and_recovery_sizes_and_self_encryption_are_rejected stdout ----
+
+thread 'key_backup::tests::auth_source_and_recovery_sizes_and_self_encryption_are_rejected' (7304) panicked at src/key_backup.rs:272:84:
+called `Result::unwrap()` on an `Err` value: Input
+
+---- key_backup::tests::every_envelope_byte_is_authenticated stdout ----
+
+thread 'key_backup::tests::every_envelope_byte_is_authenticated' (7306) panicked at src/key_backup.rs:272:84:
+called `Result::unwrap()` on an `Err` value: Input
+
+---- key_backup::tests::recovery_generation_is_private_random_and_no_replace stdout ----
+
+thread 'key_backup::tests::recovery_generation_is_private_random_and_no_replace' (7309) panicked at src/key_backup.rs:328:39:
+called `Result::unwrap()` on an `Err` value: Input
+
+---- key_backup::tests::existing_destinations_are_not_replaced stdout ----
+
+thread 'key_backup::tests::existing_destinations_are_not_replaced' (7307) panicked at src/key_backup.rs:272:84:
+called `Result::unwrap()` on an `Err` value: Input
+
+---- key_backup::tests::fresh_nonces_for_repeated_backups stdout ----
+
+thread 'key_backup::tests::fresh_nonces_for_repeated_backups' (7308) panicked at src/key_backup.rs:272:84:
+called `Result::unwrap()` on an `Err` value: Input
+
+---- key_backup::tests::tls_round_trip_preserves_original_pem_and_spki_digest stdout ----
+
+thread 'key_backup::tests::tls_round_trip_preserves_original_pem_and_spki_digest' (7311) panicked at src/key_backup.rs:383:65:
+called `Result::unwrap()` on an `Err` value: Input
+
+---- key_backup::tests::tls_size_bounds_apply_to_source_and_restored_payload stdout ----
+
+thread 'key_backup::tests::tls_size_bounds_apply_to_source_and_restored_payload' (7312) panicked at src/key_backup.rs:513:69:
+called `Result::unwrap()` on an `Err` value: Input
+
+---- key_backup::tests::truncated_and_trailing_envelopes_are_rejected stdout ----
+
+thread 'key_backup::tests::truncated_and_trailing_envelopes_are_rejected' (7313) panicked at src/key_backup.rs:272:84:
+called `Result::unwrap()` on an `Err` value: Input
+
+---- key_backup::tests::unknown_format_kind_and_invalid_lengths_are_rejected stdout ----
+
+thread 'key_backup::tests::unknown_format_kind_and_invalid_lengths_are_rejected' (7314) panicked at src/key_backup.rs:272:84:
+called `Result::unwrap()` on an `Err` value: Input
+
+---- key_backup::tests::wrong_key_and_expected_identity_leave_no_destination stdout ----
+
+thread 'key_backup::tests::wrong_key_and_expected_identity_leave_no_destination' (7315) panicked at src/key_backup.rs:272:84:
+called `Result::unwrap()` on an `Err` value: Input
+
+---- key_backup::tests::tls_parser_policy_preserves_single_private_key stdout ----
+
+thread 'key_backup::tests::tls_parser_policy_preserves_single_private_key' (7310) panicked at src/key_backup.rs:555:65:
+called `Result::unwrap()` on an `Err` value: Input
+
+
+failures:
+    key_backup::tests::auth_round_trip_and_public_digest
+    key_backup::tests::auth_source_and_recovery_sizes_and_self_encryption_are_rejected
+    key_backup::tests::every_envelope_byte_is_authenticated
+    key_backup::tests::existing_destinations_are_not_replaced
+    key_backup::tests::fresh_nonces_for_repeated_backups
+    key_backup::tests::recovery_generation_is_private_random_and_no_replace
+    key_backup::tests::tls_parser_policy_preserves_single_private_key
+    key_backup::tests::tls_round_trip_preserves_original_pem_and_spki_digest
+    key_backup::tests::tls_size_bounds_apply_to_source_and_restored_payload
+    key_backup::tests::truncated_and_trailing_envelopes_are_rejected
+    key_backup::tests::unknown_format_kind_and_invalid_lengths_are_rejected
+    key_backup::tests::wrong_key_and_expected_identity_leave_no_destination
+
+test result: FAILED. 1 passed; 12 failed; 0 ignored; 0 measured; 86 filtered out; finished in 0.01s
+
+error: test failed, to rerun pass `--lib`
+

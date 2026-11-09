@@ -1,0 +1,18 @@
+test_archive_failure_rewrites_report_and_removes_partial_success (protocol_rust.validation.test_key_recovery_platform.RecoveryCollectorContracts.test_archive_failure_rewrites_report_and_removes_partial_success) ... ok
+test_changed_before_after_and_extra_sources_rejected (protocol_rust.validation.test_key_recovery_platform.RecoveryCollectorContracts.test_changed_before_after_and_extra_sources_rejected) ... ok
+test_check_only_never_grants_platform_or_other_approvals (protocol_rust.validation.test_key_recovery_platform.RecoveryCollectorContracts.test_check_only_never_grants_platform_or_other_approvals) ... ok
+test_duplicate_manifest_fields_rejected (protocol_rust.validation.test_key_recovery_platform.RecoveryCollectorContracts.test_duplicate_manifest_fields_rejected) ... ok
+test_exact_report_and_manifest_covered_sources_accepted (protocol_rust.validation.test_key_recovery_platform.RecoveryCollectorContracts.test_exact_report_and_manifest_covered_sources_accepted) ... ok
+test_helper_symlink_and_hardlink_are_rejected (protocol_rust.validation.test_key_recovery_platform.RecoveryCollectorContracts.test_helper_symlink_and_hardlink_are_rejected) ... ok
+test_launcher_verifies_helper_before_collector_execution (protocol_rust.validation.test_key_recovery_platform.RecoveryCollectorContracts.test_launcher_verifies_helper_before_collector_execution) ... ok
+test_manifest_requires_recovery_profile (protocol_rust.validation.test_key_recovery_platform.RecoveryCollectorContracts.test_manifest_requires_recovery_profile) ... ok
+test_parser_requires_platform_and_integrity_pin (protocol_rust.validation.test_key_recovery_platform.RecoveryCollectorContracts.test_parser_requires_platform_and_integrity_pin) ... ok
+test_support_loaded_only_from_authenticated_bytes (protocol_rust.validation.test_key_recovery_platform.RecoveryCollectorContracts.test_support_loaded_only_from_authenticated_bytes) ... ok
+test_tampered_helper_is_not_executed (protocol_rust.validation.test_key_recovery_platform.RecoveryCollectorContracts.test_tampered_helper_is_not_executed) ... ok
+test_wrong_and_filtered_rust_counts_rejected (protocol_rust.validation.test_key_recovery_platform.RecoveryCollectorContracts.test_wrong_and_filtered_rust_counts_rejected) ... ok
+test_wrong_manifest_pin_is_archived_without_executing_helper (protocol_rust.validation.test_key_recovery_platform.RecoveryCollectorContracts.test_wrong_manifest_pin_is_archived_without_executing_helper) ... ok
+
+----------------------------------------------------------------------
+Ran 13 tests in 0.229s
+
+OK
