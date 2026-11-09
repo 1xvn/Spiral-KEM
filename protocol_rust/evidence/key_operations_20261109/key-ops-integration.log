@@ -1,0 +1,17 @@
+test_auth_commands_reject_extra_or_duplicate_options (__main__.KeyOperations.test_auth_commands_reject_extra_or_duplicate_options) ... ok
+test_auth_commands_reject_unsafe_parent_and_ancestor_paths (__main__.KeyOperations.test_auth_commands_reject_unsafe_parent_and_ancestor_paths) ... ok
+test_concurrent_keygen_has_one_winner_without_replacing_its_key (__main__.KeyOperations.test_concurrent_keygen_has_one_winner_without_replacing_its_key) ... ok
+test_keygen_and_public_round_trip_accept_read_only_private_key (__main__.KeyOperations.test_keygen_and_public_round_trip_accept_read_only_private_key) ... ok
+test_keygen_never_replaces_existing_files_or_special_entries (__main__.KeyOperations.test_keygen_never_replaces_existing_files_or_special_entries) ... ok
+test_keygen_sets_exact_mode_independently_of_umask (__main__.KeyOperations.test_keygen_sets_exact_mode_independently_of_umask) ... ok
+test_public_rejects_bad_modes_and_preserves_permissions (__main__.KeyOperations.test_public_rejects_bad_modes_and_preserves_permissions) ... ok
+test_public_rejects_short_and_oversized_seed_files (__main__.KeyOperations.test_public_rejects_short_and_oversized_seed_files) ... ok
+test_public_rejects_symlinks_hardlinks_directories_and_fifo_promptly (__main__.KeyOperations.test_public_rejects_symlinks_hardlinks_directories_and_fifo_promptly) ... ok
+test_rotation_rejects_old_pin_and_new_pin_authenticates_echo_and_close (__main__.KeyOperations.test_rotation_rejects_old_pin_and_new_pin_authenticates_echo_and_close) ... ok
+test_server_rejects_both_secret_file_types_before_listening_or_kem_jobs (__main__.KeyOperations.test_server_rejects_both_secret_file_types_before_listening_or_kem_jobs) ... ok
+
+----------------------------------------------------------------------
+Ran 11 tests in 0.367s
+
+OK
+{"schema": "spiral-rust-key-operations/v1", "status": "passed", "tests": 11, "failures": 0, "errors": 0, "skipped": 0, "failed_tests": [], "error_tests": [], "scope": "Linux key-file policy, public-only CLI output, local restored-file agreement, and loopback TLS key rotation"}

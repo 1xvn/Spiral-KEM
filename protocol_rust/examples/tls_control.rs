@@ -25,9 +25,7 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
         let certs =
             rustls_pemfile::certs(&mut std::io::BufReader::new(std::fs::File::open(&a[1])?))
                 .collect::<std::result::Result<Vec<_>, _>>()?;
-        let key =
-            rustls_pemfile::private_key(&mut std::io::BufReader::new(std::fs::File::open(&a[2])?))?
-                .ok_or("key")?;
+        let key = spiral_protocol::transport::load_tls_private_key(Path::new(&a[2]))?;
         config = rustls::ServerConfig::builder_with_provider(Arc::new(provider))
             .with_protocol_versions(&[&rustls::version::TLS13])?
             .with_no_client_auth()

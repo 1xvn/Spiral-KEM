@@ -254,6 +254,39 @@ async fn run(a: &Args, pool: &KemPool) -> Result<Value> {
 #[tokio::main(flavor = "multi_thread", worker_threads = 2)]
 async fn main() -> Result<()> {
     let a = Args::read()?;
+    // File-only administration never initializes KEM workers or opens a listener.
+    if matches!(a.mode.as_str(), "auth-keygen" | "auth-public") {
+        let result = (|| {
+            if a.values.len() != 1 {
+                return Err(Error::Input);
+            }
+            let path = Path::new(a.get("--auth")?);
+            let public = if a.mode == "auth-keygen" {
+                ServerIdentity::generate(path)?
+            } else {
+                let identity = ServerIdentity::load(path)?;
+                let public = identity.public_key();
+                identity.close()?;
+                public
+            };
+            use sha2::{Digest, Sha256};
+            Ok::<_, Error>(json!({
+                "status": if a.mode == "auth-keygen" { "created" } else { "loaded" },
+                "public_key_hex": hex::encode(public),
+                "public_key_sha256": hex::encode(Sha256::digest(public)),
+            }))
+        })();
+        match result {
+            Ok(report) => {
+                println!("{report}");
+                return Ok(());
+            }
+            Err(error) => {
+                println!("{}", json!({"status":"failed","operation":a.mode}));
+                return Err(error);
+            }
+        }
+    }
     let pool = KemPool::new(a.number("--workers", KemPool::default_workers())?)?;
     let result = run(&a, &pool).await;
     pool.shutdown().await?;

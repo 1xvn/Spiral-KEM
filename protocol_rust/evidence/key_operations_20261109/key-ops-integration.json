@@ -1,0 +1,11 @@
+{
+  "schema": "spiral-rust-key-operations/v1",
+  "status": "passed",
+  "tests": 11,
+  "failures": 0,
+  "errors": 0,
+  "skipped": 0,
+  "failed_tests": [],
+  "error_tests": [],
+  "scope": "Linux key-file policy, public-only CLI output, local restored-file agreement, and loopback TLS key rotation"
+}

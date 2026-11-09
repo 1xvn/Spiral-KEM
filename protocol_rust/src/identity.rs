@@ -30,9 +30,22 @@ pub struct ServerIdentity {
     public: [u8; 32],
 }
 impl ServerIdentity {
-    /// Load exactly one 32-byte Ed25519 seed through native file I/O.
+    /// Load one 32-byte seed through the protected Linux private-file boundary.
     pub fn load(path: &Path) -> Result<Arc<Self>> {
-        Self::read_seed(std::fs::File::open(path)?)
+        Self::read_seed(crate::keyfiles::open_private(path)?)
+    }
+    /// Generate an OS-random seed in a new private file, never replacing a key.
+    /// Only the public key is returned. File policy and durability errors fail closed.
+    /// A directory-sync error after atomic publication can leave the final file
+    /// present. Inspect it explicitly; never assume an error permits replacement.
+    pub fn generate(path: &Path) -> Result<[u8; 32]> {
+        let mut seed = Secret::<32>::zeros();
+        getrandom::getrandom(seed.bytes_mut()).map_err(|_| Error::Crypto)?;
+        let public = SigningKey::from_bytes(seed.bytes())
+            .verifying_key()
+            .to_bytes();
+        crate::keyfiles::write_new_private(path, seed.bytes())?;
+        Ok(public)
     }
     fn read_seed(mut reader: impl Read) -> Result<Arc<Self>> {
         let mut seed = Secret::<32>::zeros();
