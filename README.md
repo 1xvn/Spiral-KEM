@@ -54,6 +54,11 @@ Neither the design proposal nor the research implementations indicate completed 
 [Automated checks guide](ci/README.md): provides functional checks on pushes and PRs and separate scheduled memory diagnostics.
 Passing functional checks is not treated as approval of overall memory safety, constant-time behavior, or cryptographic security.
 
+The [operational key management platform verification bundle](downloads/key-operations-0b0db39/README.md)
+allows reverification of PR #28's key-file policy, generation, and rotation features on OCI ARM and WSL.
+The new source bundle passed 81 local Rust tests, 11 key management/TLS rotation tests, and 25 collector tests.
+Fresh OCI/WSL run results await submission; overall operational readiness and deployment approvals remain incomplete.
+
 [Coverage-guided fuzzing](fuzzing/README.md): checks Python frames, ClientHello, KEM encoding, and record
 state using Atheris and stores failing inputs and coverage feedback in separate Actions runs.
 
