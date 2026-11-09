@@ -1,219 +1,101 @@
-# Spiral OPT2 Rust–C Communication Implementation v0.3
+# Rust–C authenticated channel
 
-An executable research implementation connecting the Rust/Tokio/rustls communication layer to the existing C KEM.
-The wire format is v0.1, identical to the existing Python `protocol_v01`; tests exercise actual TLS communication with Rust↔Python in both roles.
-v0.2 in the design document does not indicate a wire version change.
+This research implementation connects the C Spiral KEM to a Rust/Tokio/rustls transport. It uses the same protocol v0.1 wire format as the [Python implementation](../protocol_v01/README.md), with actual Rust↔Python and Rust↔Rust TLS tests. The architecture document's v0.2 designation is a design revision, not a wire-version change.
 
-Added opaque signing-key ownership, a simultaneous-shutdown bug fix, negative-test coverage, and secret-branch instrumentation.
-Changes and remaining limitations are in the [v0.3 implementation report](HARDENING_v0.3.md), actual results in the [validation record](VALIDATION.md), and remeasurement commands in the [Ubuntu/WSL guide](RUN_UBUNTU_WSL.md).
+The channel combines TLS 1.3 authentication and exporter binding with a separate Ed25519 server identity, KEM exchange, HKDF, Finished confirmation, directional AEAD records, sequence limits and authenticated closure. It does not establish Spiral KEM's cryptographic security, supply application-level client authentication, or authorize production deployment.
 
-The [2026-11-07 memory follow-up record](MEMORY_FOLLOWUP.md) adds user OCI/WSL results, controls investigating local AES-GCM warnings, and independent reproduction code. Production code and original memory-check verdicts are retained.
+## Build and run
 
-[2026-11-08 secret and memory follow-up validation](SECRET_MEMORY.md) adds std 48-byte ownership and
-shutdown-lifetime controls and 216 observations of actual receive-buffer disposal. It distinguishes
-the completed scope from remaining validation for constant time and secret management.
+The recorded local v0.3 validation used Debian 13 x86-64, glibc 2.41, OpenSSL 3.5.7, Rust 1.99.1 and Python 3.12.14. OCI ARM64 and WSL Ubuntu 24.04 results are documented separately. Windows native builds have not been validated; use WSL for the documented Windows workflow.
 
-[Actual receive-path and temporary secret-state validation](RECEIVE_SECRET.md) adds 78 receive-function controls and
-78 pairs of public/key taint traces, and enables Poly1305 0.8.0 state zeroization.
-Original authentication-related warnings and exit 99 are retained; constant-time and overall memory approval are not granted.
+Source builds require Rust 1.99+, a C11 compiler, OpenSSL development headers and Python venv support. On Ubuntu 24.04 / WSL:
 
-[HMAC, HKDF, and signing-state cleanup improvements](SECRET_STATE.md) apply stable RustCrypto versions and
-SHA/HMAC zeroization features, and additionally validate RFC vectors, 40 independent ring signature pairs, and 70 functional/ASan tests.
-Hash-state cleanup is distinguished from remaining local output and nonce copies.
-
-[OCI/WSL functional regression after dependency updates](evidence/secret_state_platforms_20261108/README.md)
-confirmed passes on the same merge commit in each environment: Python85, diagnostics20, C9, Rust70, documentation6, and actualTLS35.
-This platform functional-validation phase is complete; constant-time and memory approval remain separate.
-
-[ARM secret-flow instrumentation](ARM_SECRET_FLOW.md) covers Linux ARM64 client requests and
-positive controls/receive/key-derivation/transmission/signing collectors. Local regressions and ARM request-module cross-
-fixes the collector's post-compilation Git-dependency error. Subsequently, [actual OCI ARM submissions](evidence/arm_secret_flow_20261108/README.md)
-confirmed 70 default tests and 160 Memcheck collection runs. Preserved 134 receive warnings and the existing
-48-byte memory item; constant-time/overall memory approval remain separate.
-
-The [HMAC/HKDF·signature temporary-copy erasure design](SECRET_COPY_DESIGN.md) compares caller outputs,
-dependency-internal lifetime guards, and separate-provider alternatives. It recommends dependency-internal supplements retaining existing APIs/wire format,
-and documents implementation units, features, cleanup observations, and regression criteria.
-After the design, we applied the [temporary secret copy cleanup implementation](SECRET_COPY_CLEANUP.md).
-We locally confirmed cleanup of specified owning slots, functionality, 23 focused tests, ASan, and optimized erasure instructions.
-Subsequent [OCI ARM/WSL collection of the same patch](evidence/secret_copy_platforms_20261109/README.md)
-confirmed completion of 70 basic tests and 160 Memcheck runs on each platform. Backend, previous copies, registers, and
-constant-time/full memory approval remain separate.
-
-The [Rust frame and ClientHello fuzzing guide](FUZZ_PARSERS.md) uses a separately pinned nightly and
-the disabled-by-default `parser-fuzz` entry points to check actual parser coverage and compare saved inputs
-against the Python reference implementation. OCI ARM64 and WSL2 x86-64 results are collected separately.
-
-The [Rust DATA/CLOSE state fuzzing guide](FUZZ_RECORDS.md) uses the disabled-by-default
-`record-fuzz` entry points to compare sequence numbers, limits, tampering rejection, and post-shutdown state of actual `Tx`/`Rx`
-against an independent model. It uses the same pinned nightly, and OCI/WSL execution results are
-collected separately from the preceding parser checks. The submitted OCI 17,380 runs and WSL 34,543 runs and
-rechecks of 702/702 and 718/718 saved inputs passed.
-
-The [channel and TLS lifecycle check guide](LIFECYCLE.md) separately checks channel-loop tests combining partial writes, cancellation, simultaneous shutdown, and
-timeouts, and the shutdown and resource release of actual authenticated TLS connections.
-It uses the same pinned nightly and an independent Python peer, with separate runs on OCI and WSL.
-For each submitted environment, records of 40 channel cases, 135 detailed conditions, 30 Rust TLS cases, and
-30 independent-peer TLS cases were revalidated and passed.
-
-## Quick start
-
-Local v0.3 validation used Debian 13 x86-64, glibc 2.41, OpenSSL 3.5.7, Rust 1.99.1, and Python 3.12.14.
-Build from source and check on each new target environment. Subsequently collected OCI ARM/WSL Ubuntu 24.04 memory-check results are in the follow-up record above.
-On Windows, use Ubuntu 24.04 under WSL. Native Windows builds have not been validated.
-Source builds require Rust 1.99 or later, a C11 compiler, OpenSSL development packages, and a Python venv.
-
-```sh
-# Required system packages on Ubuntu 24.04 / WSL
+```bash
 sudo apt-get update
 sudo apt-get install build-essential pkg-config libssl-dev python3-venv
-
-# Install Rust: https://rustup.rs
-# Run from the repository root
+# Install the pinned Rust toolchain using https://rustup.rs, then run from the repository root:
 bash protocol_rust/run_local.sh
 ```
 
-The executable bundle ZIP includes the tested Linux x86-64 binary. To skip the source build in the same execution environment:
+The runner installs pinned Python dependencies into its own venv, generates fresh test CA/certificates and a separate Ed25519 authentication key/pin in a private temporary directory, runs loopback-only tests and deletes the temporary material. It does not reuse public-vector keys for live connections or use actual service accounts.
 
-```sh
+A separately packaged Linux x86-64 release can be run with:
+
+```bash
 bash protocol_rust/run_local.sh --prebuilt
 ```
 
-The prebuilt file is `bin/linux-x86_64/spiral-lab`. It was built on Debian 13 x86-64; ELF symbol requirements are at most GLIBC_2.34 and OPENSSL_3.0.0.
-This file cannot be used on ARM. A normal source build is recommended on target Ubuntu/WSL systems; this binary has not completed full OS compatibility validation.
-Build outputs are not committed to the Git repository. Use normal build commands for source checkouts without binaries.
+That option requires `bin/linux-x86_64/spiral-lab` from the package. The recorded Debian 13 binary requires up to GLIBC_2.34 and OPENSSL_3.0.0 symbol versions. It cannot run on ARM. Build outputs are not committed to the source checkout; build from source if the binary is absent. This is not a claim of compatibility with every target OS.
 
-The script installs pinned Python dependencies in a separate venv and runs tests.
-It generates a fresh test CA, server certificate, separate Ed25519 authentication key, and pin in a private temporary directory for each run, then deletes them on exit.
-TLS certificate and authentication-key test vectors are not reused for actual connections. Listening and connecting are restricted to `127.0.0.1`.
-No actual service addresses or accounts are used.
+## Architecture and ownership
 
-## Implemented structure
+| Component | Responsibility |
+| --- | --- |
+| `src/ffi.rs` | Sole direct boundary for four reviewed C API calls; key pointers are not Send/Sync/Copy/Clone |
+| `src/worker.rs` | Fixed workers, at most 32 running/queued jobs and 32 key slots, cancellation, deadlines and leases |
+| `src/identity.rs` | Opaque server signing-key ownership, public-key export, serialized signing/close and shared-reference invalidation |
+| `src/keyfiles.rs` | Linux FD-based private-file policy, parent checks and no-replace creation |
+| `src/secret.rs` | Fixed-size secret buffers with explicit Drop cleanup |
+| `src/buffer.rs` | Up to 18 connection buffers of 16,440 bytes; full-capacity wiping before waiting, reuse and return |
+| `src/wire.rs` | Canonical 40-byte headers; length, role, session and sequence checks before reading payloads |
+| `src/schedule.rs` | SHA-256/HMAC/HKDF labels and transcript-preserving key schedule |
+| `src/handshake.rs` | Name/service/exporter-bound pins, validity/revocation, signatures and both Finished checks |
+| `src/transport.rs` | TLS 1.3, actual exporter, ALPN, SNI, exact DNS SAN and trust-chain validation |
+| `src/records.rs` | Directional keys, one-time sequence reservation, AEAD, authenticated CLOSE and usage limits |
+| `src/channel.rs` | One task per direction, two bounded application queues of 8, partial-I/O state and absolute deadlines |
+| `src/admission.rs` | 64 active connections, 4 per IP, 32 pending, per-IP token bucket and cleanup |
+| `src/main.rs` | Loopback client/server runner and public aggregate output |
+| `interop.py` | Real Python↔Rust/Rust↔Rust TLS, tampering and overload tests |
+| `key_ops_tests.py` | Key-file/CLI/recovery/cold-rotation tests and public provenance reports |
+| `key_recovery_tests.py` | Encrypted-backup recovery and bounded failure drills |
+| `benchmark.py` | Fixed-condition TLS round trips and peak RSS by worker/payload settings |
 
-| File | Role |
-|---|---|
-| `src/ffi.rs` | Sole direct-call boundary for the four reviewed C APIs. Key pointers cannot implement Send/Sync/Copy/Clone |
-| `src/worker.rs` | Fixed workers, 32 running plus queued jobs, 32 stored keys, cancellation/deadline/lease management |
-| `src/identity.rs` | Server signing-key owner exporting only the public key; revocation of shared references and serialization of signing/close |
-| `src/secret.rs` | Fixed-size secret buffers, unexposed key bytes, explicit Drop zeroization |
-| `src/buffer.rs` | At most 18 buffers per connection, 16,440 bytes each; waiting, reuse, and full-capacity zeroization before return |
-| `src/wire.rs` | 40-byte header and canonical frames; length/role/session/sequence checks before reading payload |
-| `src/schedule.rs` | Key schedule preserving existing SHA-256/HMAC/HKDF labels and transcript |
-| `src/handshake.rs` | Name/purpose/exporter/validity/revocation-state pin, signature, and both Finished checks |
-| `src/transport.rs` | TLS 1.3 only, actual exporter, ALPN/SNI/exact DNS SAN/trust-chain checks |
-| `src/records.rs` | Rust AEAD, 1-time sequence reservation per direction, authenticated CLOSE, record/byte limits |
-| `src/channel.rs` | One task per direction, 8 app queue slots each, preservation of partial-I/O progress and absolute deadlines |
-| `src/admission.rs` | 64 active / 4 per IP / 32 pending / per-IP token bucket and cleanup |
-| `src/main.rs` | Loopback-only client/server runner and public aggregate results |
-| `interop.py` | Python↔Rust and Rust↔Rust actual TLS, tampering, and overload tests |
-| `benchmark.py` | TLS round trips and peak RSS by worker/payload under fixed conditions |
+Only a handshake-verified `Established` value can start a data session. External callers cannot create sessions by combining arbitrary `SessionKeys` and `Transport` values. Active server session IDs are tracked for uniqueness and released on closure.
 
-Only a handshake-verified `Established` can open a data session with `start()`.
-No constructor lets external apps open sessions by combining arbitrary SessionKeys and Transport.
-Server session IDs are retained to prevent duplication among active connections and released at shutdown.
-Client user-identity authentication is a separate application procedure.
+FFI runs in the same process and does not isolate faults in C.
 
-C secret keys are decapsulated and freed on the worker that created them. Pointers are not sent to network tasks.
-A worker is not occupied while awaiting a network response after keygen. Dropping a lease requests cleanup through a shared cancellation flag.
-The cleanup flag is delivered even when the queue is full. Running C functions are not forcibly interrupted; buffers are cleaned after the job finishes.
+KEM keys remain on their creating C worker for decapsulation and destruction; network tasks never receive key pointers. Workers are not held while waiting for network responses. Dropping a lease sets a shared cleanup flag, including when the queue is full. An executing C function is allowed to finish safely before cleanup rather than being forcibly interrupted.
 
-There are no direct C KEM calls in the data path. Each direction owns one sequence and key, without re-encryption or sequence rollback after AEAD.
-After writing fully to the socket, the code flushes and handles the next frame. Notifications received while waiting do not lose partial-header, payload, or transmission progress.
-Once record I/O starts, activity in the opposite direction does not keep extending its deadline.
+TLS KeyUpdate does not reset the Spiral record counters or usage limits.
 
-App queues have 8 slots per direction; the normal buffer pool is 18×16,440=295,920 bytes.
-Received CLOSE uses a separate buffer of at most 57 bytes, and transmitted CLOSE uses a fixed 57-byte array, reducing the effect of normal-buffer saturation.
-This figure is not a process memory bound covering TLS, kernel, provider, threads, or objects.
-If the app retains received `Plaintext`, its buffer does not return to the pool. Drop it after use.
-The application is responsible for managing lifetimes of any additional original-text, String, or Vec copies it creates.
+The data path makes no direct C KEM calls. Each direction owns its sequence and key; AEAD is not retried with a rolled-back sequence. Writes preserve progress across partial I/O and notifications, flush before the next frame and use deadlines that opposite-direction activity cannot extend indefinitely.
 
-`Sender::send(&[u8])` copies once after obtaining a queue slot. Receiving transfers buffer ownership and a view to the app.
-Queued sends may already be transmitted even if the caller's waiting future is canceled. Apps should not automatically resend the same request after a lost response; use separate request IDs and duplicate-handling rules when needed.
-No end-to-end zero-copy claim is made. The default prioritizes latency with a flush per frame and yields to the executor every four records.
-Keys and plaintext are not logged. Output consists of local test aggregates such as session IDs, transcript/binding hashes, latency, and job counts.
+The normal buffer pool is `18 × 16,440 = 295,920` bytes per connection. Receive CLOSE uses a separate buffer of at most 57 bytes; transmit CLOSE uses a fixed 57-byte array. This is not a process-memory upper bound: TLS, kernel/provider state, threads and other objects are additional. A received `Plaintext` buffer returns to the pool only when dropped. Application-created copies, Strings and Vecs remain the application's responsibility.
 
-## Key lifetimes and cryptographic implementation
+`Sender::send(&[u8])` copies once after obtaining a queue slot. Receive passes buffer ownership and a view to the application. A queued send may still be transmitted after its caller cancels the waiting future; use application request IDs and duplicate-handling rules rather than automatically retrying an uncertain request. The implementation does not claim end-to-end zero-copy. It flushes per frame and yields after every four records.
 
-- The server Ed25519 authentication key is owned by `ServerIdentity`. `Arc` shares the original owner; `close()` revokes all shared references after in-progress signing completes. Raw-key and arbitrary-signing APIs are not exposed externally.
-- C KEM secret keys are zeroized and freed during success, failure, and cancellation cleanup.
-- All callers of `KemPool::shutdown()` await the same worker join result. Cancellation of the first waiter does not cause other callers to return early.
-- `ss` is output directly into a Rust heap secret buffer and zeroized after PRK derivation.
-- PRK, Finished keys, and application master are zeroized by Drop after their final use.
-- Directional data keys are tied to the corresponding record-state lifetime. The ChaCha20Poly1305 key state also provides Drop zeroization.
-- Poly1305 0.8.0 internal authentication-state zeroization is also enabled. This integrates a feature of the same version and does not guarantee zeroization of all temporary copies or registers.
-- SHA2 0.11.1/HMAC 0.13.0 zeroization features also clean HKDF state and the SHA-512 hasher used in dalek 3 signing. Release compile conditions reject missing features. Not every copy of output arrays or signing nonces is zeroized.
-- Plaintext pool buffers have their full capacity wiped with `zeroize` before return. Secret types provide no Copy/Clone/content Debug.
+## Secret lifecycle
 
-No claim is made that all temporary state inside HKDF/HMAC, signing, or TLS providers, registers, previous copies, swap, or core dumps is erased.
-mlock and dump-exclusion policies are outside this implementation. FFI operates in the same process and does not isolate C faults.
-Proofs of cryptographic security, constant-time behavior, and forward secrecy, and production-service approval require separate review.
+- `ServerIdentity` owns the Ed25519 key. Arc references share the owner; `close()` waits for ongoing signing and invalidates shared references. Raw keys and arbitrary-signing APIs are not exported.
+- C KEM keys are wiped and freed on success, failure and cancellation cleanup.
+- Concurrent `KemPool::shutdown()` callers await the same worker-join result; cancellation of the first waiter does not cause other callers to return early.
+- Shared-secret output is written directly into a Rust heap secret buffer and wiped after PRK derivation. PRK, Finished keys and application master material are dropped after final use.
+- Directional data keys live with their record state. ChaCha20Poly1305 key state and the enabled Poly1305 0.8.0 cleanup feature provide scoped Drop cleanup.
+- SHA2 0.11.1/HMAC 0.13.0 cleanup features cover HKDF state and the dalek 3 signing hasher. Release builds enforce required features. This does not erase every output array or nonce copy.
+- Scoped local RustCrypto patches add ownership/guards for named digest, HMAC, HKDF and signing scratch slots. See [cleanup implementation](SECRET_COPY_CLEANUP.md) and [dependency scopes](../hardening/secret-copies-20261108/implementation/dependency-scopes.md).
 
-Default parameters, SKW1, authentication transcript, HKDF, ALPN, and exporter labels remain v0.1.
-Early data, session resumption, and automatic fallback are disabled; TLS KeyUpdate does not reset Spiral counters.
-The build verifies C source and header SHA-256 hashes and statically links only production APIs. OpenSSL 3 uses the system dynamic library.
+## Validation guides
 
-## Tests and measurements
+| Area | Guide |
+| --- | --- |
+| Architecture and implementation hardening | [Architecture](ARCHITECTURE_v0.2.md), [v0.3 report](HARDENING_v0.3.md) |
+| Functional records and reproducible commands | [Validation](VALIDATION.md), [Ubuntu/WSL](RUN_UBUNTU_WSL.md), [regression map](REGRESSION_MAP.md) |
+| Frame/ClientHello fuzzing | [Parser fuzzing](FUZZ_PARSERS.md) |
+| DATA/CLOSE state-model fuzzing | [Record fuzzing](FUZZ_RECORDS.md) |
+| Partial writes, cancellation, closure and resource return | [Lifecycle tests](LIFECYCLE.md) |
+| Linux key-file policies, creation and cold rotation | [Key operations](KEY_OPERATIONS.md), [platform results](KEY_OPERATIONS_PLATFORMS.md) |
+| Encrypted backup and recovery | [Recovery](KEY_RECOVERY.md) |
+| Memory diagnostics and the 48-byte baseline | [Follow-up](MEMORY_FOLLOWUP.md), [minimal std/libtest comparison](LIBTEST_MEMORY.md) |
+| Receive-buffer disposal and secret-flow diagnostics | [Memory scope](SECRET_MEMORY.md), [receive path](RECEIVE_SECRET.md) |
+| HMAC/HKDF/signing cleanup | [Secret state](SECRET_STATE.md), [design](SECRET_COPY_DESIGN.md), [implementation](SECRET_COPY_CLEANUP.md) |
+| ARM64 diagnostics | [ARM secret flow](ARM_SECRET_FLOW.md) |
 
-```sh
-cargo test --locked --manifest-path protocol_rust/Cargo.toml
-cargo clippy --all-targets --locked --manifest-path protocol_rust/Cargo.toml -- -D warnings
-cargo build --release --locked --manifest-path protocol_rust/Cargo.toml
+Platform submissions are recorded separately by source and environment. Examples include 17,380 OCI and 34,543 WSL record-fuzz executions, saved-input replays of 702/702 and 718/718 cases, and lifecycle campaigns with 40 channel cases, 135 subconditions, 30 Rust TLS cases and 30 independent-peer TLS cases per platform. These are finite observations, not exhaustive proofs.
 
-# In an environment with Python dependencies installed
-python3 protocol_rust/adversarial.py --binary protocol_rust/target/release/spiral-lab --json protocol_rust/local_validation.json
-python3 protocol_rust/benchmark.py --binary protocol_rust/target/release/spiral-lab --output protocol_rust/local_benchmark.json
-```
+Current key-recovery evidence records 94 Rust tests (5 separately ignored), 11 key-operation tests and 20 recovery tests on each documented OCI/WSL submission. Check the linked records for exact source maps, commands and limitations rather than combining counts from different runs.
 
-Checks that signatures, h0/h1/h2, keys, and DATA/CLOSE match the existing public vectors.
-Checks truncated frames, header-bit tampering, a reproducible 4,096-mutation corpus, ciphertext tampering, tampering with every Finished byte,
-duplicates, reversed order, excessive lengths, reserved CLOSE sequence numbers, key expiry, queue saturation, cancellation, and partial I/O.
-Public-API session-construction restrictions and native-key Send/Sync/Copy/Clone prohibitions are also checked at compile time.
-Each test method contains multiple input cases. Parser acceptance is not counted as successful cryptographic authentication.
+## Remaining limits
 
-Interoperability tests use four connections each for Python→Rust and Rust→Python and four Rust↔Rust connections, with 64B/1KiB/16KiB,
-eight senders, and 32 messages. They check actual exporters/transcripts at both ends, session independence, and normal/abnormal shutdown.
-Bursts of 16/64 connections from the same IP are rejection/cleanup tests, not capacity tests of 16/64 successful connections.
+No complete constant-time, memory-erasure, cryptographic-security or production-deployment approval is claimed. Memory locking and core-dump prevention are not provided by these scoped cleanup mechanisms. Original authentication-related diagnostic warnings, raw exit 99 results and the 48-byte memory item remain evidence to assess. Named-slot cleanup does not establish erasure of all historical moves, arithmetic backend limbs, compiler temporaries, registers, OS/provider copies or abort paths.
 
-Basic functional regression passed Python 85, diagnostic verdicts 20, C 9, Rust unit tests 70, compile-fail 6, and actual TLS 35. The 5 ignored x86-64 instrumentation targets are not added to normal pass counts. For the latest follow-up results, see the separate guides and evidence above.
-The [mapping](REGRESSION_MAP.md) distinguishes 72 requirements with execution tests, 8 addressed structurally, and 5 with different API/test scope.
-See `VALIDATION.json` and `evidence/` for final environments, counts, check logs, and performance figures.
-The initial v0.3 validation bundle excludes coverage-guided fuzzing, long soaks, validation on other OS/CPU combinations, and independent code audits. Follow-up fuzzing and platform validation are recorded separately at the links above.
-
-`examples/tls_control.rs` is TLS-only diagnostic code for distinguishing memory-check warnings. It does not run Spiral or C KEM and is not used as a runtime algorithm fallback.
-
-**Memory validation status:** On 11/6, v0.3 normal TLS communication failed with 4 Valgrind errors in release and 6 in audit. TLS-only controls had 4 each for default/AES128/AES256 and 0 for ChaCha. Separately, 6,102 public AEAD/offset-buffer/hash/HKDF/signature vector cases matched OpenSSL/Python with 0 warnings. The 11/7 follow-up confirmed 6 user OCI passes and 2 WSL passes and isolated the definedness false-positive mechanism in local GHASH copies, branches, and XOR. The original WSL failure was not changed to a pass. See `MEMORY_FOLLOWUP.md` for evidence and scope.
-Existing Rust KDF/MAC, transmission, and signing instrumentation samples had 0 branch/address warnings, but separate actual-receive instrumentation retained 134 warning contexts corresponding to authentication decisions, result propagation, and CLOSE checks. The libtest thread-state 48-byte possibly-lost item remains unresolved. C branch instrumentation and memory checks passed within their existing scope. See `VALIDATION.md` for the initial scope and `RECEIVE_SECRET.md` for additional receive scope and limitations. The default cipher was not changed and warnings were not suppressed.
-
-To reproduce optional memory checks, install Valgrind and Python test dependencies, then run. The script exits with failure if the unresolved warnings above recur.
-
-```sh
-cargo build --release --examples --bins --locked --manifest-path protocol_rust/Cargo.toml
-python3 protocol_rust/memcheck.py --tls-control protocol_rust/target/release/examples/tls_control
-```
-
-Benchmarks use workers 1/2/4, payloads 64/1,024/16,384, four connections, 32 echoes per connection, and 8 sending producers.
-Each profile measures five rounds by default (20 connection samples) after two warm-up rounds. Experimental processes restart for every round.
-TLS, Spiral, and app-delivery time are distinguished from total payload throughput including process startup/shutdown.
-When GNU time is available, per-process peak RSS is also collected. These are small local samples, not production capacity measurements or a ranking of languages.
-
-## Running directly
-
-Inputs created by `interop.py`'s `identities()` have the following formats.
-
-- `ca.pem`: pretrusted test CA.
-- `cert.pem`, `key.pem`: TLS server certificate chain and PKCS#8 key.
-- `auth.bin`: 32-byte seed for the separate server Ed25519 authentication key. A secret file created with mode 0600.
-- `pin.json`: independently delivered server authentication public key, name, purpose, start/end times, and revocation state.
-
-Pins are not created by simply trusting values sent by the server during a connection.
-Do not copy local test keys into service use.
-
-```sh
-protocol_rust/target/release/spiral-lab server --name spiral-lab.example --service spiral-research --port 0 --connections 1 --messages 1 --workers 2 --cert cert.pem --key key.pem --auth auth.bin
-# Use the listening port printed by the server
-protocol_rust/target/release/spiral-lab client --name spiral-lab.example --service spiral-research --port PORT --connections 1 --messages 1 --payload 64 --pipeline 1 --workers 2 --ca ca.pem --pin pin.json
-```
-
-The previous original design is preserved in `ARCHITECTURE_v0.2.md`. Its 'before implementation' status describes that time; this README describes the current implementation scope.
-
-v0.2 evidence is preserved in `evidence/`. New v0.3 evidence is in `evidence/v03/`; hashes before and after removing trailing whitespace from logs are recorded in that folder's `LOG_FORMATTING.json`.
+Application authorization, vault/service integration, compromised-identity recovery policies, sustained load, long-running operations, native Windows support and independent cryptanalysis require additional work. The runnable programs intentionally bind to loopback and do not constitute a public service.

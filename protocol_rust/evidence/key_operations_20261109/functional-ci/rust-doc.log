@@ -1,0 +1,15 @@
+
+running 6 tests
+test src/identity.rs - identity::ServerIdentity (line 24) - compile fail ... ok
+test src/identity.rs - identity::ServerIdentity (line 20) - compile fail ... ok
+test src/lib.rs - (line 13) - compile fail ... ok
+test src/identity.rs - identity::ServerIdentity (line 16) - compile fail ... ok
+test src/lib.rs - (line 4) - compile fail ... ok
+test src/lib.rs - (line 9) - compile fail ... ok
+
+test result: ok. 6 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.13s
+
+
+   Compiling spiral-protocol v0.3.0 (/workspace/spiral-operational-key-files-20261109/protocol_rust)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 1.53s
+   Doc-tests spiral_protocol

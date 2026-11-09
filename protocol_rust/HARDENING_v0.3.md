@@ -2,6 +2,9 @@
 
 Baseline: main `7f3d987fd18b9b5d851f299d8d4234b447d5920f`. The four requested tasks are organized as code, execution evidence, and reviewable PR work. Functional validation and memory/constant-time validation statuses are distinguished. Existing designs and v0.2 evidence are preserved as historical material.
 
+The subsequent [operational key file boundary](KEY_OPERATIONS.md) checks file type, permissions, owner, and
+path through open Linux FDs and adds creation/replacement/recovery procedures. Below is the implementation record for the original pinned sources.
+
 ## 1. Server signing keys and secret lifetimes
 
 `identity::ServerIdentity` is the sole public owner type for the Ed25519 authentication key. It reads an exactly 32-byte seed using native file I/O and erases temporary `Secret<32>` in Drop. Externally it exposes only the public key, state, and disposal; it offers no secret bytes, Clone/Copy/Debug, or arbitrary signing API. The API that returned raw `SigningKey` now returns `Arc<ServerIdentity>`, requiring caller type changes. The wire format is unchanged.

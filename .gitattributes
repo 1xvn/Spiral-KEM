@@ -14,3 +14,6 @@ third_party/rustcrypto/hkdf/README.md -whitespace
 protocol_rust/evidence/secret_copy_cleanup_20261108/**/*.log -whitespace
 protocol_rust/evidence/secret_copy_cleanup_20261108/**/*.asm -whitespace
 protocol_rust/evidence/secret_copy_cleanup_20261108/linked-review/elf-headers.txt -whitespace
+
+# Preserve raw key-operations validation console output.
+protocol_rust/evidence/key_operations_20261109/**/*.log -whitespace

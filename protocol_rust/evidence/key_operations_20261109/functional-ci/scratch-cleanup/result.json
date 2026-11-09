@@ -1,0 +1,396 @@
+{
+  "schema": "spiral-scratch-cleanup-validation/v1",
+  "status": "passed",
+  "scope": "Focused cleanup and compatibility matrix; not the complete upstream dev/test suites.",
+  "limitations": [
+    "Upstream optional kdf feature and dev dependency suites are not included.",
+    "Signing source copy disables only the recorded upstream hazmat/context test modules.",
+    "Finite witnesses do not prove all historical/backend/register copies were erased."
+  ],
+  "constant_time_approved": false,
+  "production_memory_passed": false,
+  "started_utc": "2026-11-09T08:18:12.648395+00:00",
+  "checks": [
+    {
+      "name": "hmac-on",
+      "command": [
+        "/workspace/rust48-tools/rust/bin/cargo",
+        "test",
+        "--locked",
+        "--manifest-path",
+        "/workspace/key-ops-functional-ci/scratch-cleanup/harnesses/hmac/Cargo.toml",
+        "--target-dir",
+        "/workspace/key-ops-functional-ci/scratch-cleanup/target",
+        "-j",
+        "2",
+        "--lib",
+        "--",
+        "--test-threads=1"
+      ],
+      "expected_group_counts": [
+        1
+      ],
+      "passed": true,
+      "exit": 0,
+      "log": "hmac-on.log",
+      "test_groups": [
+        {
+          "passed": 1,
+          "failed": 0,
+          "ignored": 0,
+          "measured": 0,
+          "filtered_out": 0
+        }
+      ]
+    },
+    {
+      "name": "hmac-off",
+      "command": [
+        "/workspace/rust48-tools/rust/bin/cargo",
+        "test",
+        "--locked",
+        "--manifest-path",
+        "/workspace/key-ops-functional-ci/scratch-cleanup/harnesses/hmac/Cargo.toml",
+        "--target-dir",
+        "/workspace/key-ops-functional-ci/scratch-cleanup/target",
+        "-j",
+        "2",
+        "--lib",
+        "--no-default-features",
+        "--",
+        "--test-threads=1"
+      ],
+      "expected_group_counts": [
+        1
+      ],
+      "passed": true,
+      "exit": 0,
+      "log": "hmac-off.log",
+      "test_groups": [
+        {
+          "passed": 1,
+          "failed": 0,
+          "ignored": 0,
+          "measured": 0,
+          "filtered_out": 0
+        }
+      ]
+    },
+    {
+      "name": "hkdf-on",
+      "command": [
+        "/workspace/rust48-tools/rust/bin/cargo",
+        "test",
+        "--locked",
+        "--manifest-path",
+        "/workspace/key-ops-functional-ci/scratch-cleanup/harnesses/hkdf/Cargo.toml",
+        "--target-dir",
+        "/workspace/key-ops-functional-ci/scratch-cleanup/target",
+        "-j",
+        "2",
+        "--lib",
+        "--test",
+        "cleanup_compat",
+        "--features",
+        "zeroize",
+        "--",
+        "--test-threads=1"
+      ],
+      "expected_group_counts": [
+        5,
+        2
+      ],
+      "passed": true,
+      "exit": 0,
+      "log": "hkdf-on.log",
+      "test_groups": [
+        {
+          "passed": 5,
+          "failed": 0,
+          "ignored": 0,
+          "measured": 0,
+          "filtered_out": 0
+        },
+        {
+          "passed": 2,
+          "failed": 0,
+          "ignored": 0,
+          "measured": 0,
+          "filtered_out": 0
+        }
+      ]
+    },
+    {
+      "name": "hkdf-off",
+      "command": [
+        "/workspace/rust48-tools/rust/bin/cargo",
+        "test",
+        "--locked",
+        "--manifest-path",
+        "/workspace/key-ops-functional-ci/scratch-cleanup/harnesses/hkdf/Cargo.toml",
+        "--target-dir",
+        "/workspace/key-ops-functional-ci/scratch-cleanup/target",
+        "-j",
+        "2",
+        "--test",
+        "cleanup_compat",
+        "--no-default-features",
+        "--",
+        "--test-threads=1"
+      ],
+      "expected_group_counts": [
+        2
+      ],
+      "passed": true,
+      "exit": 0,
+      "log": "hkdf-off.log",
+      "test_groups": [
+        {
+          "passed": 2,
+          "failed": 0,
+          "ignored": 0,
+          "measured": 0,
+          "filtered_out": 0
+        }
+      ]
+    },
+    {
+      "name": "signing-on",
+      "command": [
+        "/workspace/rust48-tools/rust/bin/cargo",
+        "test",
+        "--locked",
+        "--manifest-path",
+        "/workspace/key-ops-functional-ci/scratch-cleanup/harnesses/signing/Cargo.toml",
+        "--target-dir",
+        "/workspace/key-ops-functional-ci/scratch-cleanup/target",
+        "-j",
+        "2",
+        "--lib",
+        "--features",
+        "digest",
+        "--",
+        "--test-threads=1"
+      ],
+      "expected_group_counts": [
+        6
+      ],
+      "passed": true,
+      "exit": 0,
+      "log": "signing-on.log",
+      "test_groups": [
+        {
+          "passed": 6,
+          "failed": 0,
+          "ignored": 0,
+          "measured": 0,
+          "filtered_out": 0
+        }
+      ]
+    },
+    {
+      "name": "signing-off",
+      "command": [
+        "/workspace/rust48-tools/rust/bin/cargo",
+        "test",
+        "--locked",
+        "--manifest-path",
+        "/workspace/key-ops-functional-ci/scratch-cleanup/harnesses/signing/Cargo.toml",
+        "--target-dir",
+        "/workspace/key-ops-functional-ci/scratch-cleanup/target",
+        "-j",
+        "2",
+        "--test",
+        "feature_off",
+        "--no-default-features",
+        "--features",
+        "fast,digest",
+        "--",
+        "--test-threads=1"
+      ],
+      "expected_group_counts": [
+        1
+      ],
+      "passed": true,
+      "exit": 0,
+      "log": "signing-off.log",
+      "test_groups": [
+        {
+          "passed": 1,
+          "failed": 0,
+          "ignored": 0,
+          "measured": 0,
+          "filtered_out": 0
+        }
+      ]
+    },
+    {
+      "name": "scratch-live-owners",
+      "command": [
+        "/workspace/rust48-tools/rust/bin/cargo",
+        "test",
+        "--locked",
+        "--manifest-path",
+        "/workspace/key-ops-functional-ci/scratch-cleanup/harnesses/owners/Cargo.toml",
+        "--target-dir",
+        "/workspace/key-ops-functional-ci/scratch-cleanup/target",
+        "-j",
+        "2",
+        "--lib",
+        "--features",
+        "zeroize",
+        "--",
+        "--test-threads=1"
+      ],
+      "expected_group_counts": [
+        5
+      ],
+      "passed": true,
+      "exit": 0,
+      "log": "scratch-live-owners.log",
+      "test_groups": [
+        {
+          "passed": 5,
+          "failed": 0,
+          "ignored": 0,
+          "measured": 0,
+          "filtered_out": 0
+        }
+      ]
+    }
+  ],
+  "source_sha256": {
+    "protocol_rust/validation/scratch_cleanup/hkdf.Cargo.lock": "e87e42f3f7c2056775104310d7f323c6079adfc2fbaf6a721c6d840a385a2979",
+    "protocol_rust/validation/scratch_cleanup/hmac.Cargo.lock": "fb4de70488a96f411051372ce6a29d8a97463c3701d3954a586af16f6919920a",
+    "protocol_rust/validation/scratch_cleanup/hmac_vectors.rs": "9eb9a79eb811c131783dce93cc02b85dc127eedd9494f401e7631c18dad40e59",
+    "protocol_rust/validation/scratch_cleanup/owners.Cargo.lock": "b02cc5dfa67e93666db6c3b7dc2fd010136a1bba2c0b8c634006a25e1df2f737",
+    "protocol_rust/validation/scratch_cleanup/signing.Cargo.lock": "091d705e0382cd295af4525fe036783212f5d59c99ec280955b55bf003522aa0",
+    "protocol_rust/validation/scratch_cleanup/signing_compat.rs": "d14f3bb1b886f831b033e48ee5a5fad996637bc7086f234f0c2bbc824e243298",
+    "protocol_rust/validation/scratch_cleanup.py": "7c0eb4002def87bbdb501dad6f4044880bb713df6bb7658eff51c366cb0a1663",
+    "third_party/rustcrypto/curve25519-dalek/Cargo.toml": "a11061e5d76b2a9696bbd5eb3ef4002fe3d1a402db82100c729bb75fb2bd4367",
+    "third_party/rustcrypto/curve25519-dalek/Cargo.toml.orig": "ffb4fbb9d3dc75d515e501a2776d688f42c0e3aace5c94f4cb4ac80f8e998b6b",
+    "third_party/rustcrypto/curve25519-dalek/benches/dalek_benchmarks.rs": "bab480921965073ce6e492e93e0d0e78348d3ab47190a564a69275669150e26e",
+    "third_party/rustcrypto/curve25519-dalek/build.rs": "f13e2e0acd42c676532e115850473120531beec43439b335e1753a2f026f3713",
+    "third_party/rustcrypto/curve25519-dalek/src/backend/serial/curve_models.rs": "0f318062f526b2a343b4752ed16a94998af9e25e79282608ed6ef5264927bcac",
+    "third_party/rustcrypto/curve25519-dalek/src/backend/serial/fiat_u32/field.rs": "d544ecfa7d7a39c6c31a25720cd4395a1d2a2592f21196a5371f903cd0ce699f",
+    "third_party/rustcrypto/curve25519-dalek/src/backend/serial/fiat_u32.rs": "38bcec08d8bd8a9057746daead8380bc51eafd4400f366c6dc4c3a88e65c84b1",
+    "third_party/rustcrypto/curve25519-dalek/src/backend/serial/fiat_u64/field.rs": "b5881d01b91034c1f434259ad2fddc7b5158c0d5cee51597cc70df9befc9c0ee",
+    "third_party/rustcrypto/curve25519-dalek/src/backend/serial/fiat_u64.rs": "d902fb0841b85a86c4a7d97fdde4246f4f09aadc2cf06f52f49671e99cec7577",
+    "third_party/rustcrypto/curve25519-dalek/src/backend/serial/scalar_mul/pippenger.rs": "6b376ccec552d2dff47aaacbbf81b26430694834c3939c4351dc1d952284bed8",
+    "third_party/rustcrypto/curve25519-dalek/src/backend/serial/scalar_mul/precomputed_straus.rs": "70b36da937ab18d49bddc49708e317181f2be59add69aa639f80bc138a26ea7e",
+    "third_party/rustcrypto/curve25519-dalek/src/backend/serial/scalar_mul/straus.rs": "92040d722c6771c3f90c8c86621f5ef9239e1bec237750d2f39c311d5cb7463b",
+    "third_party/rustcrypto/curve25519-dalek/src/backend/serial/scalar_mul/variable_base.rs": "b9bc69189d5a9339a4c05882b736ac65176b6e98eb93008bc5e200b090e386b6",
+    "third_party/rustcrypto/curve25519-dalek/src/backend/serial/scalar_mul/vartime_double_base.rs": "528db8b24adf9a3b50fbe89fe917b0ae9dace30bbcae9f40c0ba3583f1d80ac8",
+    "third_party/rustcrypto/curve25519-dalek/src/backend/serial/scalar_mul.rs": "a6a4185075faebf984f365b6dcc28c3da6c087d18d811257cd2c0245b41d113e",
+    "third_party/rustcrypto/curve25519-dalek/src/backend/serial/u32/constants.rs": "5eafb471cb394b0e73e5feac4db986b3fcb280c59cc7dcd6a4a464ac6ec2a946",
+    "third_party/rustcrypto/curve25519-dalek/src/backend/serial/u32/field.rs": "7471914244c92fc38e6706d37bc4134006521b454b89d13ffc9bd62fbd3e0bf4",
+    "third_party/rustcrypto/curve25519-dalek/src/backend/serial/u32/scalar.rs": "2f2a3ed1d0f80d8d3921cbee46b4af9fd6c98dfe6627558adb2eec9825a4029a",
+    "third_party/rustcrypto/curve25519-dalek/src/backend/serial/u32.rs": "14fabb2034c68094df508c19517db14e5e3b956b5dac93bd0dd3c125f47f396e",
+    "third_party/rustcrypto/curve25519-dalek/src/backend/serial/u64/constants.rs": "562767135cf372e1478783269e1d5058ef013af80dcf8b975c868d7cb74614a9",
+    "third_party/rustcrypto/curve25519-dalek/src/backend/serial/u64/field.rs": "7ea95907cb3bd79c41fd552b61dad1bd9ad3d9112406b21f999e8f6a8c6cf963",
+    "third_party/rustcrypto/curve25519-dalek/src/backend/serial/u64/scalar.rs": "4f4a4ade0cad10f810448cf5ffeb56861b65470afe73e28c8dc4a2f9a44117fb",
+    "third_party/rustcrypto/curve25519-dalek/src/backend/serial/u64.rs": "b4aab9c62cf39bafc976b2e03bea503f120b125c30eb0e9e5d5f257b08a3eda4",
+    "third_party/rustcrypto/curve25519-dalek/src/backend/serial.rs": "8c92cec992cf112c0683ed328ecfdfcc08d4732de92a76c882b3062e4549f39c",
+    "third_party/rustcrypto/curve25519-dalek/src/backend/vector/avx2/constants.rs": "95f19d41ad1796d892734ba9125f6442dcb049f6392d31c1ec61d5b4a011102b",
+    "third_party/rustcrypto/curve25519-dalek/src/backend/vector/avx2/edwards.rs": "ac88fc633d3f9e6eba5fc871fd2d0f1c3c32937b066bc87cc5568423e4de488a",
+    "third_party/rustcrypto/curve25519-dalek/src/backend/vector/avx2/field.rs": "a4e344d43f5e7f49dd6509eda48228e1bb28964ea9a0101e30f42f941f91ece7",
+    "third_party/rustcrypto/curve25519-dalek/src/backend/vector/avx2.rs": "116ceb9a7a976ba67340b92eac91e5268f7f44ab5917b254f4cc7720d32241bb",
+    "third_party/rustcrypto/curve25519-dalek/src/backend/vector/ifma/constants.rs": "69f06bb74de041842b8780bb13da4f636d2876ae0bb871889a192313f10d3511",
+    "third_party/rustcrypto/curve25519-dalek/src/backend/vector/ifma/edwards.rs": "efc31c7969bf040f74e927b5af01813f9582046035de9f8f590603588c96ddfe",
+    "third_party/rustcrypto/curve25519-dalek/src/backend/vector/ifma/field.rs": "1c003cfdcd134b30ffd805c135eeade2dc290e1abc3d4fa3a3529e8d901a4a3c",
+    "third_party/rustcrypto/curve25519-dalek/src/backend/vector/ifma.rs": "243d4d94947480a1d0071efb9a3268d28ea0032bf8917307a3ece270be788c8a",
+    "third_party/rustcrypto/curve25519-dalek/src/backend/vector/packed_simd.rs": "91c249d945d086bbeb069f61ebc5efae81194b9936a6572cb882ae1c4055c5e6",
+    "third_party/rustcrypto/curve25519-dalek/src/backend/vector/scalar_mul/pippenger.rs": "0d97921c25bd247e9eebc4964dc5830661e641142f3655666f7a536f502acc8f",
+    "third_party/rustcrypto/curve25519-dalek/src/backend/vector/scalar_mul/precomputed_straus.rs": "ecc2bce2f7877b6382152291adfcfe7c6fc7b518c34267d10136b061fb7296f9",
+    "third_party/rustcrypto/curve25519-dalek/src/backend/vector/scalar_mul/straus.rs": "03e11e02fc5db10045b7e9a860027679f28694e0b80983b8ea35f3672b381118",
+    "third_party/rustcrypto/curve25519-dalek/src/backend/vector/scalar_mul/variable_base.rs": "1196a7f10d795658cf5531cc648a79810759574d4b67bb2fedc447d5319274e9",
+    "third_party/rustcrypto/curve25519-dalek/src/backend/vector/scalar_mul/vartime_double_base.rs": "5845f58fb5eb8d8b9a704a8b80fa09c0db92c3b188a55c2d6a12600204c5433d",
+    "third_party/rustcrypto/curve25519-dalek/src/backend/vector/scalar_mul.rs": "c2ae669727ba81a486b447f98561273cd62f76b1c546c55dafdc86c85674e8e7",
+    "third_party/rustcrypto/curve25519-dalek/src/backend/vector.rs": "435dc479e2d30412e07d2c13947042ec3380cf668527907e65acca01cbda32a4",
+    "third_party/rustcrypto/curve25519-dalek/src/backend.rs": "473621c0984effaeb64088b4cea06d3bc7b664cd77901bfa91c3014d202707f7",
+    "third_party/rustcrypto/curve25519-dalek/src/constants.rs": "c0096010eb8d25410602b5551237f8c4f5f3e83f18a7e0b0610f6728e031c8ff",
+    "third_party/rustcrypto/curve25519-dalek/src/diagnostics.rs": "ad6c8e10e52ebb342d3e38991eaeaadfc450a5ea100443393dc721935dc76c1f",
+    "third_party/rustcrypto/curve25519-dalek/src/edwards/affine.rs": "63a4e8b94351d95702e328e2ae1d5858969577c24006c5866a859b091ca51998",
+    "third_party/rustcrypto/curve25519-dalek/src/edwards.rs": "b1ddec03dcb2e48155bea3a981aeab6a35003b4c18cf8e03ab5ad6f33d06d226",
+    "third_party/rustcrypto/curve25519-dalek/src/field.rs": "9129d87e80e6d5ac100997631e79e1dab9c2e8658edcca0c7a5fe16da4b54abb",
+    "third_party/rustcrypto/curve25519-dalek/src/lib.rs": "0d08552980723e7ea77cdfbaad641cd5d65af1b6d12193d8e173bb6a30138cec",
+    "third_party/rustcrypto/curve25519-dalek/src/lizard/jacobi_quartic.rs": "c873c38441b250506166023aae451ca9fa3e7da8024ac8d69ede3919d79bba0e",
+    "third_party/rustcrypto/curve25519-dalek/src/lizard/lizard_constants.rs": "dbccf2be126e3f6c43d9abe6779f4e9b9dafe5e14c49bcfef981fa11ba2ea241",
+    "third_party/rustcrypto/curve25519-dalek/src/lizard/lizard_ristretto.rs": "6d100285c574ae413a78895eb29a3c165459bf81b52c3707b6279d35820bfb51",
+    "third_party/rustcrypto/curve25519-dalek/src/lizard/u32_constants.rs": "954337e9086d98983afa2100df16f785541c6811872cd44a83965739c0dcdfa5",
+    "third_party/rustcrypto/curve25519-dalek/src/lizard/u64_constants.rs": "a6a2b4ef62b8f63e5ad356b0f90cc96bd4de532d7e34720ea959c9580c1c312f",
+    "third_party/rustcrypto/curve25519-dalek/src/lizard.rs": "f5d2b6a958d0a8045bf99f56579121997279281a9f1ddf6dce5fc94d45fcb955",
+    "third_party/rustcrypto/curve25519-dalek/src/macros.rs": "2d848f7d36d69108f1ff0d641537c726bcefb40721f42ca2180176af14d081f3",
+    "third_party/rustcrypto/curve25519-dalek/src/montgomery.rs": "cb8a878d1af5e46d99210e15577aad8aa3f551284e376a46a7f08a126df1d9b2",
+    "third_party/rustcrypto/curve25519-dalek/src/ristretto/elligator.rs": "41e79407dcdf838adf3ea2d5b7051ade621dfb5f0140174e2086abc4996455d2",
+    "third_party/rustcrypto/curve25519-dalek/src/ristretto.rs": "9729623f341b82a27986b808be898ccf303b7d5a4d5b42f4558c341a5edd0174",
+    "third_party/rustcrypto/curve25519-dalek/src/scalar.rs": "febdd49390f2caafe71de8da2e00d2c0ced3c97fb023857edcbc2a3c6091dfb7",
+    "third_party/rustcrypto/curve25519-dalek/src/secret_scratch.rs": "3248d45184f27f6fc87deecfb8b8e3f31004bc141229cd54edb2abe52d8b4958",
+    "third_party/rustcrypto/curve25519-dalek/src/traits.rs": "582b6a153d433585b3804274134e117e6e1247121aa6bc91a357824cd3fe68e0",
+    "third_party/rustcrypto/curve25519-dalek/src/window.rs": "2124ce6436f9c9b753605c406de00443002a9f2c81cf2a24cbd0df0f7885f219",
+    "third_party/rustcrypto/digest/Cargo.toml": "59c4f2cba7e34831c87e8f4844718d91d0f276af7bd192de76fda7d5a8978eb9",
+    "third_party/rustcrypto/digest/Cargo.toml.orig": "2ed5b0bcc71fea312bab365473c67af110be4d18a8dca67bfdf8e9d46556d830",
+    "third_party/rustcrypto/digest/src/block_api/ct_variable.rs": "c444490a24f32222132d0962993e7d49dc25612a1c32d87ace7236e512333a82",
+    "third_party/rustcrypto/digest/src/block_api.rs": "f849d3022385cb675df371b9531906bdbe94d4864a75a282760ffe7048654da4",
+    "third_party/rustcrypto/digest/src/buffer_macros/fixed.rs": "53bc025e5a428d5340fd68e7b581840891fc62fea15cc08e8f6c16466b903160",
+    "third_party/rustcrypto/digest/src/buffer_macros/variable.rs": "1477d2d847c7b3a67b616de577f8b03b0c7edace458674a61c167ec0e0c01b46",
+    "third_party/rustcrypto/digest/src/buffer_macros/xof.rs": "a7fe0153d8cae035963ace522172dcfb90e3b7b00ae7f375e6ff14338430eadd",
+    "third_party/rustcrypto/digest/src/buffer_macros.rs": "f67ea0097ecd3d214c538f11f806332a7cd3f42a10ed93d4846b86f3f0f1ae84",
+    "third_party/rustcrypto/digest/src/dev/fixed.rs": "570d754208934226a7078f25f2820a372611d7cce4d44cf3e2793a3ac243c5a1",
+    "third_party/rustcrypto/digest/src/dev/mac.rs": "d25e9ae655824d2e8356c367c29e99fb1f76213f92f494053268366d7e65d0fb",
+    "third_party/rustcrypto/digest/src/dev/rng.rs": "7911d5dc4bee94b96d26a0c491ef9ce17ce11b0f0da7476c2f2afc8a5480ae16",
+    "third_party/rustcrypto/digest/src/dev/variable.rs": "acb5c1d49b20166a7864a57b7264e59eb5240ae774af6bb6863a5fc94a7fa048",
+    "third_party/rustcrypto/digest/src/dev/xof.rs": "70b76dec7f2be10fa33c274ad25f9d8f7963222743e853174b06479632b9623d",
+    "third_party/rustcrypto/digest/src/dev.rs": "cd91f2157bbe3294b6a89877150e9b1221a5920d233b67e94f2d185413dfe799",
+    "third_party/rustcrypto/digest/src/digest.rs": "7f4cc4c695353230e987a8b66bafe9b1a7eda2bb95dcefe0db16a825bc243abc",
+    "third_party/rustcrypto/digest/src/lib.rs": "4d0699132298d84343e5d8e35af0a9cdc2b7fe771da8522d6a0cf9b1467d0953",
+    "third_party/rustcrypto/digest/src/mac.rs": "298379aef3cb001be81176fd522dfa15e2522cd752fd402b82ddcc6b67af6c94",
+    "third_party/rustcrypto/digest/src/secret_scratch.rs": "b7f5e8452a1221cc20f4036f6756343990750e5a977a2a6f9c1cd9369b444212",
+    "third_party/rustcrypto/digest/src/xof_fixed.rs": "8e341ab1148563a508829e736a34136bbf6f2be3476629e3427c8c92d23c0cb4",
+    "third_party/rustcrypto/digest/tests/dummy_fixed.rs": "1de134a99c0e5533afd4950b4440a0f9de05419567c211bdfe2a756185f864ab",
+    "third_party/rustcrypto/ed25519-dalek/Cargo.toml": "956ebf89493683eebfba8fc50659ce561f70c5ed93524ee98ece80555e02d042",
+    "third_party/rustcrypto/ed25519-dalek/Cargo.toml.orig": "64d0d6fed9c22b0b126c25e3e74662ee91aaca744fef4b0005fee368cddb53e9",
+    "third_party/rustcrypto/ed25519-dalek/benches/ed25519_benchmarks.rs": "25645f94b02844b83fbd7103f87d191d96542350d3f9391eab34f35afc2cde4f",
+    "third_party/rustcrypto/ed25519-dalek/src/batch/transcript.rs": "83ebd944a9f12596efdccb82ff257ee33378948e4c4ce87078b7e2fe3a8546c6",
+    "third_party/rustcrypto/ed25519-dalek/src/batch.rs": "84e422c5b145950c6c33e402cc33deab7e0ab987ff814e60a4970d80476efed2",
+    "third_party/rustcrypto/ed25519-dalek/src/constants.rs": "95ae51f859483bf58654338e13b9c9bff90cce51ca0375657ff167be5935b19e",
+    "third_party/rustcrypto/ed25519-dalek/src/context.rs": "e7ecc6a13a97d6f537e52ffdb81592db8b9b3b104d43b9199bca36879286f28d",
+    "third_party/rustcrypto/ed25519-dalek/src/errors.rs": "ae6bd78bdc52484f3e985f3f01cd469d25255de1df22f2591c7c46a33d12b4a2",
+    "third_party/rustcrypto/ed25519-dalek/src/hazmat.rs": "ced8d336e4b14491e26037ee1b15d3bfe1a21483974ea8d26e13d8d5ae8d3cd3",
+    "third_party/rustcrypto/ed25519-dalek/src/lib.rs": "491825472bc24d6df8b883035bbd02962341e3fedfd19f265dfc87961773edc5",
+    "third_party/rustcrypto/ed25519-dalek/src/secret_scratch.rs": "ca9a1e8d4a212b2cf3af1bcdc29844a1a60dbf6d0d108c1797a5cdb9c24c9d17",
+    "third_party/rustcrypto/ed25519-dalek/src/signature.rs": "f0e6f5a964a092727a84adef682d047e4ae60812c27e2f2a1a5c2ac06f082739",
+    "third_party/rustcrypto/ed25519-dalek/src/signing.rs": "a0410d78ba9475c2955f5340721c1255eabda66ddbdf4aa9587a521bbb5c9c44",
+    "third_party/rustcrypto/ed25519-dalek/src/verifying/stream.rs": "24d49832fb2c32757c927eec12e016efed817f3652d33116db0ebe592380ee96",
+    "third_party/rustcrypto/ed25519-dalek/src/verifying.rs": "f3cd43f2968f09f513591c9e2ebc8939e2d578ff5492c6b9e4f72e89366667e5",
+    "third_party/rustcrypto/ed25519-dalek/tests/ed25519.rs": "5e3b0c13a7de2f1f98895aebdbc11e949cc07ae212e71d3b500a96b27166ff05",
+    "third_party/rustcrypto/ed25519-dalek/tests/pkcs8.rs": "173abc9933fce8e2892fdf0dcd57bb7f0252e9ed21f1e67f874e0b1b7d06c4ef",
+    "third_party/rustcrypto/ed25519-dalek/tests/validation_criteria.rs": "292e407de85edf4f2586ced4e5f3b35c7f8d7f7f451bc4b40d21749cae815a7e",
+    "third_party/rustcrypto/ed25519-dalek/tests/x25519.rs": "dd02a5f9a63d29bea448e139bf3216bb8f9bf923f57a83e266697c8760887b3c",
+    "third_party/rustcrypto/hkdf/Cargo.toml": "012be8b88a56538816f2f4716030a2c2832b4131671ff5dc88c5e92f9a825ce7",
+    "third_party/rustcrypto/hkdf/Cargo.toml.orig": "54605e5e5cf183015f0247a9c7058122dcb2c7240e7e06b7f8901754788db309",
+    "third_party/rustcrypto/hkdf/benches/mod.rs": "ecb5e2dd2f9c65bd034edb93060d005a2e73ba4d02a6dab5088aa3dab36aa579",
+    "third_party/rustcrypto/hkdf/src/errors.rs": "3726025c89f0b236ab1c33f9f22ce4765282f77f1aa9117132bb1cad9f9d899b",
+    "third_party/rustcrypto/hkdf/src/hmac_impl.rs": "bf4a2c9632ce498a8ef3a4b147447c3fd449d7de273c61192311741358cbf6c1",
+    "third_party/rustcrypto/hkdf/src/lib.rs": "cc681ab37d17a7d80ca798d382da864a84fb7a56cf7f344c20f82a2c75ff7514",
+    "third_party/rustcrypto/hkdf/src/secret_bytes.rs": "96f9769290e3651dffbc0eaaeda3b0c900ea3656ad2d597ecfed32df6e92e6cf",
+    "third_party/rustcrypto/hkdf/tests/cleanup_compat.rs": "0ff53e9caa836904c2dba96aa1333010c7fdac41231098676c3b0cbd41a8c83b",
+    "third_party/rustcrypto/hkdf/tests/rfc5869.rs": "b23e218da8388b188317ce10588940a31913eed646e0e388107c89a5355d4428",
+    "third_party/rustcrypto/hkdf/tests/tests.rs": "9c2e0056af44f3a5af588d0096be579004f953c50ed84175d744f83ee037126b",
+    "third_party/rustcrypto/hkdf/tests/wycheproof.rs": "dc828fc4c1f78c34e332a6b9bf102dc6aaf323e10d4800a8b5b0f71670331971",
+    "third_party/rustcrypto/hmac/Cargo.toml": "b4f4b988204282ae1e47df9f4353449afd5f389d588e4445f7c8df8e69586fab",
+    "third_party/rustcrypto/hmac/Cargo.toml.orig": "e450d3f953ac32547d10497b8aae7a1738aee961ece5c266932ee2016b0b4f0d",
+    "third_party/rustcrypto/hmac/src/block_api.rs": "2539eac05ab2943a2adbc4565fd1632d8037cdaadb46297b587fa1be30cc947d",
+    "third_party/rustcrypto/hmac/src/lib.rs": "e43f756f781e4ca65b8144bda1af7f329fedd8554bea4ead8d4ec0c92f23ba98",
+    "third_party/rustcrypto/hmac/src/secret_scratch.rs": "a2af7ff5e3cb08ee69b42e2200cae8668ccd8277d172bc8c8ed7c158f8b84b69",
+    "third_party/rustcrypto/hmac/src/simple.rs": "58eb53230ef5212265b1eb2ee3c98f49af92ea540fdd150d4b0fe0ff6ca53e45",
+    "third_party/rustcrypto/hmac/src/simple_reset.rs": "8c42411576a4d175e748455a8426af202307f51229219d3d331902a94f9b2949",
+    "third_party/rustcrypto/hmac/src/utils.rs": "4a3e23225e0403c6287c896fab80d81ae30f68131a2f1f2dd593736e8a1745c9",
+    "third_party/rustcrypto/hmac/tests/mod.rs": "ac82dc9484ac09dada4bb8d1ec7c61a500630fa86cde4493e42b2946a568c5eb"
+  },
+  "source_tree_sha256": "3d4244df1892b24ab7de643e26eb2bcdd79e0e48e851b80a34d13ba9aa4c3c19",
+  "signing_source_identity": "signing-source-identity.json",
+  "source_unchanged": true,
+  "tests": 23,
+  "finished_utc": "2026-11-09T08:18:27.019556+00:00"
+}

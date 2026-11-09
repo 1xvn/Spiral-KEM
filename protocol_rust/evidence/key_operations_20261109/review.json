@@ -1,0 +1,123 @@
+{
+  "runtime_commit": "789eb37c9fb40416f6c1f2e9c98bd0eba72a3c2f",
+  "baseline_commit": "956785c6a37940cc253dbfd9bbbc62ae31193826",
+  "phase": "operations-key-files phase1",
+  "phase1_implemented": true,
+  "whole_goal_5_complete": false,
+  "functional_ci": "passed",
+  "checks": {
+    "python-protocol": {
+      "exit": 0,
+      "passed": true,
+      "tests_run": 85
+    },
+    "diagnostic-parser": {
+      "exit": 0,
+      "passed": true,
+      "tests_run": 24
+    },
+    "native-kem": {
+      "exit": 0,
+      "passed": true,
+      "tests_run": 9
+    },
+    "rustc-version": {
+      "exit": 0,
+      "passed": true
+    },
+    "cargo-version": {
+      "exit": 0,
+      "passed": true
+    },
+    "rust-unit": {
+      "exit": 0,
+      "passed": true,
+      "test_groups": [
+        {
+          "passed": 81,
+          "failed": 0,
+          "ignored": 5
+        }
+      ]
+    },
+    "rust-scratch-cleanup": {
+      "exit": 0,
+      "passed": true
+    },
+    "rust-doc": {
+      "exit": 0,
+      "passed": true,
+      "test_groups": [
+        {
+          "passed": 6,
+          "failed": 0,
+          "ignored": 0
+        }
+      ]
+    },
+    "rust-release": {
+      "exit": 0,
+      "passed": true
+    },
+    "rust-key-operations": {
+      "exit": 0,
+      "passed": true,
+      "tests_run": 11,
+      "structured_tests": {
+        "tests": 11,
+        "failures": 0,
+        "errors": 0
+      }
+    },
+    "rust-tls": {
+      "exit": 0,
+      "passed": true,
+      "tests_run": 35,
+      "structured_tests": {
+        "tests": 35,
+        "failures": 0,
+        "errors": 0
+      }
+    }
+  },
+  "key_operations_tests": 11,
+  "key_operations_skipped": 0,
+  "focused_report_source_and_binary_unchanged": true,
+  "binary_sha256": "748a8d4490ea68236d243bf641d7e96c6845bd1a184a4dad57537da152cb2aed",
+  "test_effective_uid": 1000,
+  "sandbox_uid_view": {
+    "effective_uid": 1000,
+    "root_owner": 65534,
+    "tmp_owner": 65534
+  },
+  "focused_source_hash_count": 181,
+  "fuzz_record_replay_compile_check": "passed",
+  "tested_operations": [
+    "new private seed and public-only metadata",
+    "umask000/777 and concurrent single winner",
+    "no overwrite of existing file/symlink/FIFO/directory",
+    "exact mode, owner-policy and parent FD traversal",
+    "same opened inode after namespace rename",
+    "atomic retained-parent publication",
+    "FIFO subprocess watchdog",
+    "bounded/single-recognized TLS key PEM",
+    "local restored-file public metadata agreement",
+    "old pin rejection and new pin authenticated echo/CLOSE"
+  ],
+  "own_unsafe_added": false,
+  "cryptographic_algorithms_changed": false,
+  "live_service_credentials_accessed": false,
+  "real_key_deployment_performed": false,
+  "actual_new_oci_or_wsl_policy_run_verified": false,
+  "constant_time_approved": false,
+  "production_memory_passed": false,
+  "limitations": [
+    "Root and effective service UID, OS/filesystem remain trusted.",
+    "No Unix-mode guarantee over Windows ACL/DrvFS or hostile user namespaces.",
+    "Directory fsync failure after publication may leave the final file present.",
+    "Unpublished temp cleanup is best effort, not secure erasure.",
+    "TLS parser/provider copies, backups/snapshots/registers are outside this cleanup scope.",
+    "Cold rotation and local restored-file agreement are tested, not hot reload or encrypted-vault disaster recovery.",
+    "Current executable remains loopback-only research code."
+  ]
+}

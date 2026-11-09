@@ -11,6 +11,7 @@ import hashlib
 import hmac
 import json
 import os
+import platform
 from pathlib import Path
 import select
 import stat
@@ -29,6 +30,15 @@ from protocol_rust import interop
 BINARY = ROOT / "protocol_rust/target/debug/spiral-lab"
 WATCHDOG_SECONDS = 5
 MAX_STARTUP_REPORT_BYTES = 64 * 1024
+
+
+def source_hashes():
+    # Public build inputs only: never walk generated credential directories.
+    from protocol_rust.fuzzing.campaign import source_names
+    names = {name for name in source_names() if "target" not in Path(name).parts}
+    names.add("protocol_rust/key_ops_tests.py")
+    return {name: hashlib.sha256((ROOT / name).read_bytes()).hexdigest()
+            for name in sorted(names)}
 
 
 class KeyOperations(unittest.TestCase):
@@ -465,10 +475,14 @@ def main():
     BINARY = arguments.binary.expanduser().resolve()
     if not BINARY.is_file():
         parser.error("build spiral-lab before running key operations integration tests")
+    before = source_hashes()
+    binary_hash = hashlib.sha256(BINARY.read_bytes()).hexdigest()
     interop.BINARY = BINARY
     result = unittest.TextTestRunner(verbosity=2).run(
         unittest.defaultTestLoader.loadTestsFromTestCase(KeyOperations))
-    passed = result.wasSuccessful() and result.testsRun > 0 and not result.skipped
+    unchanged = (before == source_hashes()
+                 and binary_hash == hashlib.sha256(BINARY.read_bytes()).hexdigest())
+    passed = result.wasSuccessful() and result.testsRun > 0 and not result.skipped and unchanged
     summary = {
         "schema": "spiral-rust-key-operations/v1",
         "status": "passed" if passed else "failed",
@@ -476,6 +490,12 @@ def main():
         "failures": len(result.failures),
         "errors": len(result.errors),
         "skipped": len(result.skipped),
+        "platform": platform.uname()._asdict(),
+        "effective_uid": os.geteuid(),
+        "binary_sha256": binary_hash,
+        "runner_sha256": before["protocol_rust/key_ops_tests.py"],
+        "source_sha256": before,
+        "source_and_binary_unchanged": unchanged,
         "failed_tests": [test.id() for test, _traceback in result.failures],
         "error_tests": [test.id() for test, _traceback in result.errors],
         "scope": "Linux key-file policy, public-only CLI output, local restored-file agreement, and loopback TLS key rotation",
