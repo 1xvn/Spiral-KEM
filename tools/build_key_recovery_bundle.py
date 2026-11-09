@@ -27,7 +27,7 @@ def selected_source(name):
         return False
     if path.suffix.lower() in {".pem", ".key", ".p12", ".pfx"}:
         return False
-    return selected(name) or name == "protocol_rust/KEY_RECOVERY.md"
+    return selected(name) or name in {"protocol_rust/KEY_RECOVERY.md", TEMPLATE}
 
 
 def main(argv=None):
@@ -46,6 +46,7 @@ def main(argv=None):
                 "protocol_rust/interop.py", "protocol_v01/requirements.txt",
                 "code/opt2/spiral_kem_toy_v031_opt2.py",
                 "protocol_rust/KEY_RECOVERY.md",
+                TEMPLATE,
                 "protocol_rust/Cargo.lock", "protocol_rust/fuzz/Cargo.lock",
                 "native_research/spiral_native.c", "third_party/rustcrypto/patch-manifest.json"}
     if not required.issubset(names):
