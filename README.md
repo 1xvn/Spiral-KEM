@@ -4,6 +4,15 @@ This repository organizes research code, experimental materials, and documentati
 
 > **Research implementation.** This is not cryptography validated for production services; do not use it to protect real secrets. Constant-time behavior is also not guaranteed for the Python implementation.
 
+## Citation and Usage
+
+> **Request to refrain from citation · Unauthorized reuse prohibited**
+> The researcher does not wish the research results in this repository to be cited or excerpted in other papers, presentations, websites, or projects. Please contact the repository maintainer before considering citation or excerpts. **This request does not, however, prohibit or prevent quotation permitted under applicable law.**
+>
+> Making the repository public does not grant an open-source license to its original research code or documents. The copyright holder reserves the rights to works without separate permission, and unauthorized copying, modification, and redistribution are not permitted. Actions permitted under the GitHub Terms of Service and applicable law are exceptions. The respective copyrights and licenses of third-party code and materials take precedence.
+
+**Notice (English):** The researcher requests that others refrain from citing or excerpting this research in papers, presentations, websites, or other projects without first contacting the repository maintainer. This is a request, not a legal prohibition on otherwise lawful citation. Public visibility does not grant an open-source license to original content; third-party materials remain subject to their respective terms.
+
 ## Directory Guide
 
 | Path | Contents |
