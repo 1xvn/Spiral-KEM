@@ -1,0 +1,88 @@
+{
+  "schema": "spiral-key-recovery-two-platform-review/v1",
+  "status": "accepted",
+  "reviewer_sha256": "ca359099a0f0782876f7c2420814681f3e2d582f5f723eeb8324fce4a47780d4",
+  "parser_regression_tests_sha256": "e61e074e69519796a2d762296d3b9de6455269eae77aa21b235d82f86c5f24a2",
+  "trusted_helper": {
+    "path": "protocol_rust/evidence/key_operations_platforms_20261109/review_uploaded_results.py",
+    "sha256": "bdfb76603d13ae034302290d6d24e8805e2ff564d8315b1bbe57890f00bff54b",
+    "functions": [
+      "archive_files",
+      "decode",
+      "sha",
+      "require"
+    ]
+  },
+  "fixed_delivery_sha256": "fafa96381b1cca98b9ae9e87e04880f84d19440bfbc93df3e5c7c149878dbc10",
+  "fixed_local_reference_sha256": "e89355705dad2392ae72cad3e07750989b708f93d62009f43e678b74239e3474",
+  "collector_source_sha256": {
+    "key_operations_platform.py": "5e3099ff78ca9cab6793126517cdb615140683f3c18b080d091247597edc8fd4",
+    "key_recovery_platform.py": "c2bb73e5238aa0fbb801ba1b12ae5cce912865a12316c47ad792a2f841d30468"
+  },
+  "source_commit": "d4c46bc81012e095ab8c78ac6e362ce2b6a63798",
+  "runtime_base_commit": "d2f19b9e733359f14331d7064a41697c851a1d80",
+  "platform_key_recovery_validation_complete": true,
+  "full_goal_5_complete": false,
+  "scope": "finite research key recovery platform validation",
+  "drill_limits": "Temporary lab identities only; no service or vault integration, automatic production rollback, or rollback of a compromised identity is exercised.",
+  "source_files_verified_per_platform": 324,
+  "rust_passed_per_platform": 94,
+  "rust_ignored_per_platform": 5,
+  "key_operations_passed_per_platform": 11,
+  "key_recovery_passed_per_platform": 20,
+  "key_tests_failed_or_skipped": 0,
+  "parser_regression_command": [
+    "python3",
+    "-I",
+    "-B",
+    "protocol_rust/evidence/key_recovery_20261110/test_review_uploaded_results.py",
+    "-v"
+  ],
+  "review_command": [
+    "python3",
+    "-I",
+    "-B",
+    "protocol_rust/evidence/key_recovery_20261110/review_uploaded_results.py",
+    "--oci",
+    "protocol_rust/evidence/key_recovery_20261110/Spiral-key-recovery-oci-aarch64-20261109T222241Z-dsg9u_3d.tar.gz",
+    "--wsl",
+    "protocol_rust/evidence/key_recovery_20261110/Spiral-key-recovery-wsl-x86_64-20261109T222238Z-5anl7i28.tar.gz",
+    "--output-dir",
+    "protocol_rust/evidence/key_recovery_20261110"
+  ],
+  "review_command_cwd": "repository root",
+  "platforms": {
+    "oci": {
+      "archive": "Spiral-key-recovery-oci-aarch64-20261109T222241Z-dsg9u_3d.tar.gz",
+      "archive_sha256": "e7bfd6ec799f224bb8cefb03a3a16be113a2c125654301224c94c8882938d373",
+      "review": "oci-review.json"
+    },
+    "wsl": {
+      "archive": "Spiral-key-recovery-wsl-x86_64-20261109T222238Z-5anl7i28.tar.gz",
+      "archive_sha256": "b260fcd5a4174949e2cadda34f7c2565bab26ad188b7f2d5f41c927b800a1d92",
+      "review": "wsl-review.json"
+    }
+  },
+  "binary_hashes_independently_verified": false,
+  "foreign_owner_checks_exercised": false,
+  "new_full_ci_or_memory_or_fuzz_or_load_tests": false,
+  "gates": {
+    "memory_checked": false,
+    "memory_cleanup_approved": false,
+    "production_memory_passed": false,
+    "constant_time_approved": false,
+    "whole_goal_2_approved": false,
+    "whole_goal_5_approved": false,
+    "deployment_approved": false
+  },
+  "privacy_redaction": {
+    "applied": true,
+    "historical_execution_repeated": false,
+    "integrity_values_describe_redacted_artifacts": true
+  },
+  "artifact_language_normalization": {
+    "applied": true,
+    "historical_execution_repeated": false,
+    "integrity_values_describe_translated_artifacts": true
+  }
+}

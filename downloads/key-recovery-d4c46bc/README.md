@@ -68,6 +68,8 @@ Both successful and failed runs generate `Spiral-key-recovery-oci-aarch64-*.tar.
 If the launcher rejects input source integrity, tests do not start; inspect that error message and
 check the downloaded file. `--check-only` checks sources only and does not count as passing tests.
 
-Local validation and both platform results are separate records. New-code OCI/WSL results are currently pending.
+Local validation and both platform results are separate records. New-code OCI/WSL results were submitted,
+and [review of originals is complete](../../protocol_rust/evidence/key_recovery_20261110/README.md).
+Each passed 94 Rust tests (5 separately ignored),11 existing key-management tests, and 20 recovery tests, with 0 failures/skips.
 For backup format, key custody, external fingerprints, and recovery scope, see the [operating procedures](../../protocol_rust/KEY_RECOVERY.md).
 These checks exclude overall operational readiness, deployment, constant-time, and overall memory approval.

@@ -1,0 +1,15 @@
+test_actual_reference_logs_are_accepted (__main__.ReceiptParserTests.test_actual_reference_logs_are_accepted) ... ok
+test_duplicate_json_keys_and_nonfinite_values_are_rejected (__main__.ReceiptParserTests.test_duplicate_json_keys_and_nonfinite_values_are_rejected) ... ok
+test_duplicate_rust_identity_is_rejected (__main__.ReceiptParserTests.test_duplicate_rust_identity_is_rejected) ... ok
+test_duplicate_unittest_identity_is_rejected (__main__.ReceiptParserTests.test_duplicate_unittest_identity_is_rejected) ... ok
+test_extra_unittest_status_and_trailing_ok_are_rejected (__main__.ReceiptParserTests.test_extra_unittest_status_and_trailing_ok_are_rejected) ... ok
+test_failed_error_skipped_and_unexpected_status_are_rejected (__main__.ReceiptParserTests.test_failed_error_skipped_and_unexpected_status_are_rejected) ... ok
+test_failed_or_extra_rust_status_is_rejected (__main__.ReceiptParserTests.test_failed_or_extra_rust_status_is_rejected) ... ok
+test_failed_rerun_invalidates_previous_accepted_summary (__main__.ReceiptParserTests.test_failed_rerun_invalidates_previous_accepted_summary) ... ok
+test_rust_summary_and_trailing_status_are_rejected (__main__.ReceiptParserTests.test_rust_summary_and_trailing_status_are_rejected) ... ok
+test_unittest_missing_or_wrong_method_and_wrong_summary_are_rejected (__main__.ReceiptParserTests.test_unittest_missing_or_wrong_method_and_wrong_summary_are_rejected) ... ok
+
+----------------------------------------------------------------------
+Ran 10 tests in 0.014s
+
+OK
