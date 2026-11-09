@@ -7,7 +7,7 @@ use crate::{
 use rustls::{pki_types::ServerName, ClientConfig, RootCertStore, ServerConfig};
 use std::{
     fs::File,
-    io::BufReader,
+    io::{BufReader, Read},
     path::Path,
     sync::Arc,
     time::{Duration, Instant},
@@ -21,11 +21,39 @@ use x509_parser::prelude::*;
 pub const ALPN: &[u8] = b"spiral-opt2/0.1";
 pub const EXPORTER: &[u8] = b"EXPORTER-SpiralOPT2-v0.1";
 
+/// Read one recognized TLS private-key item through the protected file boundary.
+/// The initialized PEM input buffer is erased; parser/provider copies are separate.
+pub fn load_tls_private_key(path: &Path) -> Result<rustls::pki_types::PrivateKeyDer<'static>> {
+    const MAX_PEM: usize = 64 * 1024;
+    let mut file = crate::keyfiles::open_private(path)?;
+    if file.metadata()?.len() > MAX_PEM as u64 {
+        return Err(Error::Input);
+    }
+    // Fixed initialized length: reads cannot grow/reallocate this secret buffer.
+    let mut input = zeroize::Zeroizing::new(vec![0u8; MAX_PEM + 1]);
+    let mut used = 0;
+    while used < input.len() {
+        let count = file.read(&mut input[used..])?;
+        if count == 0 {
+            break;
+        }
+        used += count;
+    }
+    if used > MAX_PEM {
+        return Err(Error::Input);
+    }
+    let mut reader = &input[..used];
+    let key = rustls_pemfile::private_key(&mut reader)?.ok_or(Error::Input)?;
+    if rustls_pemfile::private_key(&mut reader)?.is_some() {
+        return Err(Error::Input);
+    }
+    Ok(key)
+}
+
 pub fn server_config(cert: &Path, key: &Path) -> Result<Arc<ServerConfig>> {
     let certs = rustls_pemfile::certs(&mut BufReader::new(File::open(cert)?))
         .collect::<std::result::Result<Vec<_>, _>>()?;
-    let key =
-        rustls_pemfile::private_key(&mut BufReader::new(File::open(key)?))?.ok_or(Error::Input)?;
+    let key = load_tls_private_key(key)?;
     let provider = Arc::new(rustls::crypto::ring::default_provider());
     let mut c = ServerConfig::builder_with_provider(provider)
         .with_protocol_versions(&[&rustls::version::TLS13])

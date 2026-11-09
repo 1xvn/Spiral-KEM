@@ -31,6 +31,7 @@ pub mod error;
 mod ffi;
 pub mod handshake;
 pub mod identity;
+mod keyfiles;
 pub mod records;
 #[cfg(feature = "record-fuzz")]
 #[doc(hidden)]
