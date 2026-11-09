@@ -1,0 +1,29 @@
+{
+  "schema": "spiral-key-recovery-local-delivery-review/v1",
+  "status": "passed",
+  "source_commit": "d4c46bc81012e095ab8c78ac6e362ce2b6a63798",
+  "source_files_matched_to_git": 324,
+  "source_unchanged": true,
+  "result_files_hashed": 33,
+  "archive_members": 34,
+  "archive": "Spiral-key-recovery-local-x86_64-20261109T212757Z-1m3ydfz5.tar.gz",
+  "archive_sha256": "e89355705dad2392ae72cad3e07750989b708f93d62009f43e678b74239e3474",
+  "binary_sha256": "7bd1f1cf698a8896afd74e7f433cdb2b4ac4552ec580738a352a9e7f343d8542",
+  "binary_hashes_agree": true,
+  "rust_passed": 94,
+  "rust_ignored": 5,
+  "key_operations_passed": 11,
+  "key_recovery_passed": 20,
+  "requested_platform": "local",
+  "oci_new_result_submitted": false,
+  "wsl_new_result_submitted": false,
+  "whole_goal_5_approved": false,
+  "constant_time_approved": false,
+  "production_memory_passed": false,
+  "deployment_approved": false,
+  "artifact_language_normalization": {
+    "applied": true,
+    "historical_execution_repeated": false,
+    "integrity_values_describe_translated_artifacts": true
+  }
+}

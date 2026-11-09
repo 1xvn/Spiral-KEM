@@ -95,7 +95,7 @@ def main():
             raise RuntimeError('CI requires Cargo 1.99.1')
         cargo_base = ['--locked', '--manifest-path', str(ROOT / 'protocol_rust/Cargo.toml'), '--target-dir', str(ROOT / 'protocol_rust/target'), '-j', '2']
         ignored = 5 if re.search(r'(?m)^host: (?:x86_64|aarch64)-unknown-linux-', version) else 0
-        run('rust-unit', [cargo, 'test', '--lib', *cargo_base], 1200, rust_minimum=81, expected_ignored=ignored)
+        run('rust-unit', [cargo, 'test', '--lib', *cargo_base], 1200, rust_minimum=94, expected_ignored=ignored)
         run('rust-scratch-cleanup', [python, str(ROOT / 'protocol_rust/validation/scratch_cleanup.py'),
             '--cargo', cargo, '--output', str(out / 'scratch-cleanup')], 1200)
         run('rust-doc', [cargo, 'test', '--doc', *cargo_base], 300, rust_minimum=4)
@@ -105,6 +105,10 @@ def main():
         run('rust-key-operations', [python, str(ROOT / 'protocol_rust/key_ops_tests.py'),
             '--binary', str(binary), '--json', str(key_evidence)], 300, minimum=11,
             json_result=key_evidence)
+        recovery_evidence = out / 'key-recovery.json'
+        run('rust-key-recovery', [python, str(ROOT / 'protocol_rust/key_recovery_tests.py'),
+            '--binary', str(binary), '--json', str(recovery_evidence)], 300, minimum=20,
+            json_result=recovery_evidence)
         evidence = out / 'interop.json'
         run('rust-tls', [python, str(ROOT / 'protocol_rust/adversarial.py'), '--binary', str(binary), '--json', str(evidence)], 600, minimum=35, json_result=evidence)
         report['binary_sha256'] = hashlib.sha256(binary.read_bytes()).hexdigest()

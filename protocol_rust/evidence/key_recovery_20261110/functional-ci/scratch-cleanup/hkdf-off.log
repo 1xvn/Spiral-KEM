@@ -1,0 +1,41 @@
+
+running 2 tests
+test extract_constructor_and_split_info_preserve_rfc5869_case_one ... ok
+test generic_lengths_and_rejections_are_unchanged ... ok
+
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.01s
+
+
+warning: patch `curve25519-dalek v5.0.0 (/workspace/spiral-key-backup-20261110/third_party/rustcrypto/curve25519-dalek)` was not used in the crate graph
+warning: patch `ed25519-dalek v3.0.0 (/workspace/spiral-key-backup-20261110/third_party/rustcrypto/ed25519-dalek)` was not used in the crate graph
+warning: patch `hkdf v0.13.0 (/workspace/spiral-key-backup-20261110/third_party/rustcrypto/hkdf)` was not used in the crate graph
+help: Check that the patched package version and available features are compatible
+      with the dependency requirements. If the patch has a different version from
+      what is locked in the Cargo.lock file, run `cargo update` to use the new
+      version. This may also occur with an optional dependency that is not enabled.
+   Compiling hmac v0.13.0 (/workspace/spiral-key-backup-20261110/third_party/rustcrypto/hmac)
+   Compiling scratch-hkdf-compat v0.0.0 (/workspace/key-backup-functional-ci/scratch-cleanup/harnesses/hkdf)
+warning: unexpected `cfg` condition value: `kdf`
+  --> /workspace/spiral-key-backup-20261110/third_party/rustcrypto/hkdf/src/lib.rs:24:7
+   |
+24 | #[cfg(feature = "kdf")]
+   |       ^^^^^^^^^^^^^^^
+   |
+   = note: expected values for `feature` are: `zeroize`
+   = help: consider adding `kdf` as a feature in `Cargo.toml`
+   = note: see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration
+   = note: `#[warn(unexpected_cfgs)]` on by default
+
+warning: unexpected `cfg` condition value: `kdf`
+  --> /workspace/spiral-key-backup-20261110/third_party/rustcrypto/hkdf/src/lib.rs:73:7
+   |
+73 | #[cfg(feature = "kdf")]
+   |       ^^^^^^^^^^^^^^^
+   |
+   = note: expected values for `feature` are: `zeroize`
+   = help: consider adding `kdf` as a feature in `Cargo.toml`
+   = note: see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration
+
+warning: `scratch-hkdf-compat` (lib) generated 2 warnings
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 0.51s
+     Running /workspace/spiral-key-backup-20261110/third_party/rustcrypto/hkdf/tests/cleanup_compat.rs (/workspace/key-backup-functional-ci/scratch-cleanup/target/debug/deps/cleanup_compat-8db50626e786a9be)

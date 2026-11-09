@@ -1,0 +1,42 @@
+{"schema": "spiral-rust-adversarial/v0.3", "tests": 35, "failures": 0, "errors": 0}
+
+test_client_finished_rejected (__main__.RustAdversarial.test_client_finished_rejected) ... ok
+test_corrupted_tag (__main__.RustAdversarial.test_corrupted_tag) ... ok
+test_duplicate_record (__main__.RustAdversarial.test_duplicate_record) ... ok
+test_expired_tls_certificate_is_rejected_before_inner_kem (__main__.RustAdversarial.test_expired_tls_certificate_is_rejected_before_inner_kem) ... ok
+test_independent_authenticated_unknown_close_reason_is_rejected (__main__.RustAdversarial.test_independent_authenticated_unknown_close_reason_is_rejected) ... ok
+test_independent_bad_tag_has_no_delivery (__main__.RustAdversarial.test_independent_bad_tag_has_no_delivery) ... ok
+test_independent_canonical_changed_ciphertext_never_establishes (__main__.RustAdversarial.test_independent_canonical_changed_ciphertext_never_establishes) ... ok
+test_independent_duplicate_clientkey_never_decapsulates_twice (__main__.RustAdversarial.test_independent_duplicate_clientkey_never_decapsulates_twice) ... ok
+test_independent_early_data_never_decapsulates (__main__.RustAdversarial.test_independent_early_data_never_decapsulates) ... ok
+test_independent_eof_without_authenticated_close_is_not_clean (__main__.RustAdversarial.test_independent_eof_without_authenticated_close_is_not_clean) ... ok
+test_independent_forged_client_finished_never_establishes (__main__.RustAdversarial.test_independent_forged_client_finished_never_establishes) ... ok
+test_independent_new_connections_change_exporter_session_and_kem_key (__main__.RustAdversarial.test_independent_new_connections_change_exporter_session_and_kem_key) ... ok
+test_independent_peer_boundary_data_and_authenticated_close (__main__.RustAdversarial.test_independent_peer_boundary_data_and_authenticated_close) ... ok
+test_independent_previous_session_clientkey_is_rejected (__main__.RustAdversarial.test_independent_previous_session_clientkey_is_rejected) ... ok
+test_independent_skipped_sequence_has_no_delivery (__main__.RustAdversarial.test_independent_skipped_sequence_has_no_delivery) ... ok
+test_independent_truncated_clientkey_never_decapsulates (__main__.RustAdversarial.test_independent_truncated_clientkey_never_decapsulates) ... ok
+test_independent_untrusted_signing_pin_is_rejected (__main__.RustAdversarial.test_independent_untrusted_signing_pin_is_rejected) ... ok
+test_independent_valid_record_replay_delivers_only_once (__main__.RustAdversarial.test_independent_valid_record_replay_delivers_only_once) ... ok
+test_independent_wrong_binding_rejected_before_keygen (__main__.RustAdversarial.test_independent_wrong_binding_rejected_before_keygen) ... ok
+test_independent_wrong_direction_has_no_delivery (__main__.RustAdversarial.test_independent_wrong_direction_has_no_delivery) ... ok
+test_independent_wrong_service_rejected_before_keygen (__main__.RustAdversarial.test_independent_wrong_service_rejected_before_keygen) ... ok
+test_invalid_server_signature_rejected_before_encapsulation (__main__.RustAdversarial.test_invalid_server_signature_rejected_before_encapsulation) ... ok
+test_length_bomb (__main__.RustAdversarial.test_length_bomb) ... ok
+test_missing_authenticated_close (__main__.RustAdversarial.test_missing_authenticated_close) ... ok
+test_python_to_rust_four_sessions (__main__.RustAdversarial.test_python_to_rust_four_sessions) ... ok
+test_rust_to_python_four_sessions (__main__.RustAdversarial.test_rust_to_python_four_sessions) ... ok
+test_rust_to_rust_sizes_and_parallel_senders (__main__.RustAdversarial.test_rust_to_rust_sizes_and_parallel_senders) ... ok
+test_same_ip_connection_bursts_are_bounded (__main__.RustAdversarial.test_same_ip_connection_bursts_are_bounded) ... ok
+test_server_finished_rejected_before_data (__main__.RustAdversarial.test_server_finished_rejected_before_data) ... ok
+test_tls12_is_rejected_before_inner_kem (__main__.RustAdversarial.test_tls12_is_rejected_before_inner_kem) ... ok
+test_truncated_record (__main__.RustAdversarial.test_truncated_record) ... ok
+test_untrusted_tls_ca (__main__.RustAdversarial.test_untrusted_tls_ca) ... ok
+test_wrong_alpn (__main__.RustAdversarial.test_wrong_alpn) ... ok
+test_wrong_pin_expired_and_revoked (__main__.RustAdversarial.test_wrong_pin_expired_and_revoked) ... ok
+test_wrong_tls_hostname (__main__.RustAdversarial.test_wrong_tls_hostname) ... ok
+
+----------------------------------------------------------------------
+Ran 35 tests in 2.580s
+
+OK

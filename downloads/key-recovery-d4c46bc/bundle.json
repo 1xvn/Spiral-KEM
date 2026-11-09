@@ -1,0 +1,17 @@
+{
+  "archive": "Spiral-key-recovery-d4c46bc.tar.gz",
+  "root": "Spiral-key-recovery-d4c46bc",
+  "profile": "key-recovery",
+  "source_commit": "d4c46bc81012e095ab8c78ac6e362ce2b6a63798",
+  "runtime_base_commit": "d2f19b9e733359f14331d7064a41697c851a1d80",
+  "source_files": 324,
+  "manifest_sha256": "20707a5119e58d55fd8f133120b2a70bdca2ed17b5d787972c9101084d9f8c63",
+  "collector_sha256": "c2bb73e5238aa0fbb801ba1b12ae5cce912865a12316c47ad792a2f841d30468",
+  "archive_sha256": "fafa96381b1cca98b9ae9e87e04880f84d19440bfbc93df3e5c7c149878dbc10",
+  "bytes": 1080007,
+  "artifact_language_normalization": {
+    "applied": true,
+    "historical_execution_repeated": false,
+    "integrity_values_describe_translated_artifacts": true
+  }
+}

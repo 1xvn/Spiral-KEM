@@ -1,0 +1,81 @@
+#!/usr/bin/env python3
+"""Authenticate every pinned source before running key recovery collection."""
+import hashlib
+import json
+import os
+from pathlib import Path, PurePosixPath
+import re
+import stat
+import sys
+
+ROOT = Path(__file__).resolve().parent
+MANIFEST_SHA256 = "__MANIFEST_SHA256__"
+COLLECTOR_SHA256 = "__COLLECTOR_SHA256__"
+COLLECTOR = "protocol_rust/validation/key_recovery_platform.py"
+
+
+def read_source(root, name):
+    if (not isinstance(name, str) or not name or name.startswith("/")
+            or "\\" in name or "\x00" in name
+            or any(part in ("", ".", "..") for part in name.split("/"))
+            or PurePosixPath(name).parts[0] == ".git"):
+        raise ValueError("unsafe source path")
+    descriptor = os.open(root, os.O_RDONLY | os.O_DIRECTORY | os.O_NOFOLLOW)
+    try:
+        for part in name.split("/")[:-1]:
+            child = os.open(part, os.O_RDONLY | os.O_DIRECTORY | os.O_NOFOLLOW, dir_fd=descriptor)
+            os.close(descriptor)
+            descriptor = child
+        leaf = os.open(name.split("/")[-1], os.O_RDONLY | os.O_NOFOLLOW | os.O_NONBLOCK, dir_fd=descriptor)
+        try:
+            before = os.fstat(leaf)
+            if not stat.S_ISREG(before.st_mode) or before.st_nlink != 1:
+                raise ValueError("source input must be a regular file with one link")
+            with os.fdopen(leaf, "rb", closefd=False) as stream:
+                raw = stream.read()
+            after = os.fstat(leaf)
+            if any(getattr(before, field) != getattr(after, field)
+                   for field in ("st_ino", "st_size", "st_mtime_ns", "st_ctime_ns")):
+                raise ValueError("source input changed while reading")
+            return raw
+        finally:
+            os.close(leaf)
+    finally:
+        os.close(descriptor)
+
+
+def unique(pairs):
+    value = {}
+    for name, item in pairs:
+        if name in value:
+            raise ValueError("duplicate manifest field")
+        value[name] = item
+    return value
+
+
+try:
+    raw = read_source(ROOT, "SOURCE.json")
+    if hashlib.sha256(raw).hexdigest() != MANIFEST_SHA256:
+        raise ValueError("fixed source manifest changed; extract a fresh bundle")
+    manifest = json.loads(raw, object_pairs_hook=unique)
+    if (not isinstance(manifest, dict) or manifest.get("schema") != "spiral-key-operations-source/v1"
+            or manifest.get("profile") != "key-recovery"
+            or not isinstance(manifest.get("files"), dict)):
+        raise ValueError("unsupported recovery source manifest")
+    files = manifest["files"]
+    if files.get(COLLECTOR) != COLLECTOR_SHA256:
+        raise ValueError("fixed collector digest differs from source manifest")
+    for name, expected in sorted(files.items()):
+        if not isinstance(expected, str) or not re.fullmatch(r"[0-9a-f]{64}", expected):
+            raise ValueError("invalid source digest")
+        if hashlib.sha256(read_source(ROOT / "source", name)).hexdigest() != expected:
+            raise ValueError("fixed source input changed: " + name + "; extract a fresh bundle")
+except (OSError, ValueError, TypeError) as error:
+    print("Bundle verification failed: " + str(error), file=sys.stderr)
+    raise SystemExit(1)
+
+# Isolated mode ignores PYTHONPATH and disables local site customization. The
+# collector authenticates the reused helper again before importing its code.
+os.execv(sys.executable, [sys.executable, "-I", "-B", str(ROOT / "source" / COLLECTOR), *sys.argv[1:],
+         "--source-manifest", str(ROOT / "SOURCE.json"),
+         "--expected-manifest-sha256", MANIFEST_SHA256])

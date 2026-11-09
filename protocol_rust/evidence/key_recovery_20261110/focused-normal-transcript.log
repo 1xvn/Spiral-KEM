@@ -1,0 +1,25 @@
+Command: CARGO_HOME=/workspace/rust48-tools/cargo-cache RUSTC=/workspace/rust48-tools/rust/bin/rustc RUSTDOC=/workspace/rust48-tools/rust/bin/rustdoc /workspace/rust48-tools/rust/bin/cargo test --offline --manifest-path protocol_rust/Cargo.toml --target-dir /workspace/key-backup-target --lib key_backup::tests
+Working directory: /workspace/spiral-key-backup-20261110
+Execution: require_escalated, normal filesystem UID; exit 0.
+Transcript retained from original tool result:
+
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 0.07s
+     Running unittests src/lib.rs (/workspace/key-backup-target/debug/deps/spiral_protocol-3fdb47f90d236e84)
+
+running 13 tests
+test key_backup::tests::authenticated_plaintext_identity_must_match_header_and_external ... ok
+test key_backup::tests::auth_source_and_recovery_sizes_and_self_encryption_are_rejected ... ok
+test key_backup::tests::auth_round_trip_and_public_digest ... ok
+test key_backup::tests::existing_destinations_are_not_replaced ... ok
+test key_backup::tests::fresh_nonces_for_repeated_backups ... ok
+test key_backup::tests::recovery_generation_is_private_random_and_no_replace ... ok
+test key_backup::tests::tls_parser_policy_preserves_single_private_key ... ok
+test key_backup::tests::tls_round_trip_preserves_original_pem_and_spki_digest ... ok
+test key_backup::tests::unknown_format_kind_and_invalid_lengths_are_rejected ... ok
+test key_backup::tests::wrong_key_and_expected_identity_leave_no_destination ... ok
+test key_backup::tests::every_envelope_byte_is_authenticated ... ok
+test key_backup::tests::truncated_and_trailing_envelopes_are_rejected ... ok
+test key_backup::tests::tls_size_bounds_apply_to_source_and_restored_payload ... ok
+
+test result: ok. 13 passed; 0 failed; 0 ignored; 0 measured; 86 filtered out; finished in 0.11s
+
