@@ -1,0 +1,1270 @@
+--- upstream/digest/src/block_api/ct_variable.rs
++++ patched/digest/src/block_api/ct_variable.rs
+@@ -1,3 +1,4 @@
++use crate::secret_scratch::SecretBytes;
+ use super::{
+     AlgorithmName, Buffer, BufferKindUser, FixedOutputCore, Reset, TruncSide, UpdateCore,
+     VariableOutputCore, VariableOutputCoreCustomized,
+@@ -105,8 +106,8 @@
+         buffer: &mut Buffer<Self>,
+         out: &mut Array<u8, Self::OutputSize>,
+     ) {
+-        let mut full_res = Default::default();
+-        self.inner.finalize_variable_core(buffer, &mut full_res);
++        let mut full_res = SecretBytes::new(Array::<u8, T::OutputSize>::default());
++        self.inner.finalize_variable_core(buffer, &mut *full_res);
+         let n = out.len();
+         let m = full_res.len() - n;
+         match T::TRUNC_SIDE {
+--- upstream/digest/src/lib.rs
++++ patched/digest/src/lib.rs
+@@ -259,3 +259,7 @@
+ }
+ 
+ impl core::error::Error for InvalidBufferSize {}
++
++// Named scratch ownership; byte erasure is enabled by the existing zeroize feature.
++#[cfg(feature = "block-api")]
++mod secret_scratch;
+--- upstream/digest/src/secret_scratch.rs
++++ patched/digest/src/secret_scratch.rs
+@@ -0,0 +1,87 @@
++//! Private owner of named byte scratch; historical copies/registers are out of scope.
++use core::ops::{Deref, DerefMut};
++
++#[derive(Clone)]
++pub(crate) struct SecretBytes<T: AsMut<[u8]>>(T);
++
++impl<T: AsMut<[u8]>> SecretBytes<T> {
++    #[inline]
++    pub(crate) fn new(value: T) -> Self {
++        Self(value)
++    }
++}
++impl<T: AsMut<[u8]>> Deref for SecretBytes<T> {
++    type Target = T;
++    #[inline]
++    fn deref(&self) -> &T {
++        &self.0
++    }
++}
++impl<T: AsMut<[u8]>> DerefMut for SecretBytes<T> {
++    #[inline]
++    fn deref_mut(&mut self) -> &mut T {
++        &mut self.0
++    }
++}
++impl<T: AsMut<[u8]>> Drop for SecretBytes<T> {
++    #[inline]
++    fn drop(&mut self) {
++        #[cfg(feature = "zeroize")]
++        zeroize::Zeroize::zeroize(self.0.as_mut());
++    }
++}
++
++#[cfg(all(test, feature = "zeroize"))]
++mod tests {
++    extern crate std;
++    use super::SecretBytes;
++    use core::cell::Cell;
++    use std::panic::{catch_unwind, AssertUnwindSafe};
++
++    struct Witness<'a> {
++        bytes: [u8; 32],
++        observed: &'a Cell<bool>,
++    }
++    impl AsMut<[u8]> for Witness<'_> {
++        fn as_mut(&mut self) -> &mut [u8] {
++            &mut self.bytes
++        }
++    }
++    impl Drop for Witness<'_> {
++        fn drop(&mut self) {
++            // The value is still owned and initialized; never inspect freed memory.
++            self.observed.set(self.bytes.iter().all(|byte| *byte == 0));
++        }
++    }
++    #[test]
++    fn wipes_owned_bytes_before_value_drop_on_return_and_error() {
++        fn run(observed: &Cell<bool>, fail: bool) -> Result<(), ()> {
++            let _owned = SecretBytes::new(Witness {
++                bytes: [0xa5; 32],
++                observed,
++            });
++            if fail {
++                return Err(());
++            }
++            Ok(())
++        }
++        for fail in [false, true] {
++            let observed = Cell::new(false);
++            assert_eq!(run(&observed, fail).is_err(), fail);
++            assert!(observed.get());
++        }
++    }
++    #[test]
++    fn wipes_owned_bytes_before_value_drop_on_unwind() {
++        let observed = Cell::new(false);
++        let result = catch_unwind(AssertUnwindSafe(|| {
++            let _owned = SecretBytes::new(Witness {
++                bytes: [0xa5; 32],
++                observed: &observed,
++            });
++            panic!("injected scratch-owner unwind");
++        }));
++        assert!(result.is_err());
++        assert!(observed.get());
++    }
++}
+--- upstream/hmac/src/block_api.rs
++++ patched/hmac/src/block_api.rs
+@@ -1,3 +1,4 @@
++use crate::secret_scratch::SecretBytes;
+ use crate::utils::{IPAD, OPAD, get_der_key};
+ use core::{fmt, slice};
+ use digest::{
+@@ -51,16 +52,16 @@
+ 
+     #[inline(always)]
+     fn new_from_slice(key: &[u8]) -> Result<Self, InvalidLength> {
+-        let mut buf = get_der_key::<D>(key);
++        let mut buf = SecretBytes::new(get_der_key::<D>(key));
+         buf.iter_mut().for_each(|b: &mut u8| *b ^= IPAD);
+ 
+         let mut digest = D::Core::default();
+-        digest.update_blocks(slice::from_ref(&buf));
++        digest.update_blocks(slice::from_ref(&*buf));
+ 
+         buf.iter_mut().for_each(|b: &mut u8| *b ^= IPAD ^ OPAD);
+ 
+         let mut opad_digest = D::Core::default();
+-        opad_digest.update_blocks(slice::from_ref(&buf));
++        opad_digest.update_blocks(slice::from_ref(&*buf));
+ 
+         Ok(Self {
+             opad_digest,
+@@ -79,13 +80,13 @@
+ impl<D: EagerHash> FixedOutputCore for HmacCore<D> {
+     #[inline(always)]
+     fn finalize_fixed_core(&mut self, buffer: &mut Buffer<Self>, out: &mut Output<Self>) {
+-        let mut hash = Output::<D::Core>::default();
+-        self.digest.finalize_fixed_core(buffer, &mut hash);
++        let mut hash = SecretBytes::new(Output::<D::Core>::default());
++        self.digest.finalize_fixed_core(buffer, &mut *hash);
+         // finalize_fixed_core should reset the buffer as well, but
+         // to be extra safe we reset it explicitly again.
+         buffer.reset();
+         let h = &mut self.opad_digest;
+-        buffer.digest_blocks(&hash, |b| h.update_blocks(b));
++        buffer.digest_blocks(&hash[..], |b| h.update_blocks(b));
+         h.finalize_fixed_core(buffer, out);
+     }
+ }
+@@ -150,16 +151,16 @@
+ 
+     #[inline(always)]
+     fn new_from_slice(key: &[u8]) -> Result<Self, InvalidLength> {
+-        let mut buf = get_der_key::<D>(key);
++        let mut buf = SecretBytes::new(get_der_key::<D>(key));
+         buf.iter_mut().for_each(|b: &mut u8| *b ^= IPAD);
+ 
+         let mut digest = D::Core::default();
+-        digest.update_blocks(slice::from_ref(&buf));
++        digest.update_blocks(slice::from_ref(&*buf));
+ 
+         buf.iter_mut().for_each(|b: &mut u8| *b ^= IPAD ^ OPAD);
+ 
+         let mut opad_digest = D::Core::default();
+-        opad_digest.update_blocks(slice::from_ref(&buf));
++        opad_digest.update_blocks(slice::from_ref(&*buf));
+ 
+         Ok(Self {
+             ipad_digest: digest.clone(),
+@@ -179,13 +180,13 @@
+ impl<D: EagerHash> FixedOutputCore for HmacResetCore<D> {
+     #[inline(always)]
+     fn finalize_fixed_core(&mut self, buffer: &mut Buffer<Self>, out: &mut Output<Self>) {
+-        let mut hash = Output::<D::Core>::default();
+-        self.digest.finalize_fixed_core(buffer, &mut hash);
++        let mut hash = SecretBytes::new(Output::<D::Core>::default());
++        self.digest.finalize_fixed_core(buffer, &mut *hash);
+         // finalize_fixed_core should reset the buffer as well, but
+         // to be extra safe we reset it explicitly again.
+         buffer.reset();
+         let mut h = self.opad_digest.clone();
+-        buffer.digest_blocks(&hash, |b| h.update_blocks(b));
++        buffer.digest_blocks(&hash[..], |b| h.update_blocks(b));
+         h.finalize_fixed_core(buffer, out);
+     }
+ }
+--- upstream/hmac/src/lib.rs
++++ patched/hmac/src/lib.rs
+@@ -56,3 +56,6 @@
+         <Self as CoreProxy>::Core::write_alg_name(f)
+     }
+ }
++
++// Named scratch ownership; byte erasure is enabled by the existing zeroize feature.
++mod secret_scratch;
+--- upstream/hmac/src/secret_scratch.rs
++++ patched/hmac/src/secret_scratch.rs
+@@ -0,0 +1,87 @@
++//! Private owner of named byte scratch; historical copies/registers are out of scope.
++use core::ops::{Deref, DerefMut};
++
++#[derive(Clone)]
++pub(crate) struct SecretBytes<T: AsMut<[u8]>>(T);
++
++impl<T: AsMut<[u8]>> SecretBytes<T> {
++    #[inline]
++    pub(crate) fn new(value: T) -> Self {
++        Self(value)
++    }
++}
++impl<T: AsMut<[u8]>> Deref for SecretBytes<T> {
++    type Target = T;
++    #[inline]
++    fn deref(&self) -> &T {
++        &self.0
++    }
++}
++impl<T: AsMut<[u8]>> DerefMut for SecretBytes<T> {
++    #[inline]
++    fn deref_mut(&mut self) -> &mut T {
++        &mut self.0
++    }
++}
++impl<T: AsMut<[u8]>> Drop for SecretBytes<T> {
++    #[inline]
++    fn drop(&mut self) {
++        #[cfg(feature = "zeroize")]
++        digest::zeroize::Zeroize::zeroize(self.0.as_mut());
++    }
++}
++
++#[cfg(all(test, feature = "zeroize"))]
++mod tests {
++    extern crate std;
++    use super::SecretBytes;
++    use core::cell::Cell;
++    use std::panic::{catch_unwind, AssertUnwindSafe};
++
++    struct Witness<'a> {
++        bytes: [u8; 32],
++        observed: &'a Cell<bool>,
++    }
++    impl AsMut<[u8]> for Witness<'_> {
++        fn as_mut(&mut self) -> &mut [u8] {
++            &mut self.bytes
++        }
++    }
++    impl Drop for Witness<'_> {
++        fn drop(&mut self) {
++            // The value is still owned and initialized; never inspect freed memory.
++            self.observed.set(self.bytes.iter().all(|byte| *byte == 0));
++        }
++    }
++    #[test]
++    fn wipes_owned_bytes_before_value_drop_on_return_and_error() {
++        fn run(observed: &Cell<bool>, fail: bool) -> Result<(), ()> {
++            let _owned = SecretBytes::new(Witness {
++                bytes: [0xa5; 32],
++                observed,
++            });
++            if fail {
++                return Err(());
++            }
++            Ok(())
++        }
++        for fail in [false, true] {
++            let observed = Cell::new(false);
++            assert_eq!(run(&observed, fail).is_err(), fail);
++            assert!(observed.get());
++        }
++    }
++    #[test]
++    fn wipes_owned_bytes_before_value_drop_on_unwind() {
++        let observed = Cell::new(false);
++        let result = catch_unwind(AssertUnwindSafe(|| {
++            let _owned = SecretBytes::new(Witness {
++                bytes: [0xa5; 32],
++                observed: &observed,
++            });
++            panic!("injected scratch-owner unwind");
++        }));
++        assert!(result.is_err());
++        assert!(observed.get());
++    }
++}
+--- upstream/hmac/src/simple.rs
++++ patched/hmac/src/simple.rs
+@@ -1,3 +1,4 @@
++use crate::secret_scratch::SecretBytes;
+ use crate::utils::{IPAD, OPAD, get_der_key};
+ use core::fmt;
+ use digest::{
+@@ -11,7 +12,7 @@
+ #[derive(Clone)]
+ pub struct SimpleHmac<D: Digest + BlockSizeUser> {
+     digest: D,
+-    opad_key: Block<D>,
++    opad_key: SecretBytes<Block<D>>,
+ }
+ 
+ impl<D: Digest + BlockSizeUser> KeySizeUser for SimpleHmac<D> {
+@@ -27,11 +28,11 @@
+ 
+     #[inline]
+     fn new_from_slice(key: &[u8]) -> Result<Self, InvalidLength> {
+-        let mut buf = get_der_key::<D>(key);
++        let mut buf = SecretBytes::new(get_der_key::<D>(key));
+         buf.iter_mut().for_each(|b: &mut u8| *b ^= IPAD);
+ 
+         let mut digest = D::new();
+-        digest.update(&buf);
++        digest.update(&buf[..]);
+ 
+         buf.iter_mut().for_each(|b: &mut u8| *b ^= OPAD ^ IPAD);
+ 
+@@ -56,8 +57,9 @@
+ impl<D: Digest + BlockSizeUser> FixedOutput for SimpleHmac<D> {
+     fn finalize_into(self, out: &mut Output<Self>) {
+         let mut h = D::new();
+-        h.update(&self.opad_key);
+-        h.update(self.digest.finalize());
++        h.update(&self.opad_key[..]);
++        let hash = SecretBytes::new(self.digest.finalize());
++        h.update(&hash[..]);
+         h.finalize_into(out);
+     }
+ }
+--- upstream/hmac/src/simple_reset.rs
++++ patched/hmac/src/simple_reset.rs
+@@ -1,3 +1,4 @@
++use crate::secret_scratch::SecretBytes;
+ use crate::utils::{IPAD, OPAD, get_der_key};
+ use core::fmt;
+ use digest::{
+@@ -12,8 +13,8 @@
+ #[derive(Clone)]
+ pub struct SimpleHmacReset<D: Digest + BlockSizeUser> {
+     digest: D,
+-    opad_key: Block<D>,
+-    ipad_key: Block<D>,
++    opad_key: SecretBytes<Block<D>>,
++    ipad_key: SecretBytes<Block<D>>,
+ }
+ 
+ impl<D: Digest + BlockSizeUser> KeySizeUser for SimpleHmacReset<D> {
+@@ -29,13 +30,13 @@
+ 
+     #[inline]
+     fn new_from_slice(key: &[u8]) -> Result<Self, InvalidLength> {
+-        let der_key = get_der_key::<D>(key);
++        let der_key = SecretBytes::new(get_der_key::<D>(key));
+ 
+         let mut ipad_key = der_key.clone();
+         ipad_key.iter_mut().for_each(|b: &mut u8| *b ^= IPAD);
+ 
+         let mut digest = D::new();
+-        digest.update(&ipad_key);
++        digest.update(&ipad_key[..]);
+ 
+         let mut opad_key = der_key;
+         opad_key.iter_mut().for_each(|b: &mut u8| *b ^= OPAD);
+@@ -62,8 +63,9 @@
+ impl<D: Digest + BlockSizeUser> FixedOutput for SimpleHmacReset<D> {
+     fn finalize_into(self, out: &mut Output<Self>) {
+         let mut h = D::new();
+-        h.update(&self.opad_key);
+-        h.update(self.digest.finalize());
++        h.update(&self.opad_key[..]);
++        let hash = SecretBytes::new(self.digest.finalize());
++        h.update(&hash[..]);
+         h.finalize_into(out);
+     }
+ }
+@@ -77,16 +79,17 @@
+ impl<D: Digest + BlockSizeUser + Reset> Reset for SimpleHmacReset<D> {
+     fn reset(&mut self) {
+         Reset::reset(&mut self.digest);
+-        self.digest.update(&self.ipad_key);
++        self.digest.update(&self.ipad_key[..]);
+     }
+ }
+ 
+ impl<D: Digest + BlockSizeUser + FixedOutputReset> FixedOutputReset for SimpleHmacReset<D> {
+     fn finalize_into_reset(&mut self, out: &mut Output<Self>) {
+         let mut h = D::new();
+-        Update::update(&mut h, &self.opad_key);
+-        Update::update(&mut h, &self.digest.finalize_reset());
+-        Update::update(&mut self.digest, &self.ipad_key);
++        Update::update(&mut h, &self.opad_key[..]);
++        let hash = SecretBytes::new(self.digest.finalize_reset());
++        Update::update(&mut h, &hash[..]);
++        Update::update(&mut self.digest, &self.ipad_key[..]);
+         Digest::finalize_into(h, out);
+     }
+ }
+--- upstream/hmac/src/utils.rs
++++ patched/hmac/src/utils.rs
+@@ -1,3 +1,4 @@
++use crate::secret_scratch::SecretBytes;
+ use digest::{
+     Digest,
+     block_api::{Block, BlockSizeUser},
+@@ -15,14 +16,14 @@
+     if key.len() <= der_key.len() {
+         der_key[..key.len()].copy_from_slice(key);
+     } else {
+-        let hash = D::digest(key);
++        let hash = SecretBytes::new(D::digest(key));
+         // All commonly used hash functions have block size bigger
+         // than output hash size, but to be extra rigorous we
+         // handle the potential uncommon cases as well.
+         // The condition is calculated at compile time, so this
+         // branch gets removed from the final binary.
+         if hash.len() <= der_key.len() {
+-            der_key[..hash.len()].copy_from_slice(&hash);
++            der_key[..hash.len()].copy_from_slice(&hash[..]);
+         } else {
+             let n = der_key.len();
+             der_key.copy_from_slice(&hash[..n]);
+--- upstream/hkdf/Cargo.toml
++++ patched/hkdf/Cargo.toml
+@@ -40,6 +40,12 @@
+ [package.metadata.docs.rs]
+ all-features = true
+ 
++[features]
++zeroize = [
++    "dep:zeroize",
++    "hmac/zeroize",
++]
++
+ [lib]
+ name = "hkdf"
+ path = "src/lib.rs"
+@@ -47,6 +53,10 @@
+ [[test]]
+ name = "rfc5869"
+ path = "tests/rfc5869.rs"
++
++[[test]]
++name = "cleanup_compat"
++path = "tests/cleanup_compat.rs"
+ 
+ [[test]]
+ name = "tests"
+@@ -66,6 +76,11 @@
+ [dependencies.kdf]
+ version = "0.1"
+ optional = true
++
++[dependencies.zeroize]
++version = "1.9"
++optional = true
++default-features = false
+ 
+ [dev-dependencies.blobby]
+ version = "0.4"
+--- upstream/hkdf/Cargo.toml.orig
++++ patched/hkdf/Cargo.toml.orig
+@@ -17,6 +17,10 @@
+ 
+ # optional dependencies
+ kdf = { version = "0.1", optional = true }
++zeroize = { version = "1.9", optional = true, default-features = false }
++
++[features]
++zeroize = ["dep:zeroize", "hmac/zeroize"]
+ 
+ [dev-dependencies]
+ blobby = "0.4"
+--- upstream/hkdf/src/lib.rs
++++ patched/hkdf/src/lib.rs
+@@ -13,6 +13,9 @@
+ 
+ mod errors;
+ mod hmac_impl;
++mod secret_bytes;
++
++use secret_bytes::SecretBytes;
+ 
+ pub use errors::{InvalidLength, InvalidPrkLength};
+ pub use hmac;
+@@ -59,9 +62,11 @@
+     /// `Hkdf` struct for expanding.
+     #[allow(clippy::missing_panics_doc, reason = "PRK size is correct")]
+     pub fn finalize(self) -> (Output<H>, GenericHkdf<H>) {
+-        let prk = self.hmac.finalize();
++        // Own the not-yet-returned PRK while constructing the expansion state.
++        // A generic HMAC constructor may unwind; the returned PRK remains the caller's.
++        let prk = SecretBytes::new(self.hmac.finalize());
+         let hkdf = GenericHkdf::<H>::from_prk(&prk).expect("PRK size is correct");
+-        (prk, hkdf)
++        (prk.into_inner(), hkdf)
+     }
+ }
+ 
+@@ -70,7 +75,8 @@
+     fn derive_key(&self, secret: &[u8], info: &[u8], out: &mut [u8]) -> kdf::Result<()> {
+         let mut extract = self.clone();
+         extract.input_ikm(secret);
+-        let (_, hkdf) = extract.finalize();
++        let (prk, hkdf) = extract.finalize();
++        let _prk = SecretBytes::new(prk);
+         hkdf.expand(info, out).map_err(|_| kdf::Error)
+     }
+ }
+@@ -92,7 +98,8 @@
+     /// common constructor.
+     #[must_use]
+     pub fn new(salt: Option<&[u8]>, ikm: &[u8]) -> Self {
+-        let (_, hkdf) = Self::extract(salt, ikm);
++        let (prk, hkdf) = Self::extract(salt, ikm);
++        let _prk = SecretBytes::new(prk);
+         hkdf
+     }
+ 
+@@ -132,7 +139,7 @@
+         info_components: &[&[u8]],
+         okm: &mut [u8],
+     ) -> Result<(), InvalidLength> {
+-        let mut prev: Option<Output<H>> = None;
++        let mut prev: Option<SecretBytes<Output<H>>> = None;
+ 
+         let chunk_len = <H as OutputSizeUser>::OutputSize::USIZE;
+         if okm.len() > chunk_len * 255 {
+@@ -143,7 +150,7 @@
+             let mut hmac = self.hmac.clone();
+ 
+             if let Some(ref prev) = prev {
+-                hmac.update(prev);
++                hmac.update(prev.as_ref());
+             };
+ 
+             // Feed in the info components in sequence. This is equivalent to feeding in the
+@@ -154,11 +161,13 @@
+ 
+             hmac.update(&[u8::try_from(block_n).expect("should convert") + 1]);
+ 
+-            let output = hmac.finalize();
++            let output = SecretBytes::new(hmac.finalize());
+ 
+             let block_len = block.len();
+             block.copy_from_slice(&output[..block_len]);
+ 
++            // Replacing prev drops and wipes the preceding owned block. The last
++            // block is likewise wiped when the function returns or unwinds.
+             prev = Some(output);
+         }
+ 
+@@ -175,3 +184,95 @@
+         self.expand_multi_info(&[info], okm)
+     }
+ }
++
++#[cfg(all(test, feature = "zeroize"))]
++mod cleanup_tests {
++    extern crate std;
++    use super::{GenericHkdf, GenericHkdfExtract, Hkdf, HmacImpl};
++    use crate::secret_bytes::tests::take;
++    use core::cell::Cell;
++    use hmac::digest::{Output, OutputSizeUser, consts::U32};
++    use sha2::Sha256;
++    use std::panic::AssertUnwindSafe;
++
++    std::thread_local! {
++        static FINALIZED: Cell<usize> = const { Cell::new(0) };
++        // 1: next block update; 2: expansion-state constructor after extract.
++        static INJECTION: Cell<u8> = const { Cell::new(0) };
++    }
++
++    #[derive(Clone)]
++    struct InjectedHmac;
++
++    impl OutputSizeUser for InjectedHmac {
++        type OutputSize = U32;
++    }
++
++    impl HmacImpl for InjectedHmac {
++        fn new_from_slice(_: &[u8]) -> Self {
++            if INJECTION.with(Cell::get) == 2 && FINALIZED.with(Cell::get) != 0 {
++                panic!("injected constructor panic after extract");
++            }
++            Self
++        }
++
++        fn update(&mut self, _: &[u8]) {
++            if INJECTION.with(Cell::get) == 1 && FINALIZED.with(Cell::get) != 0 {
++                panic!("injected next-block update panic");
++            }
++        }
++
++        fn finalize(self) -> Output<Self> {
++            FINALIZED.with(|count| count.set(count.get() + 1));
++            [0xa5; 32].into()
++        }
++    }
++
++    fn configure(injection: u8) {
++        let _ = take();
++        FINALIZED.with(|count| count.set(0));
++        INJECTION.with(|point| point.set(injection));
++    }
++
++    #[test]
++    fn discarded_prk_and_each_replaced_or_final_block_are_wiped() {
++        let _ = take();
++        let hkdf = Hkdf::<Sha256>::new(Some(b"public salt"), b"public test ikm");
++        assert_eq!(take(), [(32, true)]);
++
++        let mut output = [0; 65];
++        hkdf.expand(b"public test info", &mut output).unwrap();
++        assert_eq!(take(), [(32, true); 3]);
++
++        let (prk, from_extract) = Hkdf::<Sha256>::extract(Some(b"public salt"), b"public test ikm");
++        assert!(take().is_empty(), "returned PRK ownership belongs to the caller");
++        assert!(prk.iter().any(|byte| *byte != 0));
++        let mut reference = [0; 65];
++        from_extract.expand(b"public test info", &mut reference).unwrap();
++        assert_eq!(output, reference);
++    }
++
++    #[test]
++    fn previous_block_is_wiped_when_a_generic_update_panics() {
++        configure(1);
++        let hkdf = GenericHkdf::<InjectedHmac>::from_prk(&[7; 32]).unwrap();
++        let result = std::panic::catch_unwind(AssertUnwindSafe(|| {
++            let mut output = [0; 33];
++            hkdf.expand(b"public test info", &mut output).unwrap();
++        }));
++        assert!(result.is_err());
++        assert_eq!(take(), [(32, true)]);
++    }
++
++    #[test]
++    fn unreturned_prk_is_wiped_when_a_generic_constructor_panics() {
++        configure(2);
++        let result = std::panic::catch_unwind(|| {
++            let mut extract = GenericHkdfExtract::<InjectedHmac>::new(None);
++            extract.input_ikm(b"public test ikm");
++            let _ = extract.finalize();
++        });
++        assert!(result.is_err());
++        assert_eq!(take(), [(32, true)]);
++    }
++}
+--- upstream/hkdf/src/secret_bytes.rs
++++ patched/hkdf/src/secret_bytes.rs
+@@ -0,0 +1,100 @@
++//! Private ownership of named temporary outputs, not historical copies.
++use core::ops::Deref;
++
++pub(crate) struct SecretBytes<T: AsMut<[u8]>>(Option<T>);
++
++impl<T: AsMut<[u8]>> SecretBytes<T> {
++    pub(crate) fn new(value: T) -> Self {
++        Self(Some(value))
++    }
++
++    /// Transfer an output to its caller without erasing the returned value.
++    pub(crate) fn into_inner(mut self) -> T {
++        self.0.take().expect("owned output is present")
++    }
++}
++
++impl<T: AsMut<[u8]>> Deref for SecretBytes<T> {
++    type Target = T;
++
++    fn deref(&self) -> &Self::Target {
++        self.0.as_ref().expect("owned output is present")
++    }
++}
++
++impl<T: AsMut<[u8]>> Drop for SecretBytes<T> {
++    fn drop(&mut self) {
++        #[cfg(feature = "zeroize")]
++        if let Some(value) = self.0.as_mut() {
++            let bytes = value.as_mut();
++            zeroize::Zeroize::zeroize(bytes);
++            #[cfg(test)]
++            tests::record(bytes);
++        }
++    }
++}
++
++#[cfg(all(test, feature = "zeroize"))]
++pub(crate) mod tests {
++    extern crate std;
++    use super::SecretBytes;
++    use core::cell::{Cell, RefCell};
++    use std::{panic::AssertUnwindSafe, vec::Vec};
++
++    std::thread_local! {
++        static OBSERVATIONS: RefCell<Vec<(usize, bool)>> = const { RefCell::new(Vec::new()) };
++    }
++
++    pub(crate) fn record(bytes: &[u8]) {
++        // Inspect only a live, still-owned output and retain no secret bytes.
++        OBSERVATIONS.with_borrow_mut(|rows| rows.push((bytes.len(), bytes.iter().all(|b| *b == 0))));
++    }
++
++    pub(crate) fn take() -> Vec<(usize, bool)> {
++        OBSERVATIONS.with_borrow_mut(core::mem::take)
++    }
++
++    struct Witness<'a> {
++        bytes: [u8; 16],
++        erased: &'a Cell<bool>,
++    }
++
++    impl AsMut<[u8]> for Witness<'_> {
++        fn as_mut(&mut self) -> &mut [u8] {
++            &mut self.bytes
++        }
++    }
++
++    impl Drop for Witness<'_> {
++        fn drop(&mut self) {
++            self.erased.set(self.bytes.iter().all(|b| *b == 0));
++        }
++    }
++
++    #[test]
++    fn guard_erases_before_the_owned_value_drops_normally_and_on_unwind() {
++        let normal = Cell::new(false);
++        drop(SecretBytes::new(Witness {
++            bytes: [0xa5; 16],
++            erased: &normal,
++        }));
++        assert!(normal.get());
++
++        let unwind = Cell::new(false);
++        let result = std::panic::catch_unwind(AssertUnwindSafe(|| {
++            let _guard = SecretBytes::new(Witness {
++                bytes: [0xa5; 16],
++                erased: &unwind,
++            });
++            panic!("injected generic operation panic");
++        }));
++        assert!(result.is_err());
++        assert!(unwind.get());
++    }
++
++    #[test]
++    fn transfer_preserves_the_returned_output() {
++        let value = SecretBytes::new([0xa5; 32]).into_inner();
++        assert_eq!(value, [0xa5; 32]);
++    }
++}
+--- upstream/hkdf/tests/cleanup_compat.rs
++++ patched/hkdf/tests/cleanup_compat.rs
+@@ -0,0 +1,62 @@
++//! Compatibility checks for local temporary-output ownership changes.
++use hkdf::{GenericHkdf, HmacImpl};
++use hmac::{Hmac, SimpleHmac};
++use sha2::Sha256;
++
++fn rfc5869_case_one<H: HmacImpl>() {
++    let ikm = [0x0b; 22];
++    let salt = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
++    let info = [0xf0, 0xf1, 0xf2, 0xf3, 0xf4, 0xf5, 0xf6, 0xf7, 0xf8, 0xf9];
++    let expected_prk = [
++        0x07, 0x77, 0x09, 0x36, 0x2c, 0x2e, 0x32, 0xdf,
++        0x0d, 0xdc, 0x3f, 0x0d, 0xc4, 0x7b, 0xba, 0x63,
++        0x90, 0xb6, 0xc7, 0x3b, 0xb5, 0x0f, 0x9c, 0x31,
++        0x22, 0xec, 0x84, 0x4a, 0xd7, 0xc2, 0xb3, 0xe5,
++    ];
++    let expected_okm = [
++        0x3c, 0xb2, 0x5f, 0x25, 0xfa, 0xac, 0xd5, 0x7a,
++        0x90, 0x43, 0x4f, 0x64, 0xd0, 0x36, 0x2f, 0x2a,
++        0x2d, 0x2d, 0x0a, 0x90, 0xcf, 0x1a, 0x5a, 0x4c,
++        0x5d, 0xb0, 0x2d, 0x56, 0xec, 0xc4, 0xc5, 0xbf,
++        0x34, 0x00, 0x72, 0x08, 0xd5, 0xb8, 0x87, 0x18,
++        0x58, 0x65,
++    ];
++    let (prk, extracted) = GenericHkdf::<H>::extract(Some(&salt), &ikm);
++    assert_eq!(prk.as_slice(), expected_prk);
++    let mut output = [0; 42];
++    extracted.expand(&info, &mut output).unwrap();
++    assert_eq!(output, expected_okm);
++
++    let constructed = GenericHkdf::<H>::new(Some(&salt), &ikm);
++    constructed
++        .expand_multi_info(&[&info[..3], &info[3..]], &mut output)
++        .unwrap();
++    assert_eq!(output, expected_okm);
++}
++
++#[test]
++fn extract_constructor_and_split_info_preserve_rfc5869_case_one() {
++    rfc5869_case_one::<Hmac<Sha256>>();
++    rfc5869_case_one::<SimpleHmac<Sha256>>();
++}
++
++fn boundaries<H: HmacImpl>() {
++    let hkdf = GenericHkdf::<H>::new(None, b"public boundary test");
++    let mut full = [0; 255 * 32];
++    hkdf.expand(b"public info", &mut full).unwrap();
++    for length in [0, 1, 4, 32, 33, 42, full.len()] {
++        let mut out = vec![0xa5; length];
++        hkdf.expand_multi_info(&[b"public ", b"info"], &mut out).unwrap();
++        assert_eq!(out, full[..length]);
++    }
++    let mut oversized = [0xa5; 255 * 32 + 1];
++    assert!(hkdf.expand(b"public info", &mut oversized).is_err());
++    assert!(oversized.iter().all(|byte| *byte == 0xa5));
++    assert!(GenericHkdf::<H>::from_prk(&[7; 31]).is_err());
++}
++
++#[test]
++fn generic_lengths_and_rejections_are_unchanged() {
++    boundaries::<Hmac<Sha256>>();
++    boundaries::<SimpleHmac<Sha256>>();
++}
+--- upstream/ed25519-dalek/src/hazmat.rs
++++ patched/ed25519-dalek/src/hazmat.rs
+@@ -16,6 +16,7 @@
+ use core::fmt::Debug;
+ 
+ use crate::{InternalError, SignatureError};
++use crate::secret_scratch::{SecretBytes, SecretScalar};
+ 
+ use curve25519_dalek::scalar::{Scalar, clamp_integer};
+ 
+@@ -83,18 +84,21 @@
+     /// the second 32 bytes as a domain separator for hashing.
+     pub fn from_bytes(bytes: &[u8; 64]) -> Self {
+         // TODO: Use bytes.split_array_ref once it’s in MSRV.
+-        let mut scalar_bytes: [u8; 32] = [0u8; 32];
+-        let mut hash_prefix: [u8; 32] = [0u8; 32];
++        let mut scalar_bytes = SecretBytes::new([0u8; 32]);
++        let mut hash_prefix = SecretBytes::new([0u8; 32]);
+         scalar_bytes.copy_from_slice(&bytes[00..32]);
+         hash_prefix.copy_from_slice(&bytes[32..64]);
+ 
+         // For signing, we'll need the integer, clamped, and converted to a Scalar. See
+         // PureEdDSA.keygen in RFC 8032 Appendix A.
+-        let scalar = Scalar::from_bytes_mod_order(clamp_integer(scalar_bytes));
++        // Give the clamped return value its own owner too. Value-argument
++        // copies inside clamp/reduction remain outside this named-slot policy.
++        let clamped = SecretBytes::new(clamp_integer(*scalar_bytes));
++        let scalar = SecretScalar::new(Scalar::from_bytes_mod_order(*clamped));
+ 
+         ExpandedSecretKey {
+-            scalar,
+-            hash_prefix,
++            scalar: *scalar,
++            hash_prefix: *hash_prefix,
+         }
+     }
+ 
+--- upstream/ed25519-dalek/src/lib.rs
++++ patched/ed25519-dalek/src/lib.rs
+@@ -266,6 +266,7 @@
+ mod errors;
+ mod signature;
+ mod signing;
++mod secret_scratch;
+ mod verifying;
+ 
+ #[cfg(feature = "hazmat")]
+--- upstream/ed25519-dalek/src/secret_scratch.rs
++++ patched/ed25519-dalek/src/secret_scratch.rs
+@@ -0,0 +1,116 @@
++//! Private, feature-gated cleanup of named signing scratch slots.
++//!
++//! This does not erase prior moves, scalar backend scratch, or registers.
++
++use core::ops::{Deref, DerefMut};
++use curve25519_dalek::Scalar;
++#[cfg(feature = "zeroize")]
++use zeroize::Zeroize;
++
++/// Own an output without requiring `Array: Zeroize` through feature unification.
++pub(crate) struct SecretBytes<T: AsMut<[u8]>>(T);
++impl<T: AsMut<[u8]>> SecretBytes<T> {
++    #[inline]
++    pub(crate) fn new(value: T) -> Self {
++        Self(value)
++    }
++}
++impl<T: AsMut<[u8]>> Deref for SecretBytes<T> {
++    type Target = T;
++    fn deref(&self) -> &T {
++        &self.0
++    }
++}
++impl<T: AsMut<[u8]>> DerefMut for SecretBytes<T> {
++    fn deref_mut(&mut self) -> &mut T {
++        &mut self.0
++    }
++}
++impl<T: AsMut<[u8]>> Drop for SecretBytes<T> {
++    #[inline]
++    fn drop(&mut self) {
++        #[cfg(feature = "zeroize")]
++        self.0.as_mut().zeroize();
++    }
++}
++
++/// Keep Scalar's public Copy/Clone contract while cleaning this private owner.
++pub(crate) struct SecretScalar(Scalar);
++impl SecretScalar {
++    #[inline]
++    pub(crate) fn new(value: Scalar) -> Self {
++        Self(value)
++    }
++}
++impl Deref for SecretScalar {
++    type Target = Scalar;
++    fn deref(&self) -> &Scalar {
++        &self.0
++    }
++}
++impl Drop for SecretScalar {
++    #[inline]
++    fn drop(&mut self) {
++        #[cfg(feature = "zeroize")]
++        {
++            self.0.zeroize();
++            #[cfg(test)]
++            SCALAR_WIPES.with(|witness| {
++                let (count, all_zero) = witness.get();
++                witness.set((count + 1, all_zero && self.0.as_bytes().iter().all(|b| *b == 0)));
++            });
++        }
++    }
++}
++
++#[cfg(all(test, feature = "zeroize"))]
++std::thread_local! {
++    static SCALAR_WIPES: core::cell::Cell<(usize, bool)> = const { core::cell::Cell::new((0, true)) };
++}
++#[cfg(all(test, feature = "zeroize"))]
++pub(crate) fn reset_scalar_witness() {
++    SCALAR_WIPES.with(|witness| witness.set((0, true)));
++}
++#[cfg(all(test, feature = "zeroize"))]
++pub(crate) fn scalar_witness() -> (usize, bool) {
++    SCALAR_WIPES.with(core::cell::Cell::get)
++}
++
++#[cfg(all(test, feature = "zeroize"))]
++mod tests {
++    use super::*;
++    use std::{cell::Cell, rc::Rc};
++
++    struct ObservedBytes {
++        bytes: [u8; 64],
++        observed: Rc<Cell<bool>>,
++    }
++    impl AsMut<[u8]> for ObservedBytes {
++        fn as_mut(&mut self) -> &mut [u8] {
++            &mut self.bytes
++        }
++    }
++    impl Drop for ObservedBytes {
++        fn drop(&mut self) {
++            // The inner field is still alive here; no freed-memory inspection.
++            self.observed.set(self.bytes.iter().all(|b| *b == 0));
++        }
++    }
++    #[test]
++    fn named_bytes_are_zero_before_inner_drop_on_return_and_unwind() {
++        for unwind in [false, true] {
++            let observed = Rc::new(Cell::new(false));
++            let result = std::panic::catch_unwind(std::panic::AssertUnwindSafe(|| {
++                let _owned = SecretBytes::new(ObservedBytes {
++                    bytes: [0xA5; 64],
++                    observed: observed.clone(),
++                });
++                if unwind {
++                    panic!("injected scratch unwind");
++                }
++            }));
++            assert_eq!(result.is_err(), unwind);
++            assert!(observed.get());
++        }
++    }
++}
+--- upstream/ed25519-dalek/src/signing.rs
++++ patched/ed25519-dalek/src/signing.rs
+@@ -10,6 +10,7 @@
+ //! ed25519 signing keys.
+ 
+ use core::fmt::Debug;
++use crate::secret_scratch::{SecretBytes, SecretScalar};
+ 
+ #[cfg(feature = "pkcs8")]
+ use ed25519::pkcs8;
+@@ -863,7 +864,7 @@
+ impl From<&SecretKey> for ExpandedSecretKey {
+     #[allow(clippy::unwrap_used)]
+     fn from(secret_key: &SecretKey) -> ExpandedSecretKey {
+-        let hash = Sha512::default().chain_update(secret_key).finalize();
++        let hash = SecretBytes::new(Sha512::default().chain_update(secret_key).finalize());
+         ExpandedSecretKey::from_bytes(hash.as_ref())
+     }
+ }
+@@ -921,7 +922,7 @@
+         h.update(self.hash_prefix);
+         msg_update(&mut h)?;
+ 
+-        let r = Scalar::from_hash(h);
++        let r = SecretScalar::new(Scalar::from_hash(h));
+         let R: CompressedEdwardsY = EdwardsPoint::mul_base(&r).compress();
+ 
+         h = CtxDigest::new();
+@@ -930,7 +931,11 @@
+         msg_update(&mut h)?;
+ 
+         let k = Scalar::from_hash(h);
+-        let s: Scalar = (k * self.scalar) + r;
++        // k is public; k*a is key-dependent until combined into the public s.
++        // Borrowing avoids an explicit scalar copy at this call boundary, but
++        // scalar arithmetic's backend scratch remains a separate contract.
++        let key_term = SecretScalar::new(&k * &self.scalar);
++        let s: Scalar = &*key_term + &*r;
+ 
+         Ok(InternalSignature { R, s }.into())
+     }
+@@ -989,7 +994,7 @@
+             .chain_update(self.hash_prefix)
+             .chain_update(&prehash[..]);
+ 
+-        let r = Scalar::from_hash(h);
++        let r = SecretScalar::new(Scalar::from_hash(h));
+         let R: CompressedEdwardsY = EdwardsPoint::mul_base(&r).compress();
+ 
+         h = CtxDigest::new()
+@@ -1002,8 +1007,137 @@
+             .chain_update(&prehash[..]);
+ 
+         let k = Scalar::from_hash(h);
+-        let s: Scalar = (k * self.scalar) + r;
++        // k is public; k*a is key-dependent until combined into the public s.
++        // Borrowing avoids an explicit scalar copy at this call boundary, but
++        // scalar arithmetic's backend scratch remains a separate contract.
++        let key_term = SecretScalar::new(&k * &self.scalar);
++        let s: Scalar = &*key_term + &*r;
+ 
+         Ok(InternalSignature { R, s }.into())
+     }
+ }
++
++#[cfg(all(test, feature = "zeroize"))]
++mod secret_scratch_tests {
++    use super::*;
++    use crate::secret_scratch::{reset_scalar_witness, scalar_witness};
++    use core::cell::Cell;
++
++    fn fixture() -> (ExpandedSecretKey, VerifyingKey) {
++        let seed = [0x42; 32];
++        let key = SigningKey::from_bytes(&seed);
++        ((&seed).into(), key.verifying_key())
++    }
++
++    #[test]
++    fn nonce_owner_is_wiped_when_second_update_fails() {
++        let (expanded, public) = fixture();
++        let calls = Cell::new(0);
++        reset_scalar_witness();
++        let result = expanded.raw_sign_byupdate::<Sha512, _>(
++            |hash| {
++                calls.set(calls.get() + 1);
++                if calls.get() == 2 {
++                    return Err(InternalError::Verify.into());
++                }
++                Digest::update(hash, b"public fault-injection message");
++                Ok(())
++            },
++            &public,
++        );
++        assert!(result.is_err());
++        assert_eq!(calls.get(), 2);
++        // Observe the owned Scalar after zeroize and before its field is dropped.
++        assert_eq!(scalar_witness(), (1, true));
++    }
++
++    #[test]
++    fn nonce_owner_is_wiped_when_second_update_unwinds() {
++        let (expanded, public) = fixture();
++        let calls = Cell::new(0);
++        reset_scalar_witness();
++        let result = std::panic::catch_unwind(std::panic::AssertUnwindSafe(|| {
++            let _ = expanded.raw_sign_byupdate::<Sha512, _>(
++                |hash| {
++                    calls.set(calls.get() + 1);
++                    if calls.get() == 2 {
++                        panic!("injected second-update unwind");
++                    }
++                    Digest::update(hash, b"public fault-injection message");
++                    Ok(())
++                },
++                &public,
++            );
++        }));
++        assert!(result.is_err());
++        assert_eq!(calls.get(), 2);
++        assert_eq!(scalar_witness(), (1, true));
++    }
++
++    #[test]
++    fn signing_wipes_named_nonce_and_key_term_on_success() {
++        let (expanded, public) = fixture();
++        reset_scalar_witness();
++        let signature = expanded
++            .raw_sign_byupdate::<Sha512, _>(
++                |hash| {
++                    Digest::update(hash, b"public signing test");
++                    Ok(())
++                },
++                &public,
++            )
++            .expect("public test message signs");
++        assert_eq!(scalar_witness(), (2, true));
++        assert!(public.verify_strict(b"public signing test", &signature).is_ok());
++    }
++
++    #[test]
++    fn named_cleanup_preserves_rfc8032_empty_message_vector() {
++        let seed: [u8; 32] = hex::decode(
++            "9d61b19deffd5a60ba844af492ec2cc44449c5697b326919703bac031cae7f60",
++        )
++        .expect("RFC seed is hex")
++        .try_into()
++        .expect("RFC seed length");
++        let public = hex::decode(
++            "d75a980182b10ab7d54bfed3c964073a0ee172f3daa62325af021a68f707511a",
++        )
++        .expect("RFC public key is hex");
++        let expected = hex::decode(concat!(
++            "e5564300c360ac729086e2cc806e828a84877f1eb8e5d974d873e06522490155",
++            "5fb8821590a33bacc61e39701cf9b46bd25bf5f0595bbe24655141438e7a100b"
++        ))
++        .expect("RFC signature is hex");
++        let key = SigningKey::from_bytes(&seed);
++        assert_eq!(key.verifying_key().as_bytes().as_slice(), public);
++        let signature: Signature = key.try_sign(b"").expect("RFC message signs");
++        assert_eq!(signature.to_bytes().as_slice(), expected);
++        assert!(key.verifying_key().verify_strict(b"", &signature).is_ok());
++    }
++    #[cfg(feature = "digest")]
++    #[test]
++    fn named_cleanup_preserves_existing_rfc8032_prehash_vector() {
++        let seed: [u8; 32] = hex::decode(
++            "833fe62409237b9d62ec77587520911e9a759cec1d19755b7da901b96dca3d42",
++        )
++        .expect("RFC seed is hex")
++        .try_into()
++        .expect("RFC seed length");
++        let expected = hex::decode(concat!(
++            "98a70222f0b8121aa9d30f813d683f809e462b469c7ff87639499bb94e6dae41",
++            "31f85042463c2a355a2003d062adf5aaa10b8c61e636062aaad11c2a26083406"
++        ))
++        .expect("RFC prehash signature is hex");
++        let key = SigningKey::from_bytes(&seed);
++        let prehash = Sha512::new().chain_update(b"abc");
++        let signature = key
++            .sign_prehashed(prehash.clone(), None)
++            .expect("existing prehash API signs");
++        assert_eq!(signature.to_bytes().as_slice(), expected);
++        assert!(key
++            .verifying_key()
++            .verify_prehashed_strict(prehash, None, &signature)
++            .is_ok());
++    }
++
++}
+--- upstream/curve25519-dalek/src/lib.rs
++++ patched/curve25519-dalek/src/lib.rs
+@@ -63,6 +63,9 @@
+ // Scalar arithmetic mod l = 2^252 + ..., the order of the Ristretto group
+ pub mod scalar;
+ 
++#[cfg(feature = "digest")]
++mod secret_scratch;
++
+ // Point operations on the Montgomery form of Curve25519
+ pub mod montgomery;
+ 
+--- upstream/curve25519-dalek/src/scalar.rs
++++ patched/curve25519-dalek/src/scalar.rs
+@@ -664,9 +664,11 @@
+     where
+         D: Digest<OutputSize = U64>,
+     {
+-        let mut output = [0u8; 64];
+-        output.copy_from_slice(hash.finalize().as_slice());
+-        Scalar::from_bytes_mod_order_wide(&output)
++        // Own the digest output through reduction and clean it on return/unwind.
++        // This also removes the previous second 64-byte output copy. Reduction
++        // backend scratch and prior moves are not covered by this owner.
++        let output = crate::secret_scratch::SecretBytes::new(hash.finalize());
++        Scalar::from_bytes_mod_order_wide(output.as_ref())
+     }
+ 
+     /// Convert this `Scalar` to its underlying sequence of bytes.
+--- upstream/curve25519-dalek/src/secret_scratch.rs
++++ patched/curve25519-dalek/src/secret_scratch.rs
+@@ -0,0 +1,57 @@
++//! Private cleanup of the named hash output used by scalar reduction.
++//! Backend limbs, moved copies and registers are outside this slot's contract.
++use core::ops::Deref;
++#[cfg(feature = "zeroize")]
++use zeroize::Zeroize;
++
++pub(crate) struct SecretBytes<T: AsMut<[u8]>>(T);
++impl<T: AsMut<[u8]>> SecretBytes<T> {
++    #[inline]
++    pub(crate) fn new(value: T) -> Self {
++        Self(value)
++    }
++}
++impl<T: AsMut<[u8]>> Deref for SecretBytes<T> {
++    type Target = T;
++    fn deref(&self) -> &T {
++        &self.0
++    }
++}
++impl<T: AsMut<[u8]>> Drop for SecretBytes<T> {
++    #[inline]
++    fn drop(&mut self) {
++        #[cfg(feature = "zeroize")]
++        self.0.as_mut().zeroize();
++    }
++}
++
++#[cfg(all(test, feature = "zeroize"))]
++mod tests {
++    use super::*;
++    use std::{cell::Cell, rc::Rc};
++    struct ObservedBytes([u8; 64], Rc<Cell<bool>>);
++    impl AsMut<[u8]> for ObservedBytes {
++        fn as_mut(&mut self) -> &mut [u8] {
++            &mut self.0
++        }
++    }
++    impl Drop for ObservedBytes {
++        fn drop(&mut self) {
++            self.1.set(self.0.iter().all(|b| *b == 0));
++        }
++    }
++    #[test]
++    fn hash_output_is_zero_before_inner_drop_on_return_and_unwind() {
++        for unwind in [false, true] {
++            let observed = Rc::new(Cell::new(false));
++            let result = std::panic::catch_unwind(std::panic::AssertUnwindSafe(|| {
++                let _output = SecretBytes::new(ObservedBytes([0xA5; 64], observed.clone()));
++                if unwind {
++                    panic!("injected hash output unwind");
++                }
++            }));
++            assert_eq!(result.is_err(), unwind);
++            assert!(observed.get());
++        }
++    }
++}

@@ -5,6 +5,11 @@ I directly inspected pinned dependency sources and application calls. The Drop c
 we already have and the cleanup of outputs/nonces created briefly inside functions are separate contracts.
 This document designs explicit ownership for the latter; it declares neither a new disclosure vulnerability nor completed remediation.
 
+The subsequent implementation selected option 2 and strengthened named owned slots. Implementation code is
+`7f26fed5b8176ddd009d44264fb5e9ab08fb8d31`; scope and validation criteria are linked in the [implementation plan](implementation/dependency-scopes.md).
+We checked local functionality, the focused matrix, ASan, standalone collection, and selected
+Optimized erasure instructions were confirmed, but backend/past copies, registers, and actual new OCI/WSL runs are separate matters.
+
 ## Evidence Basis
 
 The baseline is `47c80c75cc93934836b2893905752fb3f13a0c23`. We pinned 13 Git inputs and
@@ -49,4 +54,5 @@ The [detailed design work packages](proposals/secret-scratch-ownership.md#implem
 describe dependency patch boundaries, additive APIs, feature propagation, validation, and rollback criteria.
 The first implementation candidate is private temporary cleanup in digest → HMAC → HKDF. Fixing the entire signing backend
 in one change or replacing the provider is outside the scope.
-This deliverable is a design and type control; production sources, Cargo.lock, and existing diagnostic gates were not changed.
+In the implementation following this design record, local dependency patches and both Cargo.lock files were connected together.
+Existing diagnostic gates, original warnings, and the determination that overall approval remains incomplete are preserved.

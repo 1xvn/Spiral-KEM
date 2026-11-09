@@ -1,0 +1,29 @@
+     Locking 28 packages to highest compatible versions
+   Compiling typenum v1.20.1
+   Compiling hybrid-array v0.4.15
+   Compiling cmov v0.5.4
+   Compiling zeroize v1.9.1
+   Compiling proc-macro2 v1.0.107
+   Compiling block-buffer v0.12.1
+   Compiling ctutils v0.4.8
+   Compiling crypto-common v0.2.2
+   Compiling const-oid v0.10.2
+   Compiling unicode-ident v1.0.27
+   Compiling quote v1.0.47
+   Compiling digest v0.11.3 (/workspace/spiral-secret-copy-cleanup-20261108/third_party/rustcrypto/digest)
+   Compiling semver v1.0.28
+   Compiling rustc_version v0.4.1
+   Compiling syn v2.0.119
+   Compiling curve25519-dalek v5.0.0 (/workspace/spiral-secret-copy-cleanup-20261108/third_party/rustcrypto/curve25519-dalek)
+   Compiling cpufeatures v0.3.1
+   Compiling cfg-if v1.0.5
+   Compiling curve25519-dalek-derive v0.1.1
+   Compiling subtle v2.6.1
+   Compiling signature v3.0.0
+   Compiling ed25519 v3.0.0
+   Compiling sha2 v0.11.1
+   Compiling hmac v0.13.0 (/workspace/spiral-secret-copy-cleanup-20261108/third_party/rustcrypto/hmac)
+   Compiling hkdf v0.13.0 (/workspace/spiral-secret-copy-cleanup-20261108/third_party/rustcrypto/hkdf)
+   Compiling ed25519-dalek v3.0.0 (/workspace/spiral-secret-copy-cleanup-20261108/third_party/rustcrypto/ed25519-dalek)
+   Compiling spiral-secret-copy-benchmark v0.0.0 (/workspace/secret-copy-benchmark/candidate)
+    Finished `release` profile [optimized] target(s) in 10.45s

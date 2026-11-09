@@ -96,6 +96,8 @@ def main():
         cargo_base = ['--locked', '--manifest-path', str(ROOT / 'protocol_rust/Cargo.toml'), '--target-dir', str(ROOT / 'protocol_rust/target'), '-j', '2']
         ignored = 5 if re.search(r'(?m)^host: (?:x86_64|aarch64)-unknown-linux-', version) else 0
         run('rust-unit', [cargo, 'test', '--lib', *cargo_base], 1200, rust_minimum=70, expected_ignored=ignored)
+        run('rust-scratch-cleanup', [python, str(ROOT / 'protocol_rust/validation/scratch_cleanup.py'),
+            '--cargo', cargo, '--output', str(out / 'scratch-cleanup')], 1200)
         run('rust-doc', [cargo, 'test', '--doc', *cargo_base], 300, rust_minimum=4)
         run('rust-release', [cargo, 'build', '--release', *cargo_base], 1200)
         binary = ROOT / 'protocol_rust/target/release/spiral-lab'

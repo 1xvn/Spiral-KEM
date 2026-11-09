@@ -1,8 +1,9 @@
 //! Public vectors and compile-time guards for the configured state cleanup.
 //!
 //! These gates cover the advertised SHA state and buffered-state owners. They
-//! do not establish that HMAC/HKDF local output arrays, old copies, registers or
-//! every backend temporary are erased. Those limits need source and linked-code
+//! do not establish that old copies, registers or every backend temporary are
+//! erased. Named local scratch now has scoped guards in pinned patches; those
+//! contracts need source, live-slot and linked-code
 //! review in addition to these functional tests.
 
 use hmac::{
@@ -94,6 +95,34 @@ fn rfc4231_hmac_sha256_sha512_short_and_long_keys() {
 
 #[test]
 fn rfc5869_sha256_extract_and_expand_with_and_without_salt() {
+    // Independent comparison for empty, partial, multi-block and maximum outputs.
+    struct Length(usize);
+    impl ring::hkdf::KeyType for Length {
+        fn len(&self) -> usize {
+            self.0
+        }
+    }
+    let key_material = [0x0b; 22];
+    let salt_bytes = [0x31; 13];
+    let parts = [b"public-".as_slice(), b"info".as_slice()];
+    let hkdf = hkdf::Hkdf::<Sha256>::new(Some(&salt_bytes), &key_material);
+    let reference =
+        ring::hkdf::Salt::new(ring::hkdf::HKDF_SHA256, &salt_bytes).extract(&key_material);
+    for length in [0, 1, 31, 32, 33, 42, 255 * 32] {
+        let mut ours = vec![0; length];
+        hkdf.expand_multi_info(&parts, &mut ours).unwrap();
+        let mut expected = vec![0; length];
+        reference
+            .expand(&parts, Length(length))
+            .unwrap()
+            .fill(&mut expected)
+            .unwrap();
+        assert_eq!(ours, expected, "independent HKDF length {length}");
+    }
+    assert!(hkdf
+        .expand(b"public-info", &mut vec![0; 255 * 32 + 1])
+        .is_err());
+
     // RFC 5869 appendix A.1 and A.3. The 42-byte output spans two HKDF blocks,
     // exercising the previous-block path without using production secrets.
     let ikm = [0x0b; 22];

@@ -1,0 +1,51 @@
+ELF Header:
+  Magic:   7f 45 4c 46 02 01 01 00 00 00 00 00 00 00 00 00 
+  Class:                             ELF64
+  Data:                              2's complement, little endian
+  Version:                           1 (current)
+  OS/ABI:                            UNIX - System V
+  ABI Version:                       0
+  Type:                              DYN (Position-Independent Executable file)
+  Machine:                           Advanced Micro Devices X86-64
+  Version:                           0x1
+  Entry point address:               0x88080
+  Start of program headers:          64 (bytes into file)
+  Start of section headers:          26656720 (bytes into file)
+  Flags:                             0x0
+  Size of this header:               64 (bytes)
+  Size of program headers:           56 (bytes)
+  Number of program headers:         12
+  Size of section headers:           64 (bytes)
+  Number of section headers:         44
+  Section header string table index: 42
+
+Program Headers:
+  Type           Offset   VirtAddr           PhysAddr           FileSiz  MemSiz   Flg Align
+  PHDR           0x000040 0x0000000000000040 0x0000000000000040 0x0002a0 0x0002a0 R   0x8
+  INTERP         0x0002e0 0x00000000000002e0 0x00000000000002e0 0x00001c 0x00001c R   0x1
+      [Requesting program interpreter: /lib64/ld-linux-x86-64.so.2]
+  LOAD           0x000000 0x0000000000000000 0x0000000000000000 0x087074 0x087074 R   0x1000
+  LOAD           0x087080 0x0000000000088080 0x0000000000088080 0x1b4a40 0x1b4a40 R E 0x1000
+  LOAD           0x23bac0 0x000000000023dac0 0x000000000023dac0 0x014468 0x014540 RW  0x1000
+  LOAD           0x24ff28 0x0000000000252f28 0x0000000000252f28 0x000ae8 0x000c20 RW  0x1000
+  TLS            0x23bac0 0x000000000023dac0 0x000000000023dac0 0x000098 0x000100 R   0x8
+  DYNAMIC        0x24e888 0x0000000000250888 0x0000000000250888 0x0001e0 0x0001e0 RW  0x8
+  GNU_RELRO      0x23bac0 0x000000000023dac0 0x000000000023dac0 0x014468 0x014540 R   0x1
+  GNU_EH_FRAME   0x062bac 0x0000000000062bac 0x0000000000062bac 0x004bec 0x004bec R   0x4
+  GNU_STACK      0x000000 0x0000000000000000 0x0000000000000000 0x000000 0x000000 RW  0
+  NOTE           0x0002fc 0x00000000000002fc 0x00000000000002fc 0x000044 0x000044 R   0x4
+
+ Section to Segment mapping:
+  Segment Sections...
+   00     
+   01     .interp 
+   02     .interp .note.ABI-tag .note.gnu.build-id .dynsym .gnu.version .gnu.version_r .gnu.hash .dynstr .rela.dyn .rela.plt .rodata .gcc_except_table .debug_gdb_scripts .eh_frame_hdr .eh_frame 
+   03     .text .init .fini .plt 
+   04     .tdata .fini_array .init_array .data.rel.ro .dynamic .got .got.plt .relro_padding 
+   05     .tm_clone_table .data .bss 
+   06     .tdata .tbss 
+   07     .dynamic 
+   08     .tdata .fini_array .init_array .data.rel.ro .dynamic .got .got.plt .relro_padding 
+   09     .eh_frame_hdr 
+   10     
+   11     .note.ABI-tag .note.gnu.build-id 

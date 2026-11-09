@@ -1,0 +1,133 @@
+{
+  "scope": "named owned slots only",
+  "changes": [
+    {
+      "path": "third_party/rustcrypto/digest/src/block_api/ct_variable.rs",
+      "status": "modified",
+      "upstream_sha256": "74b99085e49d87417e38b6bc56f344e789092e501936767c47efd42edd071a09",
+      "patched_sha256": "c444490a24f32222132d0962993e7d49dc25612a1c32d87ace7236e512333a82"
+    },
+    {
+      "path": "third_party/rustcrypto/digest/src/lib.rs",
+      "status": "modified",
+      "upstream_sha256": "c64f18b3afb199a64d5908459168af95a31f7deae5c73728970c20fe61c584e3",
+      "patched_sha256": "4d0699132298d84343e5d8e35af0a9cdc2b7fe771da8522d6a0cf9b1467d0953"
+    },
+    {
+      "path": "third_party/rustcrypto/digest/src/secret_scratch.rs",
+      "status": "added",
+      "upstream_sha256": null,
+      "patched_sha256": "b7f5e8452a1221cc20f4036f6756343990750e5a977a2a6f9c1cd9369b444212"
+    },
+    {
+      "path": "third_party/rustcrypto/hmac/src/block_api.rs",
+      "status": "modified",
+      "upstream_sha256": "168036c0f18746d5b1bbc11e3223d56f90c3b1a0ae1310d65124ec8d251797ad",
+      "patched_sha256": "2539eac05ab2943a2adbc4565fd1632d8037cdaadb46297b587fa1be30cc947d"
+    },
+    {
+      "path": "third_party/rustcrypto/hmac/src/lib.rs",
+      "status": "modified",
+      "upstream_sha256": "cbac1e22f04ba06017be297e6fa539bb092c2d69ae6f7d549b88644f67751b9f",
+      "patched_sha256": "e43f756f781e4ca65b8144bda1af7f329fedd8554bea4ead8d4ec0c92f23ba98"
+    },
+    {
+      "path": "third_party/rustcrypto/hmac/src/secret_scratch.rs",
+      "status": "added",
+      "upstream_sha256": null,
+      "patched_sha256": "a2af7ff5e3cb08ee69b42e2200cae8668ccd8277d172bc8c8ed7c158f8b84b69"
+    },
+    {
+      "path": "third_party/rustcrypto/hmac/src/simple.rs",
+      "status": "modified",
+      "upstream_sha256": "158b1393a95aceb0f827fb6428b7180ee487f06e5d108d3123b0d440b9983aec",
+      "patched_sha256": "58eb53230ef5212265b1eb2ee3c98f49af92ea540fdd150d4b0fe0ff6ca53e45"
+    },
+    {
+      "path": "third_party/rustcrypto/hmac/src/simple_reset.rs",
+      "status": "modified",
+      "upstream_sha256": "ff05494d407bdfa1cdc58fec8c7109233b281eecf6ba8fbefef7c50ccd4fbad7",
+      "patched_sha256": "8c42411576a4d175e748455a8426af202307f51229219d3d331902a94f9b2949"
+    },
+    {
+      "path": "third_party/rustcrypto/hmac/src/utils.rs",
+      "status": "modified",
+      "upstream_sha256": "c319019fd2a948f0afdab177281136358e423c2d25d2d11740a84d56da529bda",
+      "patched_sha256": "4a3e23225e0403c6287c896fab80d81ae30f68131a2f1f2dd593736e8a1745c9"
+    },
+    {
+      "path": "third_party/rustcrypto/hkdf/Cargo.toml",
+      "status": "modified",
+      "upstream_sha256": "98856c5ab681142c6199ab7c5375731444cb7e0c6b7de54754e60d86ffe81f6a",
+      "patched_sha256": "012be8b88a56538816f2f4716030a2c2832b4131671ff5dc88c5e92f9a825ce7"
+    },
+    {
+      "path": "third_party/rustcrypto/hkdf/Cargo.toml.orig",
+      "status": "modified",
+      "upstream_sha256": "d64b41df830dfae6cd9f1e33404d9d4a60f4ac65a6dad301ef58d2e6993b6fcd",
+      "patched_sha256": "54605e5e5cf183015f0247a9c7058122dcb2c7240e7e06b7f8901754788db309"
+    },
+    {
+      "path": "third_party/rustcrypto/hkdf/src/lib.rs",
+      "status": "modified",
+      "upstream_sha256": "11749cd8d24cd23569770f6b442ab537285139b8b7d103ab2d3abac0e5c892de",
+      "patched_sha256": "cc681ab37d17a7d80ca798d382da864a84fb7a56cf7f344c20f82a2c75ff7514"
+    },
+    {
+      "path": "third_party/rustcrypto/hkdf/src/secret_bytes.rs",
+      "status": "added",
+      "upstream_sha256": null,
+      "patched_sha256": "96f9769290e3651dffbc0eaaeda3b0c900ea3656ad2d597ecfed32df6e92e6cf"
+    },
+    {
+      "path": "third_party/rustcrypto/hkdf/tests/cleanup_compat.rs",
+      "status": "added",
+      "upstream_sha256": null,
+      "patched_sha256": "0ff53e9caa836904c2dba96aa1333010c7fdac41231098676c3b0cbd41a8c83b"
+    },
+    {
+      "path": "third_party/rustcrypto/ed25519-dalek/src/hazmat.rs",
+      "status": "modified",
+      "upstream_sha256": "3d52bcfc8d0693d9d3f237c8ef645d7d7995e56637a148260a0939acd44d855f",
+      "patched_sha256": "ced8d336e4b14491e26037ee1b15d3bfe1a21483974ea8d26e13d8d5ae8d3cd3"
+    },
+    {
+      "path": "third_party/rustcrypto/ed25519-dalek/src/lib.rs",
+      "status": "modified",
+      "upstream_sha256": "6fb99fb76beff381b060d79c922284d4f0b635e83b15c3bd8adbef747ab60e63",
+      "patched_sha256": "491825472bc24d6df8b883035bbd02962341e3fedfd19f265dfc87961773edc5"
+    },
+    {
+      "path": "third_party/rustcrypto/ed25519-dalek/src/secret_scratch.rs",
+      "status": "added",
+      "upstream_sha256": null,
+      "patched_sha256": "ca9a1e8d4a212b2cf3af1bcdc29844a1a60dbf6d0d108c1797a5cdb9c24c9d17"
+    },
+    {
+      "path": "third_party/rustcrypto/ed25519-dalek/src/signing.rs",
+      "status": "modified",
+      "upstream_sha256": "27d635df03ef8d525f755abb02c8915589b6df8e2b07820233ea8fea305c2e51",
+      "patched_sha256": "a0410d78ba9475c2955f5340721c1255eabda66ddbdf4aa9587a521bbb5c9c44"
+    },
+    {
+      "path": "third_party/rustcrypto/curve25519-dalek/src/lib.rs",
+      "status": "modified",
+      "upstream_sha256": "394e74759ed945aece878213d3cac44fb0696103b3a2428377fed0b499b78dde",
+      "patched_sha256": "0d08552980723e7ea77cdfbaad641cd5d65af1b6d12193d8e173bb6a30138cec"
+    },
+    {
+      "path": "third_party/rustcrypto/curve25519-dalek/src/scalar.rs",
+      "status": "modified",
+      "upstream_sha256": "38693b0c0554444f80592d7634acf7e291d22c90439dbec240541186f9162a28",
+      "patched_sha256": "febdd49390f2caafe71de8da2e00d2c0ced3c97fb023857edcbc2a3c6091dfb7"
+    },
+    {
+      "path": "third_party/rustcrypto/curve25519-dalek/src/secret_scratch.rs",
+      "status": "added",
+      "upstream_sha256": null,
+      "patched_sha256": "3248d45184f27f6fc87deecfb8b8e3f31004bc141229cd54edb2abe52d8b4958"
+    }
+  ],
+  "constant_time_approved": false,
+  "production_memory_passed": false
+}

@@ -34,7 +34,9 @@ confirmed 70 default tests and 160 Memcheck collection runs. Preserved 134 recei
 The [HMAC/HKDF·signature temporary-copy erasure design](SECRET_COPY_DESIGN.md) compares caller outputs,
 dependency-internal lifetime guards, and separate-provider alternatives. It recommends dependency-internal supplements retaining existing APIs/wire format,
 and documents implementation units, features, cleanup observations, and regression criteria.
-Currently this is design and type-compilation comparison, not an implemented erasure patch.
+After the design, we applied the [temporary secret copy cleanup implementation](SECRET_COPY_CLEANUP.md).
+We locally confirmed cleanup of specified owning slots, functionality, 23 focused tests, ASan, and optimized erasure instructions.
+confirmed. Backend, previous copies, registers, and new OCI/WSL runs are separate matters.
 
 The [Rust frame and ClientHello fuzzing guide](FUZZ_PARSERS.md) uses a separately pinned nightly and
 the disabled-by-default `parser-fuzz` entry points to check actual parser coverage and compare saved inputs

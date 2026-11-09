@@ -20,7 +20,7 @@ x509-parser = "0.18"
 # These stable versions add state cleanup; sha2's feature also covers dalek's hasher.
 sha2 = { version = "=0.11.1", features = ["zeroize"] }
 hmac = { version = "=0.13.0", features = ["zeroize"] }
-hkdf = "=0.13.0"
+hkdf = { version = "=0.13.0", features = ["zeroize"] }
 chacha20poly1305 = "0.10"
 # Unify the pinned AEAD dependency's Poly1305 state-cleanup feature.
 poly1305 = { version = "=0.8.0", features = ["zeroize"] }
@@ -53,3 +53,12 @@ strip = "none"
 [[bin]]
 name = "spiral-lab"
 path = "src/main.rs"
+
+# Scoped cleanup patches; the upstream versions and original source hashes are
+# recorded in third_party/rustcrypto/upstream-provenance.json.
+[patch.crates-io]
+digest = { path = "../third_party/rustcrypto/digest" }
+hmac = { path = "../third_party/rustcrypto/hmac" }
+hkdf = { path = "../third_party/rustcrypto/hkdf" }
+ed25519-dalek = { path = "../third_party/rustcrypto/ed25519-dalek" }
+curve25519-dalek = { path = "../third_party/rustcrypto/curve25519-dalek" }

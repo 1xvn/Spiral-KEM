@@ -1,4 +1,4 @@
-/target/
+/target
 /.venv/
 /local_validation.json
 /local_benchmark.json

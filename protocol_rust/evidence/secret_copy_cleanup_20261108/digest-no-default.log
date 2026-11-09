@@ -1,0 +1,7 @@
+     Locking 4 packages to highest compatible versions
+    Checking typenum v1.20.1
+    Checking hybrid-array v0.4.15
+    Checking crypto-common v0.2.2
+    Checking digest v0.11.3 (/workspace/spiral-secret-copy-cleanup-20261108/third_party/rustcrypto/digest)
+    Checking digest-minimal-feature-check v0.0.0 (/workspace/hash-cleanup-check/digest-min)
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 1.07s
