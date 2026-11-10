@@ -13,6 +13,7 @@ import subprocess
 import tarfile
 
 from build_key_operations_bundle import REPO, add, git, selected
+from source_revision import resolve_source_commit
 
 RUNTIME_BASE = "d2f19b9e733359f14331d7064a41697c851a1d80"
 COLLECTOR = "protocol_rust/validation/key_recovery_platform.py"
@@ -38,7 +39,8 @@ def main(argv=None):
     commit = git("rev-parse", "--verify", args.commit + "^{commit}").decode().strip()
     if not re.fullmatch(r"[a-f0-9]{40}", commit):
         parser.error("expected a full immutable Git commit")
-    subprocess.run(["git", "merge-base", "--is-ancestor", RUNTIME_BASE, commit], cwd=REPO, check=True)
+    runtime = resolve_source_commit(REPO, RUNTIME_BASE)
+    subprocess.run(["git", "merge-base", "--is-ancestor", runtime, commit], cwd=REPO, check=True)
     entries = git("ls-tree", "-r", "--name-only", "-z", commit).decode().split("\0")
     names = sorted(name for name in entries if name and selected_source(name))
     required = {COLLECTOR, "protocol_rust/validation/key_operations_platform.py",
@@ -66,7 +68,7 @@ def main(argv=None):
         raise ValueError("incomplete Git archive")
     files = {name: hashlib.sha256(source[name][0]).hexdigest() for name in names}
     manifest = (json.dumps({"schema": "spiral-key-operations-source/v1", "profile": "key-recovery",
-                           "source_commit": commit, "runtime_base_commit": RUNTIME_BASE,
+                           "source_commit": commit, "runtime_base_commit": runtime,
                            "files": files}, indent=2) + "\n").encode()
     manifest_hash = hashlib.sha256(manifest).hexdigest()
     template = git("show", commit + ":" + TEMPLATE).decode()
@@ -76,7 +78,7 @@ def main(argv=None):
     readme = f"""# Portable encrypted key recovery validation
 
 Immutable source commit: {commit}
-Runtime baseline commit: {RUNTIME_BASE}
+Runtime baseline commit: {runtime}
 Trusted SOURCE.json SHA256: {manifest_hash}
 Trusted collector SHA256: {files[COLLECTOR]}
 
@@ -121,7 +123,7 @@ environment label; it does not independently attest the cloud provider.
                     data, mode = source[path]
                     add(archive, name + "/source/" + path, data, mode)
     result = {"archive": str(output.resolve()), "root": name, "profile": "key-recovery",
-              "source_commit": commit, "runtime_base_commit": RUNTIME_BASE, "source_files": len(files),
+              "source_commit": commit, "runtime_base_commit": runtime, "source_files": len(files),
               "manifest_sha256": manifest_hash, "collector_sha256": files[COLLECTOR],
               "archive_sha256": hashlib.sha256(output.read_bytes()).hexdigest(), "bytes": output.stat().st_size}
     output.with_name("bundle.json").write_text(json.dumps(result, indent=2) + "\n")

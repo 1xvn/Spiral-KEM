@@ -195,7 +195,7 @@ def main():
     print('Output:',out,flush=True)
     build = out/'build'; build.mkdir()
     report = {'status':'incomplete','label':args.label,'suite':args.suite,'started_utc':datetime.now(timezone.utc).isoformat(),
-              'platform':platform.uname()._asdict(),'python':sys.version,'commands':[], 'targets':[],
+              'platform':dict(platform.uname()._asdict(), node="redacted"),'python':sys.version,'commands':[], 'targets':[],
               'requested_runs_per_target':args.runs,'seconds_per_target':args.seconds,
               'scope':coverage_evidence.profile_for(args.suite).scope+' Saved-corpus Python replay is finite; prebuilt-std coverage is not claimed.',
               'constant_time_approved':False,'security_approved':False}

@@ -114,7 +114,7 @@ def main():
     started = time.monotonic()
     report = {'status': 'incomplete', 'label': args.label,
               'started_utc': datetime.now(timezone.utc).isoformat(),
-              'platform': platform.uname()._asdict(), 'python': sys.version,
+              'platform': dict(platform.uname()._asdict(), node="redacted"), 'python': sys.version,
               'requested_runs': args.runs, 'seconds': args.seconds, 'commands': [],
               'scope': 'C ciphertext decode/one-use key lifecycle with public fixed seeds; finite saved-corpus Python differential replay; OpenSSL machine code not instrumented',
               'constant_time_approved': False, 'security_approved': False,

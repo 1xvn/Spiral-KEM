@@ -14,10 +14,21 @@ import json
 from pathlib import Path, PurePosixPath
 import re
 import subprocess
+import sys
 import tarfile
 import tomllib
 
 REPO = Path(__file__).resolve().parents[3]
+
+sys.path.insert(0, str(REPO / "tools"))
+from source_revision import resolve_source_commit
+
+PRIVACY_REDACTION = {
+    'identifying_values_removed': True,
+    'execution_repeated_after_redaction': False,
+    'static_review_of_sanitized_receipts': True,
+    'historical_source_commit_aliases': 'tools/source_commits.json',
+}
 SOURCE_COMMIT = '0b0db39d36b9a6f243486615ca2624a6b76ce02b'
 RUNTIME_BASE = '486697682beb66db1af05bdc45867d122a25d145'
 BUNDLE_HASH = 'ef11e2be82944e7cad1fea88cea09f4c8f2de1319367860786dbae4107f054bd'
@@ -85,7 +96,7 @@ def fixed_sources():
             and manifest['runtime_base_commit'] == RUNTIME_BASE, 'reference commit mismatch')
     files = manifest['files']
     require(len(files) == 318, 'reference source inventory changed')
-    git_tar = subprocess.check_output(['git', 'archive', '--format=tar', SOURCE_COMMIT, '--',
+    git_tar = subprocess.check_output(['git', 'archive', '--format=tar', resolve_source_commit(REPO, SOURCE_COMMIT), '--',
                                        *sorted(files)], cwd=REPO)
     observed = {}
     with tarfile.open(fileobj=io.BytesIO(git_tar)) as archive:
@@ -267,6 +278,7 @@ def review(path, label, raw_manifest, source_files, bundle, expected_rust, expec
                     or b'-----BEGIN EC PRIVATE KEY-----' in data for data in items.values()), 'private PEM found')
     return {'schema': 'spiral-key-operations-receipt-review/v1', 'status': 'accepted',
             'reviewer_sha256': sha(Path(__file__).read_bytes()),
+            'privacy_redaction': dict(PRIVACY_REDACTION),
             'archive': path.name, 'archive_sha256': sha(path.read_bytes()), 'archive_bytes': path.stat().st_size,
             'archive_members': len(items), 'result_hashes_verified': len(hashes),
             'source_commit': SOURCE_COMMIT, 'runtime_base_commit': RUNTIME_BASE,
@@ -305,6 +317,7 @@ def main():
         (args.output_dir / (label + '-review.json')).write_text(json.dumps(result, indent=2) + '\n')
     summary = {'schema': 'spiral-key-operations-two-platform-review/v1', 'status': 'accepted',
                'reviewer_sha256': sha(Path(__file__).read_bytes()),
+            'privacy_redaction': dict(PRIVACY_REDACTION),
                'reviewed_utc': datetime.now(timezone.utc).isoformat(), 'source_commit': SOURCE_COMMIT,
                'runtime_base_commit': RUNTIME_BASE, 'platform_key_operations_validation_complete': True,
                'source_files_verified_per_platform': len(source_files),

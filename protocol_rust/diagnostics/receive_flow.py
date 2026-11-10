@@ -140,7 +140,7 @@ def main():
       'diagnostic_complete':False,'constant_time_approved':False,'production_memory_passed':False,
       'binary':{'path':str(binary),'sha256':digest(binary),'bytes':binary.stat().st_size},
       'runner_sha256':digest(Path(__file__)),'public_contract':'AEAD authentication bit and CLOSE reason-range validity bit; DATA plaintext and full CLOSE value remain secret.',
-      'platform':platform.uname()._asdict(),'declassification_used':True,'receive_declassification_used':False,
+      'platform':dict(platform.uname()._asdict(), node="redacted"),'declassification_used':True,'receive_declassification_used':False,
       'derivation_wire_output_declassification_used':True,'suppression_used':False,'positive_controls':[],'cases':[],'errors':[]}
     prefix=[str(args.loader.resolve()),'--library-path',str(args.library_path.resolve())] if args.loader else []
     started=time.monotonic()

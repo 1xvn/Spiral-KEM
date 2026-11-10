@@ -12,11 +12,14 @@ import re
 import subprocess
 import tarfile
 
+from source_revision import resolve_source_commit
+
 REPO = Path(__file__).resolve().parents[1]
 RUNTIME_BASE = "4866976"
 
 
 def git(*arguments):
+    arguments = [resolve_source_commit(REPO, value) for value in arguments]
     return subprocess.check_output(["git", *arguments], cwd=REPO)
 
 

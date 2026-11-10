@@ -50,7 +50,7 @@ def main():
     started = time.monotonic()
     report = {'status': 'incomplete', 'label': args.label,
               'started_utc': datetime.now(timezone.utc).isoformat(),
-              'platform': platform.uname()._asdict(),
+              'platform': dict(platform.uname()._asdict(), node="redacted"),
               'python': sys.version, 'commands': [],
               'requested_runs': args.runs, 'seconds': args.seconds,
               'scope': 'C public-key parsing/shared encapsulation through deterministic test API; harness/oracle and shared OpenSSL library are not coverage-instrumented',

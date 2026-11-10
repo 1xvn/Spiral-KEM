@@ -490,7 +490,7 @@ def main():
         "failures": len(result.failures),
         "errors": len(result.errors),
         "skipped": len(result.skipped),
-        "platform": platform.uname()._asdict(),
+        "platform": dict(platform.uname()._asdict(), node="redacted"),
         "effective_uid": os.geteuid(),
         "binary_sha256": binary_hash,
         "runner_sha256": before["protocol_rust/key_ops_tests.py"],

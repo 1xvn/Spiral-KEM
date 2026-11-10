@@ -820,7 +820,7 @@ def main():
         "failures": len(result.failures),
         "errors": len(result.errors),
         "skipped": len(result.skipped),
-        "platform": platform.uname()._asdict(),
+        "platform": dict(platform.uname()._asdict(), node="redacted"),
         "effective_uid": os.geteuid(),
         "foreign_owner_checks_exercised": os.geteuid() == 0,
         "binary_sha256_before": binary_before,

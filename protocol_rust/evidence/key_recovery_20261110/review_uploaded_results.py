@@ -15,13 +15,24 @@ import json
 from pathlib import Path, PurePosixPath
 import re
 import subprocess
+import sys
 import tarfile
 import tomllib
 
 HERE = Path(__file__).resolve().parent
 REPO = HERE.parents[2]
+
+sys.path.insert(0, str(REPO / "tools"))
+from source_revision import resolve_source_commit
+
+PRIVACY_REDACTION = {
+    'identifying_values_removed': True,
+    'execution_repeated_after_redaction': False,
+    'static_review_of_sanitized_receipts': True,
+    'historical_source_commit_aliases': 'tools/source_commits.json',
+}
 HELPER = HERE.parent / 'key_operations_platforms_20261109/review_uploaded_results.py'
-HELPER_SHA256 = 'bdfb76603d13ae034302290d6d24e8805e2ff564d8315b1bbe57890f00bff54b'
+HELPER_SHA256 = '85a0940b5f1deeb082a4ec5369e3f31719db37b66467c0bf193552126709e256'
 if hashlib.sha256(HELPER.read_bytes()).hexdigest() != HELPER_SHA256:
     raise ValueError('trusted archive/JSON helper hash changed')
 _spec = importlib.util.spec_from_file_location('trusted_receipt_helpers', HELPER)
@@ -127,7 +138,7 @@ def fixed_sources():
             and manifest['profile'] == 'key-recovery', 'delivery source identity differs')
     files = manifest['files']
     require(len(files) == 324, 'delivery source inventory differs')
-    git_tar = subprocess.check_output(['git', 'archive', '--format=tar', SOURCE_COMMIT, '--',
+    git_tar = subprocess.check_output(['git', 'archive', '--format=tar', resolve_source_commit(REPO, SOURCE_COMMIT), '--',
                                        *sorted(files)], cwd=REPO)
     observed = {}
     with tarfile.open(fileobj=io.BytesIO(git_tar)) as archive:
@@ -357,6 +368,7 @@ def review(path, label, raw_manifest, sources, bundle, expected_rust, expected_n
 
 def reviewer_metadata():
     return {'reviewer_sha256': sha(Path(__file__).read_bytes()),
+            'privacy_redaction': dict(PRIVACY_REDACTION),
             'parser_regression_tests_sha256': sha((HERE / 'test_review_uploaded_results.py').read_bytes()),
             'trusted_helper': {'path': str(HELPER.relative_to(REPO)), 'sha256': HELPER_SHA256,
                                'functions': ['archive_files', 'decode', 'sha', 'require']},

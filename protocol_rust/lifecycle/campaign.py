@@ -224,7 +224,7 @@ def main():
     env=build_environment(toolchain,out/'rustc-invocations.jsonl')
     env['PYTHONDONTWRITEBYTECODE']='1'
     report={'status':'incomplete','label':args.label,'rounds':args.rounds,'seed':args.seed,
-      'started_utc':datetime.now(timezone.utc).isoformat(),'platform':platform.uname()._asdict(),
+      'started_utc':datetime.now(timezone.utc).isoformat(),'platform':dict(platform.uname()._asdict(), node="redacted"),
       'commands':[],'loop_rounds':[],'scope':'Finite synthetic channel-loop and real authenticated TLS lifecycle checks. No runtime coverage, full memory, constant-time or cryptographic approval.',
       'constant_time_approved':False,'security_approved':False}
     start=time.monotonic()

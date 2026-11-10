@@ -160,7 +160,7 @@ def host_evidence(label, *, uname=None, uid=None, proc_version=None):
     else:
         require(label == "local", "unknown platform label")
     return {"requested_platform": label, "evidence_label": "local" if label == "local" else label,
-            "architecture": arch, "uname": uname._asdict(), "proc_version": proc_version.strip(),
+            "architecture": arch, "uname": dict(uname._asdict(), node="redacted"), "proc_version": proc_version.strip(),
             "effective_uid": uid, "microsoft_kernel_evidence": wsl_kernel,
             "oci_provider_attested": False}
 

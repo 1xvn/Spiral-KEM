@@ -46,7 +46,7 @@ def main():
           'CARGO_BUILD_TARGET','CARGO_TARGET_DIR','VALGRIND_OPTS') or name.startswith(('CARGO_PROFILE_','SPIRAL_RX_TRACE_','SPIRAL_DERIVATION_')):env.pop(name,None)
     env.update(LC_ALL='C',RUSTUP_TOOLCHAIN='1.99.1',PYTHONDONTWRITEBYTECODE='1')
     report={'schema':'spiral-secret-flow-campaign/v1','diagnostic_complete':False,
-      'constant_time_approved':False,'production_memory_passed':False,'platform':platform.uname()._asdict(),
+      'constant_time_approved':False,'production_memory_passed':False,'platform':dict(platform.uname()._asdict(), node="redacted"),
       'started_utc':datetime.now(timezone.utc).isoformat(),'commands':[],'errors':[],'runner_sha256':digest(Path(__file__))}
     def run(label,command,timeout):
         print(label,flush=True)
