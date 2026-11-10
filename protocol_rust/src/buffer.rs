@@ -80,3 +80,53 @@ impl Drop for Buffer {
         }
     }
 }
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    use std::{
+        future::Future,
+        sync::atomic::{AtomicUsize, Ordering},
+        task::{Context, Poll, Wake, Waker},
+    };
+
+    #[derive(Default)]
+    struct WakeCount(AtomicUsize);
+    impl Wake for WakeCount {
+        fn wake(self: Arc<Self>) {
+            self.0.fetch_add(1, Ordering::Relaxed);
+        }
+    }
+
+    #[test]
+    fn canceled_waiter_preserves_return_notification_and_pool_bound() {
+        let pool = Pool::new();
+        let mut held: Vec<_> = (0..18).map(|_| pool.take().unwrap()).collect();
+        let wake_count = Arc::new(WakeCount::default());
+        let waker = Waker::from(wake_count.clone());
+        let mut context = Context::from_waker(&waker);
+        let mut canceled = Box::pin(pool.acquire());
+        let mut waiting = Box::pin(pool.acquire());
+        assert!(matches!(canceled.as_mut().poll(&mut context), Poll::Pending));
+        assert!(matches!(waiting.as_mut().poll(&mut context), Poll::Pending));
+        drop(canceled);
+        assert_eq!(pool.state.lock().unwrap().allocated, 18);
+        assert!(matches!(pool.take(), Err(Error::QueueFull)));
+
+        drop(held.pop());
+        assert!(wake_count.0.load(Ordering::Relaxed) > 0);
+        let returned = match waiting.as_mut().poll(&mut context) {
+            Poll::Ready(Ok(buffer)) => buffer,
+            _ => panic!("returned buffer did not wake the surviving waiter"),
+        };
+        assert!(returned.data.is_empty());
+        assert_eq!(returned.data.capacity(), CAPACITY);
+        assert!(matches!(pool.take(), Err(Error::QueueFull)));
+        drop(waiting);
+        drop(returned);
+        drop(held);
+        let state = pool.state.lock().unwrap();
+        assert_eq!(state.allocated, 18);
+        assert_eq!(state.free.len(), 18);
+    }
+}

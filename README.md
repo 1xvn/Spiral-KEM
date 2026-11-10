@@ -73,6 +73,8 @@ The benchmark compares the baseline, OPT1, OPT2 compact API, and the educational
 
 The recorded functional suite includes Python protocol tests, C regressions, Rust unit/doc tests, key-operation/recovery tests, and real TLS scenarios. Platform evidence includes OCI ARM64 and WSL x86-64 runs. Parser/record fuzzing, lifecycle tests, ASan, Memcheck, and secret-flow diagnostics are documented alongside their exact scopes and limitations.
 
+The [bounded load campaign](protocol_rust/LOAD_TESTING.md) exercises sustained concurrent loopback TLS, admission rejection and recovery, session rotation, and process-resource observations with explicit scope and stop thresholds.
+
 Use the [CI guide](ci/README.md), [Rust validation record](protocol_rust/VALIDATION.md), and [regression map](protocol_rust/REGRESSION_MAP.md) to distinguish individual historical runs from the current combined suite.
 
 Open work includes independent cryptanalysis, independent validation and extension of the recorded attack-cost and decryption-failure estimates for the research parameters, constant-time assessment across supported targets, and complete secret-copy/lifecycle coverage. Cleanup observations for named buffers do not imply erasure of every compiler temporary, backend limb, register, TLS-provider copy, or OS copy. Original diagnostic failures remain relevant; a passing functional run does not override them.

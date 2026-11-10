@@ -81,6 +81,7 @@ def main():
     try:
         run('python-protocol', [python, '-m', 'unittest', 'discover', '-s', 'protocol_v01/tests', '-v'], 300, minimum=85)
         run('diagnostic-parser', [python, '-m', 'unittest', 'discover', '-s', 'protocol_rust/diagnostics', '-p', 'test_*.py', '-v'], 60, minimum=24)
+        run('load-collector-contracts', [python, '-m', 'unittest', 'discover', '-s', 'protocol_rust/validation', '-p', 'test_load_campaign.py', '-v'], 60, minimum=18)
         run('native-kem', ['make', '-C', 'native_research', 'check', 'PYTHON=' + python], 300, minimum=9)
         if not cargo:
             raise RuntimeError('cargo executable not found')
@@ -95,7 +96,8 @@ def main():
             raise RuntimeError('CI requires Cargo 1.99.1')
         cargo_base = ['--locked', '--manifest-path', str(ROOT / 'protocol_rust/Cargo.toml'), '--target-dir', str(ROOT / 'protocol_rust/target'), '-j', '2']
         ignored = 5 if re.search(r'(?m)^host: (?:x86_64|aarch64)-unknown-linux-', version) else 0
-        run('rust-unit', [cargo, 'test', '--lib', *cargo_base], 1200, rust_minimum=94, expected_ignored=ignored)
+        run('rust-unit', [cargo, 'test', '--lib', *cargo_base], 1200, rust_minimum=100, expected_ignored=ignored)
+        run('rust-admission-boundaries', [cargo, 'test', '--test', 'admission_boundaries', *cargo_base], 60, rust_minimum=2)
         run('rust-scratch-cleanup', [python, str(ROOT / 'protocol_rust/validation/scratch_cleanup.py'),
             '--cargo', cargo, '--output', str(out / 'scratch-cleanup')], 1200)
         run('rust-doc', [cargo, 'test', '--doc', *cargo_base], 300, rust_minimum=4)

@@ -79,6 +79,8 @@ enum Request {
     Decaps(u64, Box<[u8; 1160]>),
     #[cfg(test)]
     Hold(Duration),
+    #[cfg(test)]
+    Wait(mpsc::Receiver<()>),
 }
 enum Response {
     Generated(u64, Box<[u8; 808]>),
@@ -170,6 +172,11 @@ fn worker(rx: mpsc::Receiver<Job>, stop: Arc<AtomicBool>, stats: Arc<Counters>) 
                 #[cfg(test)]
                 Request::Hold(d) => {
                     thread::sleep(d);
+                    Ok(Response::Held)
+                }
+                #[cfg(test)]
+                Request::Wait(release) => {
+                    let _ = release.recv();
                     Ok(Response::Held)
                 }
             }
@@ -599,5 +606,111 @@ mod tests {
         assert_eq!(pool.metrics().live_keys, 0);
         assert_eq!(pool.inner.key_slots.available_permits(), 32);
         drop(leases);
+    }
+
+    #[tokio::test]
+    async fn global_32_job_cap_retains_canceled_queue_permits_until_drain() {
+        use std::{future::Future, task::Context, task::Poll, task::Waker};
+
+        let pool = KemPool::new(4).unwrap();
+        let end = Instant::now() + Duration::from_secs(30);
+        let mut release_workers = Vec::new();
+        for worker in 0..4 {
+            let (release, wait) = mpsc::channel();
+            let (reply, _answer) = oneshot::channel();
+            let (started, begin) = oneshot::channel();
+            let slot = pool.inner.slots.clone().try_acquire_owned().unwrap();
+            // Park native workers without sleeps or the normal 100 ms queue
+            // deadline. Dropping these senders also releases workers on panic.
+            assert!(pool.inner.senders[worker]
+                .try_send(Job {
+                    request: Request::Wait(wait),
+                    reply,
+                    started,
+                    cancel: Arc::new(AtomicBool::new(false)),
+                    deadline: end,
+                    queue_deadline: end,
+                    _slot: slot,
+                })
+                .is_ok());
+            release_workers.push(release);
+            tokio::time::timeout(Duration::from_secs(5), begin)
+                .await
+                .unwrap()
+                .unwrap();
+        }
+        tokio::time::timeout(Duration::from_secs(5), async {
+            while pool.metrics().executed != 4 {
+                tokio::task::yield_now().await;
+            }
+        })
+        .await
+        .unwrap();
+
+        let mut queued: Vec<_> = (0..28).map(|_| Box::pin(pool.generate(end))).collect();
+        let mut context = Context::from_waker(Waker::noop());
+        for generation in &mut queued {
+            assert!(matches!(
+                generation.as_mut().poll(&mut context),
+                Poll::Pending
+            ));
+        }
+        assert_eq!(pool.inner.slots.available_permits(), 0);
+        assert_eq!(pool.inner.key_slots.available_permits(), 4);
+        assert!(matches!(pool.generate(end).await, Err(Error::QueueFull)));
+        assert_eq!(pool.metrics().rejected, 1);
+        assert_eq!(pool.metrics().live_keys, 0);
+        assert_eq!(pool.inner.key_slots.available_permits(), 4);
+
+        drop(queued);
+        assert_eq!(pool.inner.slots.available_permits(), 0);
+        assert_eq!(pool.inner.key_slots.available_permits(), 4);
+        drop(release_workers);
+        tokio::time::timeout(Duration::from_secs(5), async {
+            while pool.inner.slots.available_permits() != 32
+                || pool.inner.key_slots.available_permits() != 32
+            {
+                tokio::task::yield_now().await;
+            }
+        })
+        .await
+        .unwrap();
+        assert_eq!(pool.metrics().executed, 4);
+        assert_eq!(pool.metrics().live_keys, 0);
+        let (_, lease) = pool.generate(end).await.unwrap();
+        drop(lease);
+        clean(&pool).await;
+        pool.shutdown().await.unwrap();
+    }
+
+    #[tokio::test]
+    async fn live_key_cap_is_shared_across_workers_and_reusable_after_drop() {
+        let pool = KemPool::new(4).unwrap();
+        let end = Instant::now() + Duration::from_secs(30);
+        let mut leases = Vec::new();
+        for live in 1..=32 {
+            leases.push(pool.generate(end).await.unwrap().1);
+            assert_eq!(pool.metrics().live_keys, live);
+        }
+        assert_eq!(pool.inner.key_slots.available_permits(), 0);
+        assert!(matches!(pool.generate(end).await, Err(Error::QueueFull)));
+        assert_eq!(pool.metrics().executed, 32);
+        assert_eq!(pool.metrics().live_keys, 32);
+
+        drop(leases.pop());
+        tokio::time::timeout(Duration::from_secs(5), async {
+            while pool.metrics().live_keys != 31 || pool.inner.key_slots.available_permits() != 1 {
+                tokio::task::yield_now().await;
+            }
+        })
+        .await
+        .unwrap();
+        leases.push(pool.generate(end).await.unwrap().1);
+        assert_eq!(pool.metrics().live_keys, 32);
+        assert_eq!(pool.inner.key_slots.available_permits(), 0);
+        drop(leases);
+        clean(&pool).await;
+        pool.shutdown().await.unwrap();
+        assert_eq!(pool.inner.key_slots.available_permits(), 32);
     }
 }
