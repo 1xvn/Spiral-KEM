@@ -148,3 +148,7 @@ expiry, or a genuine slow reader. Session rotation deliberately respects those
 limits. Existing lifecycle/backpressure tests are separate evidence. A 30-minute
 run is not a day-long soak, memory-erasure proof, cryptographic security assessment
 or approval to deploy Spiral KEM as a service.
+
+## Recorded runs
+
+- [Local x86-64, 30 minutes, 64 authenticated connections](evidence/load_20261111/README.md): finite combined-endpoint results and raw provenance.

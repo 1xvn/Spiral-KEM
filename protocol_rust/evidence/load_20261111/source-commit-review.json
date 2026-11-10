@@ -1,0 +1,9 @@
+{
+  "status": "passed",
+  "matching_source_commit": "04ce7d7a7deaea1ca8e6c215bd735fd83e88fd23",
+  "executed_base_commit": "d611077b2c08662b2cc2e63673bb5ea0081ce9be",
+  "executed_working_tree_dirty": true,
+  "source_files_verified": 162,
+  "source_tree_sha256": "908aedf7ab2f74579cef539aa264f14e7433117b194e18edef42f8fd935ac3a7",
+  "note": "The campaign executed the recorded dirty working tree; all selected source bytes were subsequently committed unchanged. This does not relabel the historical execution as having started at the later commit."
+}

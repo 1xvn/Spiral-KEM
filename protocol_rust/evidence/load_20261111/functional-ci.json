@@ -1,0 +1,281 @@
+{
+  "started_utc": "2026-11-10T23:21:49.418625+00:00",
+  "status": "passed",
+  "scope": "functional checks only; not memory or constant-time approval",
+  "checks": [
+    {
+      "name": "python-protocol",
+      "command": [
+        "/workspace/spiral-protocol-v01/venv/bin/python",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "protocol_v01/tests",
+        "-v"
+      ],
+      "timeout_seconds": 300,
+      "passed": true,
+      "exit": 0,
+      "log": "python-protocol.log",
+      "tests_run": 85
+    },
+    {
+      "name": "diagnostic-parser",
+      "command": [
+        "/workspace/spiral-protocol-v01/venv/bin/python",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "protocol_rust/diagnostics",
+        "-p",
+        "test_*.py",
+        "-v"
+      ],
+      "timeout_seconds": 60,
+      "passed": true,
+      "exit": 0,
+      "log": "diagnostic-parser.log",
+      "tests_run": 24
+    },
+    {
+      "name": "load-collector-contracts",
+      "command": [
+        "/workspace/spiral-protocol-v01/venv/bin/python",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "protocol_rust/validation",
+        "-p",
+        "test_load_campaign.py",
+        "-v"
+      ],
+      "timeout_seconds": 60,
+      "passed": true,
+      "exit": 0,
+      "log": "load-collector-contracts.log",
+      "tests_run": 18
+    },
+    {
+      "name": "native-kem",
+      "command": [
+        "make",
+        "-C",
+        "native_research",
+        "check",
+        "PYTHON=/workspace/spiral-protocol-v01/venv/bin/python"
+      ],
+      "timeout_seconds": 300,
+      "passed": true,
+      "exit": 0,
+      "log": "native-kem.log",
+      "tests_run": 9
+    },
+    {
+      "name": "rustc-version",
+      "command": [
+        "/workspace/rust48-tools/rust/bin/rustc",
+        "-Vv"
+      ],
+      "timeout_seconds": 30,
+      "passed": true,
+      "exit": 0,
+      "log": "rustc-version.log"
+    },
+    {
+      "name": "cargo-version",
+      "command": [
+        "/workspace/rust48-tools/rust/bin/cargo",
+        "-V"
+      ],
+      "timeout_seconds": 30,
+      "passed": true,
+      "exit": 0,
+      "log": "cargo-version.log"
+    },
+    {
+      "name": "rust-unit",
+      "command": [
+        "/workspace/rust48-tools/rust/bin/cargo",
+        "test",
+        "--lib",
+        "--locked",
+        "--manifest-path",
+        "/workspace/Spiral-KEM-public-release/protocol_rust/Cargo.toml",
+        "--target-dir",
+        "/workspace/Spiral-KEM-public-release/protocol_rust/target",
+        "-j",
+        "2"
+      ],
+      "timeout_seconds": 1200,
+      "passed": true,
+      "exit": 0,
+      "log": "rust-unit.log",
+      "test_groups": [
+        {
+          "passed": 100,
+          "failed": 0,
+          "ignored": 5
+        }
+      ]
+    },
+    {
+      "name": "rust-admission-boundaries",
+      "command": [
+        "/workspace/rust48-tools/rust/bin/cargo",
+        "test",
+        "--test",
+        "admission_boundaries",
+        "--locked",
+        "--manifest-path",
+        "/workspace/Spiral-KEM-public-release/protocol_rust/Cargo.toml",
+        "--target-dir",
+        "/workspace/Spiral-KEM-public-release/protocol_rust/target",
+        "-j",
+        "2"
+      ],
+      "timeout_seconds": 60,
+      "passed": true,
+      "exit": 0,
+      "log": "rust-admission-boundaries.log",
+      "test_groups": [
+        {
+          "passed": 2,
+          "failed": 0,
+          "ignored": 0
+        }
+      ]
+    },
+    {
+      "name": "rust-scratch-cleanup",
+      "command": [
+        "/workspace/spiral-protocol-v01/venv/bin/python",
+        "/workspace/Spiral-KEM-public-release/protocol_rust/validation/scratch_cleanup.py",
+        "--cargo",
+        "/workspace/rust48-tools/rust/bin/cargo",
+        "--output",
+        "/workspace/spiral-load-20261111/full-ci/scratch-cleanup"
+      ],
+      "timeout_seconds": 1200,
+      "passed": true,
+      "exit": 0,
+      "log": "rust-scratch-cleanup.log"
+    },
+    {
+      "name": "rust-doc",
+      "command": [
+        "/workspace/rust48-tools/rust/bin/cargo",
+        "test",
+        "--doc",
+        "--locked",
+        "--manifest-path",
+        "/workspace/Spiral-KEM-public-release/protocol_rust/Cargo.toml",
+        "--target-dir",
+        "/workspace/Spiral-KEM-public-release/protocol_rust/target",
+        "-j",
+        "2"
+      ],
+      "timeout_seconds": 300,
+      "passed": true,
+      "exit": 0,
+      "log": "rust-doc.log",
+      "test_groups": [
+        {
+          "passed": 6,
+          "failed": 0,
+          "ignored": 0
+        }
+      ]
+    },
+    {
+      "name": "rust-release",
+      "command": [
+        "/workspace/rust48-tools/rust/bin/cargo",
+        "build",
+        "--release",
+        "--locked",
+        "--manifest-path",
+        "/workspace/Spiral-KEM-public-release/protocol_rust/Cargo.toml",
+        "--target-dir",
+        "/workspace/Spiral-KEM-public-release/protocol_rust/target",
+        "-j",
+        "2"
+      ],
+      "timeout_seconds": 1200,
+      "passed": true,
+      "exit": 0,
+      "log": "rust-release.log"
+    },
+    {
+      "name": "rust-key-operations",
+      "command": [
+        "/workspace/spiral-protocol-v01/venv/bin/python",
+        "/workspace/Spiral-KEM-public-release/protocol_rust/key_ops_tests.py",
+        "--binary",
+        "/workspace/Spiral-KEM-public-release/protocol_rust/target/release/spiral-lab",
+        "--json",
+        "/workspace/spiral-load-20261111/full-ci/key-operations.json"
+      ],
+      "timeout_seconds": 300,
+      "passed": true,
+      "exit": 0,
+      "log": "rust-key-operations.log",
+      "tests_run": 11,
+      "structured_tests": {
+        "tests": 11,
+        "failures": 0,
+        "errors": 0
+      }
+    },
+    {
+      "name": "rust-key-recovery",
+      "command": [
+        "/workspace/spiral-protocol-v01/venv/bin/python",
+        "/workspace/Spiral-KEM-public-release/protocol_rust/key_recovery_tests.py",
+        "--binary",
+        "/workspace/Spiral-KEM-public-release/protocol_rust/target/release/spiral-lab",
+        "--json",
+        "/workspace/spiral-load-20261111/full-ci/key-recovery.json"
+      ],
+      "timeout_seconds": 300,
+      "passed": true,
+      "exit": 0,
+      "log": "rust-key-recovery.log",
+      "tests_run": 20,
+      "structured_tests": {
+        "tests": 20,
+        "failures": 0,
+        "errors": 0
+      }
+    },
+    {
+      "name": "rust-tls",
+      "command": [
+        "/workspace/spiral-protocol-v01/venv/bin/python",
+        "/workspace/Spiral-KEM-public-release/protocol_rust/adversarial.py",
+        "--binary",
+        "/workspace/Spiral-KEM-public-release/protocol_rust/target/release/spiral-lab",
+        "--json",
+        "/workspace/spiral-load-20261111/full-ci/interop.json"
+      ],
+      "timeout_seconds": 600,
+      "passed": true,
+      "exit": 0,
+      "log": "rust-tls.log",
+      "tests_run": 35,
+      "structured_tests": {
+        "tests": 35,
+        "failures": 0,
+        "errors": 0
+      }
+    }
+  ],
+  "memory_checked": false,
+  "constant_time_approved": false,
+  "runner_sha256": "0df84d15114a51d9642f28cd27b4b0802d17b5df804d362a35a73835aa93e8d4",
+  "binary_sha256": "260b336a1bca2ae675f59dc7cd6cfa227fbc721d4059b6bead9cb51ef427c98e",
+  "cargo_lock_sha256": "e3e37d684e40ae9b1a977cba14de249d5856442ae29e707259c4e6232b8b8436",
+  "finished_utc": "2026-11-10T23:24:30.280205+00:00"
+}
