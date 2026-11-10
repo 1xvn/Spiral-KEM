@@ -1,101 +1,82 @@
-# Spiral KEM Research Repository
+# Spiral KEM
 
-This repository organizes research code, experimental materials, and documentation for each version of Spiral KEM.
+Spiral KEM is an experimental key encapsulation mechanism and a research platform for studying lattice-style arithmetic, lossless wire encodings, authenticated channels, and secret-state ownership.
 
+The current Python implementation is **v0.3.1 OPT2**. The repository also includes a C implementation, a Python TLS protocol, and a Rust/Tokio/rustls channel backed by the C KEM.
 
+> **Research use only.** Spiral KEM has no established security level or IND-CCA proof. It is not ML-KEM and has not been approved for protecting real data. Functional tests, benchmarks, and fuzzing do not establish cryptographic security or constant-time execution.
 
-> **Research implementation.** This is not cryptography validated for production services; do not use it to protect real secrets. Constant-time behavior is also not guaranteed for the Python implementation.
+## How the KEM works
 
-## Citation and Usage
+The v0.3 family operates over `R_q = Z_q[x]/(x^n + 1)`. Its default research parameters are `n=256`, `k=2`, `q=3329`, `eta=1`, and a 32-byte shared key.
 
-> **Request to refrain from citation · Unauthorized reuse prohibited**
-> The researcher does not wish the research results in this repository to be cited or excerpted in other papers, presentations, websites, or projects. Please contact the repository maintainer before considering citation or excerpts. **This request does not, however, prohibit or prevent quotation permitted under applicable law.**
->
-> Making the repository public does not grant an open-source license to its original research code or documents. The copyright holder reserves the rights to works without separate permission, and unauthorized copying, modification, and redistribution are not permitted. Actions permitted under the GitHub Terms of Service and applicable law are exceptions. The respective copyrights and licenses of third-party code and materials take precedence.
+- **Key generation:** expand a public matrix `A` from a seed, sample small secret/error vectors `s,e`, and publish `t = A s + e` with the matrix seed.
+- **Encapsulation:** sample a message, derive encryption randomness from that message and the public-key hash, and form `u = A^T r + e1` and `v = t^T r + e2 + Encode(m)`.
+- **Decapsulation:** decode `v - s^T u`, deterministically re-encrypt the recovered message, and compare canonical ciphertext encodings. Valid encodings that fail verification produce a deterministic fallback key; malformed inputs are rejected.
 
-**Notice (English):** The researcher requests that others refrain from citing or excerpting this research in papers, presentations, websites, or other projects without first contacting the repository maintainer. This is a request, not a legal prohibition on otherwise lawful citation. Public visibility does not grant an open-source license to original content; third-party materials remain subject to their respective terms.
+The project name comes from earlier experiments with public spiral transforms. Those transforms were removed from the v0.3 cryptographic core after algebraic analysis showed that the public invertible coordinate change could be eliminated. See the [mathematical specification](originals/spiral_kem_v03_math_spec.md).
 
-## Directory Guide
+## What OPT2 changes
 
-| Path | Contents |
-| --- | --- |
-| [code/opt2/](code/opt2/) | Original v0.3.1, opt1, and opt2 code; comparison and verification scripts |
-| [protocol_rust/](protocol_rust/README.md) | Rust/Tokio/rustls–C KEM communication implementation, Python interoperability tests, and measurements |
-| [native_research/](native_research/README.md) | C KEM research implementation and adversarial-input and memory-check records |
-| [originals/](originals/) | Earlier code versions, benchmark scripts, mathematical specifications, and explanatory materials |
-| [archives/releases/](archives/releases/) | Original opt1 and opt2 release ZIPs |
-| [archives/benchmarks/](archives/benchmarks/) | Original ML-KEM comparison ZIPs |
-| [archives/research/](archives/research/) | Original ZIPs evaluating 6 candidates and estimating attack costs |
-| [results/](results/) | Saved measurement-result ZIP |
-| [imports/](imports/) | Files saved under temporary names and incomplete fragments from earlier uploads |
+OPT1 specializes the fixed `eta=1` sampler. OPT2 uses `Struct` for byte conversion/integer packing and adds the **SKW1** lossless 12-bit transport format. It preserves coefficients, parameters, the legacy serialization API, and internal KEM hash inputs.
 
-The research notes site is available at [Spiral KEM Research Notes](https://spiral-kem-research.ideal-goose-1500.chatgpt.site/). Its source is not currently included in this repository.
+| Default profile | Legacy encoding | SKW1 compact encoding |
+| --- | ---: | ---: |
+| Public key | 1,109 bytes | 808 bytes |
+| Ciphertext | 1,589 bytes | 1,160 bytes |
+| Shared key | 32 bytes | 32 bytes |
 
-## Running opt2
+The compact format has an 8-byte header. Both peers must select the compact API explicitly; it does not silently negotiate or guess encodings. See the [wire specification](code/opt2/COMPACT_WIRE_SPEC.md) and [implementation guide](code/opt2/README.md).
 
-After downloading the repository in Windows PowerShell:
+## Run the Python implementation
 
-```powershell
+Python 3.10 or newer is required. From the repository root:
+
+```bash
+python3 -m venv .venv
+.venv/bin/python -m pip install -r code/opt2/requirements.txt
 cd code/opt2
-py -m pip install -r requirements.txt
-py compare_spiral_opt2_mlkem.py
+../../.venv/bin/python verify_equivalence.py
+../../.venv/bin/python verify_opt2.py
+../../.venv/bin/python compare_spiral_opt2_mlkem.py --rounds 3 --warmup 1
 ```
 
-Python 3.10 or later is required. After regression checks, the comparison script runs 30 warmups and 300 measurements by default and saves the result JSON in the script directory. See the [opt2 guide](code/opt2/README.md), [wire format specification](code/opt2/COMPACT_WIRE_SPEC.md), and [experimental results](code/opt2/RESULTS.md) for details.
+On Windows, use `.venv\Scripts\python.exe` in place of `.venv/bin/python`. The comparison dependency is pinned to `kyber-py==1.2.0`; the KEM itself uses the Python standard library. A short run is a functional smoke check, not performance evidence. Omit the round/warmup flags for the default 30 warmups and 300 measured exchanges.
 
-## Research Communication Protocol v0.1
+The benchmark compares the baseline, OPT1, OPT2 compact API, and the educational Python ML-KEM-512 implementation in one process. Read the [benchmark methodology and results](code/opt2/RESULTS.md) before interpreting timings.
 
-[`protocol_v01/`](protocol_v01/README.md) contains a local experimental implementation integrating OPT2 with real TLS 1.3 connections.
-It includes server pin authentication, TLS exporter binding,
-Finished verification, directional AEAD keys and sequence numbers, 1 decapsulation per key, and shutdown handling.
-See its guide for instructions and validation scope. Security validation for production services and
-interoperability validation between independent implementations have not been completed.
+## Authenticated-channel implementations
 
-## Constant-Time Implementation and Secret Management Design
+[Python protocol v0.1](protocol_v01/README.md) combines TLS 1.3, an actual TLS exporter, a separate Ed25519 server pin, HKDF, Finished confirmation, directional ChaCha20-Poly1305 records, sequence limits, and authenticated closure.
 
-[Design proposal 2](hardening/item2/hardening.md) reviews Python secret-processing paths and
-key lifetimes and compares a native secret engine with process-isolation alternatives.
-The recommendation is a native engine using fixed-size arithmetic and opaque handles.
-This document is a design proposal as of `7c859d9`. For the C KEM and Rust–C communication path
-later added as separate research implementations, see the running instructions above.
-Neither the design proposal nor the research implementations indicate completed constant-time validation.
+[The Rust–C implementation](protocol_rust/README.md) uses Tokio and rustls with bounded workers for C KEM operations, opaque key ownership, bounded queues, cancellation/deadline handling, and explicit secret-buffer cleanup. It exercises Rust↔Python and Rust↔Rust traffic over actual loopback TLS connections. Server authentication does not supply application-level client authentication or authorization.
 
-## Archive Status
+[Key operations](protocol_rust/KEY_OPERATIONS.md) and [encrypted backup/recovery](protocol_rust/KEY_RECOVERY.md) cover Linux private-file policies, key creation, cold rotation, external-fingerprint recovery, and bounded laboratory drills. They do not constitute a deployed service or vault integration.
 
-[Automated checks guide](ci/README.md): provides functional checks on pushes and PRs and separate scheduled memory diagnostics.
-Passing functional checks is not treated as approval of overall memory safety, constant-time behavior, or cryptographic security.
+## Repository map
 
-The [operational key management platform verification bundle](downloads/key-operations-0b0db39/README.md)
-allows reverification of PR #28's key-file policy, generation, and rotation features on OCI ARM and WSL.
-With the pinned `0b0db39` source, OCI and WSL each passed 81 Rust tests (plus 5 ignored) and 11 key management/TLS rotation tests.
-The [original submissions and review](protocol_rust/evidence/key_operations_platforms_20261109/README.md)
-cross-checked 318 source files and original test logs. Overall operational readiness, constant-time, memory, and deployment approvals remain incomplete.
+| Directory | Contents |
+| --- | --- |
+| [`code/opt2/`](code/opt2/) | Baseline, OPT1, OPT2, equivalence checks, compact encoding, benchmarks |
+| [`native_research/`](native_research/README.md) | C KEM, adversarial-input tests, fuzzing and memory diagnostics |
+| [`protocol_v01/`](protocol_v01/README.md) | Python protocol, specification, vectors and TLS tests |
+| [`protocol_rust/`](protocol_rust/README.md) | Rust–C channel, ownership model, key operations and validation |
+| [`fuzzing/`](fuzzing/README.md) | Python coverage-guided fuzzing and saved regressions |
+| [`hardening/`](hardening/) | Threat-boundary and secret-copy design analyses |
+| [`downloads/`](downloads/) | Reproducible platform-validation bundles |
+| [`ci/`](ci/README.md) | Functional CI and separate memory-diagnostic workflows |
+| [`originals/`](originals/) | Earlier implementations, mathematical analysis and comparisons |
+| [`archives/`](archives/) | Packaged research and benchmark materials |
+| [`results/`](results/) | Recorded measurements and supporting artifacts |
 
-[Encrypted backup, recovery, and rotation-failure drills](protocol_rust/KEY_RECOVERY.md) add recovery of authentication seeds and TLS
-private keys based on external fingerprints. Local checks passed 94 Rust, 11 existing key management, and 20 recovery tests, along with
-the full functional CI. With the pinned `d4c46bc` source, OCI and WSL also each passed 94 Rust tests
-(plus 5 ignored), 11 existing key management tests, and 20 recovery tests;
-the [original submissions and review](protocol_rust/evidence/key_recovery_20261110/README.md) cross-checked 324 source files and
-original logs. Overall operational readiness, deployment, constant-time, and full memory approvals remain incomplete.
+## Validation and open research questions
 
-[Coverage-guided fuzzing](fuzzing/README.md): checks Python frames, ClientHello, KEM encoding, and record
-state using Atheris and stores failing inputs and coverage feedback in separate Actions runs.
+The recorded functional suite includes Python protocol tests, C regressions, Rust unit/doc tests, key-operation/recovery tests, and real TLS scenarios. Platform evidence includes OCI ARM64 and WSL x86-64 runs. Parser/record fuzzing, lifecycle tests, ASan, Memcheck, and secret-flow diagnostics are documented alongside their exact scopes and limitations.
 
-The 48-byte `possibly lost` item was reproduced without Spiral in the [minimal standard-library/test-runner control](protocol_rust/LIBTEST_MEMORY.md).
-The original failure verdict and incomplete overall memory-safety status are retained.
+Use the [CI guide](ci/README.md), [Rust validation record](protocol_rust/VALIDATION.md), and [regression map](protocol_rust/REGRESSION_MAP.md) to distinguish individual historical runs from the current combined suite.
 
-[Follow-up validation of the actual receive secret path](protocol_rust/RECEIVE_SECRET.md) adds 78 public/key instrumentation pairs
-and Poly1305 state zeroization. Functional regression at that point passed 66 Rust unit tests, documentation
-tests numbering 6, and 35 real TLS tests; the original authentication-branch warning and incomplete overall security validation remain.
+Open work includes independent cryptanalysis, independent validation and extension of the recorded attack-cost and decryption-failure estimates for the research parameters, constant-time assessment across supported targets, and complete secret-copy/lifecycle coverage. Cleanup observations for named buffers do not imply erasure of every compiler temporary, backend limb, register, TLS-provider copy, or OS copy. Original diagnostic failures remain relevant; a passing functional run does not override them.
 
-[Additional HMAC, HKDF, and signing-state cleanup](protocol_rust/SECRET_STATE.md) applied stable RustCrypto's
-state zeroization features. The latest regular Rust and ASan tests each passed 70 tests, together with 35 real TLS tests and
-40 independent ring signing pairs. Local outputs, signing nonce copies, and incomplete overall validation remain in scope.
+## Usage terms
 
-[Post-update OCI and WSL functional regression](protocol_rust/evidence/secret_state_platforms_20261108/README.md)
-passed the full functional runner on both environments using the same `fcf7ff0` source, including 70 Rust tests, 6 documentation tests, and 35 real TLS tests each.
-This functional validation on the two platforms is complete.
-
-Rust–C v0.3 provides [running instructions](protocol_rust/README.md), an [implementation report](protocol_rust/HARDENING_v0.3.md), and a [validation record](protocol_rust/VALIDATION.md). It strengthens signing-key ownership and cancellable concurrent shutdown and passed 52 unit, 4 compile-rejection, and 35 real TLS tests. The [November 7 memory investigation](protocol_rust/MEMORY_FOLLOWUP.md) records 6 passes on OCI and 2 on WSL and reproduces a local Valgrind false-positive mechanism for the AES-GCM warning. The original WSL failure and the 48-byte possibly-lost item in Rust instrumentation tests are retained. These results do not establish production-service security validation or Spiral's own security.
-
-`results/results.zip` is a previously uploaded result bundle and does not imply that all measurement results are included. Only some fragments of the large original design files are retained, so they cannot be reconstructed from this repository alone. See the [temporary upload guide](imports/README.md).
+Original materials require separate permission under the [reserved-rights terms](LICENSE). Public access does not grant an open-source license. [Third-party components](THIRD_PARTY_NOTICES.md) retain their own licenses. Statutory quotation and other applicable legal rights are unaffected. Contact the repository owner through GitHub for permission requests.
