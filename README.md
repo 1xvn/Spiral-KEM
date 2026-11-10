@@ -8,7 +8,7 @@ The current Python implementation is **v0.3.1 OPT2**. The repository also includ
 
 ## How the KEM works
 
-The v0.3 family operates over $R_q = \mathbb{Z}_q[x]/(x^n + 1)$. • Its default research parameters are $n=256$, $k=2$, $q=3329$, $\eta=1$, and a 32-byte shared key.
+The v0.3 family operates over $R_q = \mathbb{Z}_q[x]/(x^n + 1)$. Its default research parameters are $n=256$, $k=2$, $q=3329$, $\eta=1$, and a 32-byte shared key.
 
 - **Key generation:** expand a public matrix $\mathbf{A}$ from a seed, sample small secret/error vectors $\mathbf{s}$, $\mathbf{e}$, and publish $\mathbf{t} = \mathbf{A}\mathbf{s} + \mathbf{e}$ with the matrix seed.
 - **Encapsulation:** sample a message, derive encryption randomness from that message and the public-key hash, and form $\mathbf{u} = \mathbf{A}^T \mathbf{r} + \mathbf{e}_1$ and $\mathbf{v} = \mathbf{t}^T \mathbf{r} + \mathbf{e}_2 + \text{Encode}(m)$
