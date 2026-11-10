@@ -8,7 +8,7 @@ It verifies exact counts of 7 runs and 23 focused tests and feature ON/OFF statu
 rejecting 0 tests, omissions, failures, and ignored/filtered tests. It does not report this as running the full upstream dev suite,
 and retains existing memory warnings and strict gates.
 
-[Operational key management checks](../protocol_rust/KEY_OPERATIONS.md) check at least 94 default Rust tests and
+[Operational key management checks](../protocol_rust/KEY_OPERATIONS.md) check at least 100 default Rust tests and
 11 separate CLI/TLS rotation tests. They cover private-key permissions, paths, FIFO watchdog, NOREPLACE creation,
 recovery files, and rejection of old pins; 0 tests, omissions, and skips fail. An environment exposing actual Linux UIDs
 and loopback permission is required; policy is not automatically relaxed for rootless UID mappings.
@@ -17,6 +17,17 @@ and loopback permission is required; policy is not automatically relaxed for roo
 CLI/TLS tests. They cover authentication seed/TLS PEM recovery, external fingerprint comparison, tampered/oversized input
 rejection, normal previous-generation restart, and recovery of both new-generation keys. 0 tests, failures, and skips
 fail; this is not approval of external vaults, actual service rollback, overall operational readiness, constant-time behavior, or memory safety.
+
+Functional CI also runs the 18 fast [load collector contract tests](../protocol_rust/validation/test_load_campaign.py)
+as `load-collector-contracts`. They check strict JSON parsing, completed-run validation, resource ceiling boundaries,
+and Linux process sampling. Failures, fewer than 18 tests, and any skips fail the step.
+These tests do not start a TLS probe. The [30-minute load campaign](../protocol_rust/LOAD_TESTING.md)
+is run explicitly and is not added to push/PR or scheduled CI.
+
+The `rust-admission-boundaries` step runs two [public admission API tests](../protocol_rust/tests/admission_boundaries.rs)
+that independently check the per-IP active cap after token refill and token-bucket rejection below that cap.
+The rate check retries a fresh bucket if scheduling loses its measured sub-second observation window.
+These checks do not create sockets; the load campaign's real-socket per-IP check exercises the combined admission rules.
 
 ## What runs and when
 

@@ -1,0 +1,22 @@
+{
+  "schema": "spiral-load-evidence-review/v1",
+  "status": "passed",
+  "errors": [],
+  "traffic_seconds": 1800.007949387,
+  "wall_seconds": 1812.8920030529998,
+  "connections": 64,
+  "verified_roundtrips": 2235147,
+  "payload_bytes": 16384,
+  "payload_GiB_bidirectional": 68.21127319335938,
+  "completed_epochs": 8,
+  "authenticated_pairs": 518,
+  "fd_baseline_including_listener": 8,
+  "fd_final": 7,
+  "peak_rss_mib": 17.91015625,
+  "sampled_peak_fds": 135,
+  "sampled_peak_threads": 5,
+  "source_files_verified": 162,
+  "traffic_samples": 1798,
+  "resource_samples": 1600,
+  "scope": "Local combined-endpoint Linux experiment; stronger final FD check accounts for the closed listener; no production capacity, memory-erasure or constant-time approval."
+}
