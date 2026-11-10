@@ -8,17 +8,17 @@ The current Python implementation is **v0.3.1 OPT2**. The repository also includ
 
 ## How the KEM works
 
-The v0.3 family operates over `R_q = Z_q[x]/(x^n + 1)`. Its default research parameters are `n=256`, `k=2`, `q=3329`, `eta=1`, and a 32-byte shared key.
+The v0.3 family operates over $R_q = \mathbb{Z}_q[x]/(x^n + 1)$. • Its default research parameters are $n=256$, $k=2$, $q=3329$, $\eta=1$, and a 32-byte shared key.
 
-- **Key generation:** expand a public matrix `A` from a seed, sample small secret/error vectors `s,e`, and publish `t = A s + e` with the matrix seed.
-- **Encapsulation:** sample a message, derive encryption randomness from that message and the public-key hash, and form `u = A^T r + e1` and `v = t^T r + e2 + Encode(m)`.
-- **Decapsulation:** decode `v - s^T u`, deterministically re-encrypt the recovered message, and compare canonical ciphertext encodings. Valid encodings that fail verification produce a deterministic fallback key; malformed inputs are rejected.
+- **Key generation:** expand a public matrix $\mathbf{A}$ from a seed, sample small secret/error vectors $\mathbf{s}$, $\mathbf{e}$, and publish $\mathbf{t} = \mathbf{A}\mathbf{s} + \mathbf{e}$ with the matrix seed.
+- **Encapsulation:** sample a message, derive encryption randomness from that message and the public-key hash, and form $\mathbf{u} = \mathbf{A}^T \mathbf{r} + \mathbf{e}_1$ and $\mathbf{v} = \mathbf{t}^T \mathbf{r} + \mathbf{e}_2 + \text{Encode}(m)$
+- **Decapsulation:** decode $\mathbf{v} - \mathbf{s}^T \mathbf{u}$, deterministically re-encrypt the recovered message, and compare canonical ciphertext encodings. Valid encodings that fail verification produce a deterministic fallback key; malformed inputs are rejected.
 
 The project name comes from earlier experiments with public spiral transforms. Those transforms were removed from the v0.3 cryptographic core after algebraic analysis showed that the public invertible coordinate change could be eliminated. See the [mathematical specification](originals/spiral_kem_v03_math_spec.md).
 
 ## What OPT2 changes
 
-OPT1 specializes the fixed `eta=1` sampler. OPT2 uses `Struct` for byte conversion/integer packing and adds the **SKW1** lossless 12-bit transport format. It preserves coefficients, parameters, the legacy serialization API, and internal KEM hash inputs.
+OPT1 specializes the fixed $\eta = 1$ sampler. OPT2 uses `Struct` for byte conversion/integer packing and adds the **SKW1** lossless 12-bit transport format. It preserves coefficients, parameters, the legacy serialization API, and internal KEM hash inputs.
 
 | Default profile | Legacy encoding | SKW1 compact encoding |
 | --- | ---: | ---: |
