@@ -1,0 +1,18 @@
+{
+  "status": "passed",
+  "wall_elapsed_seconds": 21.39209286699952,
+  "resource_samples": 21,
+  "resources": {
+    "rss_kib": 17452,
+    "peak_rss_kib": 17452,
+    "fd_count": 135,
+    "threads": 5,
+    "cpu_seconds": 2.54
+  },
+  "source_unchanged": true,
+  "binary_unchanged": true,
+  "source_commit": "7424a0a00cd1dd3a99cabe4ab20367f27fdd783c",
+  "archive_sha256": "a2d1c2976f5a2bcfdec4610282dfc513820d80b7a7b1b2f607a975aebf1d392f",
+  "archive_members_verified": 7,
+  "long_campaigns_executed": false
+}

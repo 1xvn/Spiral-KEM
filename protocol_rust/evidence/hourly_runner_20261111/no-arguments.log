@@ -1,0 +1,12 @@
+Usage:
+  bash protocol_rust/run_load_test.sh --prepare
+  bash protocol_rust/run_load_test.sh --list-profiles
+  bash protocol_rust/run_load_test.sh --platform oci|wsl|local --duration 30m|1h|2h|6h|12h|24h [--output DIRECTORY]
+
+--prepare installs pinned Python dependencies and builds the release probe.
+It does not start a load test. A campaign requires an explicit --duration.
+10s is also accepted for a smoke test. Linux and a Git checkout are required.
+Default workload: 64 connections, 16 KiB payloads, 50 ms pacing.
+Default guards: 512 MiB peak RSS, 256 sampled FDs, 64 sampled threads.
+Results and a .tar.gz evidence archive are written under your home directory.
+No test started: --duration is required.
