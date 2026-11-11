@@ -5,6 +5,7 @@ import math
 import os
 from pathlib import Path
 import sys
+import tempfile
 import unittest
 
 
@@ -33,7 +34,7 @@ def completed_report(connections=64):
         "authenticated_pair_closes": pairs,
         "successful_endpoint_handshakes": pairs * 2,
         "resource_baseline": {"fd_count": 16},
-        "final_resources": {"fd_count": 16},
+        "final_resources": {"fd_count": 15},
         "errors": [],
         "limit_checks": {"per_ip": True, "pending": True, "global": True},
     }
@@ -183,6 +184,22 @@ class FinalReportContracts(unittest.TestCase):
 
 
 class ResourceContracts(unittest.TestCase):
+    def test_day_of_samples_retains_bounded_windows_and_exact_maxima(self):
+        summary = collector.ResourceSummary()
+        for second in range(86401):
+            summary.add({'elapsed_seconds': second, 'rss_kib': second,
+                         'peak_rss_kib': second + 10, 'fd_count': second % 100,
+                         'threads': 5, 'cpu_seconds': second / 2})
+        self.assertEqual(summary.count, 86401)
+        self.assertEqual(len(summary.first_rss), 60)
+        self.assertEqual(len(summary.tail_rss), 60)
+        result = summary.report()
+        self.assertEqual(result['rss_kib'], 86400)
+        self.assertEqual(result['peak_rss_kib'], 86410)
+        self.assertEqual(result['fd_count'], 99)
+        self.assertEqual(result['warm_rss_median_kib'], 89.5)
+        self.assertEqual(result['tail_rss_median_kib'], 86370.5)
+
     def test_limits_are_inclusive_and_one_unit_above_is_rejected(self):
         limits = {"rss_mib": 512, "fds": 256, "threads": 64}
         at_budget = {"peak_rss_kib": 512 * 1024, "fd_count": 256, "threads": 64}
@@ -212,6 +229,108 @@ class ResourceContracts(unittest.TestCase):
         self.assertGreaterEqual(sample["peak_rss_kib"], sample["rss_kib"])
         self.assertTrue(math.isfinite(sample["cpu_seconds"]))
         self.assertGreaterEqual(sample["cpu_seconds"], 0)
+
+
+class HourlyContracts(unittest.TestCase):
+    def test_all_profiles_and_smoke_duration_are_supported(self):
+        for name, seconds in collector.PROFILES.items():
+            self.assertEqual(collector.duration_value(name), seconds)
+        self.assertEqual(collector.duration_value('10s'), 10)
+
+    def test_rejects_ambiguous_short_or_unbounded_duration(self):
+        for value in ('0h', '9s', '25h', '1.5h', '1H', '-1h', '3600', '1h;date'):
+            with self.subTest(value=value), self.assertRaises(collector.argparse.ArgumentTypeError):
+                collector.duration_value(value)
+
+    def test_watchdog_covers_every_reconnect_and_close_with_extra_epoch(self):
+        self.assertEqual(collector.watchdog_budget(86400, 50), 100900)
+        self.assertGreater(collector.watchdog_budget(86400, 1), 86400 * 2)
+        self.assertLess(collector.watchdog_budget(86400, 1) + 3600, 7 * 86400)
+
+    def test_rotation_disarms_echo_timer_but_has_a_fixed_deadline(self):
+        watch = collector.ProgressWatch(0)
+        watch.observe({'event': 'rotation_started'}, 1)
+        for second in (6, 11, 16, 21, 26, 31):
+            watch.observe({'event': 'rotation_progress'}, second)
+            watch.check(second)
+        with self.assertRaisesRegex(TimeoutError, 'rotation phase deadline'):
+            watch.check(34)
+
+    def test_echo_watchdog_rearms_after_reconnect_and_rejects_stall(self):
+        watch = collector.ProgressWatch(0)
+        watch.observe({'event': 'rotation_started'}, 1)
+        watch.observe({'event': 'rotation_ready'}, 2)
+        watch.observe({'event': 'traffic_started'}, 3)
+        watch.observe({'event': 'sample', 'expected_established_connections': 64,
+                       'total_messages': 100}, 4)
+        watch.observe({'event': 'closing_started'}, 5)
+        watch.check(16)
+        watch.observe({'event': 'rotation_started'}, 16)
+        watch.observe({'event': 'rotation_progress'}, 21)
+        watch.observe({'event': 'rotation_progress'}, 26)
+        watch.observe({'event': 'rotation_ready'}, 30)
+        watch.observe({'event': 'traffic_started'}, 31)
+        watch.check(45)
+        watch.observe({'event': 'sample', 'expected_established_connections': 64,
+                       'total_messages': 100}, 46)
+        with self.assertRaisesRegex(TimeoutError, 'echo progress stalled'):
+            watch.check(47)
+
+    def test_closing_and_shutdown_cannot_disable_watchdogs_indefinitely(self):
+        watch = collector.ProgressWatch(0)
+        watch.observe({'event': 'rotation_started'}, 1)
+        watch.observe({'event': 'rotation_ready'}, 2)
+        watch.observe({'event': 'traffic_started'}, 3)
+        watch.observe({'event': 'closing_started'}, 4)
+        with self.assertRaisesRegex(TimeoutError, 'closing phase deadline'):
+            watch.check(17)
+        watch.observe({'event': 'sample', 'expected_established_connections': 0,
+                       'total_messages': 100}, 15)
+        watch.check(24)
+        with self.assertRaisesRegex(TimeoutError, 'shutdown phase deadline'):
+            watch.check(26)
+
+    def test_echo_counter_is_monotonic_across_epochs(self):
+        watch = collector.ProgressWatch(0)
+        for start, count in ((1, 100), (10, 99)):
+            watch.observe({'event': 'rotation_started'}, start)
+            watch.observe({'event': 'rotation_ready'}, start + 1)
+            watch.observe({'event': 'traffic_started'}, start + 2)
+            event = {'event': 'sample', 'expected_established_connections': 64,
+                     'total_messages': count}
+            if count == 99:
+                with self.assertRaisesRegex(ValueError, 'nonmonotonic'):
+                    watch.observe(event, start + 3)
+            else:
+                watch.observe(event, start + 3)
+                watch.observe({'event': 'closing_started'}, start + 4)
+
+    def test_unbounded_rotation_heartbeat_without_setup_is_rejected(self):
+        with self.assertRaisesRegex(ValueError, 'outside setup'):
+            collector.ProgressWatch(0).observe({'event': 'rotation_progress'}, 1)
+
+    def test_fixture_ca_leaf_and_pin_outlive_day_campaign_watchdog(self):
+        from datetime import datetime, timezone
+        from cryptography import x509
+        from interop import identities
+        budget = collector.watchdog_budget(86400, 1)
+        lifetime = budget + 3600
+        before = datetime.now(timezone.utc).timestamp()
+        with tempfile.TemporaryDirectory() as folder:
+            path = Path(folder)
+            _, pin = identities(path, lifetime_seconds=lifetime)
+            for name in ('ca.pem', 'cert.pem'):
+                cert = x509.load_pem_x509_certificate((path / name).read_bytes())
+                self.assertGreater(cert.not_valid_after_utc.timestamp(), before + budget)
+            self.assertGreater(pin['not_after'], before + budget)
+            self.assertEqual((path / 'auth.bin').stat().st_mode & 0o777, 0o600)
+            self.assertEqual((path / 'key.pem').stat().st_mode & 0o777, 0o600)
+
+    def test_fixture_lifetime_rejects_invalid_or_excessive_values(self):
+        from interop import identities
+        for value in (True, 0, 59, 7 * 86400 + 1, 3600.0):
+            with self.subTest(value=value), self.assertRaisesRegex(ValueError, 'fixture lifetime'):
+                identities(None, lifetime_seconds=value)
 
 
 if __name__ == "__main__":

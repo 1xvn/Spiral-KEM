@@ -80,6 +80,7 @@ The normal buffer pool is `18 × 16,440 = 295,920` bytes per connection. Receive
 | --- | --- |
 | Architecture and implementation hardening | [Architecture](ARCHITECTURE_v0.2.md), [v0.3 report](HARDENING_v0.3.md) |
 | Sustained concurrent TLS, overload rejection and process-resource observations | [Load testing](LOAD_TESTING.md) |
+| Operator-run duration profiles, preparation and result collection on OCI/WSL | [Load commands](LOAD_COMMANDS.md) |
 | Functional records and reproducible commands | [Validation](VALIDATION.md), [Ubuntu/WSL](RUN_UBUNTU_WSL.md), [regression map](REGRESSION_MAP.md) |
 | Frame/ClientHello fuzzing | [Parser fuzzing](FUZZ_PARSERS.md) |
 | DATA/CLOSE state-model fuzzing | [Record fuzzing](FUZZ_RECORDS.md) |

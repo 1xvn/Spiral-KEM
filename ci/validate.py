@@ -81,7 +81,7 @@ def main():
     try:
         run('python-protocol', [python, '-m', 'unittest', 'discover', '-s', 'protocol_v01/tests', '-v'], 300, minimum=85)
         run('diagnostic-parser', [python, '-m', 'unittest', 'discover', '-s', 'protocol_rust/diagnostics', '-p', 'test_*.py', '-v'], 60, minimum=24)
-        run('load-collector-contracts', [python, '-m', 'unittest', 'discover', '-s', 'protocol_rust/validation', '-p', 'test_load_campaign.py', '-v'], 60, minimum=18)
+        run('load-collector-contracts', [python, '-m', 'unittest', 'discover', '-s', 'protocol_rust/validation', '-p', 'test_load_campaign.py', '-v'], 60, minimum=29)
         run('native-kem', ['make', '-C', 'native_research', 'check', 'PYTHON=' + python], 300, minimum=9)
         if not cargo:
             raise RuntimeError('cargo executable not found')

@@ -29,14 +29,13 @@ capacity measurement.
 Each client reuses a bounded payload buffer and checks the received echo before
 incrementing the completed-message counter. Payloads of at least 16 bytes include
 the full sequence and lane identifiers. Smaller payloads do not carry the full
-identity. The default collector profile uses 16 KiB for the recorded full-size
-campaign; specify it explicitly as below.
+identity. The collector and launcher default to 16 KiB payloads and 50 ms pacing.
 
 Groups rotate after at most 240 seconds or 32,768 messages per connection, below
 the unchanged 600-second session age and per-key usage limits. Traffic-epoch time
-excludes rotation setup but includes bounded authenticated closure. The report
-also records rotation time and total wall time separately. Individual sockets are
-not claimed to remain open for 30 minutes.
+excludes rotation setup and the remaining authenticated-close tail. The report
+records rotation, close-tail and total wall time separately. Individual sockets
+are not claimed to remain open for the full campaign.
 
 ## Build
 
@@ -59,7 +58,25 @@ records the Git HEAD, the dirty-worktree flag, exact runtime/probe/collector/C/C
 local-dependency file hashes and pre/post binary hashes. A dirty development run
 is identified as such; a base commit is not presented as the exact tested source.
 
-## Execute a smoke test, then a 30-minute campaign
+## Execute a selected duration
+
+Use the [OCI and WSL command guide](LOAD_COMMANDS.md) for installation, preparation,
+terminal persistence and copyable commands. `run_load_test.sh --prepare` installs
+dependencies and builds without starting traffic. Its run mode requires an
+explicit duration, preventing an accidental default long run.
+
+| Duration argument | Traffic duration |
+| --- | --- |
+| `30m` | 30 minutes |
+| `1h` | 1 hour |
+| `2h` | 2 hours |
+| `6h` | 6 hours |
+| `12h` | 12 hours |
+| `24h` | 24 hours |
+
+These profiles are prepared for operator execution. Supporting a duration does
+not mean a campaign of that duration has been completed or passed. Previously
+recorded evidence remains separate and unchanged.
 
 Always use a new output directory. Test credentials are freshly generated in a
 separate private temporary directory and removed on completion; they are not
@@ -71,16 +88,15 @@ included in evidence.
   --output "$HOME/Spiral-load-smoke-new" \
   --duration-seconds 10 --connections 64 --payload 16384 --interval-ms 50
 
-.venv-load/bin/python -B protocol_rust/validation/load_campaign.py \
-  --binary protocol_rust/target/release/examples/load_probe \
-  --output "$HOME/Spiral-load-30m-new" \
-  --duration-seconds 1800 --connections 64 --payload 16384 --interval-ms 50
+bash protocol_rust/run_load_test.sh --platform local --duration 1h
 ```
 
-The collector supports 10..1800 seconds and 4..64 connections. All three admission
+The collector supports 10..86400 seconds and 4..64 connections. `--duration 1h`
+and the legacy `--duration-seconds 3600` form are mutually exclusive. All three admission
 checks are mandatory for the 64-connection profile. Runs below 64 do not claim to
-exercise the global admission boundary. Fresh helper credentials are valid for
-one hour; the collector does not advertise an unattended 24-hour test profile.
+exercise the global admission boundary. Fresh test-only CA, leaf and authentication
+pin credentials outlive the whole campaign watchdog by one hour. The original
+interoperability helper still defaults to a one-hour lifetime for other tests.
 
 For an OCI host, add `--platform oci`; this is an environment label, not independent
 cloud-provider attestation. For WSL, add `--platform wsl`, which also checks for a
@@ -102,26 +118,37 @@ missed. `VmHWM` records the process high-water RSS when sampled.
 
 The collector stops on an exceeded guard, a 30-second probe heartbeat stall,
 15 seconds without verified echo progress during traffic, or a bounded overall
-watchdog. A successful exit code alone is insufficient: it rejects missing/short
+watchdog. Each group setup has a fixed 30-second probe deadline and a heartbeat
+every five seconds; echo-progress monitoring resumes when traffic starts. Closure
+has a 10-second deadline. The collector allows two seconds of scheduling grace
+for these phase deadlines. Heartbeats do not extend the reconnect deadline. The
+overall budget includes setup and closure for all expected rotations, rather
+than adding a fixed five minutes to a day-long run.
+
+A successful exit code alone is insufficient: it rejects missing/short
 final reports, incomplete limit checks, mismatched handshake/key/closure counts,
 live keys, unreleased admission slots and descriptor counts above the initialized
-baseline. The baseline includes the listening socket; inspect the final count
-against baseline minus that closed listener for a stronger exact recovery check.
+baseline minus the now-closed listening socket.
 
 | File | Contents |
 | --- | --- |
-| `result.json` | Verdict, requested/actual duration, final probe report, source/binary checks and resource summary |
+| `result.json` | Verdict, requested/actual duration, watchdog/credential budgets, final probe report, source/binary checks and resource summary |
 | `probe.stdout.jsonl` | Full phase, limit-case, progress, rotation and final JSON events |
 | `probe.stderr.log` | Original probe errors, including failures |
 | `resources.jsonl` | Monotonic elapsed time, RSS/high-water RSS, FD/thread counts, CPU and page faults |
 | `source-before.json`, `source-after.json` | Exact source hashes and Git/worktree metadata |
 | `SHA256.json` | File-integrity inventory of the collected evidence |
 
-Failures retain available evidence and clean up the child process and temporary
+The final line prints an automatically created `.tar.gz` evidence archive beside
+the output directory. Send this archive for review. The launcher also saves a
+separate console log. Failures retain available evidence and clean up the child process and temporary
 credentials. RSS warm/tail medians are observational: allocator retention and
 host effects can change RSS, and a stable finite trace does not prove the absence
 of small or rarely triggered leaks. No key material or plaintext contents are
-logged.
+logged. Full probe and resource traces stream to disk. In-memory summaries retain
+only the last 128 non-sample events, maxima and two 60-sample RSS windows, so a
+24-hour run does not retain every observation in collector memory. `result.json`
+declares whether its event summary was truncated; the raw trace stays complete.
 
 ## Focused resource regressions
 

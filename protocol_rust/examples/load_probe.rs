@@ -27,6 +27,8 @@ type ProbeResult<T> = Result<T, Box<dyn std::error::Error + Send + Sync>>;
 const NAME: &str = "spiral-lab.example";
 const SERVICE: &str = "spiral-research";
 const SCOPE: &str = "One persistent process, listener, admission gate and KEM pool; actual loopback TCP/TLS 1.3 plus authenticated Spiral; process resources include both endpoints; no production capacity claim";
+const GROUP_SETUP_SECONDS: u64 = 30;
+const CLOSE_DEADLINE_SECONDS: u64 = 10;
 
 fn require(condition: bool, message: &str) -> ProbeResult<()> {
     if condition { Ok(()) } else { Err(message.to_owned().into()) }
@@ -228,7 +230,7 @@ fn sample(admission: &Admission, pool: &KemPool, stats: &Stats, elapsed: f64, ex
     let kem = pool.metrics();
     emit(json!({"event":"sample","phase":"soak","soak_elapsed_seconds":elapsed,"expected_established_connections":expected,"active":active,"pending":pending,"total_messages":stats.messages.load(Ordering::Relaxed),"echoed_bytes":stats.bytes.load(Ordering::Relaxed),"admission_rejected":stats.rejections.load(Ordering::Relaxed),"completed_epochs":stats.epochs.load(Ordering::Relaxed),"authenticated_pairs_total":stats.pairs.load(Ordering::Relaxed),"kem":{"live_keys":kem.live_keys,"executed_jobs":kem.executed,"rejected_jobs":kem.rejected}}))
 }
-async fn traffic(mut pair: Pair, lane: usize, payload_size: usize, interval_ms: u64, end: Instant, stats: Arc<Stats>) -> ProbeResult<()> {
+async fn traffic(mut pair: Pair, lane: usize, payload_size: usize, interval_ms: u64, end: Instant, stats: Arc<Stats>) -> ProbeResult<(Pair, Instant)> {
     let mut value = vec![0u8; payload_size];
     let mut clock = tokio::time::interval(Duration::from_millis(interval_ms));
     clock.set_missed_tick_behavior(tokio::time::MissedTickBehavior::Skip);
@@ -258,24 +260,45 @@ async fn traffic(mut pair: Pair, lane: usize, payload_size: usize, interval_ms: 
         stats.bytes.fetch_add(payload_size as u64, Ordering::Relaxed);
     }
     require(completed > 0, "connection completed no verified echoes in traffic epoch")?;
-    clean_close(pair, &stats).await
+    Ok((pair, Instant::now()))
 }
 async fn open_group(args: &Args, listener: &TcpListener, admission: &Admission, config: &Config, pool: &KemPool, stats: &Stats) -> ProbeResult<Vec<Pair>> {
-    let mut pairs = Vec::with_capacity(args.connections);
-    let mut ids = HashSet::with_capacity(args.connections);
-    for lane in 0..args.connections {
-        let pair = pair(listener, admission, config, pool, stats, Ipv4Addr::new(127, 5, 0, lane as u8 + 1)).await?;
-        require(ids.insert(pair.sid), "concurrent authenticated session ID repeated")?;
-        pairs.push(pair);
+    let started = Instant::now();
+    let initial = stats.epochs.load(Ordering::Relaxed) == 0;
+    emit(json!({"event":"rotation_started","phase":"rotation","initial":initial,"expected_established_connections":0,"setup_deadline_seconds":GROUP_SETUP_SECONDS,"completed_epochs":stats.epochs.load(Ordering::Relaxed)}))?;
+    // Keep setup below the production idle timeout even for the first pair in
+    // this sequential group, and report liveness while an individual pair waits.
+    let opening = tokio::time::timeout(Duration::from_secs(GROUP_SETUP_SECONDS), async {
+        let mut pairs = Vec::with_capacity(args.connections);
+        let mut ids = HashSet::with_capacity(args.connections);
+        for lane in 0..args.connections {
+            let pair = pair(listener, admission, config, pool, stats, Ipv4Addr::new(127, 5, 0, lane as u8 + 1)).await?;
+            require(ids.insert(pair.sid), "concurrent authenticated session ID repeated")?;
+            pairs.push(pair);
+        }
+        require(admission.counts()? == (args.connections, 0), "ready group admission counts differ")?;
+        Ok::<_, Box<dyn std::error::Error + Send + Sync>>(pairs)
+    });
+    tokio::pin!(opening);
+    let mut heartbeat = tokio::time::interval(Duration::from_secs(5));
+    heartbeat.set_missed_tick_behavior(tokio::time::MissedTickBehavior::Skip);
+    heartbeat.tick().await;
+    loop {
+        tokio::select! {
+            result=&mut opening=>{ return Ok(result??); },
+            _=heartbeat.tick()=>{
+                let (active, pending) = admission.counts()?;
+                emit(json!({"event":"rotation_progress","phase":"rotation","initial":initial,"expected_established_connections":0,"setup_deadline_seconds":GROUP_SETUP_SECONDS,"setup_elapsed_seconds":started.elapsed().as_secs_f64(),"active":active,"pending":pending}))?;
+            }
+        }
     }
-    require(admission.counts()? == (args.connections, 0), "ready group admission counts differ")?;
-    Ok(pairs)
 }
 #[derive(Default)]
-struct Timing { soak: f64, traffic: f64, rotation: f64 }
+struct Timing { soak: f64, traffic: f64, rotation: f64, close_tail: f64 }
 async fn exercise(args: &Args, listener: &TcpListener, admission: &Admission, config: &Config, pool: &KemPool, stats: Arc<Stats>, timing: &mut Timing) -> ProbeResult<()> {
     limits(listener, admission, config, pool, &stats).await?;
     let mut pairs = open_group(args, listener, admission, config, pool, &stats).await?;
+    emit(json!({"event":"rotation_ready","phase":"soak","initial":true,"soak_elapsed_seconds":0,"expected_established_connections":args.connections,"active":admission.counts()?.0,"pending":0,"authenticated_pairs_total":stats.pairs.load(Ordering::Relaxed),"completed_epochs":0}))?;
     if args.connections == 64 {
         rejection(listener, admission, &stats, Ipv4Addr::new(127, 5, 1, 1)).await?;
         require(admission.counts()? == (64, 0), "global rejection disturbed established sessions")?;
@@ -290,26 +313,40 @@ async fn exercise(args: &Args, listener: &TcpListener, admission: &Admission, co
         let epoch_started = Instant::now();
         let remaining = (args.duration as f64 - timing.traffic).max(0.5);
         let epoch_end = epoch_started + Duration::from_secs_f64(remaining.min(240.0));
+        emit(json!({"event":"traffic_started","phase":"soak","soak_elapsed_seconds":started.elapsed().as_secs_f64(),"expected_established_connections":args.connections,"completed_epochs":stats.epochs.load(Ordering::Relaxed)}))?;
         let mut tasks = JoinSet::new();
         for (lane, pair) in pairs.drain(..).enumerate() {
             tasks.spawn(traffic(pair, lane, args.payload, args.interval_ms, epoch_end, stats.clone()));
         }
+        let mut closing = JoinSet::new();
+        let mut traffic_end = epoch_started;
         while !tasks.is_empty() {
             tokio::select! {
-                result=tasks.join_next()=>{ result.ok_or("traffic task disappeared")???; },
+                result=tasks.join_next()=>{
+                    let (pair, finished) = result.ok_or("traffic task disappeared")???;
+                    traffic_end = traffic_end.max(finished);
+                    let stats = stats.clone();
+                    closing.spawn(async move { clean_close(pair, &stats).await });
+                },
+                result=closing.join_next(), if !closing.is_empty()=>{ result.ok_or("close task disappeared")???; },
                 _=samples.tick()=>{ sample(admission,pool,&stats,started.elapsed().as_secs_f64(),args.connections)?; }
             }
         }
-        timing.traffic += epoch_started.elapsed().as_secs_f64();
+        timing.traffic += traffic_end.duration_since(epoch_started).as_secs_f64();
+        emit(json!({"event":"closing_started","phase":"closing","soak_elapsed_seconds":started.elapsed().as_secs_f64(),"expected_established_connections":0,"close_deadline_seconds":CLOSE_DEADLINE_SECONDS,"completed_epochs":stats.epochs.load(Ordering::Relaxed)}))?;
+        tokio::time::timeout(Duration::from_secs(CLOSE_DEADLINE_SECONDS), async {
+            while let Some(result) = closing.join_next().await { result??; }
+            admission_empty(admission).await
+        }).await??;
+        timing.close_tail += traffic_end.elapsed().as_secs_f64();
         stats.epochs.fetch_add(1, Ordering::Relaxed);
-        admission_empty(admission).await?;
         require(pool.metrics().live_keys == 0, "completed traffic epoch retained a native key")?;
         timing.soak = started.elapsed().as_secs_f64();
         if timing.traffic >= args.duration as f64 { break; }
         let rotation_started = Instant::now();
         pairs = open_group(args, listener, admission, config, pool, &stats).await?;
         timing.rotation += rotation_started.elapsed().as_secs_f64();
-        emit(json!({"event":"rotation_ready","phase":"soak","soak_elapsed_seconds":started.elapsed().as_secs_f64(),"active":admission.counts()?.0,"pending":0,"authenticated_pairs_total":stats.pairs.load(Ordering::Relaxed),"completed_epochs":stats.epochs.load(Ordering::Relaxed)}))?;
+        emit(json!({"event":"rotation_ready","phase":"soak","initial":false,"soak_elapsed_seconds":started.elapsed().as_secs_f64(),"expected_established_connections":args.connections,"active":admission.counts()?.0,"pending":0,"authenticated_pairs_total":stats.pairs.load(Ordering::Relaxed),"completed_epochs":stats.epochs.load(Ordering::Relaxed)}))?;
     }
     sample(admission, pool, &stats, started.elapsed().as_secs_f64(), 0)?;
     require(stats.messages.load(Ordering::Relaxed) >= args.connections as u64, "not every requested connection completed an echo")?;
@@ -342,7 +379,7 @@ async fn run(args: Args) -> ProbeResult<()> {
     if !stats.per_ip_passed.load(Ordering::Relaxed) || !stats.pending_passed.load(Ordering::Relaxed) || (args.connections == 64 && !stats.global_passed.load(Ordering::Relaxed)) { failures.push("required admission limit check did not complete".to_owned()); }
     if kem.executed != pairs * 3 || kem.rejected != 0 { failures.push("unexpected KEM execution or rejection accounting".to_owned()); }
     if matches!((fd_baseline, final_fds), (Some(before), Some(after)) if after > before) { failures.push("final descriptor count exceeds initialized baseline".to_owned()); }
-    emit(json!({"event":"final","schema":"spiral-load-probe/v1","status":if failures.is_empty(){"passed"}else{"failed"},"scope":SCOPE,"requested_duration_seconds":args.duration,"soak_elapsed_seconds":timing.soak,"traffic_epoch_elapsed_seconds":timing.traffic,"rotation_setup_seconds":timing.rotation,"actual_elapsed_seconds":process_started.elapsed().as_secs_f64(),"total_messages":stats.messages.load(Ordering::Relaxed),"echoed_bytes":stats.bytes.load(Ordering::Relaxed),"bidirectional_payload_bytes":stats.bytes.load(Ordering::Relaxed)*2,"authenticated_pairs_total":pairs,"authenticated_pair_closes":stats.closes.load(Ordering::Relaxed),"successful_endpoint_handshakes":pairs*2,"peak_authenticated_connections":stats.peak.load(Ordering::Relaxed),"limit_checks":{"per_ip":stats.per_ip_passed.load(Ordering::Relaxed),"pending":stats.pending_passed.load(Ordering::Relaxed),"global":if args.connections==64 {Some(stats.global_passed.load(Ordering::Relaxed))}else{None}},"completed_epochs":stats.epochs.load(Ordering::Relaxed),"admission_rejected":stats.rejections.load(Ordering::Relaxed),"active":counts.0,"pending":counts.1,"admission_released":counts==(0,0),"authenticated_close_for_all_completed_pairs":failures.is_empty(),"auth_key_closed":auth_closed,"resource_baseline":{"fd_count":fd_baseline,"thread_count":thread_baseline},"final_resources":{"fd_count":final_fds,"thread_count":resource_count("/proc/self/task")},"kem":{"live_keys":kem.live_keys,"executed_jobs":kem.executed,"rejected_jobs":kem.rejected},"errors":failures}))?;
+    emit(json!({"event":"final","schema":"spiral-load-probe/v1","status":if failures.is_empty(){"passed"}else{"failed"},"scope":SCOPE,"requested_duration_seconds":args.duration,"soak_elapsed_seconds":timing.soak,"traffic_epoch_elapsed_seconds":timing.traffic,"rotation_setup_seconds":timing.rotation,"close_tail_seconds":timing.close_tail,"actual_elapsed_seconds":process_started.elapsed().as_secs_f64(),"total_messages":stats.messages.load(Ordering::Relaxed),"echoed_bytes":stats.bytes.load(Ordering::Relaxed),"bidirectional_payload_bytes":stats.bytes.load(Ordering::Relaxed)*2,"authenticated_pairs_total":pairs,"authenticated_pair_closes":stats.closes.load(Ordering::Relaxed),"successful_endpoint_handshakes":pairs*2,"peak_authenticated_connections":stats.peak.load(Ordering::Relaxed),"limit_checks":{"per_ip":stats.per_ip_passed.load(Ordering::Relaxed),"pending":stats.pending_passed.load(Ordering::Relaxed),"global":if args.connections==64 {Some(stats.global_passed.load(Ordering::Relaxed))}else{None}},"completed_epochs":stats.epochs.load(Ordering::Relaxed),"admission_rejected":stats.rejections.load(Ordering::Relaxed),"active":counts.0,"pending":counts.1,"admission_released":counts==(0,0),"authenticated_close_for_all_completed_pairs":failures.is_empty(),"auth_key_closed":auth_closed,"resource_baseline":{"fd_count":fd_baseline,"thread_count":thread_baseline},"final_resources":{"fd_count":final_fds,"thread_count":resource_count("/proc/self/task")},"kem":{"live_keys":kem.live_keys,"executed_jobs":kem.executed,"rejected_jobs":kem.rejected},"errors":failures}))?;
     require(failures.is_empty(), "load probe failed")
 }
 #[tokio::main(flavor = "multi_thread", worker_threads = 2)]
