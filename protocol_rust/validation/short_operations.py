@@ -146,7 +146,8 @@ def run_case(kind, args, root):
                '--duration-seconds', str(duration), '--connections', '64', '--payload', '16384',
                '--interval-ms', '50', *LIMIT_FLAGS.get(kind, [])]
     base = clocks(); next_sample = 0.; next_windows = 0.; observed = 0
-    signal_at = None; sent = False; offset = 0; pending = b''; child = None
+    signal_at = None; sent = False; traffic_seen = False
+    offset = 0; pending = b''; child = None
     latest = None; ranges = {'utc_minus_monotonic_seconds': [0., 0.],
                             'boottime_minus_monotonic_seconds': [0., 0.]}
     report = {'case': kind, 'status': 'failed', 'expected_failure': FAILURES.get(kind),
@@ -178,8 +179,15 @@ def run_case(kind, args, root):
                             raise ValueError('probe observation exceeded bound')
                         while b'\n' in pending:
                             line, pending = pending.split(b'\n', 1)
-                            if line and campaign.strict_json(line).get('event') == 'traffic_started' and signal_at is None:
-                                signal_at = time.monotonic() + 5
+                            if line:
+                                event = campaign.strict_json(line)
+                                if event.get('event') == 'traffic_started':
+                                    traffic_seen = True
+                                if (traffic_seen and event.get('event') == 'sample'
+                                        and event.get('expected_established_connections') == 64
+                                        and campaign.finite_number(event.get('total_messages'), 1)
+                                        and signal_at is None):
+                                    signal_at = time.monotonic() + 5
                     except FileNotFoundError:
                         pass
                     if signal_at is not None and time.monotonic() >= signal_at and child.poll() is None:
