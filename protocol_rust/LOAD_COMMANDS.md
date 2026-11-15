@@ -1,5 +1,8 @@
 # Operator commands for duration-based load tests
 
+For short clock observations, controlled interruption and low resource-ceiling
+checks, use the [short operations guide](SHORT_OPERATIONS.md).
+
 Run these commands separately on OCI Ubuntu ARM64 and WSL Ubuntu x86-64. The
 runner uses loopback TCP/TLS; it does not connect OCI to WSL. Choose one duration
 per execution. Preparation never starts a load test. Long tests are run by the
