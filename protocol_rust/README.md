@@ -82,6 +82,7 @@ The normal buffer pool is `18 × 16,440 = 295,920` bytes per connection. Receive
 | Sustained concurrent TLS, overload rejection and process-resource observations | [Load testing](LOAD_TESTING.md) |
 | Operator-run duration profiles, preparation and result collection on OCI/WSL | [Load commands](LOAD_COMMANDS.md) |
 | Clock observations and short interruption/resource-guard checks | [Short operations](SHORT_OPERATIONS.md) |
+| Separate OCI server and WSL client over existing SSH access | [Cross-host commands](CROSS_HOST.md) |
 | Functional records and reproducible commands | [Validation](VALIDATION.md), [Ubuntu/WSL](RUN_UBUNTU_WSL.md), [regression map](REGRESSION_MAP.md) |
 | Frame/ClientHello fuzzing | [Parser fuzzing](FUZZ_PARSERS.md) |
 | DATA/CLOSE state-model fuzzing | [Record fuzzing](FUZZ_RECORDS.md) |
