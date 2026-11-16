@@ -167,6 +167,6 @@ public redistribution. Do not upload the OCI state directory or private keys.
 On a preflight SSH/credential/source error, the tool exits before starting a case;
 send the terminal error so that access or preparation can be corrected.
 
-Preparation of this tool used eleven pure contract tests and help/syntax checks.
+The current tool has thirteen pure contract tests plus help/syntax checks.
 No SSH, sockets, TLS workloads or cross-host tests were executed for those checks.
 Actual OCI–WSL outcomes remain for operator execution.

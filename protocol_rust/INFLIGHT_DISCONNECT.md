@@ -119,3 +119,11 @@ WSL clock discrepancies remain unresolved. The test demonstrates functional
 fault handling under the recorded workload, not trustworthy real-time deadlines,
 capacity, application-level client authentication or cryptographic security.
 Slow readers and server crashes remain separate next cases.
+
+## Recorded preparation checks
+
+The [local preparation evidence](evidence/inflight_runner_20261117/README.md)
+records a release build, 103 collector contract tests, four invalid-checkpoint
+CLI rejections, and one short real-loopback TLS pending-request cut followed by
+normal recovery. The relay in that check is local TCP, not SSH or OCI/WSL.
+Cross-host operator results remain to be collected.
