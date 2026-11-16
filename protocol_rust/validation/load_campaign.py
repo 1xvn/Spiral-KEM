@@ -172,6 +172,8 @@ def source_snapshot(root=ROOT):
                      'protocol_rust/examples/load_probe.rs',
                      'protocol_rust/run_load_test.sh',
                      'protocol_rust/validation/load_campaign.py',
+                     'protocol_rust/validation/cross_host_smoke.py',
+                     'protocol_rust/validation/inflight_disconnect.py',
                      'protocol_rust/interop.py', 'protocol_v01/requirements.txt'):
         path = root / relative
         if path.is_file():

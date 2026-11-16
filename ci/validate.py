@@ -83,7 +83,8 @@ def main():
         run('diagnostic-parser', [python, '-m', 'unittest', 'discover', '-s', 'protocol_rust/diagnostics', '-p', 'test_*.py', '-v'], 60, minimum=24)
         run('load-collector-contracts', [python, '-m', 'unittest', 'discover', '-s', 'protocol_rust/validation', '-p', 'test_load_campaign.py', '-v'], 60, minimum=29)
         run('short-operations-contracts', [python, '-m', 'unittest', 'discover', '-s', 'protocol_rust/validation', '-p', 'test_short_operations.py', '-v'], 60, minimum=11)
-        run('cross-host-contracts', [python, '-m', 'unittest', 'discover', '-s', 'protocol_rust/validation', '-p', 'test_cross_host_smoke.py', '-v'], 60, minimum=11)
+        run('cross-host-contracts', [python, '-m', 'unittest', 'discover', '-s', 'protocol_rust/validation', '-p', 'test_cross_host_smoke.py', '-v'], 60, minimum=13)
+        run('inflight-contracts', [python, '-m', 'unittest', 'discover', '-s', 'protocol_rust/validation', '-p', 'test_inflight_disconnect.py', '-v'], 60, minimum=12)
         run('native-kem', ['make', '-C', 'native_research', 'check', 'PYTHON=' + python], 300, minimum=9)
         if not cargo:
             raise RuntimeError('cargo executable not found')

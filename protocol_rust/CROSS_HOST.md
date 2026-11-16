@@ -1,5 +1,8 @@
 # OCI–WSL functional checks over SSH forwarding
 
+For an interruption after verified DATA progress with a response pending, use
+the [in-flight interruption runner](INFLIGHT_DISCONNECT.md).
+
 This operator-run exercise places the Rust server on OCI Ubuntu ARM64 and the
 Rust client on WSL Ubuntu x86-64. OpenSSH forwards a private local TCP listener
 to the existing loopback-only server on OCI. Existing SSH access controls entry;
@@ -39,17 +42,17 @@ subdirectory owns `key.pem` and `auth.bin`; those files remain on OCI. Fresh CA,
 leaf and pin validity is 24 hours. These are test identities, not service keys.
 Only `ca.pem`, `pin.json` and public source/build provenance enter `public.tar.gz`.
 
-The command refuses to overwrite an existing state directory. Existing state
+Without an explicit rotation option the command refuses to overwrite an existing state directory. Existing state
 can serve repeated cases during its validity. If it expired or the selected
 source/binary changed, retain or remove the old test state according to your key
 policy before generating a new one. For example, an explicit local backup is:
 
 ```bash
-mv "$HOME/Spiral-cross-host-server" "$HOME/Spiral-cross-host-server-old-$(date -u +%Y%m%dT%H%M%SZ)"
+.venv-load/bin/python -B protocol_rust/validation/cross_host_smoke.py prepare-server --rotate-test-state
 ```
 
-That rename retains the old private test keys; it does not erase them. Then run
-`prepare-server` again and let the WSL runner fetch the new public bundle.
+This retains the old private test keys in a timestamped backup and generates a
+fresh identity; it does not erase the old keys. Let WSL fetch the new public bundle.
 
 ## 3. WSL client terminal: update and build
 

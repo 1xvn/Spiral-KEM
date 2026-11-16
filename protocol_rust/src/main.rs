@@ -43,6 +43,7 @@ impl Args {
                 "--messages",
                 "--payload",
                 "--pipeline",
+                "--fault-checkpoint",
                 "--cert",
                 "--key",
                 "--auth",
@@ -72,6 +73,51 @@ impl Args {
             .get(name)
             .map_or(Ok(default), |v| v.parse().map_err(|_| Error::Input))
     }
+    fn fault_checkpoint(&self) -> Result<Option<usize>> {
+        if !self.values.contains_key("--fault-checkpoint") {
+            return Ok(None);
+        }
+        let checkpoint = self.number("--fault-checkpoint", 0)?;
+        let messages = self.number("--messages", 1)?;
+        if self.number("--connections", 1)? != 1
+            || self.number("--pipeline", 1)? != 1
+            || !(1..=1024).contains(&messages)
+            || checkpoint == 0
+            || checkpoint >= messages
+        {
+            return Err(Error::Input);
+        }
+        Ok(Some(checkpoint))
+    }
+}
+fn emit_event(event: Value) -> Result<()> {
+    println!("{event}");
+    std::io::stdout().flush()?;
+    Ok(())
+}
+async fn fault_failure_cleanup(admission: &Admission, signing: &ServerIdentity) -> Result<()> {
+    // Session::drop signals failure; its I/O tasks release the lease once both
+    // have finished. Observe that release before reporting cleanup to the driver.
+    let drained = tokio::time::timeout(Duration::from_secs(3), async {
+        loop {
+            if admission.counts()? == (0, 0) {
+                return Ok::<_, Error>(());
+            }
+            tokio::time::sleep(Duration::from_millis(10)).await;
+        }
+    })
+    .await;
+    let drained = match drained {
+        Ok(result) => {
+            result?;
+            true
+        }
+        Err(_) => false,
+    };
+    signing.close()?;
+    let (active, pending) = admission.counts()?;
+    emit_event(json!({"event":"failure_cleanup","role":"server", "active":active,
+        "pending":pending,"auth_key_closed":signing.is_closed()?,"drained":drained}))
 }
 fn require_options(a: &Args, expected: &[&str]) -> Result<()> {
     if a.values.len() != expected.len()
@@ -175,7 +221,12 @@ fn payload(id: usize, size: usize) -> Vec<u8> {
     }
     v
 }
-async fn one_client(port: u16, a: &Args, pool: &KemPool) -> Result<Value> {
+async fn one_client(
+    port: u16,
+    a: &Args,
+    pool: &KemPool,
+    fault_checkpoint: Option<usize>,
+) -> Result<Value> {
     let name = a.get("--name")?;
     let service = a.get("--service")?;
     handshake::validate_identity(name, service)?;
@@ -206,6 +257,26 @@ async fn one_client(port: u16, a: &Args, pool: &KemPool) -> Result<Value> {
     let hs_ms = start.elapsed().as_secs_f64() * 1000.;
     let mut session = ready.start()?;
     let app_started = Instant::now();
+    if let Some(checkpoint) = fault_checkpoint {
+        for id in 0..checkpoint {
+            let expected = payload(id, size);
+            session.send(&expected).await?;
+            if session.receive().await?.as_bytes() != expected.as_slice() {
+                return Err(Error::Authentication);
+            }
+        }
+        session.send(&payload(checkpoint, size)).await?;
+        emit_event(json!({"event":"request_pending","role":"client",
+            "fault_checkpoint":checkpoint,"session_id":hex::encode(sid),
+            "binding_hash":hex::encode(binding),"transcript_hash":hex::encode(transcript),
+            "sent_messages":checkpoint+1,"verified_echoes":checkpoint,"payload_bytes":size}))?;
+        // The fault-mode peer withholds this response. A response means the
+        // checkpoint was not held as requested, and cannot count as a cut.
+        return match session.receive().await {
+            Ok(_) => Err(Error::Authentication),
+            Err(error) => Err(error),
+        };
+    }
     let mut tasks = tokio::task::JoinSet::new();
     for lane in 0..pipeline {
         let sender = session.sender();
@@ -240,6 +311,7 @@ async fn run(a: &Args, pool: &KemPool) -> Result<Value> {
     if !(1..=64).contains(&count) {
         return Err(Error::Input);
     }
+    let fault_checkpoint = a.fault_checkpoint()?;
     let port: u16 = a
         .number("--port", 0)?
         .try_into()
@@ -279,6 +351,26 @@ async fn run(a: &Args, pool: &KemPool) -> Result<Value> {
                     let ready=handshake::server(io,&name,&service,signing,&p,lease).await?;
                     let sid=ready.info().sid;let transcript=ready.info().transcript;
                     let mut session=ready.start()?;
+                    if let Some(checkpoint) = fault_checkpoint {
+                        for _ in 0..checkpoint {
+                            let value = session.receive().await?;
+                            session.send(value.as_bytes()).await?;
+                        }
+                        let pending = session.receive().await?;
+                        emit_event(json!({"event":"request_pending","role":"server",
+                            "fault_checkpoint":checkpoint,"session_id":hex::encode(sid),
+                            "binding_hash":hex::encode(binding),"transcript_hash":hex::encode(transcript),
+                            "received_messages":checkpoint+1,"echoed_messages":checkpoint,
+                            "pending_payload_bytes":pending.as_bytes().len()}))?;
+                        // Keep the authenticated request pending while observing
+                        // transport failure. Any additional DATA invalidates it.
+                        let next = session.receive().await;
+                        drop(pending);
+                        return match next {
+                            Ok(_) => Err(Error::Authentication),
+                            Err(error) => Err(error),
+                        };
+                    }
                     for _ in 0..messages{let value=session.receive().await?;session.send(value.as_bytes()).await?;}
                     session.close().await?;
                     Ok::<_,Error>(json!({"session_id":hex::encode(sid),"binding_hash":hex::encode(binding),"transcript_hash":hex::encode(transcript),"messages":messages,"authenticated_close":true}))
@@ -293,6 +385,9 @@ async fn run(a: &Args, pool: &KemPool) -> Result<Value> {
                 }
             }
             if let Some(e) = failure {
+                if fault_checkpoint.is_some() {
+                    fault_failure_cleanup(&admission, &signing).await?;
+                }
                 return Err(e);
             }
             if admission.counts()? != (0, 0) {
@@ -311,7 +406,7 @@ async fn run(a: &Args, pool: &KemPool) -> Result<Value> {
                     values: a.values.clone(),
                 };
                 let p = pool.clone();
-                tasks.spawn(async move { one_client(port, &args, &p).await });
+                tasks.spawn(async move { one_client(port, &args, &p, fault_checkpoint).await });
             }
             let mut results = Vec::new();
             let mut failure = None;
