@@ -75,6 +75,8 @@ The recorded functional suite includes Python protocol tests, C regressions, Rus
 
 The [bounded load campaign](protocol_rust/LOAD_TESTING.md) exercises sustained concurrent loopback TLS, admission rejection and recovery, session rotation, and process-resource observations with explicit scope and stop thresholds.
 
+[OCI and WSL operator commands](protocol_rust/LOAD_COMMANDS.md) prepare explicit 30-minute, 1-, 2-, 6-, 12- and 24-hour runs without starting a long test during setup.
+
 Use the [CI guide](ci/README.md), [Rust validation record](protocol_rust/VALIDATION.md), and [regression map](protocol_rust/REGRESSION_MAP.md) to distinguish individual historical runs from the current combined suite.
 
 Open work includes independent cryptanalysis, independent validation and extension of the recorded attack-cost and decryption-failure estimates for the research parameters, constant-time assessment across supported targets, and complete secret-copy/lifecycle coverage. Cleanup observations for named buffers do not imply erasure of every compiler temporary, backend limb, register, TLS-provider copy, or OS copy. Original diagnostic failures remain relevant; a passing functional run does not override them.

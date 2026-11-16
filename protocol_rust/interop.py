@@ -40,8 +40,12 @@ def private_write(path, data):
     path.write_bytes(data)
 
 
-def identities(folder, *, leaf_validity=None):
+def identities(folder, *, leaf_validity=None, lifetime_seconds=3600):
+    # Test fixtures only. Keep CA, leaf and authentication-pin expiry aligned.
+    if type(lifetime_seconds) is not int or not 60 <= lifetime_seconds <= 7 * 86400:
+        raise ValueError("fixture lifetime must be 60..604800 seconds")
     now = datetime.now(timezone.utc)
+    expires = now + timedelta(seconds=lifetime_seconds)
     ca = Ed25519PrivateKey.generate()
     leaf = Ed25519PrivateKey.generate()
     ca_name = x509.Name(
@@ -54,7 +58,7 @@ def identities(folder, *, leaf_validity=None):
         .public_key(ca.public_key())
         .serial_number(x509.random_serial_number())
         .not_valid_before(now - timedelta(minutes=1))
-        .not_valid_after(now + timedelta(hours=1))
+        .not_valid_after(expires)
         .add_extension(x509.BasicConstraints(ca=True, path_length=0), critical=True)
         .add_extension(
             x509.KeyUsage(False, False, False, False, False, True, True, False, False),
@@ -72,7 +76,7 @@ def identities(folder, *, leaf_validity=None):
             leaf_validity[0] if leaf_validity else now - timedelta(minutes=1)
         )
         .not_valid_after(
-            leaf_validity[1] if leaf_validity else now + timedelta(hours=1)
+            leaf_validity[1] if leaf_validity else expires
         )
         .add_extension(x509.BasicConstraints(ca=False, path_length=None), critical=True)
         .add_extension(
@@ -104,7 +108,7 @@ def identities(folder, *, leaf_validity=None):
         "service": SERVICE,
         "public_key_hex": signing.public_key().public_bytes_raw().hex(),
         "not_before": int(time.time()) - 60,
-        "not_after": int(time.time()) + 3600,
+        "not_after": int(expires.timestamp()),
         "revoked": False,
     }
     (folder / "pin.json").write_text(json.dumps(pin))

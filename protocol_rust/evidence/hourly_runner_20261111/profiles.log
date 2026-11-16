@@ -1,0 +1,6 @@
+30m   1800 traffic seconds; 64 connections, 16 KiB payload, 50 ms pacing
+ 1h   3600 traffic seconds; 64 connections, 16 KiB payload, 50 ms pacing
+ 2h   7200 traffic seconds; 64 connections, 16 KiB payload, 50 ms pacing
+ 6h  21600 traffic seconds; 64 connections, 16 KiB payload, 50 ms pacing
+12h  43200 traffic seconds; 64 connections, 16 KiB payload, 50 ms pacing
+24h  86400 traffic seconds; 64 connections, 16 KiB payload, 50 ms pacing
