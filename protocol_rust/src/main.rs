@@ -2,6 +2,8 @@
 #![forbid(unsafe_code)]
 #[cfg(feature = "flow-diagnostics")]
 mod backpressure_probe;
+#[cfg(feature = "flow-diagnostics")]
+mod wire_stall_probe;
 use serde_json::{json, Value};
 use spiral_protocol::{
     admission::Admission,
@@ -47,6 +49,7 @@ impl Args {
                 "--pipeline",
                 "--fault-checkpoint",
                 "--backpressure-case",
+                "--wire-stall-case",
                 "--cert",
                 "--key",
                 "--auth",
@@ -103,6 +106,23 @@ impl Args {
             || self.number("--pipeline", 1)? != 1
             || self.number("--messages", 1)? != 10
             || self.number("--payload", 64)? != 1024
+        {
+            return Err(Error::Input);
+        }
+        Ok(Some(case))
+    }
+    fn wire_stall_case(&self) -> Result<Option<&str>> {
+        let Some(case) = self.values.get("--wire-stall-case") else {
+            return Ok(None);
+        };
+        if !cfg!(feature = "flow-diagnostics")
+            || !matches!(case.as_str(), "release" | "timeout")
+            || self.values.contains_key("--fault-checkpoint")
+            || self.values.contains_key("--backpressure-case")
+            || self.number("--connections", 1)? != 1
+            || self.number("--pipeline", 1)? != 1
+            || self.number("--messages", 1)? != 1024
+            || self.number("--payload", 64)? != 16384
         {
             return Err(Error::Input);
         }
@@ -285,6 +305,16 @@ async fn one_client(
             "total_ms":start.elapsed().as_secs_f64()*1000.,"messages":n,"payload_bytes":size,
             "authenticated_close":true,"backpressure_case":case,"backpressure":report}));
     }
+    #[cfg(feature = "flow-diagnostics")]
+    if let Some(case) = a.wire_stall_case()? {
+        let report = wire_stall_probe::client(session, sid, binding, transcript, case).await?;
+        return Ok(json!({"session_id":hex::encode(sid),"binding_hash":hex::encode(binding),
+            "transcript_hash":hex::encode(transcript),"handshake_ms":hs_ms,"tcp_ms":tcp_ms,
+            "tls_ms":tls_ms,"spiral_ms":spiral_ms,"app_ms":app_started.elapsed().as_secs_f64()*1000.,
+            "total_ms":start.elapsed().as_secs_f64()*1000.,"messages":n,"payload_bytes":size,
+            "baseline_echoes":3,"bulk_messages":1021,
+            "authenticated_close":true,"wire_stall_case":case,"wire_stall":report}));
+    }
     if let Some(checkpoint) = fault_checkpoint {
         for id in 0..checkpoint {
             let expected = payload(id, size);
@@ -341,6 +371,7 @@ async fn run(a: &Args, pool: &KemPool) -> Result<Value> {
     }
     let fault_checkpoint = a.fault_checkpoint()?;
     let backpressure_case = a.backpressure_case()?.map(str::to_owned);
+    let wire_stall_case = a.wire_stall_case()?.map(str::to_owned);
     let port: u16 = a
         .number("--port", 0)?
         .try_into()
@@ -377,6 +408,8 @@ async fn run(a: &Args, pool: &KemPool) -> Result<Value> {
                 let gate = admission.clone();
                 #[cfg(feature = "flow-diagnostics")]
                 let backpressure_case = backpressure_case.clone();
+                #[cfg(feature = "flow-diagnostics")]
+                let wire_stall_case = wire_stall_case.clone();
                 tasks.spawn(async move{
                     let lease=gate.acquire(peer.ip())?;let io=Transport::accept(sock,cfg,&name).await?;let binding=io.binding_hash();
                     let ready=handshake::server(io,&name,&service,signing,&p,lease).await?;
@@ -385,6 +418,10 @@ async fn run(a: &Args, pool: &KemPool) -> Result<Value> {
                     #[cfg(feature = "flow-diagnostics")]
                     if let Some(case) = backpressure_case {
                         return backpressure_probe::server(session, sid, binding, transcript, &case).await;
+                    }
+                    #[cfg(feature = "flow-diagnostics")]
+                    if let Some(case) = wire_stall_case {
+                        return wire_stall_probe::server(session, sid, binding, transcript, &case).await;
                     }
                     if let Some(checkpoint) = fault_checkpoint {
                         for _ in 0..checkpoint {
@@ -420,7 +457,7 @@ async fn run(a: &Args, pool: &KemPool) -> Result<Value> {
                 }
             }
             if let Some(e) = failure {
-                if fault_checkpoint.is_some() || backpressure_case.is_some() {
+                if fault_checkpoint.is_some() || backpressure_case.is_some() || wire_stall_case.is_some() {
                     fault_failure_cleanup(&admission, &signing).await?;
                 }
                 return Err(e);
@@ -488,6 +525,7 @@ async fn main() -> Result<()> {
     }
     // Reject opt-in probe combinations before initializing workers or networking.
     a.backpressure_case()?;
+    a.wire_stall_case()?;
     let pool = KemPool::new(a.number("--workers", KemPool::default_workers())?)?;
     let result = run(&a, &pool).await;
     pool.shutdown().await?;
