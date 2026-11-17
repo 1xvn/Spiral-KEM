@@ -133,3 +133,12 @@ cleanup metrics, fresh recovery results and a SHA-256 file inventory.
 Server TLS and authentication private keys remain on OCI. SSH diagnostics may
 contain host names, account names or local key paths; review those diagnostics
 before public redistribution.
+
+## Recorded preparation checks
+
+The [preparation evidence](evidence/server_crash_runner_20261117/README.md)
+records 159 passing collector tests and short real-process/TCP control-path
+checks, including direct-child termination and rejection of an unhealthy
+forwarder. Those checks use synthetic endpoints and metrics, not Rust/TLS/KEM.
+The actual OCI/WSL authenticated crash/recovery campaign has not been run during
+preparation; use the operator commands above to collect it.
