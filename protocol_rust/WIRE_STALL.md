@@ -100,6 +100,11 @@ alone cannot satisfy this test. If the entire bounded transfer completes without
 the required socket-write observation, the test fails to establish a stall.
 The gate does not keep increasing the workload until a failure appears.
 
+Raw read resets are recorded as input EOF while already buffered ciphertext is
+drained. Send errors still fail. The release verdict requires both Rust peers
+to complete authenticated closure, so a truncated TLS stream cannot pass merely
+because the relay observed EOF.
+
 The gate requests `SO_RCVBUF=4096` on its own backend socket before connecting;
 the actual value returned by the kernel is recorded. This changes only that
 owned socket, not a host sysctl. The release path increases that socket's receive
@@ -159,3 +164,12 @@ service capacity, resistance to general denial of service, persistent-state
 recovery, application-level client authorization or cryptographic security.
 WSL clock accuracy remains unresolved, so recorded elapsed values are observations
 rather than latency, throughput or real-time deadline certification.
+
+## Recorded preparation checks
+
+The [preparation evidence](evidence/wire_stall_runner_20261118/README.md) records
+201 collector tests, feature/default builds, TCP observer tests and one short
+actual Rust/TLS stall-release case followed by fresh ordinary recovery. That
+check used one Linux host and a local TCP relay. The real 60-second timeout case
+and OCI/WSL campaign were not run during preparation; use the commands above
+to collect those results.
