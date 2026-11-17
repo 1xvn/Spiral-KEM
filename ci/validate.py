@@ -90,6 +90,7 @@ def main():
         run('server-crash-contracts', [python, '-m', 'unittest', 'discover', '-s', 'protocol_rust/validation', '-p', 'test_crash_contract.py', '-v'], 60, minimum=19)
         run('server-crash-supervision', [python, '-m', 'unittest', 'discover', '-s', 'protocol_rust/validation', '-p', 'test_crash_supervisor.py', '-v'], 60, minimum=11)
         run('server-crash-coordinator', [python, '-m', 'unittest', 'discover', '-s', 'protocol_rust/validation', '-p', 'test_server_crash.py', '-v'], 60, minimum=2)
+        run('wire-stall-contracts', [python, '-m', 'unittest', 'discover', '-s', 'protocol_rust/validation', '-p', 'test_wire*.py', '-v'], 60, minimum=40)
         run('native-kem', ['make', '-C', 'native_research', 'check', 'PYTHON=' + python], 300, minimum=9)
         if not cargo:
             raise RuntimeError('cargo executable not found')
@@ -106,6 +107,7 @@ def main():
         ignored = 5 if re.search(r'(?m)^host: (?:x86_64|aarch64)-unknown-linux-', version) else 0
         run('rust-unit', [cargo, 'test', '--lib', *cargo_base], 1200, rust_minimum=100, expected_ignored=ignored)
         run('rust-flow-diagnostics', [cargo, 'test', '--lib', '--features', 'flow-diagnostics', 'diagnostic_', *cargo_base], 1200, rust_minimum=3)
+        run('rust-wire-observer', [cargo, 'test', '--lib', '--features', 'flow-diagnostics', 'wire_observer_', *cargo_base], 1200, rust_minimum=3)
         # Check the opt-in executable without replacing the default release binary.
         run('rust-flow-diagnostics-cli', [cargo, 'check', '--bin', 'spiral-lab', '--features', 'flow-diagnostics', *cargo_base], 1200)
         run('rust-admission-boundaries', [cargo, 'test', '--test', 'admission_boundaries', *cargo_base], 60, rust_minimum=2)

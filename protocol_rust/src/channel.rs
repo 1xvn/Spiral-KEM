@@ -174,6 +174,8 @@ pub struct Session {
     rx: mpsc::Receiver<Plaintext>,
     life: Arc<Life>,
     tasks: Vec<JoinHandle<()>>,
+    #[cfg(feature = "flow-diagnostics")]
+    wire: transport::WireProbe,
 }
 /// Opt-in observations of concurrent flow state; reading them does not change limits.
 /// Fields may change independently while a snapshot is being collected.
@@ -287,6 +289,8 @@ impl Session {
         let pool = Pool::new();
         let (send, commands) = mpsc::channel(CHANNEL_CAPACITY);
         let (received, receive) = mpsc::channel(CHANNEL_CAPACITY);
+        #[cfg(feature = "flow-diagnostics")]
+        let wire = io.wire_probe();
         let (read, write) = tokio::io::split(io.io);
         let a = life.clone();
         let writer = tokio::spawn(async move {
@@ -314,10 +318,16 @@ impl Session {
             rx: receive,
             life,
             tasks: vec![writer, reader],
+            #[cfg(feature = "flow-diagnostics")]
+            wire,
         })
     }
     pub fn sender(&self) -> Sender {
         self.sender.clone()
+    }
+    #[cfg(feature = "flow-diagnostics")]
+    pub fn wire_probe(&self) -> transport::WireProbe {
+        self.wire.clone()
     }
     #[cfg(feature = "flow-diagnostics")]
     pub fn flow_snapshot(&self) -> Result<FlowSnapshot> {
@@ -585,6 +595,7 @@ mod tests {
             rx: receive,
             life,
             tasks: Vec::new(),
+            wire: transport::WireProbe::default(),
         };
         let strong_count = session.sender.tx.strong_count();
         let probe = session.flow_probe();
@@ -712,6 +723,8 @@ mod tests {
             rx,
             life,
             tasks: Vec::new(),
+            #[cfg(feature = "flow-diagnostics")]
+            wire: transport::WireProbe::default(),
         };
         assert_eq!(s.receive().await.unwrap().as_bytes(), b"last response");
         assert!(s.receive().await.is_err());
@@ -820,6 +833,8 @@ mod tests {
             rx,
             life: life.clone(),
             tasks: Vec::new(),
+            #[cfg(feature = "flow-diagnostics")]
+            wire: transport::WireProbe::default(),
         };
         life.fail();
         assert!(matches!(session.receive().await, Err(Error::Closed)));

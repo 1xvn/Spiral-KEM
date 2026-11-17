@@ -162,11 +162,12 @@ def client_command(port, public, wrong=False):
             '--ca',str(public/'ca.pem'),'--pin',str(pin)]
 
 
-def start_tunnel(ssh, target, errors):
+def start_tunnel(ssh, target, errors, remote_port=REMOTE_PORT):
+    require(type(remote_port) is int and 1<=remote_port<=65535,'invalid remote forwarding port')
     with socket.socket() as reserve:
         reserve.bind(('127.0.0.1',0));port=reserve.getsockname()[1]
     process=subprocess.Popen([*ssh,'-N','-o','ExitOnForwardFailure=yes','-L',
-        f'127.0.0.1:{port}:127.0.0.1:{REMOTE_PORT}',target],stdout=subprocess.DEVNULL,
+        f'127.0.0.1:{port}:127.0.0.1:{remote_port}',target],stdout=subprocess.DEVNULL,
         stderr=errors,start_new_session=True)
     try:
         deadline=time.monotonic()+120

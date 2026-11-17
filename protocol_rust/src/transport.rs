@@ -22,6 +22,169 @@ pub const ALPN: &[u8] = b"spiral-opt2/0.1";
 pub const EXPORTER: &[u8] = b"EXPORTER-SpiralOPT2-v0.1";
 pub(crate) const MAX_TLS_PEM: usize = 64 * 1024;
 
+#[cfg(feature = "flow-diagnostics")]
+use std::{
+    pin::Pin,
+    sync::atomic::{AtomicBool, AtomicU64, Ordering},
+    task::{Context, Poll},
+};
+
+/// Observations of the underlying TCP writer, before the TLS layer.
+/// Fields may change independently while a snapshot is collected.
+#[cfg(feature = "flow-diagnostics")]
+#[derive(Clone, Copy, Debug, Eq, PartialEq)]
+pub struct WireSnapshot {
+    pub write_pending: bool,
+    pub write_pending_polls: u64,
+    pub bytes_written: u64,
+    pub transport_dropped: bool,
+}
+
+#[cfg(feature = "flow-diagnostics")]
+#[derive(Default)]
+struct WireState {
+    write_pending: AtomicBool,
+    write_pending_polls: AtomicU64,
+    bytes_written: AtomicU64,
+    transport_dropped: AtomicBool,
+}
+
+/// An observer owns only counters and does not retain the TCP stream.
+#[cfg(feature = "flow-diagnostics")]
+#[derive(Clone, Default)]
+pub struct WireProbe {
+    state: Arc<WireState>,
+}
+
+#[cfg(feature = "flow-diagnostics")]
+impl WireProbe {
+    pub fn snapshot(&self) -> WireSnapshot {
+        WireSnapshot {
+            write_pending: self.state.write_pending.load(Ordering::Acquire),
+            write_pending_polls: self.state.write_pending_polls.load(Ordering::Acquire),
+            bytes_written: self.state.bytes_written.load(Ordering::Acquire),
+            transport_dropped: self.state.transport_dropped.load(Ordering::Acquire),
+        }
+    }
+
+    fn wrote(&self, result: &Poll<std::io::Result<usize>>) {
+        match result {
+            Poll::Pending => {
+                self.state.write_pending_polls.fetch_add(1, Ordering::AcqRel);
+                self.state.write_pending.store(true, Ordering::Release);
+            }
+            Poll::Ready(Ok(count)) => {
+                self.state
+                    .bytes_written
+                    .fetch_add(*count as u64, Ordering::AcqRel);
+                self.state.write_pending.store(false, Ordering::Release);
+            }
+            Poll::Ready(Err(_)) => {
+                self.state.write_pending.store(false, Ordering::Release);
+            }
+        }
+    }
+}
+
+/// Delegates I/O without changing socket options, buffers or readiness behavior.
+#[cfg(feature = "flow-diagnostics")]
+pub(crate) struct ObservedIo<T> {
+    inner: Option<T>,
+    probe: WireProbe,
+}
+
+#[cfg(feature = "flow-diagnostics")]
+impl<T> ObservedIo<T> {
+    fn new(inner: T) -> Self {
+        Self {
+            inner: Some(inner),
+            probe: WireProbe::default(),
+        }
+    }
+
+    fn inner_mut(&mut self) -> &mut T {
+        self.inner.as_mut().expect("observed stream is owned")
+    }
+}
+
+#[cfg(feature = "flow-diagnostics")]
+impl<T> Drop for ObservedIo<T> {
+    fn drop(&mut self) {
+        drop(self.inner.take());
+        self.probe.state.write_pending.store(false, Ordering::Release);
+        self.probe
+            .state
+            .transport_dropped
+            .store(true, Ordering::Release);
+    }
+}
+
+#[cfg(feature = "flow-diagnostics")]
+impl<T: AsyncRead + Unpin> AsyncRead for ObservedIo<T> {
+    fn poll_read(
+        self: Pin<&mut Self>,
+        cx: &mut Context<'_>,
+        buf: &mut tokio::io::ReadBuf<'_>,
+    ) -> Poll<std::io::Result<()>> {
+        Pin::new(self.get_mut().inner_mut()).poll_read(cx, buf)
+    }
+}
+
+#[cfg(feature = "flow-diagnostics")]
+impl<T: AsyncWrite + Unpin> AsyncWrite for ObservedIo<T> {
+    fn poll_write(
+        self: Pin<&mut Self>,
+        cx: &mut Context<'_>,
+        buf: &[u8],
+    ) -> Poll<std::io::Result<usize>> {
+        let this = self.get_mut();
+        let result = Pin::new(this.inner_mut()).poll_write(cx, buf);
+        this.probe.wrote(&result);
+        result
+    }
+
+    fn poll_write_vectored(
+        self: Pin<&mut Self>,
+        cx: &mut Context<'_>,
+        bufs: &[std::io::IoSlice<'_>],
+    ) -> Poll<std::io::Result<usize>> {
+        let this = self.get_mut();
+        let result = Pin::new(this.inner_mut()).poll_write_vectored(cx, bufs);
+        this.probe.wrote(&result);
+        result
+    }
+
+    fn is_write_vectored(&self) -> bool {
+        self.inner
+            .as_ref()
+            .expect("observed stream is owned")
+            .is_write_vectored()
+    }
+
+    fn poll_flush(self: Pin<&mut Self>, cx: &mut Context<'_>) -> Poll<std::io::Result<()>> {
+        let this = self.get_mut();
+        let result = Pin::new(this.inner_mut()).poll_flush(cx);
+        if matches!(&result, Poll::Ready(Err(_))) {
+            this.probe.state.write_pending.store(false, Ordering::Release);
+        }
+        result
+    }
+
+    fn poll_shutdown(self: Pin<&mut Self>, cx: &mut Context<'_>) -> Poll<std::io::Result<()>> {
+        let this = self.get_mut();
+        let result = Pin::new(this.inner_mut()).poll_shutdown(cx);
+        if result.is_ready() {
+            this.probe.state.write_pending.store(false, Ordering::Release);
+        }
+        result
+    }
+}
+
+#[cfg(feature = "flow-diagnostics")]
+type TransportIo = ObservedIo<TcpStream>;
+#[cfg(not(feature = "flow-diagnostics"))]
+type TransportIo = TcpStream;
+
 /// Parsed DER is erased unless ownership is transferred to the TLS provider.
 pub(crate) struct ParsedPrivateKey {
     key: zeroize::Zeroizing<Option<rustls::pki_types::PrivateKeyDer<'static>>>,
@@ -113,7 +276,7 @@ pub fn client_config(ca: &Path) -> Result<Arc<ClientConfig>> {
 }
 
 pub struct Transport {
-    pub(crate) io: TlsStream<TcpStream>,
+    pub(crate) io: TlsStream<TransportIo>,
     binding: [u8; 32],
     name: String,
     deadline: Instant,
@@ -121,6 +284,8 @@ pub struct Transport {
 impl Transport {
     pub async fn connect(stream: TcpStream, config: Arc<ClientConfig>, name: &str) -> Result<Self> {
         stream.set_nodelay(true)?;
+        #[cfg(feature = "flow-diagnostics")]
+        let stream = ObservedIo::new(stream);
         let server_name = ServerName::try_from(name.to_owned()).map_err(|_| Error::Input)?;
         let stream = tokio::time::timeout(
             Duration::from_secs(10),
@@ -153,6 +318,8 @@ impl Transport {
     }
     pub async fn accept(stream: TcpStream, config: Arc<ServerConfig>, name: &str) -> Result<Self> {
         stream.set_nodelay(true)?;
+        #[cfg(feature = "flow-diagnostics")]
+        let stream = ObservedIo::new(stream);
         let stream = tokio::time::timeout(
             Duration::from_secs(10),
             TlsAcceptor::from(config).accept(stream),
@@ -164,7 +331,7 @@ impl Transport {
         }
         Self::complete(stream.into(), name)
     }
-    fn complete(mut io: TlsStream<TcpStream>, name: &str) -> Result<Self> {
+    fn complete(mut io: TlsStream<TransportIo>, name: &str) -> Result<Self> {
         let (_, session) = io.get_ref();
         if session.is_handshaking()
             || session.handshake_kind().is_none()
@@ -198,6 +365,10 @@ impl Transport {
     }
     pub fn binding_hash(&self) -> [u8; 32] {
         crate::schedule::digest(&self.binding)
+    }
+    #[cfg(feature = "flow-diagnostics")]
+    pub fn wire_probe(&self) -> WireProbe {
+        self.io.get_ref().0.probe.clone()
     }
 }
 
@@ -287,6 +458,209 @@ pub(crate) async fn write_record<W: AsyncWrite + Unpin>(io: &mut W, raw: &[u8]) 
     io.write_all(raw).await?;
     io.flush().await?;
     Ok(())
+}
+
+#[cfg(all(test, feature = "flow-diagnostics"))]
+mod wire_tests {
+    use super::*;
+    use std::{
+        collections::VecDeque,
+        sync::Mutex,
+        task::{Wake, Waker},
+    };
+
+    enum Step {
+        Pending,
+        Written(usize),
+        Error,
+    }
+
+    struct StubIo {
+        steps: VecDeque<Step>,
+        calls: Arc<Mutex<Vec<&'static str>>>,
+        dropped: Arc<AtomicBool>,
+    }
+
+    impl StubIo {
+        fn next(&mut self, available: usize) -> Poll<std::io::Result<usize>> {
+            match self.steps.pop_front().expect("unexpected write poll") {
+                Step::Pending => Poll::Pending,
+                Step::Written(count) => {
+                    assert!(count <= available);
+                    Poll::Ready(Ok(count))
+                }
+                Step::Error => Poll::Ready(Err(std::io::ErrorKind::BrokenPipe.into())),
+            }
+        }
+    }
+
+    impl Drop for StubIo {
+        fn drop(&mut self) {
+            self.dropped.store(true, Ordering::Release);
+        }
+    }
+
+    impl AsyncRead for StubIo {
+        fn poll_read(
+            self: Pin<&mut Self>,
+            _: &mut Context<'_>,
+            buf: &mut tokio::io::ReadBuf<'_>,
+        ) -> Poll<std::io::Result<()>> {
+            self.calls.lock().unwrap().push("read");
+            buf.put_slice(b"r");
+            Poll::Ready(Ok(()))
+        }
+    }
+
+    impl AsyncWrite for StubIo {
+        fn poll_write(
+            self: Pin<&mut Self>,
+            _: &mut Context<'_>,
+            data: &[u8],
+        ) -> Poll<std::io::Result<usize>> {
+            let this = self.get_mut();
+            this.calls.lock().unwrap().push("write");
+            this.next(data.len())
+        }
+
+        fn poll_write_vectored(
+            self: Pin<&mut Self>,
+            _: &mut Context<'_>,
+            data: &[std::io::IoSlice<'_>],
+        ) -> Poll<std::io::Result<usize>> {
+            let this = self.get_mut();
+            this.calls.lock().unwrap().push("vectored");
+            this.next(data.iter().map(|slice| slice.len()).sum())
+        }
+
+        fn is_write_vectored(&self) -> bool {
+            true
+        }
+
+        fn poll_flush(self: Pin<&mut Self>, _: &mut Context<'_>) -> Poll<std::io::Result<()>> {
+            self.calls.lock().unwrap().push("flush");
+            Poll::Ready(Ok(()))
+        }
+
+        fn poll_shutdown(self: Pin<&mut Self>, _: &mut Context<'_>) -> Poll<std::io::Result<()>> {
+            self.calls.lock().unwrap().push("shutdown");
+            Poll::Ready(Ok(()))
+        }
+    }
+
+    struct Noop;
+    impl Wake for Noop {
+        fn wake(self: Arc<Self>) {}
+    }
+
+    fn fixture(steps: Vec<Step>) -> (ObservedIo<StubIo>, Arc<AtomicBool>) {
+        let dropped = Arc::new(AtomicBool::new(false));
+        let io = StubIo {
+            steps: steps.into(),
+            calls: Arc::new(Mutex::new(Vec::new())),
+            dropped: dropped.clone(),
+        };
+        (ObservedIo::new(io), dropped)
+    }
+
+    #[test]
+    fn wire_observer_counts_actual_scalar_and_vectored_write_progress() {
+        let (mut io, dropped) = fixture(vec![
+            Step::Pending,
+            Step::Written(3),
+            Step::Pending,
+            Step::Written(5),
+        ]);
+        let probe = io.probe.clone();
+        let other_probe = probe.clone();
+        let waker = Waker::from(Arc::new(Noop));
+        let mut cx = Context::from_waker(&waker);
+        assert!(io.is_write_vectored());
+        assert!(Pin::new(&mut io).poll_write(&mut cx, b"abcdef").is_pending());
+        assert_eq!(probe.snapshot(), WireSnapshot {
+            write_pending: true,
+            write_pending_polls: 1,
+            bytes_written: 0,
+            transport_dropped: false,
+        });
+        assert!(matches!(
+            Pin::new(&mut io).poll_write(&mut cx, b"abcdef"),
+            Poll::Ready(Ok(3))
+        ));
+        assert!(!probe.snapshot().write_pending);
+        let data = [std::io::IoSlice::new(b"abc"), std::io::IoSlice::new(b"def")];
+        assert!(Pin::new(&mut io).poll_write_vectored(&mut cx, &data).is_pending());
+        assert!(matches!(
+            Pin::new(&mut io).poll_write_vectored(&mut cx, &data),
+            Poll::Ready(Ok(5))
+        ));
+        assert_eq!(probe.snapshot(), WireSnapshot {
+            write_pending: false,
+            write_pending_polls: 2,
+            bytes_written: 8,
+            transport_dropped: false,
+        });
+        assert_eq!(*io.inner.as_ref().unwrap().calls.lock().unwrap(),
+                   vec!["write", "write", "vectored", "vectored"]);
+        drop(io);
+        assert!(dropped.load(Ordering::Acquire));
+        assert!(other_probe.snapshot().transport_dropped);
+    }
+
+    #[test]
+    fn wire_observer_write_error_and_drop_clear_pending_without_inventing_progress() {
+        let (mut io, dropped) = fixture(vec![Step::Pending, Step::Error, Step::Pending]);
+        let probe = io.probe.clone();
+        let waker = Waker::from(Arc::new(Noop));
+        let mut cx = Context::from_waker(&waker);
+        assert!(Pin::new(&mut io).poll_write(&mut cx, b"data").is_pending());
+        assert!(matches!(
+            Pin::new(&mut io).poll_write(&mut cx, b"data"),
+            Poll::Ready(Err(_))
+        ));
+        assert!(!probe.snapshot().write_pending);
+        assert_eq!(probe.snapshot().bytes_written, 0);
+        assert!(Pin::new(&mut io).poll_write(&mut cx, b"data").is_pending());
+        drop(io);
+        assert!(dropped.load(Ordering::Acquire));
+        assert_eq!(probe.snapshot(), WireSnapshot {
+            write_pending: false,
+            write_pending_polls: 2,
+            bytes_written: 0,
+            transport_dropped: true,
+        });
+    }
+
+    #[test]
+    fn wire_observer_delegates_read_flush_and_shutdown() {
+        let (mut io, _) = fixture(vec![Step::Pending]);
+        let probe = io.probe.clone();
+        let waker = Waker::from(Arc::new(Noop));
+        let mut cx = Context::from_waker(&waker);
+        assert!(Pin::new(&mut io).poll_write(&mut cx, b"data").is_pending());
+        assert!(matches!(
+            Pin::new(&mut io).poll_flush(&mut cx),
+            Poll::Ready(Ok(()))
+        ));
+        // A successful TCP flush is not a successful write of pending bytes.
+        assert!(probe.snapshot().write_pending);
+        let mut bytes = [0; 1];
+        let mut buf = tokio::io::ReadBuf::new(&mut bytes);
+        assert!(matches!(
+            Pin::new(&mut io).poll_read(&mut cx, &mut buf),
+            Poll::Ready(Ok(()))
+        ));
+        assert_eq!(buf.filled(), b"r");
+        assert!(matches!(
+            Pin::new(&mut io).poll_shutdown(&mut cx),
+            Poll::Ready(Ok(()))
+        ));
+        assert_eq!(*io.inner.as_ref().unwrap().calls.lock().unwrap(),
+                   vec!["write", "flush", "read", "shutdown"]);
+        assert!(!probe.snapshot().write_pending);
+        assert_eq!(probe.snapshot().write_pending_polls, 1);
+        assert_eq!(probe.snapshot().bytes_written, 0);
+    }
 }
 
 #[cfg(test)]
