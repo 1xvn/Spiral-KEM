@@ -1,5 +1,7 @@
 //! Loopback-only executable. Credentials are explicitly supplied by the caller.
 #![forbid(unsafe_code)]
+#[cfg(feature = "flow-diagnostics")]
+mod backpressure_probe;
 use serde_json::{json, Value};
 use spiral_protocol::{
     admission::Admission,
@@ -44,6 +46,7 @@ impl Args {
                 "--payload",
                 "--pipeline",
                 "--fault-checkpoint",
+                "--backpressure-case",
                 "--cert",
                 "--key",
                 "--auth",
@@ -88,6 +91,22 @@ impl Args {
             return Err(Error::Input);
         }
         Ok(Some(checkpoint))
+    }
+    fn backpressure_case(&self) -> Result<Option<&str>> {
+        let Some(case) = self.values.get("--backpressure-case") else {
+            return Ok(None);
+        };
+        if !cfg!(feature = "flow-diagnostics")
+            || !matches!(case.as_str(), "release" | "cancel" | "timeout")
+            || self.values.contains_key("--fault-checkpoint")
+            || self.number("--connections", 1)? != 1
+            || self.number("--pipeline", 1)? != 1
+            || self.number("--messages", 1)? != 10
+            || self.number("--payload", 64)? != 1024
+        {
+            return Err(Error::Input);
+        }
+        Ok(Some(case))
     }
 }
 fn emit_event(event: Value) -> Result<()> {
@@ -257,6 +276,15 @@ async fn one_client(
     let hs_ms = start.elapsed().as_secs_f64() * 1000.;
     let mut session = ready.start()?;
     let app_started = Instant::now();
+    #[cfg(feature = "flow-diagnostics")]
+    if let Some(case) = a.backpressure_case()? {
+        let report = backpressure_probe::client(session, sid, binding, transcript, case).await?;
+        return Ok(json!({"session_id":hex::encode(sid),"binding_hash":hex::encode(binding),
+            "transcript_hash":hex::encode(transcript),"handshake_ms":hs_ms,"tcp_ms":tcp_ms,
+            "tls_ms":tls_ms,"spiral_ms":spiral_ms,"app_ms":app_started.elapsed().as_secs_f64()*1000.,
+            "total_ms":start.elapsed().as_secs_f64()*1000.,"messages":n,"payload_bytes":size,
+            "authenticated_close":true,"backpressure_case":case,"backpressure":report}));
+    }
     if let Some(checkpoint) = fault_checkpoint {
         for id in 0..checkpoint {
             let expected = payload(id, size);
@@ -312,6 +340,7 @@ async fn run(a: &Args, pool: &KemPool) -> Result<Value> {
         return Err(Error::Input);
     }
     let fault_checkpoint = a.fault_checkpoint()?;
+    let backpressure_case = a.backpressure_case()?.map(str::to_owned);
     let port: u16 = a
         .number("--port", 0)?
         .try_into()
@@ -346,11 +375,17 @@ async fn run(a: &Args, pool: &KemPool) -> Result<Value> {
                 let name = name.to_owned();
                 let service = service.to_owned();
                 let gate = admission.clone();
+                #[cfg(feature = "flow-diagnostics")]
+                let backpressure_case = backpressure_case.clone();
                 tasks.spawn(async move{
                     let lease=gate.acquire(peer.ip())?;let io=Transport::accept(sock,cfg,&name).await?;let binding=io.binding_hash();
                     let ready=handshake::server(io,&name,&service,signing,&p,lease).await?;
                     let sid=ready.info().sid;let transcript=ready.info().transcript;
                     let mut session=ready.start()?;
+                    #[cfg(feature = "flow-diagnostics")]
+                    if let Some(case) = backpressure_case {
+                        return backpressure_probe::server(session, sid, binding, transcript, &case).await;
+                    }
                     if let Some(checkpoint) = fault_checkpoint {
                         for _ in 0..checkpoint {
                             let value = session.receive().await?;
@@ -385,7 +420,7 @@ async fn run(a: &Args, pool: &KemPool) -> Result<Value> {
                 }
             }
             if let Some(e) = failure {
-                if fault_checkpoint.is_some() {
+                if fault_checkpoint.is_some() || backpressure_case.is_some() {
                     fault_failure_cleanup(&admission, &signing).await?;
                 }
                 return Err(e);
@@ -451,6 +486,8 @@ async fn main() -> Result<()> {
     {
         return Err(Error::Input);
     }
+    // Reject opt-in probe combinations before initializing workers or networking.
+    a.backpressure_case()?;
     let pool = KemPool::new(a.number("--workers", KemPool::default_workers())?)?;
     let result = run(&a, &pool).await;
     pool.shutdown().await?;

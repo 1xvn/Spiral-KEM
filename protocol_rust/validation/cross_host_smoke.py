@@ -66,7 +66,9 @@ def prepare(rotate=False):
     print('Public bundle: ' + str(state / 'public.tar.gz'))
 
 
-def serve(checkpoint=None):
+def serve(checkpoint=None, backpressure_case=None):
+    require(backpressure_case in (None,'release','cancel','timeout'), 'invalid backpressure case')
+    require(checkpoint is None or backpressure_case is None, 'choose one diagnostic mode')
     state = Path.home() / STATE
     saved = campaign.strict_json((state / 'provenance.json').read_bytes())
     current = source()
@@ -77,10 +79,13 @@ def serve(checkpoint=None):
                '--connections','1','--messages','10','--workers','1',
                '--cert',str(private/'cert.pem'),'--key',str(private/'key.pem'),'--auth',str(private/'auth.bin')]
     if checkpoint is not None:command += ['--fault-checkpoint',str(checkpoint)]
+    if backpressure_case is not None:command += ['--backpressure-case',backpressure_case,'--payload','1024']
     # An interrupted SSH controller must not leave a persistent remote listener.
     # Coreutils bounds even a lost SSH channel; successful closure is still
     # checked from Rust's own final report by the client-side controller.
-    os.execvp('timeout', ['timeout','--kill-after=5s','60s',*command])
+    # The diagnostic timeout case must reach the unchanged 60-second idle
+    # deadline after setup. The watchdog itself is never passing evidence.
+    os.execvp('timeout', ['timeout','--kill-after=5s','90s' if backpressure_case else '60s',*command])
 
 
 def stop(process):
@@ -170,9 +175,12 @@ def start_tunnel(ssh, target, errors):
         stop(process);raise
 
 
-def server_ssh_command(ssh, target, checkpoint=None):
+def server_ssh_command(ssh, target, checkpoint=None, backpressure_case=None):
+    require(backpressure_case in (None,'release','cancel','timeout'), 'invalid backpressure case')
+    require(checkpoint is None or backpressure_case is None, 'choose one diagnostic mode')
     command='cd "$HOME/Spiral-load-hours" && exec python3 -B protocol_rust/validation/cross_host_smoke.py serve'
     if checkpoint is not None:command+=' --fault-checkpoint '+str(checkpoint)
+    if backpressure_case is not None:command+=' --backpressure-case '+backpressure_case
     return [*ssh,target,command]
 
 
@@ -290,17 +298,20 @@ def main():
     p.add_argument('--output',type=Path)
     p.add_argument('--rotate-test-state',action='store_true',help='Prepare only: retain old private state and generate fresh test identities')
     p.add_argument('--fault-checkpoint',type=int,choices=range(1,10),help='Serve only: opt-in pending-request instrumentation')
+    p.add_argument('--backpressure-case',choices=('release','cancel','timeout'),help='Serve only: opt-in flow diagnostics build required')
     args=p.parse_args()
     require(sys.platform=='linux','Use Ubuntu/WSL Linux')
     require(BINARY.is_file(),'Build the spiral-lab release binary first')
     os.umask(0o077)
     require(not args.rotate_test_state or args.action=='prepare-server','rotation is only for preparation')
     require(args.fault_checkpoint is None or args.action=='serve','checkpoint is only for serving')
+    require(args.backpressure_case is None or args.action=='serve','backpressure is only for serving')
+    require(args.fault_checkpoint is None or args.backpressure_case is None,'choose one diagnostic mode')
     def cancelled(signum, frame):
         raise KeyboardInterrupt()
     signal.signal(signal.SIGTERM,cancelled)
     if args.action=='prepare-server':prepare(args.rotate_test_state);return 0
-    if args.action=='serve':serve(args.fault_checkpoint);return 0
+    if args.action=='serve':serve(args.fault_checkpoint,args.backpressure_case);return 0
     return run(args)
 
 
