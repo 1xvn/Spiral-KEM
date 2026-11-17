@@ -66,7 +66,7 @@ def prepare(rotate=False):
     print('Public bundle: ' + str(state / 'public.tar.gz'))
 
 
-def serve(checkpoint=None, backpressure_case=None):
+def prepared_server_command(checkpoint=None, backpressure_case=None):
     require(backpressure_case in (None,'release','cancel','timeout'), 'invalid backpressure case')
     require(checkpoint is None or backpressure_case is None, 'choose one diagnostic mode')
     state = Path.home() / STATE
@@ -80,6 +80,11 @@ def serve(checkpoint=None, backpressure_case=None):
                '--cert',str(private/'cert.pem'),'--key',str(private/'key.pem'),'--auth',str(private/'auth.bin')]
     if checkpoint is not None:command += ['--fault-checkpoint',str(checkpoint)]
     if backpressure_case is not None:command += ['--backpressure-case',backpressure_case,'--payload','1024']
+    return command
+
+
+def serve(checkpoint=None, backpressure_case=None):
+    command=prepared_server_command(checkpoint,backpressure_case)
     # An interrupted SSH controller must not leave a persistent remote listener.
     # Coreutils bounds even a lost SSH channel; successful closure is still
     # checked from Rust's own final report by the client-side controller.

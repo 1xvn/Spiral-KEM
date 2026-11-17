@@ -176,6 +176,9 @@ def source_snapshot(root=ROOT):
                      'protocol_rust/validation/inflight_disconnect.py',
                      'protocol_rust/validation/slow_consumer.py',
                      'protocol_rust/validation/backpressure_contract.py',
+                     'protocol_rust/validation/server_crash.py',
+                     'protocol_rust/validation/crash_supervisor.py',
+                     'protocol_rust/validation/crash_contract.py',
                      'protocol_rust/interop.py', 'protocol_v01/requirements.txt'):
         path = root / relative
         if path.is_file():
