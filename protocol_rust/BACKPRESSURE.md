@@ -141,3 +141,11 @@ WSL timing discrepancies remain unresolved. These results demonstrate the
 observed functional behavior under the recorded workload, not trustworthy WSL
 timing, throughput or capacity. They do not establish actual TCP/TLS/network-write
 saturation, application-level client authentication or cryptographic security.
+
+## Recorded preparation checks
+
+The [local preparation evidence](evidence/backpressure_runner_20261117/README.md)
+records the feature build, default-feature checks, collector/verdict tests and
+short real-loopback TLS release, cancellation and fresh recovery. The 60-second
+timeout case and OCI/WSL SSH campaign were not run during preparation; execute
+the commands above to collect those operator results.
