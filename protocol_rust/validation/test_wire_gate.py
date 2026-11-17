@@ -17,6 +17,27 @@ def command(action='pause'):
 
 
 class GateContracts(unittest.TestCase):
+    def test_read_reset_is_observed_as_eof_without_discarding_ciphertext(self):
+        class Input:
+            def __init__(self):self.calls=0
+            def recv(self,size):
+                self.calls+=1
+                if self.calls==1:return b'buffered ciphertext'
+                raise ConnectionResetError(104,'reset after ciphertext')
+        source=Input();queued=bytearray()
+        data,reset=gate.receive(source,gate.BUFFER_LIMIT)
+        queued.extend(data)
+        self.assertFalse(reset)
+        data,reset=gate.receive(source,gate.BUFFER_LIMIT-len(queued))
+        self.assertEqual(data,b'')
+        self.assertTrue(reset)
+        self.assertEqual(queued,b'buffered ciphertext')
+
+    def test_other_read_errors_are_not_treated_as_eof(self):
+        class Input:
+            def recv(self,size):raise OSError(5,'read error')
+        with self.assertRaises(OSError):gate.receive(Input(),gate.BUFFER_LIMIT)
+
     def test_pause_requires_authenticated_binding(self):
         self.assertEqual(gate.check_command(command(),'release',ready(),False,False,False),'pause')
         with self.assertRaises(ValueError):gate.check_command(command(),'release',None,False,False,False)

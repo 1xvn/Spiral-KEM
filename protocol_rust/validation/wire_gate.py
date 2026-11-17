@@ -22,6 +22,19 @@ COMMAND_LIMIT=4096
 OUTPUT_LIMIT=1024*1024
 
 
+def receive(sock, limit):
+    """Expose TCP reset as input EOF; TLS peers still judge authenticated closure.
+
+    Linux may report ECONNRESET after all readable ciphertext was delivered.
+    Returning EOF here must not discard queued ciphertext or suppress a failed
+    send; the gate continues draining both buffers and the endpoint verdicts
+    independently require authenticated protocol/TLS closure in release mode.
+    """
+    try:return sock.recv(limit),False
+    except BlockingIOError:return None,False
+    except ConnectionResetError:return b'',True
+
+
 def check_bound(event, case, ready):
     base.require(isinstance(event,dict) and event.get('role')=='server'
                  and event.get('case')==case,'unexpected server wire event')
@@ -85,6 +98,7 @@ def supervise(command, case, backend_port=39401, gate_port=39402, input_stream=N
     pause_bytes=None
     receive_buffer_bytes=None
     total_output=0
+    read_resets={'front':0,'back':0}
     started=time.monotonic()
     deadline=started+35
     selector=selectors.DefaultSelector()
@@ -256,8 +270,8 @@ def supervise(command, case, backend_port=39401, gate_port=39402, input_stream=N
                     # Recheck flags: a pause or bulk event may have been handled
                     # earlier in this same select batch.
                     if mask&selectors.EVENT_READ and enabled and not eof:
-                        try:data=sock.recv(BUFFER_LIMIT-len(target))
-                        except BlockingIOError:data=None
+                        data,reset=receive(sock,BUFFER_LIMIT-len(target))
+                        if reset:read_resets[role]+=1
                         if data:
                             target.extend(data)
                             if role=='back':backend_bytes_read+=len(data)
@@ -275,7 +289,8 @@ def supervise(command, case, backend_port=39401, gate_port=39402, input_stream=N
         close_socket(listener);listener=None
         base.require(not base.listening(gate_port) and not base.listening(backend_port),'owned listener remained after server exit')
         emit({'event':'gate_finished','case':case,'child_pid':child.pid,'child_exit_code':child.returncode,
-              'reaped':True,'listener_present':False,'reads_held_until_server_exit':case=='timeout'})
+              'reaped':True,'listener_present':False,'reads_held_until_server_exit':case=='timeout',
+              'read_resets':read_resets})
         return 0
     finally:
         for sock in (front,back,listener):close_socket(sock)
