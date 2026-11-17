@@ -10,6 +10,7 @@ build = "build.rs"
 default = []
 parser-fuzz = []
 record-fuzz = []
+flow-diagnostics = []
 
 [dependencies]
 tokio = { version = "=1.54.1", features = ["rt-multi-thread", "macros", "net", "io-util", "sync", "time"] }

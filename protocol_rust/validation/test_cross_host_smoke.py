@@ -1,10 +1,14 @@
 """Contract tests only: no SSH, sockets, TLS or external hosts are contacted."""
 import io
+import contextlib
 import json
 from pathlib import Path
+import sys
 import tarfile
 import tempfile
+from types import SimpleNamespace
 import unittest
+from unittest.mock import patch
 
 import cross_host_smoke as smoke
 
@@ -72,6 +76,30 @@ class PublicBundleContracts(unittest.TestCase):
 
     def test_rejects_symlink_members(self):
         with self.assertRaises(ValueError):smoke.public_files(public_bundle(link=True))
+
+    def test_existing_private_state_is_preserved_during_explicit_rotation(self):
+        def fake_identity(folder,**kwargs):
+            for name,value in (('ca.pem',b'public CA'),('pin.json',b'{}'),('key.pem',b'PRIVATE TLS'),('auth.bin',b'PRIVATE AUTH')):
+                (folder/name).write_bytes(value)
+        with tempfile.TemporaryDirectory() as folder:
+            root=Path(folder);old=root/smoke.STATE;old.mkdir(mode=0o700);(old/'keep.txt').write_text('old private state')
+            with patch.object(Path,'home',return_value=root),patch.object(smoke,'source',return_value={'test':True}), \
+                 patch.dict(sys.modules,{'interop':SimpleNamespace(identities=fake_identity)}),contextlib.redirect_stdout(io.StringIO()):
+                smoke.prepare(True)
+            retained=list(root.glob(smoke.STATE+'-previous-*'))
+            self.assertEqual(len(retained),1)
+            self.assertEqual((retained[0]/'keep.txt').read_text(),'old private state')
+            data=smoke.public_files((old/'public.tar.gz').read_bytes())
+            self.assertEqual(set(data),{'ca.pem','pin.json','provenance.json'})
+            self.assertNotIn(b'PRIVATE',b''.join(data.values()))
+
+    def test_existing_private_state_is_unchanged_without_rotation_flag(self):
+        with tempfile.TemporaryDirectory() as folder:
+            root=Path(folder);old=root/smoke.STATE;old.mkdir(mode=0o700);marker=old/'keep.txt';marker.write_text('private')
+            with patch.object(Path,'home',return_value=root),patch.dict(sys.modules,{'interop':SimpleNamespace(identities=lambda *a,**k:None)}):
+                with self.assertRaises(ValueError):smoke.prepare(False)
+            self.assertEqual(marker.read_text(),'private')
+            self.assertEqual(list(root.glob(smoke.STATE+'-previous-*')),[])
 
 
 class ListenerAndOutputContracts(unittest.TestCase):

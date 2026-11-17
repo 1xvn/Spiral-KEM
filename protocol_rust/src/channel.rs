@@ -10,6 +10,8 @@ use crate::{
     wire::{CLOSE, DATA, MAX_DATA},
     Error, Result,
 };
+#[cfg(feature = "flow-diagnostics")]
+use crate::buffer::{self, FlowCounter};
 use std::{
     sync::{
         atomic::{AtomicBool, AtomicU8, Ordering},
@@ -27,6 +29,7 @@ const OPEN: u8 = 0;
 const CLOSING: u8 = 1;
 const FAILED: u8 = 2;
 const CLOSED: u8 = 3;
+const CHANNEL_CAPACITY: usize = 8;
 struct Life {
     state: AtomicU8,
     reason: AtomicU8,
@@ -114,6 +117,8 @@ pub struct Sender {
 }
 impl Sender {
     pub async fn send(&self, value: &[u8]) -> Result<()> {
+        #[cfg(feature = "flow-diagnostics")]
+        let _active = self.pool.track(FlowCounter::ActiveSend);
         let result = self.send_inner(value).await;
         if matches!(result, Err(Error::Deadline)) {
             self.life.fail();
@@ -129,9 +134,13 @@ impl Sender {
         }
         // Reserve queue capacity before allocating/copying the caller's plaintext.
         let deadline = self.life.deadline()?;
-        let slot = tokio::time::timeout_at(deadline.into(), self.tx.reserve())
-            .await?
-            .map_err(|_| Error::Closed)?;
+        let slot = {
+            #[cfg(feature = "flow-diagnostics")]
+            let _waiting = self.pool.track(FlowCounter::SendSlotWaiter);
+            tokio::time::timeout_at(deadline.into(), self.tx.reserve())
+                .await?
+                .map_err(|_| Error::Closed)?
+        };
         if self.life.state() != OPEN {
             return Err(Error::Closed);
         }
@@ -165,6 +174,76 @@ pub struct Session {
     rx: mpsc::Receiver<Plaintext>,
     life: Arc<Life>,
     tasks: Vec<JoinHandle<()>>,
+}
+/// Opt-in observations of concurrent flow state; reading them does not change limits.
+/// Fields may change independently while a snapshot is being collected.
+#[cfg(feature = "flow-diagnostics")]
+#[derive(Clone, Copy, Debug, Eq, PartialEq)]
+pub struct FlowSnapshot {
+    pub allocated_buffers: usize,
+    pub free_buffers: usize,
+    pub in_use_buffers: usize,
+    pub buffer_limit: usize,
+    pub buffer_capacity_bytes: usize,
+    pub buffer_waiters: usize,
+    pub active_sends: usize,
+    pub send_slot_waiters: usize,
+    pub send_slots_capacity: usize,
+    /// Includes reserved permits, which need not contain queued plaintext yet.
+    pub send_slots_in_use: Option<usize>,
+    pub send_channel_closed: bool,
+    /// Available only from `Session::flow_snapshot`, which owns the receiver.
+    pub receive_queue_length: Option<usize>,
+    pub receive_queue_capacity: usize,
+    pub receive_delivery_waiters: usize,
+    pub reader_done: bool,
+    pub writer_done: bool,
+    /// 0 = open, 1 = closing, 2 = failed, 3 = closed.
+    pub state: u8,
+    pub close_reason: u8,
+}
+/// A diagnostic observer that does not keep the send channel open.
+#[cfg(feature = "flow-diagnostics")]
+#[derive(Clone)]
+pub struct FlowProbe {
+    sender: mpsc::WeakSender<SendRequest>,
+    pool: Arc<Pool>,
+    life: Arc<Life>,
+}
+#[cfg(feature = "flow-diagnostics")]
+impl FlowProbe {
+    pub fn snapshot(&self) -> Result<FlowSnapshot> {
+        let pool = self.pool.snapshot()?;
+        let sender = self.sender.upgrade();
+        let send_channel_closed = sender.as_ref().is_none_or(|sender| sender.is_closed());
+        let send_slots_in_use = if send_channel_closed {
+            None
+        } else {
+            sender
+                .as_ref()
+                .map(|sender| sender.max_capacity() - sender.capacity())
+        };
+        Ok(FlowSnapshot {
+            allocated_buffers: pool.allocated,
+            free_buffers: pool.free,
+            in_use_buffers: pool.allocated - pool.free,
+            buffer_limit: buffer::LIMIT,
+            buffer_capacity_bytes: buffer::CAPACITY,
+            buffer_waiters: pool.buffer_waiters,
+            active_sends: pool.active_sends,
+            send_slot_waiters: pool.send_slot_waiters,
+            send_slots_capacity: CHANNEL_CAPACITY,
+            send_slots_in_use,
+            send_channel_closed,
+            receive_queue_length: None,
+            receive_queue_capacity: CHANNEL_CAPACITY,
+            receive_delivery_waiters: pool.receive_delivery_waiters,
+            reader_done: self.life.read_done.load(Ordering::Acquire),
+            writer_done: self.life.write_done.load(Ordering::Acquire),
+            state: self.life.state(),
+            close_reason: self.life.reason.load(Ordering::Acquire),
+        })
+    }
 }
 impl Session {
     pub(crate) fn start(
@@ -206,8 +285,8 @@ impl Session {
             _id: Mutex::new(id),
         });
         let pool = Pool::new();
-        let (send, commands) = mpsc::channel(8);
-        let (received, receive) = mpsc::channel(8);
+        let (send, commands) = mpsc::channel(CHANNEL_CAPACITY);
+        let (received, receive) = mpsc::channel(CHANNEL_CAPACITY);
         let (read, write) = tokio::io::split(io.io);
         let a = life.clone();
         let writer = tokio::spawn(async move {
@@ -239,6 +318,20 @@ impl Session {
     }
     pub fn sender(&self) -> Sender {
         self.sender.clone()
+    }
+    #[cfg(feature = "flow-diagnostics")]
+    pub fn flow_snapshot(&self) -> Result<FlowSnapshot> {
+        let mut snapshot = self.flow_probe().snapshot()?;
+        snapshot.receive_queue_length = Some(self.rx.len());
+        Ok(snapshot)
+    }
+    #[cfg(feature = "flow-diagnostics")]
+    pub fn flow_probe(&self) -> FlowProbe {
+        FlowProbe {
+            sender: self.sender.tx.downgrade(),
+            pool: self.sender.pool.clone(),
+            life: self.life.clone(),
+        }
     }
     pub async fn send(&self, value: &[u8]) -> Result<()> {
         self.sender.send(value).await
@@ -419,6 +512,8 @@ async fn read_loop<R: AsyncRead + Unpin>(
         }
         if life.state() == OPEN {
             let delivery_deadline = life.deadline()?;
+            #[cfg(feature = "flow-diagnostics")]
+            let _delivery = pool.track(FlowCounter::ReceiveDeliveryWaiter);
             let future = app.send(p);
             tokio::pin!(future);
             loop {
@@ -468,6 +563,137 @@ mod tests {
             length: value.len(),
         }
     }
+    #[cfg(feature = "flow-diagnostics")]
+    #[tokio::test]
+    async fn diagnostic_reserved_slots_and_waiters_clear_on_cancellation() {
+        use std::{
+            future::Future,
+            task::{Context, Waker},
+        };
+
+        let pool = Pool::new();
+        let held: Vec<_> = (0..buffer::LIMIT).map(|_| pool.take().unwrap()).collect();
+        let (send, mut commands) = mpsc::channel(CHANNEL_CAPACITY);
+        let (_received, receive) = mpsc::channel(CHANNEL_CAPACITY);
+        let life = life();
+        let session = Session {
+            sender: Sender {
+                tx: send,
+                life: life.clone(),
+                pool,
+            },
+            rx: receive,
+            life,
+            tasks: Vec::new(),
+        };
+        let strong_count = session.sender.tx.strong_count();
+        let probe = session.flow_probe();
+        let other_probe = probe.clone();
+        assert_eq!(session.sender.tx.strong_count(), strong_count);
+        let mut sends: Vec<_> = (0..10)
+            .map(|_| Box::pin(session.send(b"probe")))
+            .collect();
+        let mut context = Context::from_waker(Waker::noop());
+        for send in &mut sends {
+            assert!(send.as_mut().poll(&mut context).is_pending());
+        }
+        let snapshot = session.flow_snapshot().unwrap();
+        assert_eq!(
+            (
+                snapshot.allocated_buffers,
+                snapshot.free_buffers,
+                snapshot.in_use_buffers
+            ),
+            (18, 0, 18)
+        );
+        assert_eq!(
+            (snapshot.buffer_limit, snapshot.buffer_capacity_bytes),
+            (18, 16_440)
+        );
+        assert_eq!(
+            (
+                snapshot.active_sends,
+                snapshot.buffer_waiters,
+                snapshot.send_slot_waiters
+            ),
+            (10, 8, 2)
+        );
+        assert_eq!(
+            (snapshot.send_slots_capacity, snapshot.send_slots_in_use),
+            (8, Some(8))
+        );
+        assert_eq!(
+            (snapshot.receive_queue_length, snapshot.receive_queue_capacity),
+            (Some(0), 8)
+        );
+        assert!(!snapshot.send_channel_closed);
+        assert!(!snapshot.reader_done && !snapshot.writer_done);
+        assert_eq!((snapshot.state, snapshot.close_reason), (OPEN, 0));
+        assert!(
+            commands.try_recv().is_err(),
+            "reserved slots must not contain copied plaintext"
+        );
+        assert_eq!(probe.snapshot().unwrap().receive_queue_length, None);
+
+        drop(sends);
+        let snapshot = probe.snapshot().unwrap();
+        assert_eq!(
+            (
+                snapshot.active_sends,
+                snapshot.buffer_waiters,
+                snapshot.send_slot_waiters
+            ),
+            (0, 0, 0)
+        );
+        assert_eq!(snapshot.send_slots_in_use, Some(0));
+        drop(held);
+        assert_eq!(probe.snapshot().unwrap().free_buffers, 18);
+        drop(session);
+        assert!(
+            commands.recv().await.is_none(),
+            "a probe must not keep the send channel open"
+        );
+        let snapshot = other_probe.snapshot().unwrap();
+        assert!(snapshot.send_channel_closed);
+        assert_eq!(snapshot.send_slots_in_use, None);
+        assert_eq!(snapshot.state, FAILED);
+    }
+
+    #[cfg(feature = "flow-diagnostics")]
+    #[tokio::test]
+    async fn diagnostic_receive_delivery_waiter_clears_on_task_cancellation() {
+        let life = life();
+        let pool = Pool::new();
+        let tx_pool = Pool::new();
+        let (mut peer, reader) = tokio::io::duplex(2048);
+        let (app, received) = mpsc::channel(CHANNEL_CAPACITY);
+        let rx = Rx::new(Secret::zeros(), [0; 4], [1; 16], 1).unwrap();
+        let l = life.clone();
+        let p = pool.clone();
+        let task = tokio::spawn(async move { read_loop(reader, rx, app, l, p, 1, [1; 16]).await });
+        let mut tx = Tx::new(Secret::zeros(), [0; 4], [1; 16], 0).unwrap();
+        for _ in 0..9 {
+            let raw = tx.data(plain(&tx_pool, b"probe")).unwrap();
+            transport::write_record(&mut peer, raw.as_ref())
+                .await
+                .unwrap();
+        }
+        tokio::time::timeout(Duration::from_secs(1), async {
+            while received.len() != 8 || pool.snapshot().unwrap().receive_delivery_waiters != 1 {
+                tokio::task::yield_now().await;
+            }
+        })
+        .await
+        .unwrap();
+        assert_eq!(pool.snapshot().unwrap().allocated, 9);
+        task.abort();
+        assert!(task.await.unwrap_err().is_cancelled());
+        assert_eq!(pool.snapshot().unwrap().receive_delivery_waiters, 0);
+        drop(received);
+        let snapshot = pool.snapshot().unwrap();
+        assert_eq!(snapshot.allocated, snapshot.free);
+    }
+
     #[tokio::test]
     async fn authenticated_queued_data_survives_clean_close() {
         let life = life();
