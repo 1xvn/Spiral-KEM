@@ -11,13 +11,12 @@ these workloads. The operator chooses when to run them.
 On both OCI Ubuntu and WSL Ubuntu:
 
 ```bash
-cd "$HOME/Spiral-load-hours" &&
-git pull --ff-only &&
+cd "$HOME/Spiral-clock" &&
 bash protocol_rust/run_load_test.sh --prepare
 ```
 
-The checkout should be on `spiral-load-validation-20261111`. If it is elsewhere,
-substitute its actual directory. The preparation command builds and checks
+Use the same clock-observation revision on both hosts. The commands use
+`~/Spiral-clock` for that checkout. The preparation command builds and checks
 dependencies; it does not start a load test.
 
 ## One command per platform
@@ -34,24 +33,23 @@ allows 30 seconds for launch/archive overhead.
 WSL Ubuntu:
 
 ```bash
-cd "$HOME/Spiral-load-hours" &&
+cd "$HOME/Spiral-clock" &&
 python3 -B protocol_rust/validation/short_operations.py --platform wsl --case all --windows-clock
 ```
 
 OCI Ubuntu:
 
 ```bash
-cd "$HOME/Spiral-load-hours" &&
+cd "$HOME/Spiral-clock" &&
 python3 -B protocol_rust/validation/short_operations.py --platform oci --case all
 ```
 
 Run one batch at a time on each host. Keep the machine awake. During the clock
 case, `--windows-clock` asks the existing WSL `powershell.exe` integration for
-Windows UTC about every 30 seconds. It records only timestamps, timing bounds
-and availability/error types, without collecting account names, hostnames or
-event messages. If Windows interop is unavailable, the Linux clock observations
-continue and Windows availability is explicitly recorded. No Windows programs
-are installed by the runner.
+Windows UTC every 30 seconds. Windows queries run separately from the Linux
+sampler and have a three-second subprocess timeout. The load wrapper also
+enables Windows queries for `--platform wsl`. Linux samples and functional
+checks continue when Windows interop is unavailable.
 
 ## Individual cases
 
@@ -98,42 +96,117 @@ prove authenticated protocol closure or memory zeroization before process exit.
 Passing `clock` means collection and the normal campaign succeeded; it does not
 automatically mean that the clocks agreed or that suspension was absent.
 
-## Interpret the clocks
+## Time sources
 
-`clocks.jsonl` records the absolute clock readings, elapsed deltas and Linux
-clock-read span. Windows UTC queries include a round-trip duration and a bounded
-Windows-minus-Linux UTC interval, allowing for millisecond precision and query
-latency. Interpret that interval only when Linux UTC was stable during the query.
-
-| Observation | Interpretation |
+| Value | Source and scope |
 | --- | --- |
-| UTC minus monotonic changes; boottime minus monotonic stays near zero | UTC adjustment or clock-rate disagreement is possible |
-| Boottime minus monotonic increases | Linux suspend-time accounting differs; correlate with host observations |
-| Windows UTC and Linux UTC diverge | WSL/host clock disagreement is a candidate; inspect time-service history |
-| No difference during this short check | No discrepancy was observed in this interval; the previous long-run difference remains unexplained |
+| Event timestamps, console dates and filenames | Linux UTC (realtime). Useful for labeling and correlation. Do not subtract UTC labels to obtain elapsed time. |
+| Windows UTC comparison | Windows PowerShell returns Unix milliseconds. WSL records Linux UTC, CLOCK_MONOTONIC and CLOCK_BOOTTIME immediately before and after the call. WSL monotonic measures the entire query, including process startup and scheduling. |
+| Load collector watchdog and duration | Python `time.monotonic` on the collector host. `collector_monotonic_elapsed_seconds` describes the collector interval, including setup and probe shutdown. The legacy `wall_elapsed_seconds` field uses the same monotonic value. |
+| TLS and Spiral handshake budgets | Rust `Instant` and Tokio timers on the endpoint. TLS has a 10-second timeout. The Spiral handshake uses an `Instant` deadline and a bounded server ClientKey stage. TLS certificate and Spiral pin validity use realtime UTC. A UTC error can affect authentication even when the timeout clock is stable. See [transport](src/transport.rs) and [handshake](src/handshake.rs). |
+| Channel, admission and worker limits | Rust `Instant` and Tokio timers measure age, idle and closing deadlines (600, 60 and 2 seconds), operation budgets, admission refill and KEM job expiry. The Linux monotonic clock excludes Linux suspend time. WSL host sleep can also delay execution and event collection. See [channel](src/channel.rs), [admission](src/admission.rs) and [worker](src/worker.rs). |
+| Load probe traffic duration | Rust `Instant` measures total process time, soak time and accumulated traffic epochs independently. A local test rate, when supported, uses the verified echo count or echoed bytes divided by `traffic_epoch_elapsed_seconds`. Setup, reconnect and close are different intervals. See [load probe](examples/load_probe.rs). |
+| Isolation progress and expiry | A healthy-peer progress gap uses the WSL controller's monotonic journal and includes scheduling and pacing. The stall-to-expiry interval uses the OCI server's `Instant`. Neither uses subtraction between hosts. See [isolation](SESSION_ISOLATION.md). |
+| Suspend-sensitive elapsed comparison | Linux CLOCK_BOOTTIME includes time accounted as suspend by the Linux kernel. Its relation to CLOCK_MONOTONIC is observable on one host. It does not directly establish Windows host sleep. |
 
-CLOCK_BOOTTIME includes Linux suspend time, but WSL virtualization may affect
-how host suspension appears. These measurements do not establish the cause by
-themselves. Avoid changing system time or disabling time synchronization as a
-test. The runner neither forces host sleep nor changes clock configuration.
+## Quality of time measurements
 
-If needed, inspect Windows Event Viewer locally: **Windows Logs > System**,
-around the affected run, for Kernel-Power, Power-Troubleshooter, Kernel-General
-and Time-Service events. Share timestamps/provider/event IDs if relevant;
-complete event messages can contain personal machine/account details.
+`campaign/clocks.jsonl` contains run-source IDs, sequence numbers, start and end
+markers, Linux readings and Linux monotonic read spans, and, on request,
+a raw Linux clock pair for each Windows query. `clock_assessment` and
+`timing_scope` in `campaign/result.json` and `operator-result.json` describe
+measurement quality separately from functional results. Standalone load
+captures put the same trace beside their `result.json`.
 
-## Collect the evidence
+The assessment rejects mixed sources, missing records, missing start/end,
+interruption, nonincreasing elapsed clocks, sampling gaps above 2.5 seconds
+and Linux reads wider than 20 ms. A per-sample UTC/monotonic or
+boottime/monotonic residual beyond 50 ms plus read spans flags divergence.
+A run-wide excursion beyond 90 ms also flags divergence. The thresholds
+screen for visible discrepancies. A clean sampled interval gives no absolute
+clock calibration, and jumps within sample gaps can go unseen.
 
-The final line prints a new archive under your Ubuntu home directory, such as
-`Spiral-short-ops-wsl-YYYYMMDDTHHMMSSZ-PID.tar.gz`. Use the actual printed path.
-Send one WSL archive and one OCI archive, including batches that report failure.
+A Windows offset interval is reported only for a stable Linux query bracket.
+A query longer than one second, a different source, a missing timestamp, or
+a Linux UTC/boottime residual above 5 ms plus the read spans invalidates its
+offset estimate. The report still carries the measured query time when the
+Linux monotonic pair is valid. The conservative offset bounds include the
+full query bracket, read spans, stability allowance and Windows millisecond
+quantization. A bracket entirely outside ±100 ms records a disagreement.
+A bracket overlapping the tolerance boundary is indeterminate. Observed
+agreement requires at least two valid queries, gaps of at most 35 seconds,
+and an interval wholly within ±100 ms for every query. These are Windows
+versus WSL observations. OCI time is not aligned by this query.
 
-The outer `summary.json` reports the expected-failure verdicts; each case has
-`operator-result.json`, `clocks.jsonl`, a console log and the original collector
-evidence/archive. The outer SHA-256 inventory covers all included files, and the
-wrapper records its own hash separately from the existing collector source
-snapshot. Existing long-duration archives remain unchanged.
+| Metric | Report interpretation |
+| --- | --- |
+| Functional completion and timeout | Preserve verified echoes, resource cleanup and explicit server `Deadline` even if clock coverage is insufficient. Describe each recorded duration by its own clock. |
+| Precise RTT | The load and isolation collectors do not time individual requests from send to verified response. An isolation progress gap is a controller observation, so use it only for the functional bound. |
+| One-way delay | The runner has no independently bounded sender-to-receiver clock alignment. Query round-trip time is also distinct from protocol latency. |
+| Throughput | Keep raw counts. A locally consistent trace supports a test rate per recorded monotonic traffic second. With incomplete or diverging observations, treat the rate as time-unverified. |
+| Long duration | A locally consistent trace supports sampled local elapsed time for that specific run. Missing coverage or divergence limits the report to recorded monotonic durations and functional milestones. Separate short observations do not validate a longer run. |
 
-No new real workload was executed while preparing this companion. Validation
-consists of 11 bounded contract tests plus syntax/help checks; clock and
-failure-path outcomes on OCI and WSL remain for operator execution.
+### Existing measurements
+
+The original WSL short-operations trace (314 samples) reached +24.670 seconds
+of Linux UTC elapsed minus monotonic elapsed. Boottime minus monotonic stayed
+within 2 microseconds. The 11 Windows query latencies were 0.657–0.886 seconds.
+The OCI trace (313 samples) kept UTC minus monotonic within 8 microseconds.
+The later WSL chrony-only capture stayed within 6 microseconds over 192.757
+monotonic seconds. These are comparison intervals, and they leave the earlier
+disagreement unresolved.
+
+In the WSL 24-hour result, the collector recorded 86,664.568 monotonic seconds
+(the legacy `wall_elapsed_seconds` field), while its UTC labels differed by
+89,903.649 seconds. The probe recorded 86,400.002 monotonic traffic seconds.
+The OCI 24-hour result recorded 86,474.194 collector monotonic seconds and
+86,474.199 seconds between UTC labels. Both functionally passed. These
+older runs lack the new continuous clock assessment.
+
+The verified isolation timeout of about 59.79 seconds comes from the OCI
+server stall-to-expiry observation. The WSL controller's observed healthy
+echo gaps support the five-second functional progress bound. That existing run
+does not provide calibrated latency or throughput.
+
+## Collect and transfer a short clock receipt
+
+Use the same updated revision on both hosts. Prepare the existing probe as
+shown above. Choose a collection window spanning at least two Windows
+queries. The following short examples use 90 traffic seconds.
+
+**OCI SSH Ubuntu**
+
+```bash
+cd "$HOME/Spiral-clock" &&
+python3 -B protocol_rust/validation/short_operations.py   --platform oci --case clock --clock-seconds 90
+```
+
+**WSL Ubuntu**
+
+```bash
+cd "$HOME/Spiral-clock" &&
+python3 -B protocol_rust/validation/short_operations.py   --platform wsl --case clock --clock-seconds 90 --windows-clock
+```
+
+The final archive includes each case result and a SHA-256 inventory. Keep archives with an insufficient
+clock verdict or a failed functional verdict too. Copy the OCI receipt to WSL
+using the existing SSH alias and the exact remote archive path.
+
+```bash
+read -r -p 'OCI SSH alias: ' spiral_oci
+read -r -p 'OCI archive absolute path: ' spiral_oci_archive
+scp "${spiral_oci}:${spiral_oci_archive}" "$HOME/"
+```
+
+**Windows PowerShell**
+
+Repeat for the two archive paths now in WSL. Copy the output into Windows
+Downloads and record its SHA-256.
+
+```powershell
+$archive = Read-Host 'Full archive path in WSL'
+$src = (wsl.exe -d Ubuntu-24.04 -- wslpath -w "$archive").Trim()
+$dest = Join-Path "$env:USERPROFILE\Downloads" (Split-Path -Leaf $src)
+Copy-Item -LiteralPath $src -Destination $dest -ErrorAction Stop
+Get-FileHash -Algorithm SHA256 -LiteralPath $dest
+```

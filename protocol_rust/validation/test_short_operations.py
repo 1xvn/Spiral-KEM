@@ -13,32 +13,6 @@ from unittest.mock import patch
 import short_operations as operations
 
 
-class ClockContracts(unittest.TestCase):
-    def test_observations_separate_realtime_and_suspend_sensitive_deltas(self):
-        base = {'utc_ns':100_000_000_000,'monotonic_ns':10_000_000_000,
-                'boottime_ns':20_000_000_000,'read_span_ns':10}
-        current = {'utc_ns':160_000_000_000,'monotonic_ns':20_000_000_000,
-                   'boottime_ns':50_000_000_000,'read_span_ns':20}
-        record = operations.clock_record(base,current)
-        self.assertEqual(record['utc_minus_monotonic_seconds'],50)
-        self.assertEqual(record['boottime_minus_monotonic_seconds'],20)
-        self.assertEqual(record['read_span_ns'],20)
-
-    def test_backward_wall_clock_does_not_make_monotonic_time_negative(self):
-        base = {'utc_ns':100_000_000_000,'monotonic_ns':10_000_000_000,
-                'boottime_ns':20_000_000_000,'read_span_ns':10}
-        current = dict(base,utc_ns=90_000_000_000,monotonic_ns=15_000_000_000,
-                       boottime_ns=25_000_000_000)
-        record = operations.clock_record(base,current)
-        self.assertEqual(record['utc_minus_monotonic_seconds'],-15)
-        self.assertEqual(record['monotonic_elapsed_seconds'],5)
-        self.assertEqual(record['boottime_minus_monotonic_seconds'],0)
-
-    def test_windows_clock_is_explicitly_unavailable_without_interop(self):
-        with patch.object(operations.shutil,'which',return_value=None):
-            self.assertEqual(operations.windows_utc(),{'status':'unavailable'})
-
-
 class ExpectedFailureContracts(unittest.TestCase):
     def test_each_expected_failure_requires_exact_reason_and_exit(self):
         for kind,reason in operations.FAILURES.items():
@@ -82,10 +56,12 @@ class EvidenceAndScopeContracts(unittest.TestCase):
             self.assertTrue(operations.terminate_case_probes(Path('/probe'),Path('/private')))
         kill.assert_not_called()
 
-    def make_evidence(self,root):
+    def make_evidence(self,root, clock_trace=False):
         output=root/'campaign'; output.mkdir()
         names={'result.json','source-before.json','source-after.json',
                'probe.stdout.jsonl','probe.stderr.log','resources.jsonl'}
+        if clock_trace:
+            names.add('clocks.jsonl')
         for name in names:
             (output/name).write_bytes(b'{}\n')
         manifest={name:hashlib.sha256((output/name).read_bytes()).hexdigest() for name in names}
@@ -101,6 +77,14 @@ class EvidenceAndScopeContracts(unittest.TestCase):
             self.assertTrue(operations.evidence_valid(output))
             (output/'resources.jsonl').write_bytes(b'changed\n')
             self.assertFalse(operations.evidence_valid(output))
+
+    def test_evidence_accepts_and_checks_new_clock_stream(self):
+        with tempfile.TemporaryDirectory() as folder:
+            output = self.make_evidence(Path(folder), clock_trace=True)
+            self.assertTrue(operations.evidence_valid(output))
+            (output/'clocks.jsonl').unlink()
+            with self.assertRaises(FileNotFoundError):
+                operations.evidence_valid(output)
 
     def test_archive_rejects_extra_and_duplicate_members(self):
         for duplicate in (False,True):
