@@ -49,7 +49,7 @@ The benchmark compares the baseline, OPT1, OPT2 compact API, and the educational
 
 [Python protocol v0.1](protocol_v01/README.md) combines TLS 1.3, an actual TLS exporter, a separate Ed25519 server pin, HKDF, Finished confirmation, directional ChaCha20-Poly1305 records, sequence limits, and authenticated closure.
 
-[The Rust–C implementation](protocol_rust/README.md) uses Tokio and rustls with bounded workers for C KEM operations, opaque key ownership, bounded queues, cancellation/deadline handling, and explicit secret-buffer cleanup. It exercises Rust↔Python and Rust↔Rust traffic over actual loopback TLS connections. Server authentication does not supply application-level client authentication or authorization.
+[The Rust–C implementation](protocol_rust/README.md) uses Tokio and rustls with bounded workers for C KEM operations, opaque key ownership, bounded queues, cancellation/deadline handling, and explicit secret-buffer cleanup. It exercises Rust↔Python and Rust↔Rust traffic over actual loopback TLS connections. The ordinary research endpoint authenticates the server. A separate [registered-client lab](protocol_rust/CLIENT_AUTH_LAB.md) requires mutual TLS and a server-managed grant to read one public status value.
 
 [Key operations](protocol_rust/KEY_OPERATIONS.md) and [encrypted backup/recovery](protocol_rust/KEY_RECOVERY.md) cover Linux private-file policies, key creation, cold rotation, external-fingerprint recovery, and bounded laboratory drills. They do not constitute a deployed service or vault integration.
 

@@ -6,6 +6,7 @@ mod backpressure_probe;
 mod wire_stall_probe;
 #[cfg(feature = "flow-diagnostics")]
 mod isolation_probe;
+mod client_registry;
 use serde_json::{json, Value};
 use spiral_protocol::{
     admission::Admission,
@@ -57,6 +58,8 @@ impl Args {
                 "--cert",
                 "--key",
                 "--auth",
+                "--client-ca",
+                "--client-registry",
                 "--ca",
                 "--pin",
                 "--recovery-key",
@@ -402,9 +405,15 @@ async fn run(a: &Args, pool: &KemPool) -> Result<Value> {
     let service = a.get("--service")?;
     handshake::validate_identity(name, service)?;
     match a.mode.as_str() {
-        "server" => {
-            let cfg =
-                transport::server_config(Path::new(a.get("--cert")?), Path::new(a.get("--key")?))?;
+        "server" | "mtls-server" => {
+            let cert = Path::new(a.get("--cert")?);
+            let key = Path::new(a.get("--key")?);
+            let (cfg, registry) = if a.mode == "mtls-server" {
+                let grants = client_registry::Registry::load(Path::new(a.get("--client-registry")?), name, service)?;
+                (transport::mtls_server_config(cert, key, Path::new(a.get("--client-ca")?))?, Some(Arc::new(grants)))
+            } else {
+                (transport::server_config(cert, key)?, None)
+            };
             let signing = handshake::load_signing_key(Path::new(a.get("--auth")?))?;
             let _auth_close = CloseIdentityOnDrop(signing.clone());
             let messages = a.number("--messages", 1)?;
@@ -442,11 +451,24 @@ async fn run(a: &Args, pool: &KemPool) -> Result<Value> {
                 let backpressure_case = backpressure_case.clone();
                 #[cfg(feature = "flow-diagnostics")]
                 let wire_stall_case = wire_stall_case.clone();
+                let grants = registry.clone();
                 tasks.spawn(async move{
-                    let lease=gate.acquire(peer.ip())?;let io=Transport::accept(sock,cfg,&name).await?;let binding=io.binding_hash();
+                    let lease = gate.acquire(peer.ip())?;
+                    let io = if let Some(grants) = &grants {
+                        let (io, fingerprint) = Transport::accept_registered_peer(sock, cfg, &name).await
+                            .inspect_err(|_| println!("{}", json!({"event":"tls_peer_rejected"})))?;
+                        grants.admit(&fingerprint)?;
+                        io
+                    } else {
+                        Transport::accept(sock, cfg, &name).await?
+                    };
+                    let binding=io.binding_hash();
                     let ready=handshake::server(io,&name,&service,signing,&p,lease).await?;
                     let sid=ready.info().sid;let transcript=ready.info().transcript;
                     let mut session=ready.start()?;
+                    if grants.is_some() {
+                        return client_registry::serve(session, messages).await;
+                    }
                     #[cfg(feature = "flow-diagnostics")]
                     if let Some(state) = state {
                         return state.serve(session, (sid, binding, transcript), &gate, &p).await;
@@ -493,7 +515,7 @@ async fn run(a: &Args, pool: &KemPool) -> Result<Value> {
                 }
             }
             if let Some(e) = failure {
-                if fault_checkpoint.is_some() || backpressure_case.is_some() || wire_stall_case.is_some() {
+                if registry.is_some() || fault_checkpoint.is_some() || backpressure_case.is_some() || wire_stall_case.is_some() {
                     fault_failure_cleanup(&admission, &signing).await?;
                 }
                 return Err(e);
@@ -552,7 +574,13 @@ async fn main() -> Result<()> {
             }
         }
     }
-    if !matches!(a.mode.as_str(), "server" | "client")
+    if a.mode == "mtls-server" {
+        require_options(&a, &["--name", "--service", "--port", "--cert", "--key", "--auth",
+                              "--client-ca", "--client-registry", "--messages"])?;
+    } else if a.values.contains_key("--client-ca") || a.values.contains_key("--client-registry") {
+        return Err(Error::Input);
+    }
+    if !matches!(a.mode.as_str(), "server" | "client" | "mtls-server")
         || ["--recovery-key", "--backup", "--expected-public-key-sha256"]
             .iter()
             .any(|name| a.values.contains_key(*name))

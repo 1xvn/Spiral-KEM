@@ -126,6 +126,10 @@ def main():
         run('rust-key-recovery', [python, str(ROOT / 'protocol_rust/key_recovery_tests.py'),
             '--binary', str(binary), '--json', str(recovery_evidence)], 300, minimum=20,
             json_result=recovery_evidence)
+        auth_evidence = out / 'client-auth-lab.json'
+        run('client-auth-lab', [python, str(ROOT / 'protocol_rust/client_auth_tests.py'),
+            '--binary', str(binary), '--json', str(auth_evidence)], 120, minimum=2,
+            json_result=auth_evidence)
         evidence = out / 'interop.json'
         run('rust-tls', [python, str(ROOT / 'protocol_rust/adversarial.py'), '--binary', str(binary), '--json', str(evidence)], 600, minimum=35, json_result=evidence)
         report['binary_sha256'] = hashlib.sha256(binary.read_bytes()).hexdigest()
