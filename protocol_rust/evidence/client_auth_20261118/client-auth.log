@@ -1,0 +1,7 @@
+test_connections (__main__.Boundary.test_connections) ... ok
+test_invalid_configuration (__main__.Boundary.test_invalid_configuration) ... ok
+
+----------------------------------------------------------------------
+Ran 2 tests in 0.884s
+
+OK

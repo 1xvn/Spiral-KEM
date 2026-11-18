@@ -2,7 +2,7 @@
 
 This research implementation connects the C Spiral KEM to a Rust/Tokio/rustls transport. It uses the same protocol v0.1 wire format as the [Python implementation](../protocol_v01/README.md), with actual Rust↔Python and Rust↔Rust TLS tests. The architecture document's v0.2 designation is a design revision, not a wire-version change.
 
-The channel combines TLS 1.3 authentication and exporter binding with a separate Ed25519 server identity, KEM exchange, HKDF, Finished confirmation, directional AEAD records, sequence limits and authenticated closure. It does not establish Spiral KEM's cryptographic security, supply application-level client authentication, or authorize production deployment.
+The channel combines TLS 1.3 authentication and exporter binding with a separate Ed25519 server identity, KEM exchange, HKDF, Finished confirmation, directional AEAD records, sequence limits and authenticated closure. The ordinary endpoint authenticates the server. The [registered-client lab](CLIENT_AUTH_LAB.md) adds an opt-in mTLS listener with one authorized application operation. Both profiles are research implementations.
 
 ## Build and run
 
