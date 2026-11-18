@@ -15,6 +15,7 @@ from cryptography import x509
 from .wire import ProtocolError, parse_header, parse_frame
 
 ALPN = b"spiral-opt2/0.1"
+MTLS_ALPN = b"spiral-opt2/0.1-mtls-lab"
 EXPORTER_LABEL = b"EXPORTER-SpiralOPT2-v0.1"
 
 
@@ -96,7 +97,17 @@ class Admission:
 
 
 class TLSTransport:
-    def __init__(self, sock, ctx, *, server_side, server_name):
+    @classmethod
+    def mtls_client(cls, sock, *, ca_file, cert_file, key_file, server_name):
+        """Connect only to the registered-client lab profile."""
+        ctx = context(ca_file=ca_file)
+        ctx.use_certificate_chain_file(str(cert_file))
+        ctx.use_privatekey_file(str(key_file))
+        ctx.check_privatekey()
+        ctx.set_alpn_protos([MTLS_ALPN])
+        return cls(sock, ctx, server_side=False, server_name=server_name, expected_alpn=MTLS_ALPN)
+
+    def __init__(self, sock, ctx, *, server_side, server_name, expected_alpn=ALPN):
         self.socket = sock
         self.connection = SSL.Connection(ctx, sock)
         self.connection.setblocking(False)
@@ -119,7 +130,7 @@ class TLSTransport:
             self._io(self.connection.do_handshake, deadline)
             if self.connection.get_protocol_version_name() != "TLSv1.3":
                 raise ProtocolError("TLS 1.3 required")
-            if self.connection.get_alpn_proto_negotiated() != ALPN:
+            if self.connection.get_alpn_proto_negotiated() != expected_alpn:
                 raise ProtocolError("ALPN required")
             # pyOpenSSL 26.4 does not expose this as a public Connection method.
             # Dependency pins and the real-TLS tests cover this fail-closed binding.

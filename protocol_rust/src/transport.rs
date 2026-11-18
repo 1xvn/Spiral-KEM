@@ -19,6 +19,7 @@ use tokio::{
 use tokio_rustls::{TlsAcceptor, TlsConnector, TlsStream};
 use x509_parser::prelude::*;
 pub const ALPN: &[u8] = b"spiral-opt2/0.1";
+pub const MTLS_ALPN: &[u8] = b"spiral-opt2/0.1-mtls-lab";
 pub const EXPORTER: &[u8] = b"EXPORTER-SpiralOPT2-v0.1";
 pub(crate) const MAX_TLS_PEM: usize = 64 * 1024;
 
@@ -241,17 +242,35 @@ pub fn load_tls_private_key(path: &Path) -> Result<rustls::pki_types::PrivateKey
 }
 
 pub fn server_config(cert: &Path, key: &Path) -> Result<Arc<ServerConfig>> {
+    build_server_config(cert, key, None)
+}
+
+pub fn mtls_server_config(cert: &Path, key: &Path, client_ca: &Path) -> Result<Arc<ServerConfig>> {
+    build_server_config(cert, key, Some(client_ca))
+}
+
+fn build_server_config(cert: &Path, key: &Path, client_ca: Option<&Path>) -> Result<Arc<ServerConfig>> {
     let certs = rustls_pemfile::certs(&mut BufReader::new(File::open(cert)?))
         .collect::<std::result::Result<Vec<_>, _>>()?;
     let key = load_tls_private_key(key)?;
     let provider = Arc::new(rustls::crypto::ring::default_provider());
-    let mut c = ServerConfig::builder_with_provider(provider)
+    let builder = ServerConfig::builder_with_provider(provider.clone())
         .with_protocol_versions(&[&rustls::version::TLS13])
-        .map_err(|_| Error::Crypto)?
-        .with_no_client_auth()
-        .with_single_cert(certs, key)
+        .map_err(|_| Error::Crypto)?;
+    let builder = if let Some(ca) = client_ca {
+        let mut roots = RootCertStore::empty();
+        for der in rustls_pemfile::certs(&mut BufReader::new(File::open(ca)?)) {
+            roots.add(der?).map_err(|_| Error::Input)?;
+        }
+        let verifier = rustls::server::WebPkiClientVerifier::builder_with_provider(Arc::new(roots), provider)
+            .build().map_err(|_| Error::Input)?;
+        builder.with_client_cert_verifier(verifier)
+    } else {
+        builder.with_no_client_auth()
+    };
+    let mut c = builder.with_single_cert(certs, key)
         .map_err(|_| Error::Input)?;
-    c.alpn_protocols = vec![ALPN.to_vec()];
+    c.alpn_protocols = vec![if client_ca.is_some() { MTLS_ALPN } else { ALPN }.to_vec()];
     c.send_tls13_tickets = 0;
     c.max_early_data_size = 0;
     c.send_half_rtt_data = false;
@@ -314,9 +333,27 @@ impl Transport {
         {
             return Err(Error::Authentication);
         }
-        Self::complete(stream.into(), name)
+        Self::complete(stream.into(), name, ALPN)
     }
     pub async fn accept(stream: TcpStream, config: Arc<ServerConfig>, name: &str) -> Result<Self> {
+        Self::accept_profile(stream, config, name, ALPN).await
+    }
+
+    pub async fn accept_registered_peer(stream: TcpStream, config: Arc<ServerConfig>, name: &str)
+        -> Result<(Self, [u8; 32])>
+    {
+        let io = Self::accept_profile(stream, config, name, MTLS_ALPN).await?;
+        let leaf = io.io.get_ref().1.peer_certificates().and_then(|c| c.first())
+            .ok_or(Error::Authentication)?;
+        let (_, cert) = X509Certificate::from_der(leaf.as_ref()).map_err(|_| Error::Authentication)?;
+        let eku = cert.extended_key_usage().map_err(|_| Error::Authentication)?
+            .ok_or(Error::Authentication)?.value;
+        if !eku.client_auth || eku.server_auth || eku.any { return Err(Error::Authentication); }
+        let fingerprint = crate::schedule::digest(leaf.as_ref());
+        Ok((io, fingerprint))
+    }
+
+    async fn accept_profile(stream: TcpStream, config: Arc<ServerConfig>, name: &str, alpn: &[u8]) -> Result<Self> {
         stream.set_nodelay(true)?;
         #[cfg(feature = "flow-diagnostics")]
         let stream = ObservedIo::new(stream);
@@ -329,14 +366,14 @@ impl Transport {
         if stream.get_ref().1.server_name() != Some(name) {
             return Err(Error::Authentication);
         }
-        Self::complete(stream.into(), name)
+        Self::complete(stream.into(), name, alpn)
     }
-    fn complete(mut io: TlsStream<TransportIo>, name: &str) -> Result<Self> {
+    fn complete(mut io: TlsStream<TransportIo>, name: &str, alpn: &[u8]) -> Result<Self> {
         let (_, session) = io.get_ref();
         if session.is_handshaking()
             || session.handshake_kind().is_none()
             || session.protocol_version() != Some(rustls::ProtocolVersion::TLSv1_3)
-            || session.alpn_protocol() != Some(ALPN)
+            || session.alpn_protocol() != Some(alpn)
             || session.handshake_kind() == Some(rustls::HandshakeKind::Resumed)
         {
             return Err(Error::Authentication);
