@@ -179,3 +179,5 @@ or approval to deploy Spiral KEM as a service.
 ## Recorded runs
 
 - [Local x86-64, 30 minutes, 64 authenticated connections](evidence/load_20261111/README.md): finite combined-endpoint results and raw provenance.
+
+See the [clock source and measurement guide](SHORT_OPERATIONS.md#time-sources) for the separate timing verdicts, WSL Windows UTC queries and interpretation of the legacy `wall_elapsed_seconds` field.

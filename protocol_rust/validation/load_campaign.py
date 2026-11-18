@@ -23,6 +23,8 @@ import tarfile
 import tempfile
 import time
 
+from clock_observation import Capture
+
 ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(ROOT / 'protocol_rust'))
 
@@ -172,6 +174,7 @@ def source_snapshot(root=ROOT):
                      'protocol_rust/examples/load_probe.rs',
                      'protocol_rust/run_load_test.sh',
                      'protocol_rust/validation/load_campaign.py',
+                     'protocol_rust/validation/clock_observation.py',
                      'protocol_rust/validation/cross_host_smoke.py',
                      'protocol_rust/validation/inflight_disconnect.py',
                      'protocol_rust/validation/slow_consumer.py',
@@ -295,6 +298,7 @@ def main(argv=None):
     p.add_argument('--fd-limit', type=int, default=256)
     p.add_argument('--thread-limit', type=int, default=64)
     p.add_argument('--platform', choices=('local', 'oci', 'wsl'), default='local')
+    p.add_argument('--windows-clock', action='store_true', help='sample Windows UTC via WSL interop')
     args = p.parse_args(argv)
     if args.list_profiles:
         for name, seconds in PROFILES.items():
@@ -308,8 +312,10 @@ def main(argv=None):
         p.error('duration must be 10..86400 seconds; connections 4..64, payload 1..16384, interval 1..1000 ms')
     if min(args.rss_limit_mib, args.fd_limit, args.thread_limit) <= 0:
         p.error('resource ceilings must be positive')
-    if sys.platform != 'linux':
-        p.error('Linux /proc is required for this resource collector')
+    if args.windows_clock and args.platform != 'wsl':
+        p.error('--windows-clock is for WSL')
+    if sys.platform != 'linux' or not hasattr(time, 'CLOCK_BOOTTIME'):
+        p.error('Linux /proc and CLOCK_BOOTTIME are required for this collector')
     if args.platform == 'wsl' and 'microsoft' not in Path('/proc/sys/kernel/osrelease').read_text().lower():
         p.error('WSL label requires a Microsoft kernel')
     from interop import identities
@@ -343,7 +349,19 @@ def main(argv=None):
     started = time.monotonic()
     samples = ResourceSummary(); events = deque(maxlen=128); event_count = 0
     final = None; child = None
+    clocks = Capture(output / 'clocks.jsonl', args.windows_clock)
+    clock_error = None
+
+    def sample_clock(event='sample'):
+        nonlocal clock_error
+        if clock_error is None:
+            try:
+                clocks.tick(event)
+            except (OSError, ValueError) as error:
+                clock_error = type(error).__name__
+
     try:
+        sample_clock('start')
         with tempfile.TemporaryDirectory(prefix='spiral-load-private-') as temp:
             folder = Path(temp); folder.chmod(0o700)
             identities(folder, lifetime_seconds=lifetime)
@@ -362,6 +380,7 @@ def main(argv=None):
                     if now - started > budget:
                         raise TimeoutError('probe exceeded bounded setup/soak/shutdown deadline')
                     if now >= next_sample:
+                        sample_clock()
                         sample = sample_process(child.pid)
                         if sample:
                             sample['elapsed_seconds'] = now - started
@@ -419,6 +438,11 @@ def main(argv=None):
     finally:
         if child is not None:
             stop(child)
+        elapsed = time.monotonic() - started
+        try:
+            result['clock_assessment'] = clocks.finish(result['status'] == 'passed' and clock_error is None)
+        except (OSError, ValueError) as error:
+            result['clock_assessment'] = {'status': 'insufficient', 'issues': [type(error).__name__]}
         try:
             after = source_snapshot()
             result['source_unchanged'] = before['files'] == after['files']
@@ -432,7 +456,17 @@ def main(argv=None):
             result['binary_unchanged'] = False
         if not result['source_unchanged'] or not result['binary_unchanged']:
             result['status'] = 'failed'; result['failure'] = 'source or binary changed during campaign'
-        result['wall_elapsed_seconds'] = time.monotonic() - started
+        result['collector_monotonic_elapsed_seconds'] = elapsed
+        result['wall_elapsed_seconds'] = elapsed  # Legacy field name, still uses monotonic time.
+        locally_consistent = (result['status'] == 'passed'
+                              and result['clock_assessment']['status'] == 'locally_consistent')
+        result['timing_scope'] = {
+            'utc': 'event_labels_only',
+            'precise_rtt': 'not_measured',
+            'one_way_latency': 'not_measured',
+            'throughput': 'local_probe_counts_and_traffic_seconds_only' if locally_consistent else 'timing_insufficient',
+            'long_duration': 'locally_supported_sampled_elapsed' if locally_consistent else 'timing_insufficient',
+        }
         result['finished_utc'] = datetime.now(timezone.utc).isoformat()
         result['probe_final'] = final; result['events'] = list(events)
         result['summary_event_count'] = event_count

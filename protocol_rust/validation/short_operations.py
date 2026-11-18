@@ -10,7 +10,6 @@ from datetime import datetime, timezone
 import json
 import os
 from pathlib import Path
-import shutil
 import signal
 import subprocess
 import sys
@@ -27,44 +26,6 @@ FAILURES = {'interrupt': 'KeyboardInterrupt: ',
             'threads': 'RuntimeError: sampled thread ceiling exceeded'}
 LIMIT_FLAGS = {'rss': ['--rss-limit-mib', '1'],
                'fds': ['--fd-limit', '16'], 'threads': ['--thread-limit', '2']}
-
-
-def clocks():
-    before = time.monotonic_ns()
-    utc = time.time_ns()
-    boot = time.clock_gettime_ns(time.CLOCK_BOOTTIME)
-    mono = time.monotonic_ns()
-    return {'utc_ns': utc, 'monotonic_ns': mono, 'boottime_ns': boot,
-            'read_span_ns': mono - before}
-
-
-def clock_record(base, current):
-    row = dict(current)
-    for name in ('utc', 'monotonic', 'boottime'):
-        row[name + '_elapsed_seconds'] = (current[name + '_ns'] - base[name + '_ns']) / 1e9
-    row['utc_minus_monotonic_seconds'] = row['utc_elapsed_seconds'] - row['monotonic_elapsed_seconds']
-    row['boottime_minus_monotonic_seconds'] = row['boottime_elapsed_seconds'] - row['monotonic_elapsed_seconds']
-    return row
-
-
-def windows_utc():
-    executable = shutil.which('powershell.exe')
-    if not executable:
-        return {'status': 'unavailable'}
-    before = time.time_ns()
-    mono = time.monotonic_ns()
-    try:
-        done = subprocess.run([executable, '-NoLogo', '-NoProfile', '-NonInteractive',
-                               '-Command', '[DateTimeOffset]::UtcNow.ToUnixTimeMilliseconds()'],
-                              capture_output=True, timeout=3, check=True)
-        timestamp = int(done.stdout.decode('ascii').strip()) * 1_000_000
-        after = time.time_ns()
-        return {'status': 'observed', 'utc_ns': timestamp,
-                'windows_minus_linux_utc_lower_seconds': (timestamp - after) / 1e9 - .001,
-                'windows_minus_linux_utc_upper_seconds': (timestamp - before) / 1e9 + .001,
-                'query_monotonic_seconds': (time.monotonic_ns() - mono) / 1e9}
-    except (OSError, ValueError, subprocess.SubprocessError) as error:
-        return {'status': 'unavailable', 'error_type': type(error).__name__}
 
 
 def matching_probes(binary, private, proc=Path('/proc')):
@@ -86,14 +47,15 @@ def evidence_valid(output):
     expected = {'result.json', 'source-before.json', 'source-after.json',
                 'probe.stdout.jsonl', 'probe.stderr.log', 'resources.jsonl'}
     manifest = campaign.strict_json((output / 'SHA256.json').read_bytes())
-    if set(manifest) != expected:
+    if set(manifest) not in (expected, expected | {'clocks.jsonl'}):
         return False
+    expected = set(manifest)
     if any(campaign.sha(output / name) != digest for name, digest in manifest.items()):
         return False
     with tarfile.open(str(output) + '.tar.gz', 'r:gz') as packed:
         members = packed.getmembers()
         names = {output.name + '/' + name for name in expected | {'SHA256.json'}}
-        if len(members) != 7 or {m.name for m in members} != names or not all(m.isfile() for m in members):
+        if len(members) != len(names) or {m.name for m in members} != names or not all(m.isfile() for m in members):
             return False
         for member in members:
             data = packed.extractfile(member).read()
@@ -145,11 +107,11 @@ def run_case(kind, args, root):
                '--binary', str(args.binary), '--output', str(output), '--platform', args.platform,
                '--duration-seconds', str(duration), '--connections', '64', '--payload', '16384',
                '--interval-ms', '50', *LIMIT_FLAGS.get(kind, [])]
-    base = clocks(); next_sample = 0.; next_windows = 0.; observed = 0
+    if args.windows_clock and kind == 'clock':
+        command.append('--windows-clock')
+    started = time.monotonic()
     signal_at = None; sent = False; traffic_seen = False
     offset = 0; pending = b''; child = None
-    latest = None; ranges = {'utc_minus_monotonic_seconds': [0., 0.],
-                            'boottime_minus_monotonic_seconds': [0., 0.]}
     report = {'case': kind, 'status': 'failed', 'expected_failure': FAILURES.get(kind),
               'platform': args.platform, 'clock_duration_seconds': duration,
               'clock_interpretation': 'Collection success does not assert clock agreement or absence of host suspension.',
@@ -157,19 +119,11 @@ def run_case(kind, args, root):
               'runner_sha256': campaign.sha(Path(__file__)),
               'scope': 'Experimental guard/collector process checks; forced termination does not demonstrate authenticated protocol closure.'}
     try:
-        with (folder / 'console.log').open('wb') as console, (folder / 'clocks.jsonl').open('w') as trace:
+        with (folder / 'console.log').open('wb') as console:
             child = subprocess.Popen(command, stdout=console, stderr=subprocess.STDOUT,
                                      env=env, cwd=ROOT, start_new_session=True)
             while True:
-                elapsed = (time.monotonic_ns() - base['monotonic_ns']) / 1e9
-                if elapsed >= next_sample or child.poll() is not None:
-                    latest = clock_record(base, clocks())
-                    if args.windows_clock and kind == 'clock' and elapsed >= next_windows:
-                        latest['windows'] = windows_utc(); next_windows = elapsed + 30
-                    for name, bounds in ranges.items():
-                        bounds[0] = min(bounds[0], latest[name]); bounds[1] = max(bounds[1], latest[name])
-                    trace.write(json.dumps(latest) + '\n'); trace.flush()
-                    observed += 1; next_sample = elapsed + 1
+                elapsed = time.monotonic() - started
                 if kind == 'interrupt' and not sent:
                     try:
                         with (output / 'probe.stdout.jsonl').open('rb') as raw:
@@ -205,7 +159,8 @@ def run_case(kind, args, root):
         if kind == 'clock':
             campaign.validate_final(result['probe_final'], duration, 64)
         report.update(collector_exit_code=child.returncode, collector_status=result.get('status'),
-                      collector_failure=result.get('failure'), checks=checks)
+                      collector_failure=result.get('failure'), checks=checks,
+                      clock_assessment=result.get('clock_assessment'), timing_scope=result.get('timing_scope'))
         report['status'] = 'passed' if verdict(kind, child.returncode, result, checks) else 'failed'
     except KeyboardInterrupt:
         report['error'] = 'KeyboardInterrupt'; report['operator_cancelled'] = True
@@ -232,8 +187,6 @@ def run_case(kind, args, root):
             private.rmdir()
         else:
             report['status'] = 'failed'; report['private_fixture_cleanup_failed'] = True
-        report.update(clock_samples=observed, final_clock_observation=latest,
-                      clock_delta_ranges_seconds=ranges)
         (folder / 'operator-result.json').write_text(json.dumps(report, indent=2) + '\n')
     return report
 

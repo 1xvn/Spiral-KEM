@@ -94,11 +94,15 @@ fi
 mkdir -p -- "$(dirname -- "$output")"
 echo "Evidence directory: $output"
 echo 'Keep the host awake. Traffic time excludes setup, reconnects and closure.'
+clock_args=()
+if [[ "$platform" == wsl ]]; then
+    clock_args+=(--windows-clock)
+fi
 set +e
 .venv-load/bin/python -B protocol_rust/validation/load_campaign.py \
     --binary protocol_rust/target/release/examples/load_probe \
     --output "$output" --platform "$platform" --duration "$duration" \
-    --connections 64 --payload 16384 --interval-ms 50 2>&1 | tee "$output.console.log"
+    --connections 64 --payload 16384 --interval-ms 50 "${clock_args[@]}" 2>&1 | tee "$output.console.log"
 codes=("${PIPESTATUS[@]}")
 set -e
 if ((codes[0] != 0 || codes[1] != 0)); then
