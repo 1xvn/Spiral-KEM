@@ -11,7 +11,7 @@ def validate(case, journal, exits, remote=None):
     require(case in ('hold', 'release', 'timeout'), 'unknown scenario')
     mode = 'timeout' if case == 'timeout' else 'release'
     expected_exits = {'gate': 0, **{str(i): int(i == 0 and mode == 'timeout') for i in range(5)}}
-    require(exits == expected_exits, 'process exit or watchdog failure')
+    require(exits == expected_exits and all(type(code) is int for code in exits.values()), 'process exit or watchdog failure')
     times = [row['ns'] for row in journal]
     require(all(integer(t, 0, 2**63-1) for t in times) and times == sorted(times), 'invalid clock order')
     require(times and times[-1]-times[0] <= 120_000_000_000, 'overall budget exceeded')
@@ -21,6 +21,8 @@ def validate(case, journal, exits, remote=None):
         origin, value = row['origin'], row['data']
         if origin == 'gate' and value.get('event') == 'server_endpoint':
             origin, value = 'server', value['payload']
+        require(origin in ('control','gate','server','0','1','2','3','4') and isinstance(value,dict),
+                'unknown event origin or shape')
         events.append((index, origin, value))
 
     def matches(origin, kind, lane=None):
@@ -75,6 +77,12 @@ def validate(case, journal, exits, remote=None):
             tracker.observe_remote({'event':'server_endpoint','payload':v})
         elif src == '0' and kind is not None:
             tracker.observe_client(v)
+        elif src == 'server':
+            require(kind in ('lane_ready','echoed','reclaimed') or 'status' in v,
+                    'unexpected server event')
+        elif src in ('1','2','3','4'):
+            require((kind in ('verified','lane_ready') and v.get('lane')==int(src)) or 'status' in v,
+                    'unexpected healthy endpoint event')
     require(tracker.identifiers and identity(tracker.identifiers) == ids[0], 'bad target binding')
     for role in ('client','server'):
         required = [k for k in tracker.expected[role] if k != 'failure_cleanup']
@@ -160,6 +168,7 @@ def validate(case, journal, exits, remote=None):
         reports = [v for v in sf['sessions'] if v.get('lane')==lane] + peer['sessions']
         require(len(reports)==2 and all(identity(v)==ids[lane] and v['verified']==counts[lane]
                 and v['authenticated_close'] is True for v in reports), 'session close mismatch')
+    require([v for v in sf['sessions'] if v.get('lane')==0] == [slot], 'server lost target receipt')
     require(sf['kem']=={'executed_jobs':10,'live_keys':0,'rejected_jobs':0}, 'shared pool did not drain')
     return {'status':'passed','case':case,'server_pid':pid,'verified_echoes':counts,
             'max_observed_progress_gap_ms':{k:v/1e6 for k,v in worst.items()},

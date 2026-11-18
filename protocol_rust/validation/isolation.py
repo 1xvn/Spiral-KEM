@@ -214,6 +214,8 @@ def run(args):
             base.require(before['source']['git_head']==remote['source']['git_head'] and
                          not before['source']['working_tree_dirty'] and not remote['source']['working_tree_dirty'],
                          'both checkouts must be clean and pinned to the same commit')
+            base.require(before['architecture']=='x86_64' and remote['architecture']=='aarch64',
+                         'expected WSL-side x86_64 and OCI-side aarch64 binaries')
             ports = []
             for port in (GATE_PORT,base.REMOTE_PORT):
                 # SSH diagnostics can include operator identifiers; keep them outside the archive.
