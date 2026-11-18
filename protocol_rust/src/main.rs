@@ -4,6 +4,8 @@
 mod backpressure_probe;
 #[cfg(feature = "flow-diagnostics")]
 mod wire_stall_probe;
+#[cfg(feature = "flow-diagnostics")]
+mod isolation_probe;
 use serde_json::{json, Value};
 use spiral_protocol::{
     admission::Admission,
@@ -50,6 +52,8 @@ impl Args {
                 "--fault-checkpoint",
                 "--backpressure-case",
                 "--wire-stall-case",
+                "--isolation-case",
+                "--isolation-lane",
                 "--cert",
                 "--key",
                 "--auth",
@@ -78,6 +82,19 @@ impl Args {
         self.values
             .get(name)
             .map_or(Ok(default), |v| v.parse().map_err(|_| Error::Input))
+    }
+    fn isolation_case(&self) -> Result<Option<&str>> {
+        let Some(case) = self.values.get("--isolation-case") else {
+            return if self.values.contains_key("--isolation-lane") { Err(Error::Input) } else { Ok(None) };
+        };
+        let server = self.mode == "server";
+        if !cfg!(feature = "flow-diagnostics") || !matches!(case.as_str(), "release" | "timeout")
+            || ["--fault-checkpoint", "--wire-stall-case", "--backpressure-case"].iter().any(|k| self.values.contains_key(*k))
+            || self.number("--connections", 1)? != if server { 5 } else { 1 }
+            || self.number("--workers", 1)? != 1 || self.number("--pipeline", 1)? != 1
+            || if server { self.values.contains_key("--isolation-lane") } else { self.number("--isolation-lane", 5)? > 4 }
+        { return Err(Error::Input); }
+        Ok(Some(case))
     }
     fn fault_checkpoint(&self) -> Result<Option<usize>> {
         if !self.values.contains_key("--fault-checkpoint") {
@@ -297,6 +314,11 @@ async fn one_client(
     let mut session = ready.start()?;
     let app_started = Instant::now();
     #[cfg(feature = "flow-diagnostics")]
+    if let Some(case) = a.isolation_case()? {
+        let lane = a.number("--isolation-lane", 5)? as u8;
+        return isolation_probe::client(session, (sid, binding, transcript), lane, case).await;
+    }
+    #[cfg(feature = "flow-diagnostics")]
     if let Some(case) = a.backpressure_case()? {
         let report = backpressure_probe::client(session, sid, binding, transcript, case).await?;
         return Ok(json!({"session_id":hex::encode(sid),"binding_hash":hex::encode(binding),
@@ -397,7 +419,17 @@ async fn run(a: &Args, pool: &KemPool) -> Result<Value> {
             std::io::stdout().flush()?;
             let admission = Admission::default();
             let mut tasks = tokio::task::JoinSet::new();
-            for _ in 0..count {
+            #[cfg(feature = "flow-diagnostics")]
+            let mixed = a.isolation_case()?.map(|case| Arc::new(isolation_probe::State::new(case)));
+            for _index in 0..count {
+                #[cfg(feature = "flow-diagnostics")]
+                let state = mixed.clone();
+                #[cfg(feature = "flow-diagnostics")]
+                if let Some(state) = &state {
+                    if _index == 4 {
+                        tokio::time::timeout(Duration::from_secs(100), state.reclaimed.notified()).await?;
+                    }
+                }
                 let (sock, peer) =
                     tokio::time::timeout(Duration::from_secs(10), listener.accept()).await??;
                 let cfg = cfg.clone();
@@ -415,6 +447,10 @@ async fn run(a: &Args, pool: &KemPool) -> Result<Value> {
                     let ready=handshake::server(io,&name,&service,signing,&p,lease).await?;
                     let sid=ready.info().sid;let transcript=ready.info().transcript;
                     let mut session=ready.start()?;
+                    #[cfg(feature = "flow-diagnostics")]
+                    if let Some(state) = state {
+                        return state.serve(session, (sid, binding, transcript), &gate, &p).await;
+                    }
                     #[cfg(feature = "flow-diagnostics")]
                     if let Some(case) = backpressure_case {
                         return backpressure_probe::server(session, sid, binding, transcript, &case).await;
@@ -524,6 +560,7 @@ async fn main() -> Result<()> {
         return Err(Error::Input);
     }
     // Reject opt-in probe combinations before initializing workers or networking.
+    a.isolation_case()?;
     a.backpressure_case()?;
     a.wire_stall_case()?;
     let pool = KemPool::new(a.number("--workers", KemPool::default_workers())?)?;
