@@ -182,6 +182,8 @@ def source_snapshot(root=ROOT):
                      'protocol_rust/validation/wire_stall.py',
                      'protocol_rust/validation/wire_gate.py',
                      'protocol_rust/validation/wire_contract.py',
+                     'protocol_rust/validation/isolation.py',
+                     'protocol_rust/validation/isolation_contract.py',
                      'protocol_rust/interop.py', 'protocol_v01/requirements.txt'):
         path = root / relative
         if path.is_file():

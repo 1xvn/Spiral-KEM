@@ -87,6 +87,7 @@ The normal buffer pool is `18 × 16,440 = 295,920` bytes per connection. Receive
 | Receive queue, retained buffers, cancellation and idle expiry | [Bounded backpressure commands](BACKPRESSURE.md) |
 | Direct test-server SIGKILL and fresh ordinary-session recovery | [Server crash commands](SERVER_CRASH.md) |
 | Underlying socket-write stall, resumption and own-server deadline | [Wire-stall commands](WIRE_STALL.md) |
+| Four-session isolation and same-server slot reuse | [Collector, raw results and pinned OCI/WSL commands](SESSION_ISOLATION.md) |
 | Functional records and reproducible commands | [Validation](VALIDATION.md), [Ubuntu/WSL](RUN_UBUNTU_WSL.md), [regression map](REGRESSION_MAP.md) |
 | Frame/ClientHello fuzzing | [Parser fuzzing](FUZZ_PARSERS.md) |
 | DATA/CLOSE state-model fuzzing | [Record fuzzing](FUZZ_RECORDS.md) |

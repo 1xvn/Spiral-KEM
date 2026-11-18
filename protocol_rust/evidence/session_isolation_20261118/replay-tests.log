@@ -1,0 +1,14 @@
+test_gap_exceeding_budget (test_isolation.IsolationContractTests.test_gap_exceeding_budget) ... ok
+test_no_real_socket_stall (test_isolation.IsolationContractTests.test_no_real_socket_stall) ... ok
+test_progress_after_resume_cannot_prove_overlap (test_isolation.IsolationContractTests.test_progress_after_resume_cannot_prove_overlap) ... ok
+test_raw_disagreement (test_isolation.IsolationContractTests.test_raw_disagreement) ... ok
+test_remote_receipt_required_for_operator_scope (test_isolation.IsolationContractTests.test_remote_receipt_required_for_operator_scope) ... ok
+test_replacement_without_reclaimed_key (test_isolation.IsolationContractTests.test_replacement_without_reclaimed_key) ... ok
+test_three_original_runs_replay (test_isolation.IsolationContractTests.test_three_original_runs_replay) ... ok
+test_watchdog_exit_or_missing_deadline (test_isolation.IsolationContractTests.test_watchdog_exit_or_missing_deadline) ... ok
+test_wrong_authenticated_lane_or_sequence (test_isolation.IsolationContractTests.test_wrong_authenticated_lane_or_sequence) ... ok
+
+----------------------------------------------------------------------
+Ran 9 tests in 0.187s
+
+OK

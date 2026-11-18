@@ -91,6 +91,7 @@ def main():
         run('server-crash-supervision', [python, '-m', 'unittest', 'discover', '-s', 'protocol_rust/validation', '-p', 'test_crash_supervisor.py', '-v'], 60, minimum=11)
         run('server-crash-coordinator', [python, '-m', 'unittest', 'discover', '-s', 'protocol_rust/validation', '-p', 'test_server_crash.py', '-v'], 60, minimum=2)
         run('wire-stall-contracts', [python, '-m', 'unittest', 'discover', '-s', 'protocol_rust/validation', '-p', 'test_wire*.py', '-v'], 60, minimum=42)
+        run('session-isolation-contracts', [python, '-m', 'unittest', 'discover', '-s', 'protocol_rust/validation', '-p', 'test_isolation.py', '-v'], 60, minimum=9)
         run('native-kem', ['make', '-C', 'native_research', 'check', 'PYTHON=' + python], 300, minimum=9)
         if not cargo:
             raise RuntimeError('cargo executable not found')

@@ -66,7 +66,7 @@ def server_command(case):
     return [*command,'--payload','16384','--wire-stall-case',case]
 
 
-def supervise(command, case, backend_port=39401, gate_port=39402, input_stream=None, output_stream=None):
+def supervise(command, case, backend_port=39401, gate_port=39402, input_stream=None, output_stream=None, *, isolation=False):
     """Own one server and a single-client gate; CLI exposes no PID or command input."""
     base.require(case in CASES,'unsupported wire case')
     base.require(isinstance(command,list) and command,'missing owned server command')
@@ -156,8 +156,8 @@ def supervise(command, case, backend_port=39401, gate_port=39402, input_stream=N
             if stdout_eof:
                 code=child.wait(timeout=3)
                 base.require(final is not None and paused and bulk and stalled,'owned server ended before all wire phases')
-                base.require(code==(0 if case=='release' else 1),'unexpected owned wire server exit')
-                base.require(final.get('status')==('passed' if case=='release' else 'failed'),'owned wire server final differs')
+                base.require(code==(0 if case=='release' or isolation else 1),'unexpected owned wire server exit')
+                base.require(final.get('status')==('passed' if case=='release' or isolation else 'failed'),'owned wire server final differs')
                 if case=='timeout':
                     base.require(expired and not resumed and not front_read and not back_read,
                                  'timeout case was not held through server expiry')
@@ -306,11 +306,26 @@ def main():
     parser=argparse.ArgumentParser(description=__doc__)
     parser.add_argument('action',choices=('serve',))
     parser.add_argument('--case',choices=CASES,required=True)
+    parser.add_argument('--isolation',action='store_true')
     args=parser.parse_args()
     os.umask(0o077)
     def cancel(signum,frame):raise KeyboardInterrupt()
     signal.signal(signal.SIGTERM,cancel)
-    return supervise(server_command(args.case),args.case)
+    command = server_command(args.case)
+    if args.isolation:
+        command[command.index('--connections') + 1] = '5'
+        command[command.index('--wire-stall-case')] = '--isolation-case'
+    if not args.isolation:
+        return supervise(command, args.case)
+    before = base.source()
+    result = supervise(command, args.case, isolation=True)
+    after = base.source()
+    base.require(before == after and not after['source']['working_tree_dirty'],
+                 'remote source or binary changed during isolation case')
+    print(json.dumps({'event':'source_verified','git_head':after['source']['git_head'],
+                      'binary_sha256':after['binary_sha256'],
+                      'source_tree_sha256':after['source']['source_tree_sha256']}),flush=True)
+    return result
 
 
 if __name__=='__main__':
