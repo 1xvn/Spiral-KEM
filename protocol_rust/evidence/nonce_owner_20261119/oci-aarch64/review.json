@@ -1,0 +1,107 @@
+{
+  "review_scope": "Operator submission; one OCI AArch64 audit build; role 0, 64-byte DATA, tag index 15. No replay performed by reviewer.",
+  "source": "aba5b7c157fe33d9d3f138c263a3eff7dcb94818",
+  "platform": "Linux 7.0.0-1013-oracle aarch64",
+  "archive_sha256": "eff0908627d55c4394d2d12777d485f3127236a561827a20ea56a97384139689",
+  "operator_reported_elf_sha256": {
+    "spiral-lab": "fd3ca15b5c10db78c305735c95b799c4d3899bca288e3f256bebb177f7714054",
+    "spiral_protocol-92f4a1b33fa47eab": "509dd916bcaac7859049f4ea76d725bc98361e3b85790bad0a4ffa655b091289"
+  },
+  "elf_files_in_submission": false,
+  "assembly_gzip_sha256": "78396383a40f8d365f9d142ae09f167b5670e6ce889fcc7465169f317483f164",
+  "runs": [
+    {
+      "case": "ownership",
+      "exit": 0,
+      "raw_log_sha256": "75304d5d1e285ccb6be2c52b1d3463e6c6b68245f42175e34a8b37a99d39372a"
+    },
+    {
+      "case": "branch",
+      "exit": 99,
+      "raw_log_sha256": "546fd081e01387ab9a9b741fd1e7a94709b7244087d12ad643ea0bd7cd5cc261",
+      "possibly_lost_bytes": 48,
+      "branch_contexts": 1,
+      "address_contexts": 0,
+      "test_log_warning_pcs": [
+        "0x20EFD8"
+      ]
+    },
+    {
+      "case": "address",
+      "exit": 99,
+      "raw_log_sha256": "39fab024b217b1d1dc1e74f86e2c0a0da417294e2e1573629df4185959117ba8",
+      "possibly_lost_bytes": 48,
+      "branch_contexts": 0,
+      "address_contexts": 1,
+      "test_log_warning_pcs": [
+        "0x20F0CC"
+      ]
+    },
+    {
+      "case": "data-valid-public",
+      "exit": 99,
+      "raw_log_sha256": "a6722182d0c41459f645bcdabaa8b114bc77c9332ed3daf5ad83144739801ba3",
+      "possibly_lost_bytes": 48,
+      "branch_contexts": 0,
+      "address_contexts": 0,
+      "test_log_warning_pcs": []
+    },
+    {
+      "case": "data-valid-secret",
+      "exit": 99,
+      "raw_log_sha256": "3c22ff376dcfff8390e16e1eb337b28e7297ef6e6ce04ce0d7555fc29c067560",
+      "possibly_lost_bytes": 48,
+      "branch_contexts": 2,
+      "address_contexts": 0,
+      "test_log_warning_pcs": [
+        "0x1FE0B0",
+        "0x1E4A80"
+      ]
+    },
+    {
+      "case": "data-bad-tag-public",
+      "exit": 99,
+      "raw_log_sha256": "2ac29ff4d0cee8500a408c2c9ad63ba172410ece80fac5f8a735cee8c129809e",
+      "possibly_lost_bytes": 48,
+      "branch_contexts": 0,
+      "address_contexts": 0,
+      "test_log_warning_pcs": []
+    },
+    {
+      "case": "data-bad-tag-secret",
+      "exit": 99,
+      "raw_log_sha256": "74b48ca560bbec283ae1bf39d30313d193b15ad36533023fea7efbbfafeb1b63",
+      "possibly_lost_bytes": 48,
+      "branch_contexts": 2,
+      "address_contexts": 0,
+      "test_log_warning_pcs": [
+        "0x1FE0B0",
+        "0x1E4A80"
+      ]
+    },
+    {
+      "case": "data-bad-header-public",
+      "exit": 99,
+      "raw_log_sha256": "866e9b0fb3a29ff2b03f506bd27c9e40c0413d2cf5e7884af5bf5739a48a379b",
+      "possibly_lost_bytes": 48,
+      "branch_contexts": 0,
+      "address_contexts": 0,
+      "test_log_warning_pcs": []
+    },
+    {
+      "case": "data-bad-header-secret",
+      "exit": 99,
+      "raw_log_sha256": "d6fb2fdc31a861d9771533ae3a98b762d4908b809149e8dfcd98629646b4cfd1",
+      "possibly_lost_bytes": 48,
+      "branch_contexts": 0,
+      "address_contexts": 0,
+      "test_log_warning_pcs": []
+    }
+  ],
+  "application_disassembly": {
+    "heap_prefix_wipe": "0x1043f8..0x104404, zero 4 individual bytes before branch to free@plt at 0x104408",
+    "receive_stack_nonce": "0x11ccd8 opens using x29-60; 0x11cd0c..0x11cd38 and 0x11cd78..0x11cda4 clear all 12 bytes at x29-60..-49"
+  },
+  "constant_time_approved": false,
+  "full_memory_passed": false
+}

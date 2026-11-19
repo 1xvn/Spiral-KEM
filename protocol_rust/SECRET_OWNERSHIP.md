@@ -52,7 +52,15 @@ The independent positive branch and indexed-load fixtures each triggered their i
 
 **Timing.** Earlier native decapsulation diagnostics compared fixed/varying seeds in two 6,000-sample trials. Their deliberately different-work positive controls gave Welch t of −6.54 and −18.81, and identical-input sham groups −0.89 and 0.73. That demonstrates sensitivity to the chosen gross difference on those runs. The patch-era HMAC/HKDF/signature benchmark used public inputs to compare cleanup costs. Neither dataset measures the timing of this Rust receive change. No new fixed/varied secret timing experiment was run. [Native timing](../native_research/README.md) · [Benchmark inputs and samples](evidence/secret_copy_cleanup_20261108/benchmark/)
 
-**Next verification unit.** Run the changed receive owner on OCI AArch64, starting with the same public/marked valid DATA and bad-tag pair, branch/address controls and bad-header control. Record the exact linked application and test hashes and inspect the four-byte wipe before free and the caller nonce cleanup in the ARM disassembly. Map each warning to its own executable. Leave the ARM change unverified until those observations exist. Backend limbs, register retention, the TLS provider, time leakage and process abort remain open even after that unit.
+### OCI AArch64 follow-up
+
+The submitted Linux 7.0.0-1013-oracle AArch64 build at merge commit `aba5b7c157fe33d9d3f138c263a3eff7dcb94818` used rustc 1.99.1 and Valgrind 3.22.0. Both ownership regressions passed, covering close, rejection and canceled reader ownership during writer shutdown. The archive contains the application disassembly, test logs and operator-reported ELF digests. The application and libtest ELF files were not submitted. [Original archive](evidence/nonce_owner_20261119/oci-aarch64/Spiral-nonce-arm-AG3BYGHO.tar.gz) · [Review with archive and per-log hashes](evidence/nonce_owner_20261119/oci-aarch64/review.json)
+
+In the application disassembly, four byte stores of the zero register at `0x1043f8–0x104404` clear the heap prefix before the branch to `free@plt` at `0x104408`. In `Rx::decode`, the AEAD open call uses the nonce at frame-pointer offset −60. The reviewed success and error paths clear all twelve bytes through offset −49.
+
+The eight Memcheck runs comprised two positive controls and three public/marked pairs for role 0, 64-byte DATA and tag index 15. Each positive control detected its intended branch or indexed access. All public inputs and the marked bad header had zero branch/address warnings. Marked valid DATA and the bad tag each had two branch contexts. In the **test executable**, the stacks at `0x1FE0B0` and `0x1E4A80` point to AEAD verification and propagation of its result. Every run retained exit 99 and one 48-byte possibly-lost allocation with `std::thread::current::init_current` in its stack. Suppressed errors were zero.
+
+This completes the scoped ARM receive-owner check. Secret-dependent timing on this path remains unmeasured. A separate verification unit would compare fixed and varied secret inputs under matched public conditions, with timing sensitivity controls. Backend limbs, register retention, TLS-provider internals and process abort also remain open.
 
 ## Reproducing this scope
 
