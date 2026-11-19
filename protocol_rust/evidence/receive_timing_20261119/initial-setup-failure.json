@@ -1,0 +1,5 @@
+{
+  "collection_complete": false,
+  "error": "[Errno 13] Permission denied: '/tmp/spiral-audit-cargo'",
+  "constant_time_approved": false
+}

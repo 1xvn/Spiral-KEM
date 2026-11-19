@@ -11,6 +11,7 @@ default = []
 parser-fuzz = []
 record-fuzz = []
 flow-diagnostics = []
+receive-timing = []
 
 [dependencies]
 tokio = { version = "=1.54.1", features = ["rt-multi-thread", "macros", "net", "io-util", "sync", "time"] }
