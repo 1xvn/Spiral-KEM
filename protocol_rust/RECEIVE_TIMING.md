@@ -31,9 +31,26 @@ The Linux x86-64 collection on CPU 0 (Intel Xeon Platinum 8573C) used clean sour
 | reject | 1 | +2.077 | +0.840 | +0.668 |
 | reject | 2 | +4.028 | +0.510 | +0.463 |
 
-Accept met the control criteria in both trials and the key comparison stayed below the threshold in both. Reject was inconclusive because its positive control missed +4.5 in both trials. The gate was fixed before measurement and both raw runs were retained. No observation was removed. These samples do not establish constant-time behavior or resolve the earlier Memcheck warnings. OCI AArch64 and WSL measurements of this probe are pending.
+Accept met the control criteria in both trials and the key comparison stayed below the threshold in both. Reject was inconclusive because its positive control missed +4.5 in both trials. The gate was fixed before measurement and both raw runs were retained. No observation was removed. These samples do not establish constant-time behavior or resolve the earlier Memcheck warnings.
 
 The first local invocation failed before compilation because its Cargo wrapper lacked execute permission. The completed collection used the pinned Cargo executable directly. [Original setup failure](evidence/receive_timing_20261119/initial-setup-failure.json)
+
+## OCI and WSL measurements
+
+Both operators' archives report the same clean probe revision, `2bc7e44f15fbaafa450f857c6ebf9474c9d8aee1`. Each host contributed 48,000 observations. The review verified the trial CSV digests, pair order and source hashes for the probe, collector and lockfile. It recomputed the statistics from the four CSVs. The archives include operator-reported test executable hashes.
+
+| Host | Decision | Trial 1 key t | Trial 2 key t |
+| --- | --- | ---: | ---: |
+| OCI AArch64 | accept | +1.292 | +0.296 |
+| OCI AArch64 | reject | +0.471 | -1.047 |
+| WSL2 x86-64 | accept | -1.090 | -0.256 |
+| WSL2 x86-64 | reject | -0.285 | +0.441 |
+
+For each decision on both hosts, the positive control reached +4.5 and the absolute sham statistic stayed below 4.5 in both trials. The fixed/varied key comparison stayed below the absolute threshold in each case. This finding applies to 64-byte synthetic DATA, role 0, and the conditions of each run. The earlier cloud x86-64 reject result remains inconclusive.
+
+- [OCI AArch64 original timing archive](evidence/receive_timing_20261119/platforms/Spiral-rx-timing-oci.tar.gz)
+- [WSL2 x86-64 original timing archive](evidence/receive_timing_20261119/platforms/Spiral-rx-timing-wsl.tar.gz)
+- [Independent review with archive digests and recomputed control and key statistics](evidence/receive_timing_20261119/platforms/review.json)
 
 ## WSL Ubuntu or OCI SSH Ubuntu
 

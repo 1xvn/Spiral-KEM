@@ -1,0 +1,92 @@
+{
+  "tested_commit": "2bc7e44f15fbaafa450f857c6ebf9474c9d8aee1",
+  "paired_t_threshold": 4.5,
+  "scope": "64-byte synthetic DATA, role 0 sender, same-host paired differences in each decision; no rerun",
+  "constant_time_approved": false,
+  "hosts": {
+    "oci": {
+      "archive_sha256": "8e4dd169b7bc806ffda4db5b57e610b9ede27454a27cf4ff854bb2bb934606ca",
+      "architecture": "aarch64",
+      "kernel": "7.0.0-1013-oracle",
+      "rows_verified": 48000,
+      "source_files_verified": [
+        "lock",
+        "probe",
+        "collector"
+      ],
+      "libtest_sha256_operator_reported": "2ead68f86de3535902468b0da4fb5f7bd712d404290d7a185f3691aa532a5c4d",
+      "statistics_recomputed": [
+        {
+          "accept": {
+            "positive": 123.7173082453853,
+            "sham": 1.0647549219083148,
+            "key": 1.2921695394298602
+          },
+          "reject": {
+            "positive": 29.483843734590465,
+            "sham": -0.697382615439809,
+            "key": 0.47123600339729876
+          }
+        },
+        {
+          "reject": {
+            "key": -1.0474102632503497,
+            "sham": 0.5413148210912222,
+            "positive": 49.330535335660585
+          },
+          "accept": {
+            "key": 0.29559252750476067,
+            "sham": 1.0364339745567623,
+            "positive": 156.44459061878965
+          }
+        }
+      ],
+      "interpretation": {
+        "accept": "no_threshold_crossing_in_sample",
+        "reject": "no_threshold_crossing_in_sample"
+      }
+    },
+    "wsl": {
+      "archive_sha256": "bbc26d9c0b75511b7f65984a2d77c33b8094a154a7ae5666d7f45ef48ffc4cf8",
+      "architecture": "x86_64",
+      "kernel": "6.18.58.1-microsoft-standard-WSL2",
+      "rows_verified": 48000,
+      "source_files_verified": [
+        "lock",
+        "probe",
+        "collector"
+      ],
+      "libtest_sha256_operator_reported": "0af3f8436f0cdeadf6f4177e632977ba1560e6da3c154286ee0b360452c17769",
+      "statistics_recomputed": [
+        {
+          "accept": {
+            "positive": 49.706155540300344,
+            "sham": 0.16341686915863377,
+            "key": -1.0898581608732683
+          },
+          "reject": {
+            "positive": 74.79577855069317,
+            "sham": -0.8227518687649724,
+            "key": -0.285070863831923
+          }
+        },
+        {
+          "reject": {
+            "key": 0.44085087123912253,
+            "sham": -1.1962538206542934,
+            "positive": 45.936883256577175
+          },
+          "accept": {
+            "key": -0.25576745603482987,
+            "sham": 0.7423670911291474,
+            "positive": 48.170665748330805
+          }
+        }
+      ],
+      "interpretation": {
+        "accept": "no_threshold_crossing_in_sample",
+        "reject": "no_threshold_crossing_in_sample"
+      }
+    }
+  }
+}
