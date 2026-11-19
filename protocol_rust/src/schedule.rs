@@ -94,8 +94,8 @@ pub struct SessionKeys {
     pub sid: [u8; 16],
     pub(crate) c: Secret<32>,
     pub(crate) s: Secret<32>,
-    pub(crate) cp: [u8; 4],
-    pub(crate) sp: [u8; 4],
+    pub(crate) cp: Secret<4>,
+    pub(crate) sp: Secret<4>,
     pub transcript: [u8; 32],
 }
 pub fn finish(
@@ -110,8 +110,8 @@ pub fn finish(
     let master = expand::<32>(s.prk.bytes(), b"application-master", &h)?;
     let c = expand::<32>(master.bytes(), b"client-data-key", &h)?;
     let sk = expand::<32>(master.bytes(), b"server-data-key", &h)?;
-    let cp = *expand::<4>(master.bytes(), b"client-nonce-prefix", &h)?.bytes();
-    let sp = *expand::<4>(master.bytes(), b"server-nonce-prefix", &h)?.bytes();
+    let cp = expand::<4>(master.bytes(), b"client-nonce-prefix", &h)?;
+    let sp = expand::<4>(master.bytes(), b"server-nonce-prefix", &h)?;
     Ok(SessionKeys {
         sid,
         c,
@@ -202,8 +202,8 @@ mod tests {
         let k = finish(s, sid, &ch, &sh, &ck, &sf).unwrap();
         assert_eq!(k.c.bytes().as_slice(), e("client_data_key"));
         assert_eq!(k.s.bytes().as_slice(), e("server_data_key"));
-        assert_eq!(k.cp.as_slice(), e("client_nonce_prefix"));
-        assert_eq!(k.sp.as_slice(), e("server_nonce_prefix"));
+        assert_eq!(k.cp.bytes().as_slice(), e("client_nonce_prefix"));
+        assert_eq!(k.sp.bytes().as_slice(), e("server_nonce_prefix"));
         assert_eq!(k.transcript.as_slice(), e("h2"));
     }
 }

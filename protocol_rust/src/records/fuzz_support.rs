@@ -26,6 +26,12 @@ pub struct RecordPair {
     pool: Arc<Pool>,
 }
 
+fn fixture_prefix() -> Secret<4> {
+    let mut prefix = Secret::zeros();
+    prefix.bytes_mut().copy_from_slice(&[0xa0, 0xa1, 0xa2, 0xa3]);
+    prefix
+}
+
 fn public_key() -> Secret<32> {
     let mut key = Secret::zeros();
     for (index, byte) in key.bytes_mut().iter_mut().enumerate() {
@@ -52,8 +58,8 @@ impl RecordPair {
             return Err(Error::Input);
         }
         let sid = core::array::from_fn(|index| 0x10 + index as u8);
-        let mut tx = Tx::new(public_key(), [0xa0, 0xa1, 0xa2, 0xa3], sid, sender_role)?;
-        let mut rx = Rx::new(public_key(), [0xa0, 0xa1, 0xa2, 0xa3], sid, 1 - sender_role)?;
+        let mut tx = Tx::new(public_key(), fixture_prefix(), sid, sender_role)?;
+        let mut rx = Rx::new(public_key(), fixture_prefix(), sid, 1 - sender_role)?;
         tx.seq = sequence;
         tx.bytes = bytes;
         rx.seq = sequence;

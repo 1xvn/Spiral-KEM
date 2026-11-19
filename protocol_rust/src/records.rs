@@ -10,9 +10,13 @@ const MAX_BYTES: u64 = (1 << 30) - 1;
 #[cfg(feature = "record-fuzz")]
 #[doc(hidden)]
 pub mod fuzz_support;
+struct RecordKey {
+    cipher: ChaCha20Poly1305,
+    prefix: Secret<4>,
+}
+
 pub(crate) struct Tx {
-    key: Option<ChaCha20Poly1305>,
-    prefix: [u8; 4],
+    key: Option<RecordKey>,
     sid: [u8; 16],
     role: u8,
     seq: u64,
@@ -20,29 +24,31 @@ pub(crate) struct Tx {
     pub closed: bool,
 }
 pub(crate) struct Rx {
-    key: Option<ChaCha20Poly1305>,
-    prefix: [u8; 4],
+    key: Option<RecordKey>,
     sid: [u8; 16],
     role: u8,
     seq: u64,
     bytes: u64,
     pub closed: bool,
 }
-fn nonce(prefix: [u8; 4], seq: u64) -> [u8; 12] {
-    let mut n = [0; 12];
-    n[..4].copy_from_slice(&prefix);
-    n[4..].copy_from_slice(&seq.to_be_bytes());
-    n
+impl RecordKey {
+    fn new(key: Secret<32>, prefix: Secret<4>) -> Result<Self> {
+        let cipher = ChaCha20Poly1305::new_from_slice(key.bytes()).map_err(|_| Error::Crypto)?;
+        Ok(Self { cipher, prefix })
+    }
+
+    fn fill_nonce(&self, seq: u64, nonce: &mut [u8; 12]) {
+        nonce[..4].copy_from_slice(self.prefix.bytes());
+        nonce[4..].copy_from_slice(&seq.to_be_bytes());
+    }
 }
 impl Tx {
-    pub fn new(key: Secret<32>, prefix: [u8; 4], sid: [u8; 16], role: u8) -> Result<Self> {
+    pub fn new(key: Secret<32>, prefix: Secret<4>, sid: [u8; 16], role: u8) -> Result<Self> {
         if role > 1 || sid == [0; 16] {
             return Err(Error::Input);
         }
-        let key = Some(ChaCha20Poly1305::new_from_slice(key.bytes()).map_err(|_| Error::Crypto)?);
         Ok(Self {
-            key,
-            prefix,
+            key: Some(RecordKey::new(key, prefix)?),
             sid,
             role,
             seq: 0,
@@ -90,13 +96,13 @@ impl Tx {
             let mut out = [0; 57];
             out[..HEADER].copy_from_slice(&head);
             out[HEADER] = reason;
-            let n = nonce(self.prefix, seq);
-            let tag = self
-                .key
-                .as_ref()
-                .ok_or(Error::Closed)?
+            let key = self.key.as_ref().ok_or(Error::Closed)?;
+            let mut n = zeroize::Zeroizing::new([0u8; 12]);
+            key.fill_nonce(seq, &mut n);
+            let tag = key
+                .cipher
                 .encrypt_in_place_detached(
-                    Nonce::from_slice(&n),
+                    Nonce::from_slice(n.as_slice()),
                     &head,
                     &mut out[HEADER..HEADER + 1],
                 )
@@ -139,13 +145,13 @@ impl Tx {
             buffer.data.resize(HEADER + length + 16, 0);
             buffer.data.copy_within(start..start + length, HEADER);
             buffer.data[..HEADER].copy_from_slice(&h);
-            let n = nonce(self.prefix, sequence);
-            let tag = self
-                .key
-                .as_ref()
-                .ok_or(Error::Closed)?
+            let key = self.key.as_ref().ok_or(Error::Closed)?;
+            let mut n = zeroize::Zeroizing::new([0u8; 12]);
+            key.fill_nonce(sequence, &mut n);
+            let tag = key
+                .cipher
                 .encrypt_in_place_detached(
-                    Nonce::from_slice(&n),
+                    Nonce::from_slice(n.as_slice()),
                     &h,
                     &mut buffer.data[HEADER..HEADER + length],
                 )
@@ -167,14 +173,12 @@ impl Tx {
     }
 }
 impl Rx {
-    pub fn new(key: Secret<32>, prefix: [u8; 4], sid: [u8; 16], role: u8) -> Result<Self> {
+    pub fn new(key: Secret<32>, prefix: Secret<4>, sid: [u8; 16], role: u8) -> Result<Self> {
         if role > 1 || sid == [0; 16] {
             return Err(Error::Input);
         }
-        let key = Some(ChaCha20Poly1305::new_from_slice(key.bytes()).map_err(|_| Error::Crypto)?);
         Ok(Self {
-            key,
-            prefix,
+            key: Some(RecordKey::new(key, prefix)?),
             sid,
             role,
             seq: 0,
@@ -200,14 +204,14 @@ impl Rx {
             if h.kind == DATA && self.bytes + size as u64 > MAX_BYTES {
                 return Err(Error::Limit(2));
             }
-            let n = nonce(self.prefix, self.seq);
+            let key = self.key.as_ref().ok_or(Error::Closed)?;
+            let mut n = zeroize::Zeroizing::new([0u8; 12]);
+            key.fill_nonce(self.seq, &mut n);
             let (head, body) = buf.data.split_at_mut(HEADER);
             let (message, tag) = body.split_at_mut(size);
-            self.key
-                .as_ref()
-                .ok_or(Error::Closed)?
+            key.cipher
                 .decrypt_in_place_detached(
-                    Nonce::from_slice(&n),
+                    Nonce::from_slice(n.as_slice()),
                     head,
                     message,
                     Tag::from_slice(tag),
@@ -250,7 +254,7 @@ mod tests {
         ))
         .unwrap()
     }
-    fn key(v: &serde_json::Value, name: &str) -> Secret<32> {
+    fn key<const N: usize>(v: &serde_json::Value, name: &str) -> Secret<N> {
         let mut k = Secret::zeros();
         k.bytes_mut()
             .copy_from_slice(&hex::decode(v["expected"][name].as_str().unwrap()).unwrap());
@@ -264,10 +268,7 @@ mod tests {
     fn rx(v: &serde_json::Value) -> Rx {
         Rx::new(
             key(v, "client_data_key"),
-            hex::decode(v["expected"]["client_nonce_prefix"].as_str().unwrap())
-                .unwrap()
-                .try_into()
-                .unwrap(),
+            key(v, "client_nonce_prefix"),
             hex::decode(v["public"]["session_id"].as_str().unwrap())
                 .unwrap()
                 .try_into()
@@ -276,6 +277,57 @@ mod tests {
         )
         .unwrap()
     }
+    fn watched_prefix() -> (Secret<4>, std::sync::Arc<std::sync::atomic::AtomicUsize>) {
+        let witness = std::sync::Arc::new(std::sync::atomic::AtomicUsize::new(0));
+        let mut prefix = Secret::zeros();
+        prefix.bytes_mut().fill(0xa5);
+        prefix.watch_wipe(witness.clone());
+        (prefix, witness)
+    }
+
+    #[test]
+    fn nonce_owner_close_and_rejection() {
+        use std::sync::atomic::Ordering::SeqCst;
+        let pool = Pool::new();
+        let (p, sent) = watched_prefix();
+        let mut tx = Tx::new(Secret::zeros(), p, [7; 16], 0).unwrap();
+        let (p, received) = watched_prefix();
+        let mut rx = Rx::new(Secret::zeros(), p, [7; 16], 1).unwrap();
+        let (p, rejected) = watched_prefix();
+        let mut other = Rx::new(Secret::zeros(), p, [7; 16], 1).unwrap();
+        assert_eq!((sent.load(SeqCst), received.load(SeqCst)), (0, 0));
+        let mut frame = tx.close(0).unwrap();
+        rx.decode(buf(&pool, &frame)).unwrap();
+        frame[56] ^= 1;
+        assert!(matches!(other.decode(buf(&pool, &frame)), Err(Error::Authentication)));
+        assert_eq!((sent.load(SeqCst), received.load(SeqCst), rejected.load(SeqCst)), (1, 1, 1));
+        let (p, invalid) = watched_prefix();
+        assert!(Tx::new(Secret::zeros(), p, [0; 16], 0).is_err());
+        assert_eq!(invalid.load(SeqCst), 1);
+    }
+
+    #[tokio::test(flavor = "multi_thread", worker_threads = 2)]
+    async fn nonce_owner_canceled_reader_and_concurrently_closing_writer() {
+        use std::sync::atomic::Ordering::SeqCst;
+        let (p, received) = watched_prefix();
+        let rx = Rx::new(Secret::zeros(), p, [1; 16], 1).unwrap();
+        let (ready, parked) = tokio::sync::oneshot::channel();
+        let reader = tokio::spawn(async move {
+            ready.send(()).unwrap();
+            std::future::pending::<()>().await;
+            drop(rx);
+        });
+        parked.await.unwrap();
+        let (p, sent) = watched_prefix();
+        let mut tx = Tx::new(Secret::zeros(), p, [1; 16], 0).unwrap();
+        let writer = tokio::spawn(async move { tx.close(0) });
+        reader.abort();
+        let (read, write) = tokio::join!(reader, writer);
+        assert!(read.unwrap_err().is_cancelled());
+        write.unwrap().unwrap();
+        assert_eq!((sent.load(SeqCst), received.load(SeqCst)), (1, 1));
+    }
+
     #[test]
     fn golden_records_and_close() {
         let v = vector();
@@ -323,10 +375,7 @@ mod tests {
         let pool = Pool::new();
         let mut t = Tx::new(
             key(&v, "client_data_key"),
-            hex::decode(v["expected"]["client_nonce_prefix"].as_str().unwrap())
-                .unwrap()
-                .try_into()
-                .unwrap(),
+            key(&v, "client_nonce_prefix"),
             hex::decode(v["public"]["session_id"].as_str().unwrap())
                 .unwrap()
                 .try_into()
@@ -367,7 +416,7 @@ mod tests {
     fn count_and_byte_limits_still_allow_close() {
         let pool = Pool::new();
         for bytes_limit in [false, true] {
-            let mut t = Tx::new(Secret::zeros(), [0; 4], [1; 16], 0).unwrap();
+            let mut t = Tx::new(Secret::zeros(), Secret::zeros(), [1; 16], 0).unwrap();
             if bytes_limit {
                 t.bytes = MAX_BYTES;
             } else {
@@ -409,21 +458,14 @@ mod tests {
         let v = vector();
         let pool = Pool::new();
         for (name, role) in [("client", 0), ("server", 1)] {
-            let prefix: [u8; 4] = hex::decode(
-                v["expected"][format!("{name}_nonce_prefix")]
-                    .as_str()
-                    .unwrap(),
-            )
-            .unwrap()
-            .try_into()
-            .unwrap();
+            let prefix = || key(&v, &format!("{name}_nonce_prefix"));
             let sid = hex::decode(v["public"]["session_id"].as_str().unwrap())
                 .unwrap()
                 .try_into()
                 .unwrap();
-            let mut tx = Tx::new(key(&v, &format!("{name}_data_key")), prefix, sid, role).unwrap();
+            let mut tx = Tx::new(key(&v, &format!("{name}_data_key")), prefix(), sid, role).unwrap();
             let mut rx =
-                Rx::new(key(&v, &format!("{name}_data_key")), prefix, sid, 1 - role).unwrap();
+                Rx::new(key(&v, &format!("{name}_data_key")), prefix(), sid, 1 - role).unwrap();
             let message =
                 hex::decode(v["plaintexts"][format!("{name}_data")].as_str().unwrap()).unwrap();
             let wire = tx
@@ -459,8 +501,8 @@ mod tests {
     fn authenticated_unknown_close_and_receive_byte_overrun_poison_keys() {
         let pool = Pool::new();
         for bad_reason in [false, true] {
-            let mut tx = Tx::new(Secret::zeros(), [0; 4], [1; 16], 0).unwrap();
-            let mut rx = Rx::new(Secret::zeros(), [0; 4], [1; 16], 1).unwrap();
+            let mut tx = Tx::new(Secret::zeros(), Secret::zeros(), [1; 16], 0).unwrap();
+            let mut rx = Rx::new(Secret::zeros(), Secret::zeros(), [1; 16], 1).unwrap();
             let p = Plaintext {
                 buffer: buf(&pool, &[3]),
                 start: 0,
@@ -480,7 +522,7 @@ mod tests {
     #[test]
     fn failed_encryption_burns_sequence_and_cannot_retry() {
         let pool = Pool::new();
-        let mut tx = Tx::new(Secret::zeros(), [0; 4], [1; 16], 0).unwrap();
+        let mut tx = Tx::new(Secret::zeros(), Secret::zeros(), [1; 16], 0).unwrap();
         let mut buffer = buf(&pool, b"x");
         // Inject a broken capacity invariant without touching the AEAD or RNG.
         buffer.data.shrink_to_fit();

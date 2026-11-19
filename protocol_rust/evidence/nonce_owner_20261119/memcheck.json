@@ -1,0 +1,122 @@
+[
+  {
+    "case": "branch",
+    "mode": "data-valid",
+    "mark": "secret",
+    "exit": 99,
+    "test_completed": true,
+    "branch": 1,
+    "address": 0,
+    "summary": [
+      "2 errors from 2 contexts (suppressed: 0 from 0)"
+    ],
+    "possible": [
+      "48 bytes in 1 blocks"
+    ]
+  },
+  {
+    "case": "address",
+    "mode": "data-valid",
+    "mark": "secret",
+    "exit": 99,
+    "test_completed": true,
+    "branch": 0,
+    "address": 1,
+    "summary": [
+      "2 errors from 2 contexts (suppressed: 0 from 0)"
+    ],
+    "possible": [
+      "48 bytes in 1 blocks"
+    ]
+  },
+  {
+    "case": "data-valid-public",
+    "mode": "data-valid",
+    "mark": "public",
+    "exit": 99,
+    "test_completed": true,
+    "branch": 0,
+    "address": 0,
+    "summary": [
+      "1 errors from 1 contexts (suppressed: 0 from 0)"
+    ],
+    "possible": [
+      "48 bytes in 1 blocks"
+    ]
+  },
+  {
+    "case": "data-valid-secret",
+    "mode": "data-valid",
+    "mark": "secret",
+    "exit": 99,
+    "test_completed": true,
+    "branch": 2,
+    "address": 0,
+    "summary": [
+      "3 errors from 3 contexts (suppressed: 0 from 0)"
+    ],
+    "possible": [
+      "48 bytes in 1 blocks"
+    ]
+  },
+  {
+    "case": "data-bad-tag-public",
+    "mode": "data-bad-tag",
+    "mark": "public",
+    "exit": 99,
+    "test_completed": true,
+    "branch": 0,
+    "address": 0,
+    "summary": [
+      "1 errors from 1 contexts (suppressed: 0 from 0)"
+    ],
+    "possible": [
+      "48 bytes in 1 blocks"
+    ]
+  },
+  {
+    "case": "data-bad-tag-secret",
+    "mode": "data-bad-tag",
+    "mark": "secret",
+    "exit": 99,
+    "test_completed": true,
+    "branch": 2,
+    "address": 0,
+    "summary": [
+      "3 errors from 3 contexts (suppressed: 0 from 0)"
+    ],
+    "possible": [
+      "48 bytes in 1 blocks"
+    ]
+  },
+  {
+    "case": "data-bad-header-public",
+    "mode": "data-bad-header",
+    "mark": "public",
+    "exit": 99,
+    "test_completed": true,
+    "branch": 0,
+    "address": 0,
+    "summary": [
+      "1 errors from 1 contexts (suppressed: 0 from 0)"
+    ],
+    "possible": [
+      "48 bytes in 1 blocks"
+    ]
+  },
+  {
+    "case": "data-bad-header-secret",
+    "mode": "data-bad-header",
+    "mark": "secret",
+    "exit": 99,
+    "test_completed": true,
+    "branch": 0,
+    "address": 0,
+    "summary": [
+      "1 errors from 1 contexts (suppressed: 0 from 0)"
+    ],
+    "possible": [
+      "48 bytes in 1 blocks"
+    ]
+  }
+]
