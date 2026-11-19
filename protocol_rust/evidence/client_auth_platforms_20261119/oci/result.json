@@ -1,0 +1,585 @@
+{
+  "schema": 1,
+  "passed": true,
+  "tests": 2,
+  "failures": 0,
+  "errors": 0,
+  "cases": [
+    {
+      "case": "read-status",
+      "decision": "allow",
+      "server_stdout_after_listen": [
+        {
+          "event": "registry_admitted"
+        },
+        {
+          "event": "status_read"
+        },
+        {
+          "admission_released": true,
+          "auth_key_closed": true,
+          "connections": 1,
+          "kem": {
+            "executed_jobs": 2,
+            "live_keys": 0,
+            "rejected_jobs": 0
+          },
+          "role": "server",
+          "sessions": [
+            {
+              "authenticated_close": true,
+              "messages": 1
+            }
+          ],
+          "status": "passed"
+        }
+      ],
+      "server_exit": 0
+    },
+    {
+      "case": "missing-certificate",
+      "decision": "deny",
+      "server_stdout_after_listen": [
+        {
+          "event": "tls_peer_rejected"
+        },
+        {
+          "active": 0,
+          "auth_key_closed": true,
+          "drained": true,
+          "event": "failure_cleanup",
+          "pending": 0,
+          "role": "server"
+        },
+        {
+          "kem": {
+            "executed_jobs": 0,
+            "live_keys": 0,
+            "rejected_jobs": 0
+          },
+          "status": "failed"
+        }
+      ],
+      "server_exit": 1
+    },
+    {
+      "case": "untrusted-issuer",
+      "decision": "deny",
+      "server_stdout_after_listen": [
+        {
+          "event": "tls_peer_rejected"
+        },
+        {
+          "active": 0,
+          "auth_key_closed": true,
+          "drained": true,
+          "event": "failure_cleanup",
+          "pending": 0,
+          "role": "server"
+        },
+        {
+          "kem": {
+            "executed_jobs": 0,
+            "live_keys": 0,
+            "rejected_jobs": 0
+          },
+          "status": "failed"
+        }
+      ],
+      "server_exit": 1
+    },
+    {
+      "case": "expired",
+      "decision": "deny",
+      "server_stdout_after_listen": [
+        {
+          "event": "tls_peer_rejected"
+        },
+        {
+          "active": 0,
+          "auth_key_closed": true,
+          "drained": true,
+          "event": "failure_cleanup",
+          "pending": 0,
+          "role": "server"
+        },
+        {
+          "kem": {
+            "executed_jobs": 0,
+            "live_keys": 0,
+            "rejected_jobs": 0
+          },
+          "status": "failed"
+        }
+      ],
+      "server_exit": 1
+    },
+    {
+      "case": "server-only-certificate",
+      "decision": "deny",
+      "server_stdout_after_listen": [
+        {
+          "event": "tls_peer_rejected"
+        },
+        {
+          "active": 0,
+          "auth_key_closed": true,
+          "drained": true,
+          "event": "failure_cleanup",
+          "pending": 0,
+          "role": "server"
+        },
+        {
+          "kem": {
+            "executed_jobs": 0,
+            "live_keys": 0,
+            "rejected_jobs": 0
+          },
+          "status": "failed"
+        }
+      ],
+      "server_exit": 1
+    },
+    {
+      "case": "dual-purpose-certificate",
+      "decision": "deny",
+      "server_stdout_after_listen": [
+        {
+          "event": "tls_peer_rejected"
+        },
+        {
+          "active": 0,
+          "auth_key_closed": true,
+          "drained": true,
+          "event": "failure_cleanup",
+          "pending": 0,
+          "role": "server"
+        },
+        {
+          "kem": {
+            "executed_jobs": 0,
+            "live_keys": 0,
+            "rejected_jobs": 0
+          },
+          "status": "failed"
+        }
+      ],
+      "server_exit": 1
+    },
+    {
+      "case": "wrong-sni",
+      "decision": "deny",
+      "server_stdout_after_listen": [
+        {
+          "event": "tls_peer_rejected"
+        },
+        {
+          "active": 0,
+          "auth_key_closed": true,
+          "drained": true,
+          "event": "failure_cleanup",
+          "pending": 0,
+          "role": "server"
+        },
+        {
+          "kem": {
+            "executed_jobs": 0,
+            "live_keys": 0,
+            "rejected_jobs": 0
+          },
+          "status": "failed"
+        }
+      ],
+      "server_exit": 1
+    },
+    {
+      "case": "legacy-to-required",
+      "decision": "deny",
+      "server_stdout_after_listen": [
+        {
+          "event": "tls_peer_rejected"
+        },
+        {
+          "active": 0,
+          "auth_key_closed": true,
+          "drained": true,
+          "event": "failure_cleanup",
+          "pending": 0,
+          "role": "server"
+        },
+        {
+          "kem": {
+            "executed_jobs": 0,
+            "live_keys": 0,
+            "rejected_jobs": 0
+          },
+          "status": "failed"
+        }
+      ],
+      "server_exit": 1
+    },
+    {
+      "case": "unregistered",
+      "decision": "deny",
+      "server_stdout_after_listen": [
+        {
+          "event": "registry_denied"
+        },
+        {
+          "active": 0,
+          "auth_key_closed": true,
+          "drained": true,
+          "event": "failure_cleanup",
+          "pending": 0,
+          "role": "server"
+        },
+        {
+          "kem": {
+            "executed_jobs": 0,
+            "live_keys": 0,
+            "rejected_jobs": 0
+          },
+          "status": "failed"
+        }
+      ],
+      "server_exit": 1
+    },
+    {
+      "case": "revoked-on-restart",
+      "decision": "deny",
+      "server_stdout_after_listen": [
+        {
+          "event": "registry_denied"
+        },
+        {
+          "active": 0,
+          "auth_key_closed": true,
+          "drained": true,
+          "event": "failure_cleanup",
+          "pending": 0,
+          "role": "server"
+        },
+        {
+          "kem": {
+            "executed_jobs": 0,
+            "live_keys": 0,
+            "rejected_jobs": 0
+          },
+          "status": "failed"
+        }
+      ],
+      "server_exit": 1
+    },
+    {
+      "case": "grant-for-other-server",
+      "decision": "deny",
+      "server_stdout_after_listen": [
+        {
+          "event": "registry_denied"
+        },
+        {
+          "active": 0,
+          "auth_key_closed": true,
+          "drained": true,
+          "event": "failure_cleanup",
+          "pending": 0,
+          "role": "server"
+        },
+        {
+          "kem": {
+            "executed_jobs": 0,
+            "live_keys": 0,
+            "rejected_jobs": 0
+          },
+          "status": "failed"
+        }
+      ],
+      "server_exit": 1
+    },
+    {
+      "case": "grant-for-other-service",
+      "decision": "deny",
+      "server_stdout_after_listen": [
+        {
+          "event": "registry_denied"
+        },
+        {
+          "active": 0,
+          "auth_key_closed": true,
+          "drained": true,
+          "event": "failure_cleanup",
+          "pending": 0,
+          "role": "server"
+        },
+        {
+          "kem": {
+            "executed_jobs": 0,
+            "live_keys": 0,
+            "rejected_jobs": 0
+          },
+          "status": "failed"
+        }
+      ],
+      "server_exit": 1
+    },
+    {
+      "case": "forbidden-write",
+      "decision": "deny",
+      "server_stdout_after_listen": [
+        {
+          "event": "registry_admitted"
+        },
+        {
+          "event": "operation_denied"
+        },
+        {
+          "active": 0,
+          "auth_key_closed": true,
+          "drained": true,
+          "event": "failure_cleanup",
+          "pending": 0,
+          "role": "server"
+        },
+        {
+          "kem": {
+            "executed_jobs": 2,
+            "live_keys": 0,
+            "rejected_jobs": 0
+          },
+          "status": "failed"
+        }
+      ],
+      "server_exit": 1
+    },
+    {
+      "case": "forbidden-resource",
+      "decision": "deny",
+      "server_stdout_after_listen": [
+        {
+          "event": "registry_admitted"
+        },
+        {
+          "event": "operation_denied"
+        },
+        {
+          "active": 0,
+          "auth_key_closed": true,
+          "drained": true,
+          "event": "failure_cleanup",
+          "pending": 0,
+          "role": "server"
+        },
+        {
+          "kem": {
+            "executed_jobs": 2,
+            "live_keys": 0,
+            "rejected_jobs": 0
+          },
+          "status": "failed"
+        }
+      ],
+      "server_exit": 1
+    },
+    {
+      "case": "self-declared-role",
+      "decision": "deny",
+      "server_stdout_after_listen": [
+        {
+          "event": "registry_admitted"
+        },
+        {
+          "event": "operation_denied"
+        },
+        {
+          "active": 0,
+          "auth_key_closed": true,
+          "drained": true,
+          "event": "failure_cleanup",
+          "pending": 0,
+          "role": "server"
+        },
+        {
+          "kem": {
+            "executed_jobs": 2,
+            "live_keys": 0,
+            "rejected_jobs": 0
+          },
+          "status": "failed"
+        }
+      ],
+      "server_exit": 1
+    },
+    {
+      "case": "wrong-handshake-service",
+      "decision": "deny",
+      "server_stdout_after_listen": [
+        {
+          "event": "registry_admitted"
+        },
+        {
+          "active": 0,
+          "auth_key_closed": true,
+          "drained": true,
+          "event": "failure_cleanup",
+          "pending": 0,
+          "role": "server"
+        },
+        {
+          "kem": {
+            "executed_jobs": 0,
+            "live_keys": 0,
+            "rejected_jobs": 0
+          },
+          "status": "failed"
+        }
+      ],
+      "server_exit": 1
+    },
+    {
+      "case": "missing-spiral-server-pin",
+      "decision": "deny",
+      "server_stdout_after_listen": [
+        {
+          "event": "registry_admitted"
+        },
+        {
+          "active": 0,
+          "auth_key_closed": true,
+          "drained": true,
+          "event": "failure_cleanup",
+          "pending": 0,
+          "role": "server"
+        },
+        {
+          "kem": {
+            "executed_jobs": 1,
+            "live_keys": 0,
+            "rejected_jobs": 0
+          },
+          "status": "failed"
+        }
+      ],
+      "server_exit": 1
+    },
+    {
+      "case": "other-session-record",
+      "decision": "deny",
+      "server_stdout_after_listen": [
+        {
+          "event": "registry_admitted"
+        },
+        {
+          "active": 0,
+          "auth_key_closed": true,
+          "drained": true,
+          "event": "failure_cleanup",
+          "pending": 0,
+          "role": "server"
+        },
+        {
+          "kem": {
+            "executed_jobs": 2,
+            "live_keys": 0,
+            "rejected_jobs": 0
+          },
+          "status": "failed"
+        }
+      ],
+      "server_exit": 1
+    },
+    {
+      "case": "duplicate-record",
+      "decision": "deny",
+      "server_stdout_after_listen": [
+        {
+          "event": "registry_admitted"
+        },
+        {
+          "event": "status_read"
+        },
+        {
+          "active": 0,
+          "auth_key_closed": true,
+          "drained": true,
+          "event": "failure_cleanup",
+          "pending": 0,
+          "role": "server"
+        },
+        {
+          "kem": {
+            "executed_jobs": 2,
+            "live_keys": 0,
+            "rejected_jobs": 0
+          },
+          "status": "failed"
+        }
+      ],
+      "server_exit": 1
+    },
+    {
+      "case": "required-to-legacy",
+      "decision": "deny",
+      "server_stdout_after_listen": [
+        {
+          "kem": {
+            "executed_jobs": 0,
+            "live_keys": 0,
+            "rejected_jobs": 0
+          },
+          "status": "failed"
+        }
+      ],
+      "server_exit": 1
+    }
+  ],
+  "configuration": [
+    {
+      "case": "missing-registry",
+      "server_report": {
+        "kem": {
+          "executed_jobs": 0,
+          "live_keys": 0,
+          "rejected_jobs": 0
+        },
+        "status": "failed"
+      },
+      "server_exit": 1
+    },
+    {
+      "case": "unknown-role",
+      "server_report": {
+        "kem": {
+          "executed_jobs": 0,
+          "live_keys": 0,
+          "rejected_jobs": 0
+        },
+        "status": "failed"
+      },
+      "server_exit": 1
+    },
+    {
+      "case": "duplicate",
+      "server_report": {
+        "kem": {
+          "executed_jobs": 0,
+          "live_keys": 0,
+          "rejected_jobs": 0
+        },
+        "status": "failed"
+      },
+      "server_exit": 1
+    },
+    {
+      "case": "invalid-digest",
+      "server_report": {
+        "kem": {
+          "executed_jobs": 0,
+          "live_keys": 0,
+          "rejected_jobs": 0
+        },
+        "status": "failed"
+      },
+      "server_exit": 1
+    }
+  ]
+}
