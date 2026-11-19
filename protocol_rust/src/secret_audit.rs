@@ -22,6 +22,12 @@ fn public_key_bytes() -> [u8; 32] {
     core::array::from_fn(|index| 0x31 + index as u8)
 }
 
+fn fixture_prefix() -> Secret<4> {
+    let mut prefix = Secret::zeros();
+    prefix.bytes_mut().copy_from_slice(&PREFIX);
+    prefix
+}
+
 fn key() -> Secret<32> {
     let mut key = Secret::zeros();
     key.bytes_mut().copy_from_slice(&public_key_bytes());
@@ -29,11 +35,11 @@ fn key() -> Secret<32> {
 }
 
 fn sender(role: u8) -> Tx {
-    Tx::new(key(), PREFIX, SID, role).unwrap()
+    Tx::new(key(), fixture_prefix(), SID, role).unwrap()
 }
 
 fn receiver(sender_role: u8) -> Rx {
-    Rx::new(key(), PREFIX, SID, 1 - sender_role).unwrap()
+    Rx::new(key(), fixture_prefix(), SID, 1 - sender_role).unwrap()
 }
 
 fn data_frame(sender: &mut Tx, value: &[u8]) -> Vec<u8> {

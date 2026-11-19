@@ -123,6 +123,12 @@ fn public_key_bytes() -> [u8; 32] {
     core::array::from_fn(|index| (index as u8) ^ 0xa7)
 }
 
+fn fixture_prefix() -> Secret<4> {
+    let mut prefix = Secret::zeros();
+    prefix.bytes_mut().copy_from_slice(&PREFIX);
+    prefix
+}
+
 fn fresh_key() -> Secret<32> {
     let mut key = Secret::zeros();
     key.bytes_mut().copy_from_slice(&public_key_bytes());
@@ -143,7 +149,7 @@ fn buffer(pool: &Arc<Pool>, raw: &[u8]) -> Buffer {
 
 /// Construct defined, public test packets before a fresh receive key is tainted.
 fn fixture(parameters: Parameters) -> Vec<u8> {
-    let mut sender = Tx::new(fresh_key(), PREFIX, SID, parameters.role).unwrap();
+    let mut sender = Tx::new(fresh_key(), fixture_prefix(), SID, parameters.role).unwrap();
     match parameters.mode {
         Mode::DataValid | Mode::DataBadTag | Mode::DataBadHeader => {
             let plaintext = public_plaintext(parameters.length);
@@ -235,12 +241,12 @@ fn trace_actual_receive() {
     let pool = Pool::new();
     let input = buffer(&pool, &raw);
     let mut key = fresh_key();
-    let mut prefix = PREFIX;
+    let mut prefix = fixture_prefix();
     let taint = std::env::var("SPIRAL_RX_TRACE_TAINT").unwrap_or_else(|_| "secret".into());
     assert!(taint == "secret" || taint == "public");
     if taint == "secret" {
         mark_secret(key.bytes_mut());
-        mark_secret(&mut prefix);
+        mark_secret(prefix.bytes_mut());
     }
     let mut receiver = Rx::new(key, prefix, SID, 1 - parameters.role).unwrap();
     let result = receiver.decode(input);
@@ -264,7 +270,7 @@ fn trace_actual_receive() {
 fn check_public_fixture(parameters: Parameters) {
     let raw = fixture(parameters);
     let pool = Pool::new();
-    let mut receiver = Rx::new(fresh_key(), PREFIX, SID, 1 - parameters.role).unwrap();
+    let mut receiver = Rx::new(fresh_key(), fixture_prefix(), SID, 1 - parameters.role).unwrap();
     match parameters.mode {
         Mode::DataValid => {
             let (kind, plaintext) = receiver.decode(buffer(&pool, &raw)).unwrap();

@@ -37,10 +37,10 @@ fn plain(pool: &Arc<Pool>, value: &[u8]) -> Plaintext {
     }
 }
 fn tx() -> Tx {
-    Tx::new(Secret::zeros(), [0; 4], [1; 16], 0).unwrap()
+    Tx::new(Secret::zeros(), Secret::zeros(), [1; 16], 0).unwrap()
 }
 fn rx() -> Rx {
-    Rx::new(Secret::zeros(), [0; 4], [1; 16], 1).unwrap()
+    Rx::new(Secret::zeros(), Secret::zeros(), [1; 16], 1).unwrap()
 }
 fn command(pool: &Arc<Pool>, value: &[u8]) -> (SendRequest, oneshot::Receiver<Result<()>>) {
     let (ack, result) = oneshot::channel();

@@ -678,11 +678,11 @@ mod tests {
         let tx_pool = Pool::new();
         let (mut peer, reader) = tokio::io::duplex(2048);
         let (app, received) = mpsc::channel(CHANNEL_CAPACITY);
-        let rx = Rx::new(Secret::zeros(), [0; 4], [1; 16], 1).unwrap();
+        let rx = Rx::new(Secret::zeros(), Secret::zeros(), [1; 16], 1).unwrap();
         let l = life.clone();
         let p = pool.clone();
         let task = tokio::spawn(async move { read_loop(reader, rx, app, l, p, 1, [1; 16]).await });
-        let mut tx = Tx::new(Secret::zeros(), [0; 4], [1; 16], 0).unwrap();
+        let mut tx = Tx::new(Secret::zeros(), Secret::zeros(), [1; 16], 0).unwrap();
         for _ in 0..9 {
             let raw = tx.data(plain(&tx_pool, b"probe")).unwrap();
             transport::write_record(&mut peer, raw.as_ref())
@@ -761,9 +761,9 @@ mod tests {
         let pool = Pool::new();
         let (mut writer, reader) = tokio::io::duplex(128);
         let (tx, mut app) = mpsc::channel(8);
-        let mut enc = Tx::new(Secret::zeros(), [0; 4], [1; 16], 0).unwrap();
+        let mut enc = Tx::new(Secret::zeros(), Secret::zeros(), [1; 16], 0).unwrap();
         let raw = enc.data(plain(&pool, b"fragmented message")).unwrap();
-        let rx = Rx::new(Secret::zeros(), [0; 4], [1; 16], 1).unwrap();
+        let rx = Rx::new(Secret::zeros(), Secret::zeros(), [1; 16], 1).unwrap();
         let l = life.clone();
         let p = pool.clone();
         let task = tokio::spawn(async move { read_loop(reader, rx, tx, l, p, 1, [1; 16]).await });
@@ -863,7 +863,7 @@ mod tests {
             .await
             .ok()
             .unwrap();
-        let tx = Tx::new(Secret::zeros(), [0; 4], [1; 16], 0).unwrap();
+        let tx = Tx::new(Secret::zeros(), Secret::zeros(), [1; 16], 0).unwrap();
         assert!(matches!(
             write_loop(writer, tx, pending, life.clone()).await,
             Err(Error::Transport)
@@ -933,7 +933,7 @@ mod tests {
                 observed: observed.clone(),
                 limit,
             };
-            let tx = Tx::new(Secret::zeros(), [0; 4], [1; 16], 0).unwrap();
+            let tx = Tx::new(Secret::zeros(), Secret::zeros(), [1; 16], 0).unwrap();
             let (_send, commands) = mpsc::channel(8);
             let result = write_loop(writer, tx, commands, life).await;
             let state = observed.lock().unwrap();
@@ -952,9 +952,9 @@ mod tests {
         let life = life();
         *life.last.lock().unwrap() = Instant::now() - Duration::from_millis(59980);
         let pool = Pool::new();
-        let mut tx = Tx::new(Secret::zeros(), [0; 4], [1; 16], 0).unwrap();
+        let mut tx = Tx::new(Secret::zeros(), Secret::zeros(), [1; 16], 0).unwrap();
         let raw = tx.data(plain(&pool, b"late")).unwrap();
-        let rx = Rx::new(Secret::zeros(), [0; 4], [1; 16], 1).unwrap();
+        let rx = Rx::new(Secret::zeros(), Secret::zeros(), [1; 16], 1).unwrap();
         let (mut peer, reader) = tokio::io::duplex(1024);
         let (app, mut received) = mpsc::channel(8);
         let l = life.clone();
