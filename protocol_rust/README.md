@@ -66,6 +66,8 @@ The normal buffer pool is `18 × 16,440 = 295,920` bytes per connection. Receive
 
 ## Secret lifecycle
 
+The [Rust–C secret ownership review](SECRET_OWNERSHIP.md) maps the active dependency paths and records the directional nonce-prefix cleanup, controls and open boundaries.
+
 - `ServerIdentity` owns the Ed25519 key. Arc references share the owner; `close()` waits for ongoing signing and invalidates shared references. Raw keys and arbitrary-signing APIs are not exported.
 - C KEM keys are wiped and freed on success, failure and cancellation cleanup.
 - Concurrent `KemPool::shutdown()` callers await the same worker-join result; cancellation of the first waiter does not cause other callers to return early.

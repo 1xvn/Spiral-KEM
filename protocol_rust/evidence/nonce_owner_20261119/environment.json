@@ -1,0 +1,64 @@
+{
+  "base": "4267653bd3079ffd8e20b6482b070a9b12673e7c",
+  "tested_source": "4821b13223f86d069f3e537629f7d232b6b56a13",
+  "system": "Linux 6.18.57 x86_64",
+  "cpu": "INTEL(R) XEON(R) PLATINUM 8573C",
+  "rustc": "rustc 1.99.1 (58cf8f9c3 2026-10-13)\nbinary: rustc\ncommit-hash: 58cf8f9c35b355199727627d07ae34a4e2846d67\ncommit-date: 2026-10-13\nhost: x86_64-unknown-linux-gnu\nrelease: 1.99.1\nLLVM version: 23.1.1",
+  "cargo": "cargo 1.99.1 (5f94df478 2026-08-27)",
+  "cc": "cc (Debian 14.2.0-19) 14.2.0",
+  "ld": "GNU ld (GNU Binutils for Debian) 2.44",
+  "openssl": "OpenSSL 3.5.7 9 Jun 2026 (Library: OpenSSL 3.5.7 9 Jun 2026)",
+  "profile": "audit, default Cargo features, optimized thin LTO, codegen-units=1, debug info; native C O2",
+  "curve_build_cfg": [
+    "cargo:rustc-cfg=curve25519_dalek_bits=\"64\"",
+    "cargo:rustc-cfg=curve25519_dalek_backend=\"simd\""
+  ],
+  "patched_files_verified": 21,
+  "source_sha256": {
+    "protocol_rust/Cargo.lock": "e3e37d684e40ae9b1a977cba14de249d5856442ae29e707259c4e6232b8b8436",
+    "protocol_rust/Cargo.toml": "233eec6ea36080763c880bfbabbddb788ff5c73d6fb1db3bd294704ab88e756d",
+    "protocol_rust/build.rs": "9124a4764196d3147fed056dc9d18d29f3e1e775334c234848fc9728554ad6a8",
+    "native_research/spiral_native.c": "ccb29fe8b1f428c25a93c8cb967f1090eea619ad36dcba7d53dc9bfaedc1cd0f",
+    "native_research/spiral_native.h": "85f0454ee626cc0c38cdd6b60b12453f90276b6681dd91ab634d48c20bb1597b",
+    "third_party/rustcrypto/patch-manifest.json": "83214bcae76b417e3f28c1542bd9fcaa24caa6cc18ee3b94b0683d26b00585b4"
+  },
+  "tools_and_binaries_sha256": {
+    "application": "b05b6e2488017f152b086ceac38831b866540602069df7106d95661e37a926b7",
+    "libtest": "998e7e3648a4c25eb58d752b2779d13479db2168e67c1e15f7b9c5aec6d824a5",
+    "rustc": "b53b780f77f952062f8ca8a3b70aef2390b1e45ad91939be94afdc9543026853",
+    "rustc_driver": "5a2cd52edba7d15f8d898b92a912638f5b73a089c7c1bfde5604ab45665602c7",
+    "cargo": "a670e02cfa39ac2e53f77a2d911ca1fc9e2c479b0603ec956625be1daf24e3af",
+    "cc": "a23ecab8ff08f09ad8c80602c2c5df7f49e09c25905cb8975902e101bf72635f",
+    "ld": "d2766988b6a1b1d1518cdc09242e726d1f24e151e16410ada3092b11ffd9081b",
+    "objdump": "96afb8521834982d0e711b5d6e9785252bf82129fb0106b93a6bd54d83fae11f",
+    "valgrind": "333955eab1162f0b5031e7f238e0aece3ee5c6e1ea00f1b93cdb52baa3242179",
+    "memcheck": "abf6eb9e63917b4c65c728808ad92562c1fb103be2aa4cb88833d690b616e336",
+    "valgrind_loader": "c8438e4fde1934e61c88311633f00949ff645d5c04cdb8671fa3d78164d2f307",
+    "valgrind_libc": "9792e3cbb541c8f44c7acf5f14f4022ea62998ecc787d326bed4d8b6547dfd92",
+    "linked_libcrypto": "8ae56f0a9481280a68c19f59809cd242a07a91ad7142944d21a878221992244b"
+  },
+  "debian_package_sha256": {
+    "libc6": "967aa62605721081c3eb2a17650611a792aa802d76a6511d1840242623d204c9",
+    "libc6-dbg": "0123a767a462c59d75e1bd56c4a0f7192c389f600e4743e807d3d33c679dbcf7",
+    "valgrind": "0359e30820ccee7ee5c8d4c951ca276e3978b18f157d71bd77981de05b344907"
+  },
+  "raw_evidence_sha256": {
+    "address.log": "c3e2d0923de9bb2847b82bb4431096be7e700f2c0052d654c3805b2d2065fe94",
+    "branch.log": "435ca7b6c315af77dcdaea6db5ec359371653fe35188ed3147704f602192e287",
+    "data-bad-header-public.log": "e4959d360ed83c94c220bf35e7a5ada873ef8bec4934a3bdd7241c33a2bf11a5",
+    "data-bad-header-secret.log": "7816fd239918ad2e42d44a48c5f3e5b2fc145fe296d0a69074ce2f4180908cfa",
+    "data-bad-tag-public.log": "0ea489fefbd019f4f30bc3dca13b13f330a3b487ec6cf08505e30693186dc2d1",
+    "data-bad-tag-secret.log": "354864496be7a230789b3ff18361010ad79d0790a89fa985d1ec6b57e3aa1ae4",
+    "data-valid-public.log": "e1f79fc1a28541f52bb1b34f1fabd4aa91258863938976f114fd0759eb389a7a",
+    "data-valid-secret.log": "359907c77d23fc70f727f38df2f4918b1ba59edc2acb097cd139bf69cf552b9a",
+    "functional.log": "a9c7b16f80e742f13b284235bef35cd3a5c8c861dc146765dcb117681d8b84b8",
+    "interop.log": "651b09663ae389dfad3776f747f3a0644e26feb96d9283272b4b427cf3a96113",
+    "memcheck.json": "47da4b7bed317816aee5b3df092c63dfddd5254c590b0c64c49634a72ffbdef1",
+    "receive-nonce.asm": "c5f6e0235a4f6556b7652f2449ddfb34ed8cca07aedce787239b3aabf2acba07",
+    "record-key-drop.asm": "cf4c11e31e3ac3838c32c3318c42d2f4668e6d99317f9db755eaa0e936ae8410",
+    "runtime-features.txt": "37e844b5aaaaadc67ad25ea9a92f49665fc6cbb97e1273f71fb54ba309e833c8",
+    "wipe-mutation.log": "73aef64fb54c138839e3afa9df9f147dc2f3b8e176af8983ba9384229734c95e"
+  },
+  "production_memory_passed": false,
+  "constant_time_approved": false
+}

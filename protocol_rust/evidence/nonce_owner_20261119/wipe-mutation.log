@@ -1,0 +1,39 @@
+   Compiling digest v0.11.3 (/tmp/spiral-nonce-control-n71iw7sh/third_party/rustcrypto/digest)
+   Compiling curve25519-dalek v5.0.0 (/tmp/spiral-nonce-control-n71iw7sh/third_party/rustcrypto/curve25519-dalek)
+   Compiling spiral-protocol v0.3.0 (/tmp/spiral-nonce-control-n71iw7sh/protocol_rust)
+   Compiling sha2 v0.11.1
+   Compiling hmac v0.13.0 (/tmp/spiral-nonce-control-n71iw7sh/third_party/rustcrypto/hmac)
+   Compiling hkdf v0.13.0 (/tmp/spiral-nonce-control-n71iw7sh/third_party/rustcrypto/hkdf)
+   Compiling ed25519-dalek v3.0.0 (/tmp/spiral-nonce-control-n71iw7sh/third_party/rustcrypto/ed25519-dalek)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 12.23s
+     Running unittests src/lib.rs (/workspace/spiral-load-build/debug/deps/spiral_protocol-48eb8f99dc6d28bb)
+
+running 2 tests
+test records::tests::nonce_owner_canceled_reader_and_concurrently_closing_writer ... FAILED
+test records::tests::nonce_owner_close_and_rejection ... FAILED
+
+failures:
+
+---- records::tests::nonce_owner_canceled_reader_and_concurrently_closing_writer stdout ----
+
+thread 'records::tests::nonce_owner_canceled_reader_and_concurrently_closing_writer' (195968) panicked at src/records.rs:328:9:
+assertion `left == right` failed
+  left: (2, 2)
+ right: (1, 1)
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+---- records::tests::nonce_owner_close_and_rejection stdout ----
+
+thread 'records::tests::nonce_owner_close_and_rejection' (195971) panicked at src/records.rs:303:9:
+assertion `left == right` failed
+  left: (2, 2, 2)
+ right: (1, 1, 1)
+
+
+failures:
+    records::tests::nonce_owner_canceled_reader_and_concurrently_closing_writer
+    records::tests::nonce_owner_close_and_rejection
+
+test result: FAILED. 0 passed; 2 failed; 0 ignored; 0 measured; 105 filtered out; finished in 0.00s
+
+error: test failed, to rerun pass `--lib`
