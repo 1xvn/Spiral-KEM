@@ -1,0 +1,8 @@
+test_failed_controls_and_non_replicating_signals (test_receive_timing.ReceiveTimingTests.test_failed_controls_and_non_replicating_signals) ... ok
+test_incomplete_duplicate_and_unbalanced_data (test_receive_timing.ReceiveTimingTests.test_incomplete_duplicate_and_unbalanced_data) ... ok
+test_pairing_uses_class_not_position (test_receive_timing.ReceiveTimingTests.test_pairing_uses_class_not_position) ... ok
+
+----------------------------------------------------------------------
+Ran 3 tests in 0.004s
+
+OK
