@@ -1,0 +1,4 @@
+OS/kernel/CPU: Linux 6.18.58.1-microsoft-standard-WSL2 x86_64
+Source commit: 713c882fa98e90ec82f9d67db4837552a5ef9169
+9b01ed5667abfdd9b46ff86808442ac9294b5945e996e358f5ce488c8dbdf4cf  result.json
+7ebf347b4bb1d18c320e2e93912c6af04c6a570f13f58a442b0e19696a608fbd  target/release/spiral-lab

@@ -48,11 +48,20 @@ Each required-mode connection rejection checks the server exit, active and pendi
 
 ## Evidence and reproduction
 
-The local Linux x86-64 run used implementation commit `d31e0ff0db5b52559ef8a15ef2c16912b1758b3d`, rustc 1.99.1, rustls 0.23.46, Python 3.12.14 and pyOpenSSL 26.4.0. The release binary exercised 20 real connection cases and four startup cases. The functional CI runner includes this suite. The ordinary profile passed all 15 interoperability tests, including both Rust/Python directions. The diagnostic-feature configuration also compiled. OCI, WSL and hosted CI are separate runs.
+The local Linux x86-64 run used implementation commit `d31e0ff0db5b52559ef8a15ef2c16912b1758b3d`, rustc 1.99.1, rustls 0.23.46, Python 3.12.14 and pyOpenSSL 26.4.0. The release binary exercised 20 real connection cases and four startup cases. The functional CI runner includes this suite. The ordinary profile passed all 15 interoperability tests, including both Rust/Python directions. The diagnostic-feature configuration also compiled.
 
 - [Per-case server decision events, exit status, cleanup counts and configuration results](evidence/client_auth_20261118/connections.json)
 - [Client test log](evidence/client_auth_20261118/client-auth.log)
 - [Ordinary-profile interop log](evidence/client_auth_20261118/default-interop.log)
+
+The WSL2 and OCI submissions identify merged commit `713c882fa98e90ec82f9d67db4837552a5ef9169`. Each host ran both endpoints on loopback. Each result contains all 20 connection cases and four startup cases with the expected decisions and cleanup counts.
+
+| Host | Kernel and architecture | Submitted evidence |
+| --- | --- | --- |
+| WSL2 | `6.18.58.1-microsoft-standard-WSL2`, x86_64 | [Result](evidence/client_auth_platforms_20261119/wsl/result.json) · [Platform and hashes](evidence/client_auth_platforms_20261119/wsl/platform.txt) |
+| OCI | `7.0.0-1013-oracle`, aarch64 | [Result](evidence/client_auth_platforms_20261119/oci/result.json) · [Platform and hashes](evidence/client_auth_platforms_20261119/oci/platform.txt) |
+
+Both result files match the local reference byte for byte (SHA-256 `9b01ed5667abfdd9b46ff86808442ac9294b5945e996e358f5ce488c8dbdf4cf`). Each platform record includes the operator's digest of its release binary. The submitted files allow independent verification of the result digest only.
 
 **WSL Ubuntu or OCI SSH Ubuntu.** Run the following from a Git checkout of the public repository with the pinned Rust toolchain, C build tools and Python venv support. It creates a fresh checkout and private result directory without changing the current working tree. Both endpoints run on loopback on the host executing the commands. The runner provisions fresh keys and removes its credential directory when finished.
 
@@ -60,8 +69,8 @@ The local Linux x86-64 run used implementation commit `d31e0ff0db5b52559ef8a15ef
 (
   set -eu
   umask 077
-  pin=d31e0ff0db5b52559ef8a15ef2c16912b1758b3d
-  git fetch origin refs/heads/spiral-client-auth-lab-20261118
+  pin=713c882fa98e90ec82f9d67db4837552a5ef9169
+  git fetch origin "$pin"
   out=$(mktemp -d "$HOME/Spiral-client-auth-XXXXXXXX")
   git worktree add --detach "$out/source" "$pin"
   cd "$out/source"
