@@ -20,6 +20,7 @@ PAIRS = 2000
 THRESHOLD = 4.5
 DECISIONS = ("accept", "reject")
 COMPARISONS = ("positive", "sham", "key")
+REJECT_COMPARISONS = ("positive", "positive_large", "sham", "key")
 SAMPLE_FIELDS = ["decision", "comparison", "pair", "position", "class", "ns"]
 CPU_FIELD = "thread_cpu_ns"
 SCHEDSTAT_FIELDS = ("cpu_runtime_ns", "runqueue_wait_ns", "timeslices")
@@ -30,7 +31,14 @@ def sha(path):
         return hashlib.file_digest(f, "sha256").hexdigest()
 
 
-def summarize(path, pairs=PAIRS):
+def timing_streams(reject_controls):
+    if reject_controls:
+        return ("reject",), REJECT_COMPARISONS
+    return DECISIONS, COMPARISONS
+
+
+def summarize(path, pairs=PAIRS, *, reject_controls=False):
+    decisions, comparisons = timing_streams(reject_controls)
     groups = defaultdict(dict)
     with path.open(newline="") as f:
         reader = csv.DictReader(f)
@@ -44,7 +52,7 @@ def summarize(path, pairs=PAIRS):
             pair, position, ns = (int(row[k]) for k in ("pair", "position", "ns"))
             group = row["class"]
             cpu_ns = int(row[CPU_FIELD]) if has_cpu and row[CPU_FIELD] else None
-            if (decision not in DECISIONS or comp not in COMPARISONS
+            if (decision not in decisions or comp not in comparisons
                     or not 0 <= pair < pairs or position not in (0, 1)
                     or group not in ("A", "B") or ns <= 0 or (cpu_ns is not None and cpu_ns < 0)):
                 raise ValueError("invalid sample")
@@ -54,9 +62,9 @@ def summarize(path, pairs=PAIRS):
             observations[pair, group] = position, ns, cpu_ns
 
     summaries = {}
-    for decision in DECISIONS:
+    for decision in decisions:
         summaries[decision] = {}
-        for comp in COMPARISONS:
+        for comp in comparisons:
             values = groups[decision, comp]
             if len(values) != 2 * pairs:
                 raise ValueError("incomplete comparison")
@@ -101,15 +109,16 @@ def sample_scheduling(values, delta):
     }
 
 
-def summarize_schedstat(path):
+def summarize_schedstat(path, *, reject_controls=False):
+    decisions, comparisons = timing_streams(reject_controls)
     data = json.loads(path.read_text())
     enabled = data["schedstats_enabled"]
     if enabled is not None and type(enabled) is not bool:
         raise ValueError("invalid schedstats setting")
-    stats = {d: {} for d in DECISIONS}
+    stats = {d: {} for d in decisions}
     for row in data["streams"]:
         d, c = row["decision"], row["comparison"]
-        if d not in DECISIONS or c not in COMPARISONS or c in stats[d]:
+        if d not in decisions or c not in comparisons or c in stats[d]:
             raise ValueError("invalid schedstat stream")
         before, after = row["before"], row["after"]
         for snapshot in (before, after):
@@ -132,18 +141,21 @@ def summarize_schedstat(path):
             else:
                 status = "zero_wait_reported"
         stats[d][c] = {"status": status, "delta": delta}
-    if any(set(rows) != set(COMPARISONS) for rows in stats.values()):
+    if any(set(rows) != set(comparisons) for rows in stats.values()):
         raise ValueError("missing schedstat stream")
     return {"schedstats_enabled": enabled, "streams": stats}
 
 
-def interpret(trials, decision):
+def interpret(trials, decision, *, reject_controls=False):
+    controls = ("positive", "positive_large") if reject_controls else ("positive",)
     rows = [trial[decision] for trial in trials]
     if len(rows) != 2:
         raise ValueError("two trials required")
     for row in rows:
-        positive, sham, target = (row[k]["paired_t"] for k in COMPARISONS)
-        if (None in (positive, sham, target) or positive < THRESHOLD or abs(sham) >= THRESHOLD):
+        sham, target = (row[k]["paired_t"] for k in ("sham", "key"))
+        positive = [row[k]["paired_t"] for k in controls]
+        if (None in (sham, target) or abs(sham) >= THRESHOLD
+                or any(t is None or t < THRESHOLD for t in positive)):
             return "inconclusive_controls_or_variance"
     signals = [row["key"]["paired_t"] for row in rows]
     if all(t >= THRESHOLD for t in signals) or all(t <= -THRESHOLD for t in signals):
@@ -157,7 +169,8 @@ def command(*args):
     return subprocess.check_output(args, cwd=ROOT, text=True).strip()
 
 
-def collect(out, cargo):
+def collect(out, cargo, *, reject_controls=False):
+    decisions, _ = timing_streams(reject_controls)
     manifest = ROOT / "protocol_rust/Cargo.toml"
     build = [cargo, "test", "--locked", "--manifest-path", str(manifest), "--profile", "audit",
              "--features", "receive-timing", "--lib", "--no-run", "--message-format=json"]
@@ -171,7 +184,10 @@ def collect(out, cargo):
     cpus = sorted(os.sched_getaffinity(0))
     cpu = cpus[0]
     meta = {
-        "schema": 2, "source_commit": command("git", "rev-parse", "HEAD"),
+        "schema": 2, "mode": "reject-controls" if reject_controls else "full",
+        "measured_pairs_per_stream": PAIRS,
+        "positive_spin_hints": {"positive": 128, **({"positive_large": 512} if reject_controls else {})},
+        "source_commit": command("git", "rev-parse", "HEAD"),
         "tracked_changes": bool(command("git", "status", "--porcelain", "--untracked-files=no")),
         "rustc": command(os.environ.get("RUSTC", "rustc"), "-vV"), "cargo": command(cargo, "-V"),
         "kernel": platform.release(), "architecture": platform.machine(), "cpu": cpu,
@@ -187,7 +203,8 @@ def collect(out, cargo):
     for trial in range(2):
         raw = out / f"trial-{trial}.csv"
         log = out / f"trial-{trial}.log"
-        env = dict(os.environ, SPIRAL_TIMING_CSV=str(raw), SPIRAL_TIMING_TRIAL=str(trial))
+        env = dict(os.environ, SPIRAL_TIMING_CSV=str(raw), SPIRAL_TIMING_TRIAL=str(trial),
+                   SPIRAL_TIMING_REJECT_CONTROLS="1" if reject_controls else "0")
         with log.open("w") as f:
             proc = subprocess.run(["taskset", "-c", str(cpu), str(exe), "--exact", TEST,
                                    "--ignored", "--test-threads=1", "--nocapture"], env=env,
@@ -195,15 +212,15 @@ def collect(out, cargo):
         proc.check_returncode()
         if "test result: ok. 1 passed; 0 failed; 0 ignored;" not in log.read_text():
             raise ValueError("timing probe did not complete")
-        summary = summarize(raw)
+        summary = summarize(raw, reject_controls=reject_controls)
         if any("scheduler_observations" not in stream for rows in summary.values() for stream in rows.values()):
             raise ValueError("timing probe did not emit the thread CPU column")
         scheduler = raw.with_suffix(".scheduler.json")
         meta["trials"].append(summary)
-        meta["schedstat_trials"].append(summarize_schedstat(scheduler))
+        meta["schedstat_trials"].append(summarize_schedstat(scheduler, reject_controls=reject_controls))
         for path in (raw, scheduler):
             meta["sha256"][path.name] = sha(path)
-    meta["interpretation"] = {d: interpret(meta["trials"], d) for d in DECISIONS}
+    meta["interpretation"] = {d: interpret(meta["trials"], d, reject_controls=reject_controls) for d in decisions}
     return meta
 
 
@@ -211,6 +228,7 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--output", type=Path, required=True, help="new directory; archive is created alongside it")
     parser.add_argument("--cargo", default="cargo")
+    parser.add_argument("--reject-controls", action="store_true", help="collect only reject with two positive controls")
     args = parser.parse_args()
     out = args.output.expanduser().resolve()
     archive = Path(str(out) + ".tar.gz")
@@ -220,7 +238,7 @@ def main():
         parser.error("choose a new output path")
     out.mkdir(parents=True)
     try:
-        result = collect(out, args.cargo)
+        result = collect(out, args.cargo, reject_controls=args.reject_controls)
         result["collection_complete"] = True
     except (OSError, ValueError, KeyError, TypeError, subprocess.SubprocessError) as error:
         result = {"collection_complete": False, "error": str(error), "constant_time_approved": False}

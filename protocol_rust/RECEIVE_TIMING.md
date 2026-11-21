@@ -74,6 +74,28 @@ RUSTUP_TOOLCHAIN=1.99.1 python3 -B protocol_rust/diagnostics/receive_timing.py \
   --output "$HOME/Spiral-rx-scheduler-$(date -u +%Y%m%dT%H%M%SZ)"
 ```
 
+## Focused authentication-reject control run
+
+The optional `--reject-controls` mode measures the same 64-byte synthetic DATA and forces a bad tag at the final byte. It runs four streams in each of two trials with reversed stream order. Each stream has 128 warm-up pairs and 2,000 measured pairs, for 32,000 raw durations across both trials. The paired groups use matched public conditions and retain CPU-time and scheduler observations.
+
+| Stream | Class B change relative to A |
+| --- | --- |
+| `positive` | 128 additional spin hints inside the timed interval, matching the original control workload |
+| `positive_large` | 512 additional spin hints inside the timed interval |
+| `sham` | Same fixture, with the original balanced execution order |
+| `key` | Varied synthetic key with a matching freshly generated bad-tag record |
+
+The two fixed workloads are set before collection. Their observed median paired deltas describe the signal sizes on the measured host. Spin hints cannot specify a fixed nanosecond difference across machines. Each positive t must reach +4.5 and the absolute sham t must stay below 4.5 in both trials before the fixed-versus-varied key result can be interpreted. This is a two-workload sensitivity check. All samples enter the original wall-time statistic and constant-time approval remains false.
+
+Run from the focused collector checkout on Linux with the pinned Rust toolchain, `taskset` and Python 3.11 or later.
+
+```bash
+RUSTUP_TOOLCHAIN=1.99.1 python3 -B protocol_rust/diagnostics/receive_timing.py \
+  --reject-controls --output "$HOME/Spiral-rx-reject-controls-$(date -u +%Y%m%dT%H%M%SZ)"
+```
+
+The printed `.tar.gz` path contains the raw timing CSVs, scheduler snapshots and `result.json`. The report includes the median paired deltas and the verdict. Review the controls and the `interpretation.reject` field even when collection exits successfully.
+
 ## WSL Ubuntu or OCI SSH Ubuntu
 
 Use Ubuntu with Git, Rust 1.99.1, a C toolchain, OpenSSL development headers, util-linux taskset and Python 3.11 or later. Run once per host. Both trials use the lowest-numbered logical CPU in the collector's allowed affinity mask. Each measurement process has a 120-second deadline and compilation has a separate 30-minute limit. Each run creates a new directory under the user's home.
