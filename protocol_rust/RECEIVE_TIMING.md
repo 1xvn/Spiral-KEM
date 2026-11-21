@@ -96,6 +96,8 @@ RUSTUP_TOOLCHAIN=1.99.1 python3 -B protocol_rust/diagnostics/receive_timing.py \
 
 The printed `.tar.gz` path contains the raw timing CSVs, scheduler snapshots and `result.json`. The report includes the median paired deltas and the verdict. Review the controls and the `interpretation.reject` field even when collection exits successfully.
 
+The cloud x86-64 check at `574dc38687e55130c65063c6db45b5e1c50b6cf8` collected all 32,000 durations. The 128-hint control added a median of 1.522 and 1.523 μs with t of +6.163 and +3.281. The 512-hint control added 6.041 and 6.007 μs with t of +11.877 and +8.091. Sham |t| was below 4.5 in both trials. Because one smaller control missed its gate, the cloud reject result remains inconclusive. These results describe the two sampled workloads on this host. [Raw durations, scheduler snapshots and result](evidence/receive_timing_reject_controls_20261121/cloud-x86_64.tar.gz)
+
 ## WSL Ubuntu or OCI SSH Ubuntu
 
 Use Ubuntu with Git, Rust 1.99.1, a C toolchain, OpenSSL development headers, util-linux taskset and Python 3.11 or later. Run once per host. Both trials use the lowest-numbered logical CPU in the collector's allowed affinity mask. Each measurement process has a 120-second deadline and compilation has a separate 30-minute limit. Each run creates a new directory under the user's home.
