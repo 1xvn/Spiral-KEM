@@ -52,6 +52,28 @@ For each decision on both hosts, the positive control reached +4.5 and the absol
 - [WSL2 x86-64 original timing archive](evidence/receive_timing_20261119/platforms/Spiral-rx-timing-wsl.tar.gz)
 - [Independent review with archive digests and recomputed control and key statistics](evidence/receive_timing_20261119/platforms/review.json)
 
+## Cloud scheduler follow-up
+
+The Linux test harness now brackets each wall-clock measurement with two readings from the same thread's `CLOCK_THREAD_CPUTIME_ID`. The v2 CSV adds `thread_cpu_ns` to each original row. An empty value represents an unavailable or regressed reading. The report preserves signed wall-minus-CPU differences and the three largest absolute paired wall-time differences per stream, with CPU readings for both observations. The CPU window brackets the wall interval, so the extra clock calls and boundary work can yield small negative gaps. A positive gap can include time when the guest thread did not execute and effects of the clock boundaries. The gap alone cannot identify a scheduler or hypervisor cause.
+
+A separate scheduler JSON captures raw `/proc/thread-self/schedstat` snapshots before and after each stream, including its warm-up and fixture setup. Its three counters describe CPU runtime in nanoseconds, run-queue waiting time in nanoseconds and timeslices. The report also records whether the kernel's `sched_schedstats` flag was visible. Unavailable, disabled, regressed and reported-zero counters are distinguished. A reported zero without confirmation of the flag gives limited evidence. Stream counters cannot attribute time to an individual pair. All wall samples still enter the original paired statistic and control gate.
+
+The follow-up at `ac0662350d7b3a1ddd874fdabbac34dc9f8c6206` ran two trials on cloud Linux x86-64, CPU 0, with CPU readings for all 48,000 observations. The guest did not expose the sysctl flag. The sum of reported per-stream run-queue wait was 141.6 μs in trial one and 117.7 μs in trial two.
+
+| Decision | Trial 1 positive t | Trial 2 positive t | Trial 1 key t | Trial 2 key t | Screen |
+| --- | ---: | ---: | ---: | ---: | --- |
+| accept | +7.350 | +29.404 | +1.023 | −0.876 | Both draws below the key threshold with working controls |
+| reject | +14.158 | +4.478 | −1.109 | +1.499 | Inconclusive because trial two missed the positive-control threshold |
+
+In reject-positive trial two, the largest absolute paired wall delta was −428.102 μs. The longer sample recorded 434.280 μs of wall time and 434.749 μs in the wider CPU window. The stream reported 16.841 μs of run-queue wait. Those observations give little support for attributing that outlier to run-queue delay. The earlier cloud run lacks these counters, so the new measurements cannot explain its outlier. Both cloud reject collections still retain their inconclusive verdicts. [Raw CSVs, scheduler snapshots and report](evidence/receive_timing_20261121/cloud-x86_64.tar.gz)
+
+To reproduce the new collector from its source commit, run the following on a Linux host with the dependencies listed below. Pass the pinned Cargo executable via `--cargo` when using a standalone toolchain.
+
+```bash
+RUSTUP_TOOLCHAIN=1.99.1 python3 -B protocol_rust/diagnostics/receive_timing.py \
+  --output "$HOME/Spiral-rx-scheduler-$(date -u +%Y%m%dT%H%M%SZ)"
+```
+
 ## WSL Ubuntu or OCI SSH Ubuntu
 
 Use Ubuntu with Git, Rust 1.99.1, a C toolchain, OpenSSL development headers, util-linux taskset and Python 3.11 or later. Run once per host. Both trials use the lowest-numbered logical CPU in the collector's allowed affinity mask. Each measurement process has a 120-second deadline and compilation has a separate 30-minute limit. Each run creates a new directory under the user's home.

@@ -20,6 +20,9 @@ PAIRS = 2000
 THRESHOLD = 4.5
 DECISIONS = ("accept", "reject")
 COMPARISONS = ("positive", "sham", "key")
+SAMPLE_FIELDS = ["decision", "comparison", "pair", "position", "class", "ns"]
+CPU_FIELD = "thread_cpu_ns"
+SCHEDSTAT_FIELDS = ("cpu_runtime_ns", "runqueue_wait_ns", "timeslices")
 
 
 def sha(path):
@@ -31,20 +34,24 @@ def summarize(path, pairs=PAIRS):
     groups = defaultdict(dict)
     with path.open(newline="") as f:
         reader = csv.DictReader(f)
-        if reader.fieldnames != ["decision", "comparison", "pair", "position", "class", "ns"]:
+        has_cpu = reader.fieldnames == SAMPLE_FIELDS + [CPU_FIELD]
+        if reader.fieldnames != SAMPLE_FIELDS and not has_cpu:
             raise ValueError("invalid sample header")
         for row in reader:
+            if None in row or any(value is None for value in row.values()):
+                raise ValueError("invalid sample width")
             decision, comp = row["decision"], row["comparison"]
             pair, position, ns = (int(row[k]) for k in ("pair", "position", "ns"))
             group = row["class"]
-            if (None in row or decision not in DECISIONS or comp not in COMPARISONS
+            cpu_ns = int(row[CPU_FIELD]) if has_cpu and row[CPU_FIELD] else None
+            if (decision not in DECISIONS or comp not in COMPARISONS
                     or not 0 <= pair < pairs or position not in (0, 1)
-                    or group not in ("A", "B") or ns <= 0):
+                    or group not in ("A", "B") or ns <= 0 or (cpu_ns is not None and cpu_ns < 0)):
                 raise ValueError("invalid sample")
             observations = groups[decision, comp]
             if (pair, group) in observations:
                 raise ValueError("duplicate sample")
-            observations[pair, group] = position, ns
+            observations[pair, group] = position, ns, cpu_ns
 
     summaries = {}
     for decision in DECISIONS:
@@ -55,8 +62,8 @@ def summarize(path, pairs=PAIRS):
                 raise ValueError("incomplete comparison")
             delta = []
             for i in range(pairs):
-                a_position, a = values[i, "A"]
-                b_position, b = values[i, "B"]
+                a_position, a, _ = values[i, "A"]
+                b_position, b, _ = values[i, "B"]
                 if a_position == b_position or (i % 2 and a_position == values[i - 1, "A"][0]):
                     raise ValueError("unbalanced execution order")
                 delta.append(b - a)
@@ -67,7 +74,67 @@ def summarize(path, pairs=PAIRS):
                 "paired_t": mean / (sd / math.sqrt(pairs)) if sd else None,
                 "mean_ns": {c: statistics.mean(values[i, c][1] for i in range(pairs)) for c in "AB"},
             }
+            if has_cpu:
+                summaries[decision][comp]["scheduler_observations"] = sample_scheduling(values, delta)
     return summaries
+
+
+def sample_scheduling(values, delta):
+    gaps = [wall - cpu for _, wall, cpu in values.values() if cpu is not None]
+    top_pairs = sorted(range(len(delta)), key=lambda i: abs(delta[i]), reverse=True)[:3]
+    outliers = []
+    for i in top_pairs:
+        pair = {"pair": i, "wall_delta_ns_B_minus_A": delta[i]}
+        for group in ("A", "B"):
+            position, wall, cpu = values[i, group]
+            pair[group] = {
+                "position": position, "wall_ns": wall, CPU_FIELD: cpu,
+                "wall_minus_thread_cpu_ns": None if cpu is None else wall - cpu,
+            }
+        outliers.append(pair)
+    return {
+        "thread_cpu_samples": len(gaps),
+        "thread_cpu_missing": len(values) - len(gaps),
+        "thread_cpu_zero_samples": sum(cpu == 0 for _, _, cpu in values.values()),
+        "median_wall_minus_thread_cpu_ns": statistics.median(gaps) if gaps else None,
+        "largest_abs_wall_deltas": outliers,
+    }
+
+
+def summarize_schedstat(path):
+    data = json.loads(path.read_text())
+    enabled = data["schedstats_enabled"]
+    if enabled is not None and type(enabled) is not bool:
+        raise ValueError("invalid schedstats setting")
+    stats = {d: {} for d in DECISIONS}
+    for row in data["streams"]:
+        d, c = row["decision"], row["comparison"]
+        if d not in DECISIONS or c not in COMPARISONS or c in stats[d]:
+            raise ValueError("invalid schedstat stream")
+        before, after = row["before"], row["after"]
+        for snapshot in (before, after):
+            if snapshot is not None and (
+                not isinstance(snapshot, list) or len(snapshot) != len(SCHEDSTAT_FIELDS)
+                or any(type(n) is not int or n < 0 for n in snapshot)
+            ):
+                raise ValueError("invalid schedstat snapshot")
+        delta = None
+        if before is None or after is None:
+            status = "unavailable"
+        elif any(end < begin for begin, end in zip(before, after)):
+            status = "counter_regressed"
+        else:
+            delta = dict(zip(SCHEDSTAT_FIELDS, (end - begin for begin, end in zip(before, after))))
+            if enabled is False:
+                status = "disabled"
+            elif delta["runqueue_wait_ns"]:
+                status = "nonzero_wait_reported"
+            else:
+                status = "zero_wait_reported"
+        stats[d][c] = {"status": status, "delta": delta}
+    if any(set(rows) != set(COMPARISONS) for rows in stats.values()):
+        raise ValueError("missing schedstat stream")
+    return {"schedstats_enabled": enabled, "streams": stats}
 
 
 def interpret(trials, decision):
@@ -104,7 +171,7 @@ def collect(out, cargo):
     cpus = sorted(os.sched_getaffinity(0))
     cpu = cpus[0]
     meta = {
-        "schema": 1, "source_commit": command("git", "rev-parse", "HEAD"),
+        "schema": 2, "source_commit": command("git", "rev-parse", "HEAD"),
         "tracked_changes": bool(command("git", "status", "--porcelain", "--untracked-files=no")),
         "rustc": command(os.environ.get("RUSTC", "rustc"), "-vV"), "cargo": command(cargo, "-V"),
         "kernel": platform.release(), "architecture": platform.machine(), "cpu": cpu,
@@ -114,7 +181,8 @@ def collect(out, cargo):
         "sha256": {"libtest": sha(exe), "lock": sha(manifest.with_name("Cargo.lock")),
                    "probe": sha(ROOT / "protocol_rust/src/receive_audit/timing.rs"), "collector": sha(Path(__file__))},
         "threshold_abs_t": THRESHOLD, "warmup_pairs_per_stream": 128, "clock": "std::time::Instant",
-        "constant_time_approved": False, "trials": [],
+        "constant_time_approved": False, "trials": [], "schedstat_trials": [],
+        "thread_cpu_clock": "CLOCK_THREAD_CPUTIME_ID (brackets wider than Instant)",
     }
     for trial in range(2):
         raw = out / f"trial-{trial}.csv"
@@ -127,8 +195,14 @@ def collect(out, cargo):
         proc.check_returncode()
         if "test result: ok. 1 passed; 0 failed; 0 ignored;" not in log.read_text():
             raise ValueError("timing probe did not complete")
-        meta["trials"].append(summarize(raw))
-        meta["sha256"][raw.name] = sha(raw)
+        summary = summarize(raw)
+        if any("scheduler_observations" not in stream for rows in summary.values() for stream in rows.values()):
+            raise ValueError("timing probe did not emit the thread CPU column")
+        scheduler = raw.with_suffix(".scheduler.json")
+        meta["trials"].append(summary)
+        meta["schedstat_trials"].append(summarize_schedstat(scheduler))
+        for path in (raw, scheduler):
+            meta["sha256"][path.name] = sha(path)
     meta["interpretation"] = {d: interpret(meta["trials"], d) for d in DECISIONS}
     return meta
 
@@ -148,7 +222,7 @@ def main():
     try:
         result = collect(out, args.cargo)
         result["collection_complete"] = True
-    except (OSError, ValueError, subprocess.SubprocessError) as error:
+    except (OSError, ValueError, KeyError, TypeError, subprocess.SubprocessError) as error:
         result = {"collection_complete": False, "error": str(error), "constant_time_approved": False}
     (out / "result.json").write_text(json.dumps(result, indent=2, allow_nan=False) + "\n")
     with tarfile.open(archive, "x:gz") as tar:

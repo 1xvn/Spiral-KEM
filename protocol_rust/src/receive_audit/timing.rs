@@ -1,7 +1,15 @@
 //! Opt-in libtest diagnostic with generated public fixtures only.
 use super::{buffer, Pool, Rx, Secret, Tx, SID};
 use crate::{schedule::digest, secret::Plaintext, wire::DATA, Error};
-use std::{hint::black_box, io::{BufWriter, Write}, path::PathBuf, time::Instant};
+use rustix::time::{clock_gettime_dynamic, ClockId, DynamicClockId};
+use serde_json::{json, Value};
+use std::{
+    fs::{read_to_string, File},
+    hint::black_box,
+    io::{BufWriter, Write},
+    path::PathBuf,
+    time::Instant,
+};
 
 const PAIRS: usize = 2000;
 const WARMUP: usize = 128;
@@ -27,7 +35,31 @@ fn fixture_bytes(domain: u8, id: u32) -> [u8; 32] {
     digest(&label)
 }
 
-fn observation(key: &[u8; 32], prefix: &[u8; 4], message: &[u8; 64], bad_tag: bool, extra_work: bool) -> u128 {
+fn thread_cpu_ns() -> Option<u128> {
+    let ts = clock_gettime_dynamic(DynamicClockId::Known(ClockId::ThreadCPUTime)).ok()?;
+    let seconds = u128::try_from(ts.tv_sec).ok()?;
+    let nanos = u128::try_from(ts.tv_nsec).ok()?;
+    (nanos < 1_000_000_000).then_some(seconds * 1_000_000_000 + nanos)
+}
+
+fn schedstat() -> Option<[u64; 3]> {
+    read_to_string("/proc/thread-self/schedstat")
+        .ok()?
+        .split_ascii_whitespace()
+        .map(str::parse)
+        .collect::<Result<Vec<_>, _>>()
+        .ok()?
+        .try_into()
+        .ok()
+}
+
+fn observation(
+    key: &[u8; 32],
+    prefix: &[u8; 4],
+    message: &[u8; 64],
+    bad_tag: bool,
+    extra_work: bool,
+) -> (u128, Option<u128>) {
     let pool = Pool::new();
     let mut tx = Tx::new(owner(key), owner(prefix), SID, 0).unwrap();
     let mut frame = tx.data(Plaintext {
@@ -40,6 +72,7 @@ fn observation(key: &[u8; 32], prefix: &[u8; 4], message: &[u8; 64], bad_tag: bo
     }
     let mut rx = Rx::new(owner(key), owner(prefix), SID, 1).unwrap();
     let input = black_box(frame);
+    let cpu_start = thread_cpu_ns();
     let start = Instant::now();
     if extra_work {
         for _ in 0..128 {
@@ -48,12 +81,13 @@ fn observation(key: &[u8; 32], prefix: &[u8; 4], message: &[u8; 64], bad_tag: bo
     }
     let result = black_box(rx.decode(input));
     let ns = start.elapsed().as_nanos();
+    let cpu_ns = thread_cpu_ns().zip(cpu_start).and_then(|(end, begin)| end.checked_sub(begin));
     match (bad_tag, result) {
         (false, Ok((DATA, plain))) => assert_eq!(plain.as_bytes(), message),
         (true, Err(Error::Authentication)) => (),
         _ => panic!("unexpected record decision"),
     }
-    ns
+    (ns, cpu_ns)
 }
 
 #[test]
@@ -64,11 +98,13 @@ fn collect() {
     assert!(trial < 2);
     let fixed = digest(b"spiral timing public fixed fixture");
     let mut rows = Vec::new();
+    let mut streams: Vec<Value> = Vec::new();
     // Reverse stream order in trial two. Use unique fixture IDs across streams and trials.
     for index in 0..6u32 {
         let stream = if trial == 0 { index } else { 5 - index };
         let bad_tag = stream >= 3;
         let comparison = [Comparison::Positive, Comparison::Sham, Comparison::Key][(stream % 3) as usize];
+        let before = schedstat();
         for pair in 0..(WARMUP + PAIRS) {
             let id = (trial * 6 + stream) * 4096 + pair as u32;
             let prefix = id.to_be_bytes();
@@ -81,18 +117,40 @@ fn collect() {
             let first_b = ((fixture_bytes(4, id & !1)[0] & 1) ^ (id as u8 & 1)) != 0;
             for (position, b) in [first_b, !first_b].into_iter().enumerate() {
                 let key = if comparison == Comparison::Key && b { &varying } else { &fixed };
-                let ns = observation(key, &prefix, &message, bad_tag, comparison == Comparison::Positive && b);
+                let (ns, cpu_ns) = observation(key, &prefix, &message, bad_tag, comparison == Comparison::Positive && b);
                 if pair >= WARMUP {
-                    rows.push((bad_tag, comparison, pair - WARMUP, position, b, ns));
+                    rows.push((bad_tag, comparison, pair - WARMUP, position, b, ns, cpu_ns));
                 }
             }
         }
+        streams.push(json!({
+            "decision": if bad_tag { "reject" } else { "accept" },
+            "comparison": comparison.label(),
+            "before": before,
+            "after": schedstat(),
+        }));
     }
-    let mut out = BufWriter::new(std::fs::File::create_new(path).unwrap());
-    writeln!(out, "decision,comparison,pair,position,class,ns").unwrap();
-    for (bad, comp, pair, pos, b, elapsed) in rows {
-        writeln!(out, "{},{},{},{},{},{}", if bad { "reject" } else { "accept" },
-                 comp.label(), pair, pos, if b { "B" } else { "A" }, elapsed).unwrap();
+    let scheduler_file = File::create_new(path.with_extension("scheduler.json")).unwrap();
+    let schedstats_enabled = read_to_string("/proc/sys/kernel/sched_schedstats").ok()
+        .and_then(|s| match s.trim() {
+            "0" => Some(false),
+            "1" => Some(true),
+            _ => None,
+        });
+    serde_json::to_writer(scheduler_file, &json!({
+        "schedstats_enabled": schedstats_enabled,
+        "streams": streams,
+    })).unwrap();
+
+    let mut out = BufWriter::new(File::create_new(path).unwrap());
+    writeln!(out, "decision,comparison,pair,position,class,ns,thread_cpu_ns").unwrap();
+    for (bad, comp, pair, pos, b, elapsed, cpu_ns) in rows {
+        write!(out, "{},{},{},{},{},{},", if bad { "reject" } else { "accept" },
+               comp.label(), pair, pos, if b { "B" } else { "A" }, elapsed).unwrap();
+        if let Some(cpu_ns) = cpu_ns {
+            write!(out, "{cpu_ns}").unwrap();
+        }
+        writeln!(out).unwrap();
     }
     out.flush().unwrap();
 }
