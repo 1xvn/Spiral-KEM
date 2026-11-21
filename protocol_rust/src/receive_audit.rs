@@ -14,7 +14,7 @@ use crate::{
 use chacha20poly1305::{aead::AeadInPlace, ChaCha20Poly1305, KeyInit, Nonce};
 use std::sync::Arc;
 
-#[cfg(feature = "receive-timing")]
+#[cfg(all(feature = "receive-timing", target_os = "linux"))]
 mod timing;
 
 const LENGTHS: [usize; 7] = [1, 16, 63, 64, 65, 1024, 16384];
