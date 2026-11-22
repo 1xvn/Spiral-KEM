@@ -1,0 +1,12 @@
+{
+  "draws": 2995,
+  "event": "W >= 831",
+  "event_count": 0,
+  "minimum_weight": 457,
+  "maximum_weight": 584,
+  "confidence_model": "iid uniform 32-byte seed draws with replacement for fixed SHAKE",
+  "one_sided_95_upper_if_zero": 0.0009997444209011422,
+  "kem_exchanges": 0,
+  "archive_sha256": "da358519c832bde2dc59eaf2a7f2a06eef8203593c593ead592a821c9dbf3a52",
+  "opt2_source_sha256": "74c1ff02669d5b6eea87ccf650bc6930bc1822ffe8568fa68ce79fb29958a118"
+}
