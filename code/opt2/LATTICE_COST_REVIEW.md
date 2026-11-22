@@ -25,15 +25,17 @@ The unit in the next table is log₂ of the tool's `rop` field. “Re-run” is 
 | MATZOV classical | primal BDD | 123.537624 | 123.537624 | 140.199473 | Matches |
 | MATZOV classical | primal BDD hybrid | 123.563066 | 123.563066 | 140.208243 | Matches |
 | MATZOV classical | primal BDD MITM hybrid | 174.077792 | 174.077792 | 262.070429 | Matches |
-| MATZOV classical | plain dual | 131.571253 | 131.571253 | 149.884251 | Matches |
-| MATZOV classical | dual hybrid | 120.875640 | 120.875640 | 139.656041 | Matches |
-| Separate algorithm in classical batch | coded BKW | 154.190230 | 154.190230 | 178.760167 | Matches |
-| Separate algorithm in classical batch | Arora–GB | ∞ | ∞ | ∞ | Completed, no finite estimate |
+| MATZOV classical | plain dual | 131.571253 | 131.571253 | 149.884251 | Cost matches, shape label differs |
+| MATZOV classical | dual hybrid | 120.875640 | 120.875640 | 139.656041 | Cost matches, shape label differs |
+| Separate algorithm in classical batch | coded BKW | 154.190230 | 154.190230 | 178.760167 | Cost matches, shape label differs |
+| Separate algorithm in classical batch | Arora–GB | ∞ | ∞ | ∞ | Completed, no finite estimate. Shape label differs. |
 | Core-SVP classical | primal uSVP | 100.740000 | 100.740000 | 118.552000 | Matches, independent GSA check |
-| Core-SVP classical | dual hybrid | 97.901991 | 97.901991 | 115.509894 | Matches |
+| Core-SVP classical | dual hybrid | 97.901991 | 97.901991 | 115.509894 | Cost matches, shape label differs |
 | Core-SVP quantum | primal uSVP only | 91.425000 | 91.425000 | 107.590000 | Matches, independent GSA check |
 
 **Within-model interpretation.** Of the six selected MATZOV-classical lattice rows the smallest Spiral work exponent was 120.875640 (dual hybrid). Of the two classical Core-SVP rows the smaller was 97.901991 (dual hybrid). The single quantum uSVP row provides a sensitivity calculation for a different reduction price. These values cannot be combined into a security interval. Finite versus infinite refers to the return of the chosen model. No actual key recovery, attack success rate, conventional security level or IND-CCA reduction was measured.
+
+**Archive metadata discrepancy.** The primary driver wrote `shape_model=GSA` for every job. The six-candidate driver wrote `not applicable / algorithm specific` for plain dual, dual hybrid (both prices), BKW and Arora–GB. These five rows per profile differ in metadata. Only the primal calls actually receive the GSA option. Both historical labels and the fresh label are retained for every row in the JSON.
 
 **Precision and coverage.** All fresh `log2_metrics` dictionaries match the main archive's stored metrics. Where present, β, lattice dimension d, m, N, mem and the checked hybrid search parameters also agree. The original text prints some mantissas at lower precision. For example, evaluating the printed classical Core-SVP dual-hybrid expression independently gives 97.9019910310 versus the stored 97.9019910457. This rounds to the same published value. The comparison retains the per-row values and treats a raw-text difference above 0.0000005 in log₂ units as a discrepancy. There were 20 finite results, two infinite results and zero timeouts across the two profiles. Estimator elapsed times are recorded for provenance only. [Historical CSV, JSON, text logs and runner](../../archives/research/Spiral_v031_n256_eta1_attack_costs.zip) · [Six-candidate records](../../archives/research/Spiral_KEM_six_candidates_results.zip)
 

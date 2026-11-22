@@ -70,6 +70,12 @@
       "log2_N": 81.41176357729279,
       "returned_m": "512",
       "raw_name": "kyber512_pk_reference_cbd3__core_svp_classical__dual_hybrid",
+      "shape_labels": {
+        "historical": "GSA",
+        "six_candidate": "not applicable / algorithm specific",
+        "fresh": "GSA"
+      },
+      "gsa_passed_to_method": false,
       "discrepancies": []
     },
     {
@@ -84,6 +90,12 @@
       "log2_N": null,
       "returned_m": null,
       "raw_name": "kyber512_pk_reference_cbd3__core_svp_classical__usvp",
+      "shape_labels": {
+        "historical": "GSA",
+        "six_candidate": "GSA",
+        "fresh": "GSA"
+      },
+      "gsa_passed_to_method": true,
       "discrepancies": []
     },
     {
@@ -98,6 +110,12 @@
       "log2_N": null,
       "returned_m": null,
       "raw_name": "kyber512_pk_reference_cbd3__core_svp_quantum_primal__usvp",
+      "shape_labels": {
+        "historical": "GSA",
+        "six_candidate": "GSA",
+        "fresh": "GSA"
+      },
+      "gsa_passed_to_method": true,
       "discrepancies": []
     },
     {
@@ -112,6 +130,12 @@
       "log2_N": null,
       "returned_m": null,
       "raw_name": "kyber512_pk_reference_cbd3__matzov_classical__arora_gb",
+      "shape_labels": {
+        "historical": "GSA",
+        "six_candidate": "not applicable / algorithm specific",
+        "fresh": "GSA"
+      },
+      "gsa_passed_to_method": false,
       "discrepancies": []
     },
     {
@@ -126,6 +150,12 @@
       "log2_N": null,
       "returned_m": null,
       "raw_name": "kyber512_pk_reference_cbd3__matzov_classical__bdd",
+      "shape_labels": {
+        "historical": "GSA",
+        "six_candidate": "GSA",
+        "fresh": "GSA"
+      },
+      "gsa_passed_to_method": true,
       "discrepancies": []
     },
     {
@@ -140,6 +170,12 @@
       "log2_N": null,
       "returned_m": null,
       "raw_name": "kyber512_pk_reference_cbd3__matzov_classical__bdd_hybrid",
+      "shape_labels": {
+        "historical": "GSA",
+        "six_candidate": "GSA",
+        "fresh": "GSA"
+      },
+      "gsa_passed_to_method": true,
       "discrepancies": []
     },
     {
@@ -154,6 +190,12 @@
       "log2_N": null,
       "returned_m": null,
       "raw_name": "kyber512_pk_reference_cbd3__matzov_classical__bdd_mitm_hybrid",
+      "shape_labels": {
+        "historical": "GSA",
+        "six_candidate": "GSA",
+        "fresh": "GSA"
+      },
+      "gsa_passed_to_method": true,
       "discrepancies": []
     },
     {
@@ -168,6 +210,12 @@
       "log2_N": null,
       "returned_m": "1.6424530413707464e+50",
       "raw_name": "kyber512_pk_reference_cbd3__matzov_classical__bkw",
+      "shape_labels": {
+        "historical": "GSA",
+        "six_candidate": "not applicable / algorithm specific",
+        "fresh": "GSA"
+      },
+      "gsa_passed_to_method": false,
       "discrepancies": []
     },
     {
@@ -182,6 +230,12 @@
       "log2_N": null,
       "returned_m": "512",
       "raw_name": "kyber512_pk_reference_cbd3__matzov_classical__dual",
+      "shape_labels": {
+        "historical": "GSA",
+        "six_candidate": "not applicable / algorithm specific",
+        "fresh": "GSA"
+      },
+      "gsa_passed_to_method": false,
       "discrepancies": []
     },
     {
@@ -196,6 +250,12 @@
       "log2_N": 81.07876654508503,
       "returned_m": "512",
       "raw_name": "kyber512_pk_reference_cbd3__matzov_classical__dual_hybrid",
+      "shape_labels": {
+        "historical": "GSA",
+        "six_candidate": "not applicable / algorithm specific",
+        "fresh": "GSA"
+      },
+      "gsa_passed_to_method": false,
       "discrepancies": []
     },
     {
@@ -210,6 +270,12 @@
       "log2_N": null,
       "returned_m": null,
       "raw_name": "kyber512_pk_reference_cbd3__matzov_classical__usvp",
+      "shape_labels": {
+        "historical": "GSA",
+        "six_candidate": "GSA",
+        "fresh": "GSA"
+      },
+      "gsa_passed_to_method": true,
       "discrepancies": []
     },
     {
@@ -224,6 +290,12 @@
       "log2_N": 66.68150377913874,
       "returned_m": "512",
       "raw_name": "spiral_cbd1__core_svp_classical__dual_hybrid",
+      "shape_labels": {
+        "historical": "GSA",
+        "six_candidate": "not applicable / algorithm specific",
+        "fresh": "GSA"
+      },
+      "gsa_passed_to_method": false,
       "discrepancies": []
     },
     {
@@ -238,6 +310,12 @@
       "log2_N": null,
       "returned_m": null,
       "raw_name": "spiral_cbd1__core_svp_classical__usvp",
+      "shape_labels": {
+        "historical": "GSA",
+        "six_candidate": "GSA",
+        "fresh": "GSA"
+      },
+      "gsa_passed_to_method": true,
       "discrepancies": []
     },
     {
@@ -252,6 +330,12 @@
       "log2_N": null,
       "returned_m": null,
       "raw_name": "spiral_cbd1__core_svp_quantum_primal__usvp",
+      "shape_labels": {
+        "historical": "GSA",
+        "six_candidate": "GSA",
+        "fresh": "GSA"
+      },
+      "gsa_passed_to_method": true,
       "discrepancies": []
     },
     {
@@ -266,6 +350,12 @@
       "log2_N": null,
       "returned_m": null,
       "raw_name": "spiral_cbd1__matzov_classical__arora_gb",
+      "shape_labels": {
+        "historical": "GSA",
+        "six_candidate": "not applicable / algorithm specific",
+        "fresh": "GSA"
+      },
+      "gsa_passed_to_method": false,
       "discrepancies": []
     },
     {
@@ -280,6 +370,12 @@
       "log2_N": null,
       "returned_m": null,
       "raw_name": "spiral_cbd1__matzov_classical__bdd",
+      "shape_labels": {
+        "historical": "GSA",
+        "six_candidate": "GSA",
+        "fresh": "GSA"
+      },
+      "gsa_passed_to_method": true,
       "discrepancies": []
     },
     {
@@ -294,6 +390,12 @@
       "log2_N": null,
       "returned_m": null,
       "raw_name": "spiral_cbd1__matzov_classical__bdd_hybrid",
+      "shape_labels": {
+        "historical": "GSA",
+        "six_candidate": "GSA",
+        "fresh": "GSA"
+      },
+      "gsa_passed_to_method": true,
       "discrepancies": []
     },
     {
@@ -308,6 +410,12 @@
       "log2_N": null,
       "returned_m": null,
       "raw_name": "spiral_cbd1__matzov_classical__bdd_mitm_hybrid",
+      "shape_labels": {
+        "historical": "GSA",
+        "six_candidate": "GSA",
+        "fresh": "GSA"
+      },
+      "gsa_passed_to_method": true,
       "discrepancies": []
     },
     {
@@ -322,6 +430,12 @@
       "log2_N": null,
       "returned_m": "2.731290478177663e+42",
       "raw_name": "spiral_cbd1__matzov_classical__bkw",
+      "shape_labels": {
+        "historical": "GSA",
+        "six_candidate": "not applicable / algorithm specific",
+        "fresh": "GSA"
+      },
+      "gsa_passed_to_method": false,
       "discrepancies": []
     },
     {
@@ -336,6 +450,12 @@
       "log2_N": null,
       "returned_m": "472",
       "raw_name": "spiral_cbd1__matzov_classical__dual",
+      "shape_labels": {
+        "historical": "GSA",
+        "six_candidate": "not applicable / algorithm specific",
+        "fresh": "GSA"
+      },
+      "gsa_passed_to_method": false,
       "discrepancies": []
     },
     {
@@ -350,6 +470,12 @@
       "log2_N": 67.70963589040055,
       "returned_m": "512",
       "raw_name": "spiral_cbd1__matzov_classical__dual_hybrid",
+      "shape_labels": {
+        "historical": "GSA",
+        "six_candidate": "not applicable / algorithm specific",
+        "fresh": "GSA"
+      },
+      "gsa_passed_to_method": false,
       "discrepancies": []
     },
     {
@@ -364,6 +490,12 @@
       "log2_N": null,
       "returned_m": null,
       "raw_name": "spiral_cbd1__matzov_classical__usvp",
+      "shape_labels": {
+        "historical": "GSA",
+        "six_candidate": "GSA",
+        "fresh": "GSA"
+      },
+      "gsa_passed_to_method": true,
       "discrepancies": []
     }
   ]

@@ -159,15 +159,17 @@ def comparison():
             replicate, other_text = load_record(six, s + "results/attacks/raw/", "__".join((candidate, model, attack)))
             rerun, fresh_text = load_record(fresh, "raw/", name)
             issues = []
-            for raw in (historical, replicate, rerun):
+            primal_method = attack in ("usvp", "bdd", "bdd_hybrid", "bdd_mitm_hybrid")
+            for batch, raw in (("historical", historical), ("six", replicate), ("fresh", rerun)):
                 distribution = f"CenteredBinomial({eta})"
                 inputs = (raw["lwe_n"], raw["lwe_m"], raw["q"], raw["secret_distribution"], raw["error_distribution"])
                 if inputs != (512, 512, 3329, distribution, distribution) or raw["estimator_commit"] != UPSTREAM:
                     issues.append("model input or commit")
                 expected_price = ("MATZOV", {"nn": "list_decoding-classical"}) if model == "matzov_classical" else (
                     "ADPS16", {"mode": "quantum" if model == "core_svp_quantum_primal" else "classical"})
-                if (raw["reduction_model"], raw["reduction_model_state"]) != expected_price or raw["shape_model"] != "GSA":
-                    issues.append("reduction or configured shape model")
+                expected_shape = "not applicable / algorithm specific" if batch == "six" and not primal_method else "GSA"
+                if (raw["reduction_model"], raw["reduction_model_state"]) != expected_price or raw["shape_model"] != expected_shape:
+                    issues.append(batch + " reduction or shape label")
                 if raw["status"] != "ok" or raw["sage_version"] != "10.8" or raw["source_sha256"] != pinned_source:
                     issues.append("job status, Sage version or historical KEM source hash")
             reported = historical["log2_metrics"]["rop"]
@@ -194,7 +196,10 @@ def comparison():
                              second_archive_log2_rop=replicate["log2_metrics"]["rop"],
                              log2_mem=historical["log2_metrics"].get("mem"),
                              log2_N=historical["log2_metrics"].get("N"), returned_m=fields.get("m"),
-                             raw_name=name, discrepancies=issues))
+                             raw_name=name, shape_labels={"historical": historical["shape_model"],
+                                                          "six_candidate": replicate["shape_model"],
+                                                          "fresh": rerun["shape_model"]},
+                             gsa_passed_to_method=primal_method, discrepancies=issues))
     return {"scope": "single-public-instance generic LWE costs", "estimator_commit": UPSTREAM,
             "source_mapping": opt2_map, "independent_primal_gsa": primal,
             "input_archives_sha256": {p.name: sha256(p.read_bytes()).hexdigest() for p in (OLD, SIX, FRESH)},
