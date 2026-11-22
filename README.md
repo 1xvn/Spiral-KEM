@@ -18,6 +18,8 @@ The project name comes from earlier experiments with public spiral transforms. T
 
 The [decryption-failure recalculation](code/opt2/DECRYPTION_FAILURE.md) reproduces both published ideal-model bounds and gives a deterministic correctness condition for individual research keys. The population rate for fixed SHAKE remains open.
 
+The [lattice cost review](code/opt2/LATTICE_COST_REVIEW.md) maps the default public equations to the estimator inputs, replays the archived costs and records the limits of each model.
+
 ## What OPT2 changes
 
 OPT1 specializes the fixed $\eta = 1$ sampler. OPT2 uses `Struct` for byte conversion/integer packing and adds the **SKW1** lossless 12-bit transport format. It preserves coefficients, parameters, the legacy serialization API, and internal KEM hash inputs.
