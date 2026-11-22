@@ -15,11 +15,29 @@ const PAIRS: usize = 2000;
 const WARMUP: usize = 128;
 
 #[derive(Clone, Copy, PartialEq)]
-enum Comparison { Positive, Sham, Key }
+enum Comparison {
+    Positive,
+    PositiveLarge,
+    Sham,
+    Key,
+}
 
 impl Comparison {
     fn label(self) -> &'static str {
-        match self { Self::Positive => "positive", Self::Sham => "sham", Self::Key => "key" }
+        match self {
+            Self::Positive => "positive",
+            Self::PositiveLarge => "positive_large",
+            Self::Sham => "sham",
+            Self::Key => "key",
+        }
+    }
+
+    fn spin_hints(self) -> usize {
+        match self {
+            Self::Positive => 128,
+            Self::PositiveLarge => 512,
+            _ => 0,
+        }
     }
 }
 
@@ -58,7 +76,7 @@ fn observation(
     prefix: &[u8; 4],
     message: &[u8; 64],
     bad_tag: bool,
-    extra_work: bool,
+    spin_hints: usize,
 ) -> (u128, Option<u128>) {
     let pool = Pool::new();
     let mut tx = Tx::new(owner(key), owner(prefix), SID, 0).unwrap();
@@ -74,10 +92,8 @@ fn observation(
     let input = black_box(frame);
     let cpu_start = thread_cpu_ns();
     let start = Instant::now();
-    if extra_work {
-        for _ in 0..128 {
-            std::hint::spin_loop();
-        }
+    for _ in 0..spin_hints {
+        std::hint::spin_loop();
     }
     let result = black_box(rx.decode(input));
     let ns = start.elapsed().as_nanos();
@@ -99,14 +115,24 @@ fn collect() {
     let fixed = digest(b"spiral timing public fixed fixture");
     let mut rows = Vec::new();
     let mut streams: Vec<Value> = Vec::new();
-    // Reverse stream order in trial two. Use unique fixture IDs across streams and trials.
-    for index in 0..6u32 {
-        let stream = if trial == 0 { index } else { 5 - index };
-        let bad_tag = stream >= 3;
-        let comparison = [Comparison::Positive, Comparison::Sham, Comparison::Key][(stream % 3) as usize];
+    use Comparison::{Key, Positive, PositiveLarge, Sham};
+    let reject_controls = std::env::var("SPIRAL_TIMING_REJECT_CONTROLS").as_deref() == Ok("1");
+    let cases: &[(bool, Comparison)] = if reject_controls {
+        &[(true, Positive), (true, PositiveLarge), (true, Sham), (true, Key)]
+    } else {
+        &[
+            (false, Positive), (false, Sham), (false, Key),
+            (true, Positive), (true, Sham), (true, Key),
+        ]
+    };
+    // Reverse stream order in trial two, with separate fixture IDs per mode.
+    for index in 0..cases.len() {
+        let stream = if trial == 0 { index } else { cases.len() - 1 - index };
+        let (bad_tag, comparison) = cases[stream];
+        let stream_id = trial * 6 + stream as u32 + if reject_controls { 12 } else { 0 };
         let before = schedstat();
         for pair in 0..(WARMUP + PAIRS) {
-            let id = (trial * 6 + stream) * 4096 + pair as u32;
+            let id = stream_id * 4096 + pair as u32;
             let prefix = id.to_be_bytes();
             let varying = fixture_bytes(1, id);
             let message_half = fixture_bytes(2, id);
@@ -117,7 +143,8 @@ fn collect() {
             let first_b = ((fixture_bytes(4, id & !1)[0] & 1) ^ (id as u8 & 1)) != 0;
             for (position, b) in [first_b, !first_b].into_iter().enumerate() {
                 let key = if comparison == Comparison::Key && b { &varying } else { &fixed };
-                let (ns, cpu_ns) = observation(key, &prefix, &message, bad_tag, comparison == Comparison::Positive && b);
+                let spin_hints = if b { comparison.spin_hints() } else { 0 };
+                let (ns, cpu_ns) = observation(key, &prefix, &message, bad_tag, spin_hints);
                 if pair >= WARMUP {
                     rows.push((bad_tag, comparison, pair - WARMUP, position, b, ns, cpu_ns));
                 }

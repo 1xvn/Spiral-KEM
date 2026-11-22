@@ -4,7 +4,7 @@ import tempfile
 import unittest
 from pathlib import Path
 
-from receive_timing import COMPARISONS, CPU_FIELD, DECISIONS, SAMPLE_FIELDS, interpret, summarize, summarize_schedstat
+from receive_timing import COMPARISONS, CPU_FIELD, DECISIONS, REJECT_COMPARISONS, SAMPLE_FIELDS, interpret, summarize, summarize_schedstat
 
 
 class ReceiveTimingTests(unittest.TestCase):
@@ -15,12 +15,12 @@ class ReceiveTimingTests(unittest.TestCase):
         self.rows = [[d, c, i, pos, "AB"[pos ^ (i % 2)], 100 + pos]
                      for d in DECISIONS for c in COMPARISONS for i in range(4) for pos in range(2)]
 
-    def read(self, with_cpu=False):
+    def read(self, with_cpu=False, reject_controls=False):
         with self.path.open("w", newline="") as f:
             writer = csv.writer(f)
             writer.writerow(SAMPLE_FIELDS + ([CPU_FIELD] if with_cpu else []))
             writer.writerows(self.rows)
-        return summarize(self.path, pairs=4)
+        return summarize(self.path, pairs=4, reject_controls=reject_controls)
 
     def test_pairing_uses_class_not_position(self):
         summary = self.read()["reject"]["key"]
@@ -66,6 +66,29 @@ class ReceiveTimingTests(unittest.TestCase):
         self.assertEqual(data["reject"]["positive"]["delta"]["runqueue_wait_ns"], 111)
         self.path.write_text(json.dumps({"schedstats_enabled": False, "streams": rows}))
         self.assertEqual(summarize_schedstat(self.path)["streams"]["reject"]["positive"]["status"], "disabled")
+
+    def test_reject_mode_requires_complete_larger_control(self):
+        self.rows = [[
+            "reject", comp, i, pos, "AB"[pos ^ (i % 2)], 100 + pos, 95 + pos
+        ] for comp in REJECT_COMPARISONS for i in range(4) for pos in range(2)]
+        summary = self.read(with_cpu=True, reject_controls=True)
+        self.assertEqual(set(summary), {"reject"})
+        self.assertEqual(set(summary["reject"]), set(REJECT_COMPARISONS))
+        with self.assertRaises(ValueError):
+            self.read(with_cpu=True)
+        self.rows = [r for r in self.rows if r[1] != "positive_large"]
+        with self.assertRaises(ValueError):
+            self.read(with_cpu=True, reject_controls=True)
+
+    def test_reject_gate_requires_both_positive_controls_in_both_trials(self):
+        def trial(small, large):
+            return {"reject": {k: {"paired_t": t} for k, t in zip(REJECT_COMPARISONS, (small, large, 0, 1))}}
+        for values, expected in [
+            ([(5, 6), (5, 6)], "no_threshold_crossing_in_sample"),
+            ([(4.49, 9), (5, 9)], "inconclusive_controls_or_variance"),
+            ([(5, 9), (5, 4.49)], "inconclusive_controls_or_variance"),
+        ]:
+            self.assertEqual(interpret([trial(*v) for v in values], "reject", reject_controls=True), expected)
 
     def test_failed_controls_and_non_replicating_signals(self):
         def trial(positive=6, sham=0, key=0):

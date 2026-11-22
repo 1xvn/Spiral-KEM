@@ -74,6 +74,41 @@ RUSTUP_TOOLCHAIN=1.99.1 python3 -B protocol_rust/diagnostics/receive_timing.py \
   --output "$HOME/Spiral-rx-scheduler-$(date -u +%Y%m%dT%H%M%SZ)"
 ```
 
+## Focused authentication-reject control run
+
+The optional `--reject-controls` mode measures the same 64-byte synthetic DATA and forces a bad tag at the final byte. It runs four streams in each of two trials with reversed stream order. Each stream has 128 warm-up pairs and 2,000 measured pairs, for 32,000 raw durations across both trials. The paired groups use matched public conditions and retain CPU-time and scheduler observations.
+
+| Stream | Class B change relative to A |
+| --- | --- |
+| `positive` | 128 additional spin hints inside the timed interval, matching the original control workload |
+| `positive_large` | 512 additional spin hints inside the timed interval |
+| `sham` | Same fixture, with the original balanced execution order |
+| `key` | Varied synthetic key with a matching freshly generated bad-tag record |
+
+The two fixed workloads are set before collection. Their observed median paired deltas describe the signal sizes on the measured host. Spin hints cannot specify a fixed nanosecond difference across machines. Each positive t must reach +4.5 and the absolute sham t must stay below 4.5 in both trials before the fixed-versus-varied key result can be interpreted. This is a two-workload sensitivity check. All samples enter the original wall-time statistic and constant-time approval remains false.
+
+Run from the focused collector checkout on Linux with the pinned Rust toolchain, `taskset` and Python 3.11 or later.
+
+```bash
+RUSTUP_TOOLCHAIN=1.99.1 python3 -B protocol_rust/diagnostics/receive_timing.py \
+  --reject-controls --output "$HOME/Spiral-rx-reject-controls-$(date -u +%Y%m%dT%H%M%SZ)"
+```
+
+The printed `.tar.gz` path contains the raw timing CSVs, scheduler snapshots and `result.json`. The report includes the median paired deltas and the verdict. Review the controls and the `interpretation.reject` field even when collection exits successfully.
+
+The cloud x86-64 check at `574dc38687e55130c65063c6db45b5e1c50b6cf8` collected all 32,000 durations. The 128-hint control added a median of 1.522 and 1.523 μs with t of +6.163 and +3.281. The 512-hint control added 6.041 and 6.007 μs with t of +11.877 and +8.091. Sham |t| was below 4.5 in both trials. Because one smaller control missed its gate, the cloud reject result remains inconclusive. These results describe the two sampled workloads on this host. [Raw durations, scheduler snapshots and result](evidence/receive_timing_reject_controls_20261121/cloud-x86_64.tar.gz)
+
+### OCI and WSL2 results for the focused reject run
+
+Both operators used source commit `574dc38687e55130c65063c6db45b5e1c50b6cf8`. The submitted archives contain 16,000 observations per trial on each host. Recomputing the paired statistics and scheduler summaries from the raw files reproduced both reports. The lockfile, probe and collector digests match the measured commit. The binary digests are operator-reported.
+
+| Host | 128-hint control t | 512-hint control t | Sham t | Fixed versus varied key t |
+| --- | ---: | ---: | ---: | ---: |
+| OCI aarch64 | +40.062 / +8.028 | +124.007 / +148.956 | −0.996 / +0.040 | −1.547 / +1.134 |
+| WSL2 x86-64 | +59.163 / +99.360 | +183.893 / +182.175 | −1.098 / −1.182 | +1.279 / +0.203 |
+
+Each cell gives trials 1 and 2 in order. On both hosts the two positive controls and the sham met their gates in both trials. Neither host had a key comparison cross the threshold for these 64-byte rejected records. The cloud x86-64 run above retains its inconclusive verdict. Thread CPU time was available for every sample. OCI reported disabled scheduler statistics. WSL2 did not expose the enable setting and reported nonzero runqueue wait in two streams. These counters do not establish the cause of any individual delay or constant-time behavior. [OCI original](evidence/receive_timing_reject_controls_20261121/platforms/oci-aarch64.tar.gz) · [WSL2 original](evidence/receive_timing_reject_controls_20261121/platforms/wsl2-x86_64.tar.gz) · [Review and archive SHA-256 values](evidence/receive_timing_reject_controls_20261121/platforms/review.json)
+
 ## WSL Ubuntu or OCI SSH Ubuntu
 
 Use Ubuntu with Git, Rust 1.99.1, a C toolchain, OpenSSL development headers, util-linux taskset and Python 3.11 or later. Run once per host. Both trials use the lowest-numbered logical CPU in the collector's allowed affinity mask. Each measurement process has a 120-second deadline and compilation has a separate 30-minute limit. Each run creates a new directory under the user's home.
