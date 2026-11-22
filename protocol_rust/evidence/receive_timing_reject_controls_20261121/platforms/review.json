@@ -1,0 +1,1286 @@
+{
+  "source_commit": "574dc38687e55130c65063c6db45b5e1c50b6cf8",
+  "threshold_abs_t": 4.5,
+  "verified_observations": 64000,
+  "constant_time_approved": false,
+  "hosts": {
+    "wsl2": {
+      "archive_sha256": "a56e9fe77ef0d957f9bcc90fb71d10b530e584fc7efd670b1f275871de40a924",
+      "architecture": "x86_64",
+      "kernel": "6.18.58.1-microsoft-standard-WSL2",
+      "cpu": 0,
+      "source_file_sha256_verified": {
+        "lock": "e3e37d684e40ae9b1a977cba14de249d5856442ae29e707259c4e6232b8b8436",
+        "probe": "be3f3762d0238e215a40b6faebf8db0de60127d6332269128e08b1ba2c93ee75",
+        "collector": "d348866ce31f89a5e262e7dccf720a98bbbc151ad733386b589189e8c7bc4082"
+      },
+      "libtest_sha256_operator_reported": "59b6fa15c920e08a75649732807c68f4c31f1dc0fe6897421521709d574bac45",
+      "samples_per_trial": [
+        16000,
+        16000
+      ],
+      "trials": [
+        {
+          "reject": {
+            "positive": {
+              "pairs": 2000,
+              "mean_delta_ns_B_minus_A": 4471.105,
+              "median_delta_ns_B_minus_A": 4236.0,
+              "paired_t": 59.16304799386464,
+              "mean_ns": {
+                "A": 2955.708,
+                "B": 7426.813
+              },
+              "scheduler_observations": {
+                "thread_cpu_samples": 4000,
+                "thread_cpu_missing": 0,
+                "thread_cpu_zero_samples": 0,
+                "median_wall_minus_thread_cpu_ns": -785.0,
+                "largest_abs_wall_deltas": [
+                  {
+                    "pair": 729,
+                    "wall_delta_ns_B_minus_A": 90528,
+                    "A": {
+                      "position": 0,
+                      "wall_ns": 3268,
+                      "thread_cpu_ns": 3966,
+                      "wall_minus_thread_cpu_ns": -698
+                    },
+                    "B": {
+                      "position": 1,
+                      "wall_ns": 93796,
+                      "thread_cpu_ns": 104206,
+                      "wall_minus_thread_cpu_ns": -10410
+                    }
+                  },
+                  {
+                    "pair": 1011,
+                    "wall_delta_ns_B_minus_A": 64214,
+                    "A": {
+                      "position": 1,
+                      "wall_ns": 3494,
+                      "thread_cpu_ns": 4012,
+                      "wall_minus_thread_cpu_ns": -518
+                    },
+                    "B": {
+                      "position": 0,
+                      "wall_ns": 67708,
+                      "thread_cpu_ns": 74509,
+                      "wall_minus_thread_cpu_ns": -6801
+                    }
+                  },
+                  {
+                    "pair": 990,
+                    "wall_delta_ns_B_minus_A": 50226,
+                    "A": {
+                      "position": 1,
+                      "wall_ns": 3193,
+                      "thread_cpu_ns": 3765,
+                      "wall_minus_thread_cpu_ns": -572
+                    },
+                    "B": {
+                      "position": 0,
+                      "wall_ns": 53419,
+                      "thread_cpu_ns": 58551,
+                      "wall_minus_thread_cpu_ns": -5132
+                    }
+                  }
+                ]
+              }
+            },
+            "positive_large": {
+              "pairs": 2000,
+              "mean_delta_ns_B_minus_A": 17752.7655,
+              "median_delta_ns_B_minus_A": 17015.0,
+              "paired_t": 183.89290052253406,
+              "mean_ns": {
+                "A": 2939.653,
+                "B": 20692.4185
+              },
+              "scheduler_observations": {
+                "thread_cpu_samples": 4000,
+                "thread_cpu_missing": 0,
+                "thread_cpu_zero_samples": 0,
+                "median_wall_minus_thread_cpu_ns": -1961.0,
+                "largest_abs_wall_deltas": [
+                  {
+                    "pair": 823,
+                    "wall_delta_ns_B_minus_A": 119119,
+                    "A": {
+                      "position": 0,
+                      "wall_ns": 2757,
+                      "thread_cpu_ns": 3187,
+                      "wall_minus_thread_cpu_ns": -430
+                    },
+                    "B": {
+                      "position": 1,
+                      "wall_ns": 121876,
+                      "thread_cpu_ns": 134412,
+                      "wall_minus_thread_cpu_ns": -12536
+                    }
+                  },
+                  {
+                    "pair": 1830,
+                    "wall_delta_ns_B_minus_A": 86261,
+                    "A": {
+                      "position": 0,
+                      "wall_ns": 3465,
+                      "thread_cpu_ns": 4008,
+                      "wall_minus_thread_cpu_ns": -543
+                    },
+                    "B": {
+                      "position": 1,
+                      "wall_ns": 89726,
+                      "thread_cpu_ns": 100733,
+                      "wall_minus_thread_cpu_ns": -11007
+                    }
+                  },
+                  {
+                    "pair": 1867,
+                    "wall_delta_ns_B_minus_A": 72816,
+                    "A": {
+                      "position": 0,
+                      "wall_ns": 3519,
+                      "thread_cpu_ns": 4080,
+                      "wall_minus_thread_cpu_ns": -561
+                    },
+                    "B": {
+                      "position": 1,
+                      "wall_ns": 76335,
+                      "thread_cpu_ns": 84928,
+                      "wall_minus_thread_cpu_ns": -8593
+                    }
+                  }
+                ]
+              }
+            },
+            "sham": {
+              "pairs": 2000,
+              "mean_delta_ns_B_minus_A": -58.1745,
+              "median_delta_ns_B_minus_A": 0.0,
+              "paired_t": -1.097928001767545,
+              "mean_ns": {
+                "A": 2991.994,
+                "B": 2933.8195
+              },
+              "scheduler_observations": {
+                "thread_cpu_samples": 4000,
+                "thread_cpu_missing": 0,
+                "thread_cpu_zero_samples": 0,
+                "median_wall_minus_thread_cpu_ns": -426.0,
+                "largest_abs_wall_deltas": [
+                  {
+                    "pair": 1119,
+                    "wall_delta_ns_B_minus_A": -73192,
+                    "A": {
+                      "position": 1,
+                      "wall_ns": 76395,
+                      "thread_cpu_ns": 83972,
+                      "wall_minus_thread_cpu_ns": -7577
+                    },
+                    "B": {
+                      "position": 0,
+                      "wall_ns": 3203,
+                      "thread_cpu_ns": 3718,
+                      "wall_minus_thread_cpu_ns": -515
+                    }
+                  },
+                  {
+                    "pair": 1705,
+                    "wall_delta_ns_B_minus_A": -57647,
+                    "A": {
+                      "position": 1,
+                      "wall_ns": 60816,
+                      "thread_cpu_ns": 67404,
+                      "wall_minus_thread_cpu_ns": -6588
+                    },
+                    "B": {
+                      "position": 0,
+                      "wall_ns": 3169,
+                      "thread_cpu_ns": 3671,
+                      "wall_minus_thread_cpu_ns": -502
+                    }
+                  },
+                  {
+                    "pair": 989,
+                    "wall_delta_ns_B_minus_A": 22753,
+                    "A": {
+                      "position": 0,
+                      "wall_ns": 3483,
+                      "thread_cpu_ns": 4040,
+                      "wall_minus_thread_cpu_ns": -557
+                    },
+                    "B": {
+                      "position": 1,
+                      "wall_ns": 26236,
+                      "thread_cpu_ns": 30507,
+                      "wall_minus_thread_cpu_ns": -4271
+                    }
+                  }
+                ]
+              }
+            },
+            "key": {
+              "pairs": 2000,
+              "mean_delta_ns_B_minus_A": 61.944,
+              "median_delta_ns_B_minus_A": 0.0,
+              "paired_t": 1.278501499739288,
+              "mean_ns": {
+                "A": 2895.1325,
+                "B": 2957.0765
+              },
+              "scheduler_observations": {
+                "thread_cpu_samples": 4000,
+                "thread_cpu_missing": 0,
+                "thread_cpu_zero_samples": 0,
+                "median_wall_minus_thread_cpu_ns": -425.0,
+                "largest_abs_wall_deltas": [
+                  {
+                    "pair": 1358,
+                    "wall_delta_ns_B_minus_A": 78179,
+                    "A": {
+                      "position": 1,
+                      "wall_ns": 4288,
+                      "thread_cpu_ns": 6031,
+                      "wall_minus_thread_cpu_ns": -1743
+                    },
+                    "B": {
+                      "position": 0,
+                      "wall_ns": 82467,
+                      "thread_cpu_ns": 92942,
+                      "wall_minus_thread_cpu_ns": -10475
+                    }
+                  },
+                  {
+                    "pair": 1423,
+                    "wall_delta_ns_B_minus_A": 46308,
+                    "A": {
+                      "position": 1,
+                      "wall_ns": 2883,
+                      "thread_cpu_ns": 3364,
+                      "wall_minus_thread_cpu_ns": -481
+                    },
+                    "B": {
+                      "position": 0,
+                      "wall_ns": 49191,
+                      "thread_cpu_ns": 54381,
+                      "wall_minus_thread_cpu_ns": -5190
+                    }
+                  },
+                  {
+                    "pair": 782,
+                    "wall_delta_ns_B_minus_A": -14085,
+                    "A": {
+                      "position": 0,
+                      "wall_ns": 17856,
+                      "thread_cpu_ns": 20320,
+                      "wall_minus_thread_cpu_ns": -2464
+                    },
+                    "B": {
+                      "position": 1,
+                      "wall_ns": 3771,
+                      "thread_cpu_ns": 4383,
+                      "wall_minus_thread_cpu_ns": -612
+                    }
+                  }
+                ]
+              }
+            }
+          }
+        },
+        {
+          "reject": {
+            "positive": {
+              "pairs": 2000,
+              "mean_delta_ns_B_minus_A": 4463.6195,
+              "median_delta_ns_B_minus_A": 4262.0,
+              "paired_t": 99.3597061807978,
+              "mean_ns": {
+                "A": 3016.699,
+                "B": 7480.3185
+              },
+              "scheduler_observations": {
+                "thread_cpu_samples": 4000,
+                "thread_cpu_missing": 0,
+                "thread_cpu_zero_samples": 0,
+                "median_wall_minus_thread_cpu_ns": -802.0,
+                "largest_abs_wall_deltas": [
+                  {
+                    "pair": 979,
+                    "wall_delta_ns_B_minus_A": 53046,
+                    "A": {
+                      "position": 1,
+                      "wall_ns": 3745,
+                      "thread_cpu_ns": 4372,
+                      "wall_minus_thread_cpu_ns": -627
+                    },
+                    "B": {
+                      "position": 0,
+                      "wall_ns": 56791,
+                      "thread_cpu_ns": 62469,
+                      "wall_minus_thread_cpu_ns": -5678
+                    }
+                  },
+                  {
+                    "pair": 308,
+                    "wall_delta_ns_B_minus_A": 41157,
+                    "A": {
+                      "position": 0,
+                      "wall_ns": 2771,
+                      "thread_cpu_ns": 3208,
+                      "wall_minus_thread_cpu_ns": -437
+                    },
+                    "B": {
+                      "position": 1,
+                      "wall_ns": 43928,
+                      "thread_cpu_ns": 48168,
+                      "wall_minus_thread_cpu_ns": -4240
+                    }
+                  },
+                  {
+                    "pair": 650,
+                    "wall_delta_ns_B_minus_A": 37825,
+                    "A": {
+                      "position": 1,
+                      "wall_ns": 4786,
+                      "thread_cpu_ns": 5587,
+                      "wall_minus_thread_cpu_ns": -801
+                    },
+                    "B": {
+                      "position": 0,
+                      "wall_ns": 42611,
+                      "thread_cpu_ns": 48963,
+                      "wall_minus_thread_cpu_ns": -6352
+                    }
+                  }
+                ]
+              }
+            },
+            "positive_large": {
+              "pairs": 2000,
+              "mean_delta_ns_B_minus_A": 17846.3355,
+              "median_delta_ns_B_minus_A": 17018.0,
+              "paired_t": 182.17487851590354,
+              "mean_ns": {
+                "A": 3003.6235,
+                "B": 20849.959
+              },
+              "scheduler_observations": {
+                "thread_cpu_samples": 4000,
+                "thread_cpu_missing": 0,
+                "thread_cpu_zero_samples": 0,
+                "median_wall_minus_thread_cpu_ns": -1919.0,
+                "largest_abs_wall_deltas": [
+                  {
+                    "pair": 1940,
+                    "wall_delta_ns_B_minus_A": 109388,
+                    "A": {
+                      "position": 0,
+                      "wall_ns": 3567,
+                      "thread_cpu_ns": 4112,
+                      "wall_minus_thread_cpu_ns": -545
+                    },
+                    "B": {
+                      "position": 1,
+                      "wall_ns": 112955,
+                      "thread_cpu_ns": 125171,
+                      "wall_minus_thread_cpu_ns": -12216
+                    }
+                  },
+                  {
+                    "pair": 1955,
+                    "wall_delta_ns_B_minus_A": 90499,
+                    "A": {
+                      "position": 0,
+                      "wall_ns": 3221,
+                      "thread_cpu_ns": 3725,
+                      "wall_minus_thread_cpu_ns": -504
+                    },
+                    "B": {
+                      "position": 1,
+                      "wall_ns": 93720,
+                      "thread_cpu_ns": 103558,
+                      "wall_minus_thread_cpu_ns": -9838
+                    }
+                  },
+                  {
+                    "pair": 1932,
+                    "wall_delta_ns_B_minus_A": 71170,
+                    "A": {
+                      "position": 0,
+                      "wall_ns": 3816,
+                      "thread_cpu_ns": 4618,
+                      "wall_minus_thread_cpu_ns": -802
+                    },
+                    "B": {
+                      "position": 1,
+                      "wall_ns": 74986,
+                      "thread_cpu_ns": 83022,
+                      "wall_minus_thread_cpu_ns": -8036
+                    }
+                  }
+                ]
+              }
+            },
+            "sham": {
+              "pairs": 2000,
+              "mean_delta_ns_B_minus_A": -59.9515,
+              "median_delta_ns_B_minus_A": 0.0,
+              "paired_t": -1.182121119245212,
+              "mean_ns": {
+                "A": 3117.0605,
+                "B": 3057.109
+              },
+              "scheduler_observations": {
+                "thread_cpu_samples": 4000,
+                "thread_cpu_missing": 0,
+                "thread_cpu_zero_samples": 0,
+                "median_wall_minus_thread_cpu_ns": -428.0,
+                "largest_abs_wall_deltas": [
+                  {
+                    "pair": 500,
+                    "wall_delta_ns_B_minus_A": -54073,
+                    "A": {
+                      "position": 1,
+                      "wall_ns": 57704,
+                      "thread_cpu_ns": 63692,
+                      "wall_minus_thread_cpu_ns": -5988
+                    },
+                    "B": {
+                      "position": 0,
+                      "wall_ns": 3631,
+                      "thread_cpu_ns": 4191,
+                      "wall_minus_thread_cpu_ns": -560
+                    }
+                  },
+                  {
+                    "pair": 563,
+                    "wall_delta_ns_B_minus_A": -36521,
+                    "A": {
+                      "position": 1,
+                      "wall_ns": 40293,
+                      "thread_cpu_ns": 44751,
+                      "wall_minus_thread_cpu_ns": -4458
+                    },
+                    "B": {
+                      "position": 0,
+                      "wall_ns": 3772,
+                      "thread_cpu_ns": 4359,
+                      "wall_minus_thread_cpu_ns": -587
+                    }
+                  },
+                  {
+                    "pair": 1051,
+                    "wall_delta_ns_B_minus_A": -32616,
+                    "A": {
+                      "position": 1,
+                      "wall_ns": 35960,
+                      "thread_cpu_ns": 53367,
+                      "wall_minus_thread_cpu_ns": -17407
+                    },
+                    "B": {
+                      "position": 0,
+                      "wall_ns": 3344,
+                      "thread_cpu_ns": 3884,
+                      "wall_minus_thread_cpu_ns": -540
+                    }
+                  }
+                ]
+              }
+            },
+            "key": {
+              "pairs": 2000,
+              "mean_delta_ns_B_minus_A": 7.4515,
+              "median_delta_ns_B_minus_A": 0.0,
+              "paired_t": 0.2032989072826212,
+              "mean_ns": {
+                "A": 2974.5015,
+                "B": 2981.953
+              },
+              "scheduler_observations": {
+                "thread_cpu_samples": 4000,
+                "thread_cpu_missing": 0,
+                "thread_cpu_zero_samples": 0,
+                "median_wall_minus_thread_cpu_ns": -424.0,
+                "largest_abs_wall_deltas": [
+                  {
+                    "pair": 580,
+                    "wall_delta_ns_B_minus_A": -38968,
+                    "A": {
+                      "position": 0,
+                      "wall_ns": 42667,
+                      "thread_cpu_ns": 46933,
+                      "wall_minus_thread_cpu_ns": -4266
+                    },
+                    "B": {
+                      "position": 1,
+                      "wall_ns": 3699,
+                      "thread_cpu_ns": 4306,
+                      "wall_minus_thread_cpu_ns": -607
+                    }
+                  },
+                  {
+                    "pair": 232,
+                    "wall_delta_ns_B_minus_A": -25217,
+                    "A": {
+                      "position": 0,
+                      "wall_ns": 28935,
+                      "thread_cpu_ns": 32051,
+                      "wall_minus_thread_cpu_ns": -3116
+                    },
+                    "B": {
+                      "position": 1,
+                      "wall_ns": 3718,
+                      "thread_cpu_ns": 4312,
+                      "wall_minus_thread_cpu_ns": -594
+                    }
+                  },
+                  {
+                    "pair": 1600,
+                    "wall_delta_ns_B_minus_A": 22444,
+                    "A": {
+                      "position": 1,
+                      "wall_ns": 3833,
+                      "thread_cpu_ns": 4481,
+                      "wall_minus_thread_cpu_ns": -648
+                    },
+                    "B": {
+                      "position": 0,
+                      "wall_ns": 26277,
+                      "thread_cpu_ns": 30796,
+                      "wall_minus_thread_cpu_ns": -4519
+                    }
+                  }
+                ]
+              }
+            }
+          }
+        }
+      ],
+      "scheduler": [
+        {
+          "schedstats_enabled": null,
+          "streams": {
+            "reject": {
+              "positive": {
+                "status": "nonzero_wait_reported",
+                "delta": {
+                  "cpu_runtime_ns": 33232747,
+                  "runqueue_wait_ns": 343934,
+                  "timeslices": 1
+                }
+              },
+              "positive_large": {
+                "status": "nonzero_wait_reported",
+                "delta": {
+                  "cpu_runtime_ns": 63417255,
+                  "runqueue_wait_ns": 11946,
+                  "timeslices": 1
+                }
+              },
+              "sham": {
+                "status": "zero_wait_reported",
+                "delta": {
+                  "cpu_runtime_ns": 22221358,
+                  "runqueue_wait_ns": 0,
+                  "timeslices": 0
+                }
+              },
+              "key": {
+                "status": "zero_wait_reported",
+                "delta": {
+                  "cpu_runtime_ns": 21710846,
+                  "runqueue_wait_ns": 0,
+                  "timeslices": 0
+                }
+              }
+            }
+          }
+        },
+        {
+          "schedstats_enabled": null,
+          "streams": {
+            "reject": {
+              "key": {
+                "status": "zero_wait_reported",
+                "delta": {
+                  "cpu_runtime_ns": 22849900,
+                  "runqueue_wait_ns": 0,
+                  "timeslices": 0
+                }
+              },
+              "sham": {
+                "status": "zero_wait_reported",
+                "delta": {
+                  "cpu_runtime_ns": 23054528,
+                  "runqueue_wait_ns": 0,
+                  "timeslices": 0
+                }
+              },
+              "positive_large": {
+                "status": "zero_wait_reported",
+                "delta": {
+                  "cpu_runtime_ns": 64819868,
+                  "runqueue_wait_ns": 0,
+                  "timeslices": 0
+                }
+              },
+              "positive": {
+                "status": "zero_wait_reported",
+                "delta": {
+                  "cpu_runtime_ns": 32879603,
+                  "runqueue_wait_ns": 0,
+                  "timeslices": 0
+                }
+              }
+            }
+          }
+        }
+      ],
+      "max_wall_minus_thread_cpu_ns": [
+        -405,
+        -402
+      ],
+      "verdict": "no_threshold_crossing_in_sample"
+    },
+    "oci": {
+      "archive_sha256": "c03ba6030cb5461b7f7eb14bd5ca07ab701b8b6ef187fe0cea2d51f7a256354e",
+      "architecture": "aarch64",
+      "kernel": "7.0.0-1013-oracle",
+      "cpu": 0,
+      "source_file_sha256_verified": {
+        "lock": "e3e37d684e40ae9b1a977cba14de249d5856442ae29e707259c4e6232b8b8436",
+        "probe": "be3f3762d0238e215a40b6faebf8db0de60127d6332269128e08b1ba2c93ee75",
+        "collector": "d348866ce31f89a5e262e7dccf720a98bbbc151ad733386b589189e8c7bc4082"
+      },
+      "libtest_sha256_operator_reported": "6c324cd755fa2db143cc674da41f0d0de5644ae5fd0a970beb094820efe66f2e",
+      "samples_per_trial": [
+        16000,
+        16000
+      ],
+      "trials": [
+        {
+          "reject": {
+            "positive": {
+              "pairs": 2000,
+              "mean_delta_ns_B_minus_A": 1362.7905,
+              "median_delta_ns_B_minus_A": 1400.0,
+              "paired_t": 40.0617730940004,
+              "mean_ns": {
+                "A": 11542.035,
+                "B": 12904.8255
+              },
+              "scheduler_observations": {
+                "thread_cpu_samples": 4000,
+                "thread_cpu_missing": 0,
+                "thread_cpu_zero_samples": 0,
+                "median_wall_minus_thread_cpu_ns": -360.0,
+                "largest_abs_wall_deltas": [
+                  {
+                    "pair": 1928,
+                    "wall_delta_ns_B_minus_A": -35040,
+                    "A": {
+                      "position": 1,
+                      "wall_ns": 48120,
+                      "thread_cpu_ns": 24920,
+                      "wall_minus_thread_cpu_ns": 23200
+                    },
+                    "B": {
+                      "position": 0,
+                      "wall_ns": 13080,
+                      "thread_cpu_ns": 13440,
+                      "wall_minus_thread_cpu_ns": -360
+                    }
+                  },
+                  {
+                    "pair": 192,
+                    "wall_delta_ns_B_minus_A": -20720,
+                    "A": {
+                      "position": 1,
+                      "wall_ns": 33560,
+                      "thread_cpu_ns": 24880,
+                      "wall_minus_thread_cpu_ns": 8680
+                    },
+                    "B": {
+                      "position": 0,
+                      "wall_ns": 12840,
+                      "thread_cpu_ns": 13200,
+                      "wall_minus_thread_cpu_ns": -360
+                    }
+                  },
+                  {
+                    "pair": 771,
+                    "wall_delta_ns_B_minus_A": -20200,
+                    "A": {
+                      "position": 1,
+                      "wall_ns": 33040,
+                      "thread_cpu_ns": 20680,
+                      "wall_minus_thread_cpu_ns": 12360
+                    },
+                    "B": {
+                      "position": 0,
+                      "wall_ns": 12840,
+                      "thread_cpu_ns": 13160,
+                      "wall_minus_thread_cpu_ns": -320
+                    }
+                  }
+                ]
+              }
+            },
+            "positive_large": {
+              "pairs": 2000,
+              "mean_delta_ns_B_minus_A": 5643.987,
+              "median_delta_ns_B_minus_A": 5640.0,
+              "paired_t": 124.00715438985847,
+              "mean_ns": {
+                "A": 11551.8175,
+                "B": 17195.8045
+              },
+              "scheduler_observations": {
+                "thread_cpu_samples": 4000,
+                "thread_cpu_missing": 0,
+                "thread_cpu_zero_samples": 0,
+                "median_wall_minus_thread_cpu_ns": -360.0,
+                "largest_abs_wall_deltas": [
+                  {
+                    "pair": 235,
+                    "wall_delta_ns_B_minus_A": -44760,
+                    "A": {
+                      "position": 1,
+                      "wall_ns": 61840,
+                      "thread_cpu_ns": 19920,
+                      "wall_minus_thread_cpu_ns": 41920
+                    },
+                    "B": {
+                      "position": 0,
+                      "wall_ns": 17080,
+                      "thread_cpu_ns": 17480,
+                      "wall_minus_thread_cpu_ns": -400
+                    }
+                  },
+                  {
+                    "pair": 1371,
+                    "wall_delta_ns_B_minus_A": -37680,
+                    "A": {
+                      "position": 1,
+                      "wall_ns": 54720,
+                      "thread_cpu_ns": 22200,
+                      "wall_minus_thread_cpu_ns": 32520
+                    },
+                    "B": {
+                      "position": 0,
+                      "wall_ns": 17040,
+                      "thread_cpu_ns": 17440,
+                      "wall_minus_thread_cpu_ns": -400
+                    }
+                  },
+                  {
+                    "pair": 145,
+                    "wall_delta_ns_B_minus_A": 23320,
+                    "A": {
+                      "position": 0,
+                      "wall_ns": 11400,
+                      "thread_cpu_ns": 11800,
+                      "wall_minus_thread_cpu_ns": -400
+                    },
+                    "B": {
+                      "position": 1,
+                      "wall_ns": 34720,
+                      "thread_cpu_ns": 35160,
+                      "wall_minus_thread_cpu_ns": -440
+                    }
+                  }
+                ]
+              }
+            },
+            "sham": {
+              "pairs": 2000,
+              "mean_delta_ns_B_minus_A": -316.9865,
+              "median_delta_ns_B_minus_A": 0.0,
+              "paired_t": -0.9957948938674529,
+              "mean_ns": {
+                "A": 11851.678,
+                "B": 11534.6915
+              },
+              "scheduler_observations": {
+                "thread_cpu_samples": 4000,
+                "thread_cpu_missing": 0,
+                "thread_cpu_zero_samples": 0,
+                "median_wall_minus_thread_cpu_ns": -360.0,
+                "largest_abs_wall_deltas": [
+                  {
+                    "pair": 1957,
+                    "wall_delta_ns_B_minus_A": -631163,
+                    "A": {
+                      "position": 1,
+                      "wall_ns": 642603,
+                      "thread_cpu_ns": 24920,
+                      "wall_minus_thread_cpu_ns": 617683
+                    },
+                    "B": {
+                      "position": 0,
+                      "wall_ns": 11440,
+                      "thread_cpu_ns": 11800,
+                      "wall_minus_thread_cpu_ns": -360
+                    }
+                  },
+                  {
+                    "pair": 1006,
+                    "wall_delta_ns_B_minus_A": -38760,
+                    "A": {
+                      "position": 0,
+                      "wall_ns": 50360,
+                      "thread_cpu_ns": 20640,
+                      "wall_minus_thread_cpu_ns": 29720
+                    },
+                    "B": {
+                      "position": 1,
+                      "wall_ns": 11600,
+                      "thread_cpu_ns": 12000,
+                      "wall_minus_thread_cpu_ns": -400
+                    }
+                  },
+                  {
+                    "pair": 1471,
+                    "wall_delta_ns_B_minus_A": 27199,
+                    "A": {
+                      "position": 1,
+                      "wall_ns": 11481,
+                      "thread_cpu_ns": 11840,
+                      "wall_minus_thread_cpu_ns": -359
+                    },
+                    "B": {
+                      "position": 0,
+                      "wall_ns": 38680,
+                      "thread_cpu_ns": 20440,
+                      "wall_minus_thread_cpu_ns": 18240
+                    }
+                  }
+                ]
+              }
+            },
+            "key": {
+              "pairs": 2000,
+              "mean_delta_ns_B_minus_A": -59.076,
+              "median_delta_ns_B_minus_A": 0.0,
+              "paired_t": -1.5466116121303688,
+              "mean_ns": {
+                "A": 11544.113,
+                "B": 11485.037
+              },
+              "scheduler_observations": {
+                "thread_cpu_samples": 4000,
+                "thread_cpu_missing": 0,
+                "thread_cpu_zero_samples": 0,
+                "median_wall_minus_thread_cpu_ns": -360.0,
+                "largest_abs_wall_deltas": [
+                  {
+                    "pair": 754,
+                    "wall_delta_ns_B_minus_A": -49840,
+                    "A": {
+                      "position": 0,
+                      "wall_ns": 61400,
+                      "thread_cpu_ns": 23480,
+                      "wall_minus_thread_cpu_ns": 37920
+                    },
+                    "B": {
+                      "position": 1,
+                      "wall_ns": 11560,
+                      "thread_cpu_ns": 11920,
+                      "wall_minus_thread_cpu_ns": -360
+                    }
+                  },
+                  {
+                    "pair": 623,
+                    "wall_delta_ns_B_minus_A": -21360,
+                    "A": {
+                      "position": 1,
+                      "wall_ns": 32760,
+                      "thread_cpu_ns": 33360,
+                      "wall_minus_thread_cpu_ns": -600
+                    },
+                    "B": {
+                      "position": 0,
+                      "wall_ns": 11400,
+                      "thread_cpu_ns": 11760,
+                      "wall_minus_thread_cpu_ns": -360
+                    }
+                  },
+                  {
+                    "pair": 342,
+                    "wall_delta_ns_B_minus_A": -20080,
+                    "A": {
+                      "position": 1,
+                      "wall_ns": 31480,
+                      "thread_cpu_ns": 18320,
+                      "wall_minus_thread_cpu_ns": 13160
+                    },
+                    "B": {
+                      "position": 0,
+                      "wall_ns": 11400,
+                      "thread_cpu_ns": 11760,
+                      "wall_minus_thread_cpu_ns": -360
+                    }
+                  }
+                ]
+              }
+            }
+          }
+        },
+        {
+          "reject": {
+            "positive": {
+              "pairs": 2000,
+              "mean_delta_ns_B_minus_A": 1520.486,
+              "median_delta_ns_B_minus_A": 1400.0,
+              "paired_t": 8.027745798545785,
+              "mean_ns": {
+                "A": 11568.5365,
+                "B": 13089.0225
+              },
+              "scheduler_observations": {
+                "thread_cpu_samples": 4000,
+                "thread_cpu_missing": 0,
+                "thread_cpu_zero_samples": 0,
+                "median_wall_minus_thread_cpu_ns": -360.0,
+                "largest_abs_wall_deltas": [
+                  {
+                    "pair": 35,
+                    "wall_delta_ns_B_minus_A": 373602,
+                    "A": {
+                      "position": 1,
+                      "wall_ns": 11800,
+                      "thread_cpu_ns": 12200,
+                      "wall_minus_thread_cpu_ns": -400
+                    },
+                    "B": {
+                      "position": 0,
+                      "wall_ns": 385402,
+                      "thread_cpu_ns": 367840,
+                      "wall_minus_thread_cpu_ns": 17562
+                    }
+                  },
+                  {
+                    "pair": 1751,
+                    "wall_delta_ns_B_minus_A": -32560,
+                    "A": {
+                      "position": 0,
+                      "wall_ns": 45400,
+                      "thread_cpu_ns": 24000,
+                      "wall_minus_thread_cpu_ns": 21400
+                    },
+                    "B": {
+                      "position": 1,
+                      "wall_ns": 12840,
+                      "thread_cpu_ns": 13240,
+                      "wall_minus_thread_cpu_ns": -400
+                    }
+                  },
+                  {
+                    "pair": 107,
+                    "wall_delta_ns_B_minus_A": -20760,
+                    "A": {
+                      "position": 1,
+                      "wall_ns": 33640,
+                      "thread_cpu_ns": 34280,
+                      "wall_minus_thread_cpu_ns": -640
+                    },
+                    "B": {
+                      "position": 0,
+                      "wall_ns": 12880,
+                      "thread_cpu_ns": 13200,
+                      "wall_minus_thread_cpu_ns": -320
+                    }
+                  }
+                ]
+              }
+            },
+            "positive_large": {
+              "pairs": 2000,
+              "mean_delta_ns_B_minus_A": 5666.3885,
+              "median_delta_ns_B_minus_A": 5640.0,
+              "paired_t": 148.955922171611,
+              "mean_ns": {
+                "A": 11519.777,
+                "B": 17186.1655
+              },
+              "scheduler_observations": {
+                "thread_cpu_samples": 4000,
+                "thread_cpu_missing": 0,
+                "thread_cpu_zero_samples": 0,
+                "median_wall_minus_thread_cpu_ns": -360.0,
+                "largest_abs_wall_deltas": [
+                  {
+                    "pair": 1379,
+                    "wall_delta_ns_B_minus_A": -44960,
+                    "A": {
+                      "position": 0,
+                      "wall_ns": 62120,
+                      "thread_cpu_ns": 26280,
+                      "wall_minus_thread_cpu_ns": 35840
+                    },
+                    "B": {
+                      "position": 1,
+                      "wall_ns": 17160,
+                      "thread_cpu_ns": 17560,
+                      "wall_minus_thread_cpu_ns": -400
+                    }
+                  },
+                  {
+                    "pair": 717,
+                    "wall_delta_ns_B_minus_A": 25560,
+                    "A": {
+                      "position": 1,
+                      "wall_ns": 11440,
+                      "thread_cpu_ns": 11800,
+                      "wall_minus_thread_cpu_ns": -360
+                    },
+                    "B": {
+                      "position": 0,
+                      "wall_ns": 37000,
+                      "thread_cpu_ns": 37640,
+                      "wall_minus_thread_cpu_ns": -640
+                    }
+                  },
+                  {
+                    "pair": 842,
+                    "wall_delta_ns_B_minus_A": 23001,
+                    "A": {
+                      "position": 1,
+                      "wall_ns": 11400,
+                      "thread_cpu_ns": 11800,
+                      "wall_minus_thread_cpu_ns": -400
+                    },
+                    "B": {
+                      "position": 0,
+                      "wall_ns": 34401,
+                      "thread_cpu_ns": 34880,
+                      "wall_minus_thread_cpu_ns": -479
+                    }
+                  }
+                ]
+              }
+            },
+            "sham": {
+              "pairs": 2000,
+              "mean_delta_ns_B_minus_A": 2.263,
+              "median_delta_ns_B_minus_A": 0.0,
+              "paired_t": 0.039951350798932875,
+              "mean_ns": {
+                "A": 11543.945,
+                "B": 11546.208
+              },
+              "scheduler_observations": {
+                "thread_cpu_samples": 4000,
+                "thread_cpu_missing": 0,
+                "thread_cpu_zero_samples": 0,
+                "median_wall_minus_thread_cpu_ns": -360.0,
+                "largest_abs_wall_deltas": [
+                  {
+                    "pair": 1106,
+                    "wall_delta_ns_B_minus_A": 71840,
+                    "A": {
+                      "position": 1,
+                      "wall_ns": 11680,
+                      "thread_cpu_ns": 12040,
+                      "wall_minus_thread_cpu_ns": -360
+                    },
+                    "B": {
+                      "position": 0,
+                      "wall_ns": 83520,
+                      "thread_cpu_ns": 20560,
+                      "wall_minus_thread_cpu_ns": 62960
+                    }
+                  },
+                  {
+                    "pair": 1935,
+                    "wall_delta_ns_B_minus_A": -46720,
+                    "A": {
+                      "position": 0,
+                      "wall_ns": 58240,
+                      "thread_cpu_ns": 24440,
+                      "wall_minus_thread_cpu_ns": 33800
+                    },
+                    "B": {
+                      "position": 1,
+                      "wall_ns": 11520,
+                      "thread_cpu_ns": 11880,
+                      "wall_minus_thread_cpu_ns": -360
+                    }
+                  },
+                  {
+                    "pair": 35,
+                    "wall_delta_ns_B_minus_A": 43480,
+                    "A": {
+                      "position": 0,
+                      "wall_ns": 11400,
+                      "thread_cpu_ns": 11760,
+                      "wall_minus_thread_cpu_ns": -360
+                    },
+                    "B": {
+                      "position": 1,
+                      "wall_ns": 54880,
+                      "thread_cpu_ns": 21000,
+                      "wall_minus_thread_cpu_ns": 33880
+                    }
+                  }
+                ]
+              }
+            },
+            "key": {
+              "pairs": 2000,
+              "mean_delta_ns_B_minus_A": 365.742,
+              "median_delta_ns_B_minus_A": 0.0,
+              "paired_t": 1.1344838344328132,
+              "mean_ns": {
+                "A": 11505.9145,
+                "B": 11871.6565
+              },
+              "scheduler_observations": {
+                "thread_cpu_samples": 4000,
+                "thread_cpu_missing": 0,
+                "thread_cpu_zero_samples": 0,
+                "median_wall_minus_thread_cpu_ns": -360.0,
+                "largest_abs_wall_deltas": [
+                  {
+                    "pair": 1028,
+                    "wall_delta_ns_B_minus_A": 640483,
+                    "A": {
+                      "position": 1,
+                      "wall_ns": 11640,
+                      "thread_cpu_ns": 12040,
+                      "wall_minus_thread_cpu_ns": -400
+                    },
+                    "B": {
+                      "position": 0,
+                      "wall_ns": 652123,
+                      "thread_cpu_ns": 24160,
+                      "wall_minus_thread_cpu_ns": 627963
+                    }
+                  },
+                  {
+                    "pair": 848,
+                    "wall_delta_ns_B_minus_A": 33840,
+                    "A": {
+                      "position": 1,
+                      "wall_ns": 11480,
+                      "thread_cpu_ns": 11840,
+                      "wall_minus_thread_cpu_ns": -360
+                    },
+                    "B": {
+                      "position": 0,
+                      "wall_ns": 45320,
+                      "thread_cpu_ns": 24440,
+                      "wall_minus_thread_cpu_ns": 20880
+                    }
+                  },
+                  {
+                    "pair": 787,
+                    "wall_delta_ns_B_minus_A": 23160,
+                    "A": {
+                      "position": 1,
+                      "wall_ns": 11400,
+                      "thread_cpu_ns": 11800,
+                      "wall_minus_thread_cpu_ns": -400
+                    },
+                    "B": {
+                      "position": 0,
+                      "wall_ns": 34560,
+                      "thread_cpu_ns": 35000,
+                      "wall_minus_thread_cpu_ns": -440
+                    }
+                  }
+                ]
+              }
+            }
+          }
+        }
+      ],
+      "scheduler": [
+        {
+          "schedstats_enabled": false,
+          "streams": {
+            "reject": {
+              "positive": {
+                "status": "disabled",
+                "delta": {
+                  "cpu_runtime_ns": 60175480,
+                  "runqueue_wait_ns": 69400,
+                  "timeslices": 5
+                }
+              },
+              "positive_large": {
+                "status": "disabled",
+                "delta": {
+                  "cpu_runtime_ns": 68121800,
+                  "runqueue_wait_ns": 84280,
+                  "timeslices": 3
+                }
+              },
+              "sham": {
+                "status": "disabled",
+                "delta": {
+                  "cpu_runtime_ns": 56106920,
+                  "runqueue_wait_ns": 713760,
+                  "timeslices": 7
+                }
+              },
+              "key": {
+                "status": "disabled",
+                "delta": {
+                  "cpu_runtime_ns": 55929280,
+                  "runqueue_wait_ns": 57120,
+                  "timeslices": 3
+                }
+              }
+            }
+          }
+        },
+        {
+          "schedstats_enabled": false,
+          "streams": {
+            "reject": {
+              "key": {
+                "status": "disabled",
+                "delta": {
+                  "cpu_runtime_ns": 56139040,
+                  "runqueue_wait_ns": 713400,
+                  "timeslices": 7
+                }
+              },
+              "sham": {
+                "status": "disabled",
+                "delta": {
+                  "cpu_runtime_ns": 56037400,
+                  "runqueue_wait_ns": 164400,
+                  "timeslices": 5
+                }
+              },
+              "positive_large": {
+                "status": "disabled",
+                "delta": {
+                  "cpu_runtime_ns": 68184800,
+                  "runqueue_wait_ns": 41920,
+                  "timeslices": 2
+                }
+              },
+              "positive": {
+                "status": "disabled",
+                "delta": {
+                  "cpu_runtime_ns": 59392040,
+                  "runqueue_wait_ns": 83720,
+                  "timeslices": 3
+                }
+              }
+            }
+          }
+        }
+      ],
+      "max_wall_minus_thread_cpu_ns": [
+        617683,
+        627963
+      ],
+      "verdict": "no_threshold_crossing_in_sample"
+    }
+  }
+}
