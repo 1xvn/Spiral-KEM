@@ -16,6 +16,8 @@ The v0.3 family operates over $R_q = ℤ_q[x]/(x^n + 1)$. Its default research p
 
 The project name comes from earlier experiments with public spiral transforms. Those transforms were removed from the v0.3 cryptographic core after algebraic analysis showed that the public invertible coordinate change could be eliminated. See the [mathematical specification](originals/spiral_kem_v03_math_spec.md).
 
+The [decryption-failure recalculation](code/opt2/DECRYPTION_FAILURE.md) reproduces both published ideal-model bounds and gives a deterministic correctness condition for individual research keys. The population rate for fixed SHAKE remains open.
+
 ## What OPT2 changes
 
 OPT1 specializes the fixed $\eta = 1$ sampler. OPT2 uses `Struct` for byte conversion/integer packing and adds the **SKW1** lossless 12-bit transport format. It preserves coefficients, parameters, the legacy serialization API, and internal KEM hash inputs.
