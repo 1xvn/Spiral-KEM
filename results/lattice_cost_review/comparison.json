@@ -1,0 +1,370 @@
+{
+  "scope": "single-public-instance generic LWE costs",
+  "estimator_commit": "e4333d9bf9ef42fd8a29651b0c559fba7ce0d834",
+  "source_mapping": {
+    "ring_degree": 256,
+    "module_rank": 2,
+    "q": 3329,
+    "lwe_n": 512,
+    "lwe_m": 512,
+    "fixture_coefficients_checked": {
+      "t": 512,
+      "u": 512,
+      "v": 256
+    },
+    "current_opt2_sha256": "74c1ff02669d5b6eea87ccf650bc6930bc1822ffe8568fa68ce79fb29958a118",
+    "legacy_pk_sha256": "55f3ffa04326533d6a35046a7a7138efbc55fd1fd30f3cb52818d1067bea92bb",
+    "legacy_ct_sha256": "71b9dea754b62c2956c9e580d3289c7d8279848c3154c7ecd1ea59fc10babb93"
+  },
+  "independent_primal_gsa": {
+    "spiral_cbd1": {
+      "matzov_classical": {
+        "log2_rop": 126.8230732462348,
+        "beta": 345,
+        "d": 928
+      },
+      "core_svp_classical": {
+        "log2_rop": 100.74,
+        "beta": 345,
+        "d": 928
+      },
+      "core_svp_quantum_primal": {
+        "log2_rop": 91.42500000000001,
+        "beta": 345,
+        "d": 928
+      }
+    },
+    "kyber512_pk_reference_cbd3": {
+      "matzov_classical": {
+        "log2_rop": 143.77173340505107,
+        "beta": 406,
+        "d": 998
+      },
+      "core_svp_classical": {
+        "log2_rop": 118.55199999999999,
+        "beta": 406,
+        "d": 998
+      },
+      "core_svp_quantum_primal": {
+        "log2_rop": 107.59,
+        "beta": 406,
+        "d": 998
+      }
+    }
+  },
+  "input_archives_sha256": {
+    "Spiral_v031_n256_eta1_attack_costs.zip": "62c49219c77cb25369b94537fb43afd5b5398ea48f50539d16da3111859f7bf2",
+    "Spiral_KEM_six_candidates_results.zip": "85d4e179009658c37db188ec1c2f6ece0dbee6900932f8e1a84e32e02fb899c0",
+    "sage-replay.zip": "0fbc19797e177faa511a7f4d21c427061ec0000bca9657dd167756b1df086394"
+  },
+  "rows": [
+    {
+      "profile": "kyber512_pk_reference_cbd3",
+      "model": "core_svp_classical",
+      "method": "dual_hybrid",
+      "archived_csv_log2_rop": "115.509894",
+      "raw_text_log2_rop": 115.50989392453226,
+      "fresh_log2_rop": 115.50989392453226,
+      "second_archive_log2_rop": 115.50989392453226,
+      "log2_mem": null,
+      "log2_N": 81.41176357729279,
+      "returned_m": "512",
+      "raw_name": "kyber512_pk_reference_cbd3__core_svp_classical__dual_hybrid",
+      "discrepancies": []
+    },
+    {
+      "profile": "kyber512_pk_reference_cbd3",
+      "model": "core_svp_classical",
+      "method": "usvp",
+      "archived_csv_log2_rop": "118.552000",
+      "raw_text_log2_rop": 118.55199999999999,
+      "fresh_log2_rop": 118.55199999999999,
+      "second_archive_log2_rop": 118.55199999999999,
+      "log2_mem": null,
+      "log2_N": null,
+      "returned_m": null,
+      "raw_name": "kyber512_pk_reference_cbd3__core_svp_classical__usvp",
+      "discrepancies": []
+    },
+    {
+      "profile": "kyber512_pk_reference_cbd3",
+      "model": "core_svp_quantum_primal",
+      "method": "usvp",
+      "archived_csv_log2_rop": "107.590000",
+      "raw_text_log2_rop": 107.59,
+      "fresh_log2_rop": 107.59,
+      "second_archive_log2_rop": 107.59,
+      "log2_mem": null,
+      "log2_N": null,
+      "returned_m": null,
+      "raw_name": "kyber512_pk_reference_cbd3__core_svp_quantum_primal__usvp",
+      "discrepancies": []
+    },
+    {
+      "profile": "kyber512_pk_reference_cbd3",
+      "model": "matzov_classical",
+      "method": "arora_gb",
+      "archived_csv_log2_rop": "Infinity",
+      "raw_text_log2_rop": "Infinity",
+      "fresh_log2_rop": "Infinity",
+      "second_archive_log2_rop": "Infinity",
+      "log2_mem": null,
+      "log2_N": null,
+      "returned_m": null,
+      "raw_name": "kyber512_pk_reference_cbd3__matzov_classical__arora_gb",
+      "discrepancies": []
+    },
+    {
+      "profile": "kyber512_pk_reference_cbd3",
+      "model": "matzov_classical",
+      "method": "bdd",
+      "archived_csv_log2_rop": "140.199473",
+      "raw_text_log2_rop": 140.1994731076207,
+      "fresh_log2_rop": 140.1994731076207,
+      "second_archive_log2_rop": 140.1994731076207,
+      "log2_mem": null,
+      "log2_N": null,
+      "returned_m": null,
+      "raw_name": "kyber512_pk_reference_cbd3__matzov_classical__bdd",
+      "discrepancies": []
+    },
+    {
+      "profile": "kyber512_pk_reference_cbd3",
+      "model": "matzov_classical",
+      "method": "bdd_hybrid",
+      "archived_csv_log2_rop": "140.208243",
+      "raw_text_log2_rop": 140.20824345474767,
+      "fresh_log2_rop": 140.20824345474767,
+      "second_archive_log2_rop": 140.20824345474767,
+      "log2_mem": null,
+      "log2_N": null,
+      "returned_m": null,
+      "raw_name": "kyber512_pk_reference_cbd3__matzov_classical__bdd_hybrid",
+      "discrepancies": []
+    },
+    {
+      "profile": "kyber512_pk_reference_cbd3",
+      "model": "matzov_classical",
+      "method": "bdd_mitm_hybrid",
+      "archived_csv_log2_rop": "262.070429",
+      "raw_text_log2_rop": 262.0704287490645,
+      "fresh_log2_rop": 262.0704287490645,
+      "second_archive_log2_rop": 262.0704287490645,
+      "log2_mem": null,
+      "log2_N": null,
+      "returned_m": null,
+      "raw_name": "kyber512_pk_reference_cbd3__matzov_classical__bdd_mitm_hybrid",
+      "discrepancies": []
+    },
+    {
+      "profile": "kyber512_pk_reference_cbd3",
+      "model": "matzov_classical",
+      "method": "bkw",
+      "archived_csv_log2_rop": "178.760167",
+      "raw_text_log2_rop": 178.76016735221356,
+      "fresh_log2_rop": 178.76016735221356,
+      "second_archive_log2_rop": 178.76016735221356,
+      "log2_mem": 167.8122241719637,
+      "log2_N": null,
+      "returned_m": "1.6424530413707464e+50",
+      "raw_name": "kyber512_pk_reference_cbd3__matzov_classical__bkw",
+      "discrepancies": []
+    },
+    {
+      "profile": "kyber512_pk_reference_cbd3",
+      "model": "matzov_classical",
+      "method": "dual",
+      "archived_csv_log2_rop": "149.884251",
+      "raw_text_log2_rop": 149.88425094340909,
+      "fresh_log2_rop": 149.88425094340909,
+      "second_archive_log2_rop": 149.88425094340909,
+      "log2_mem": 97.13222625766734,
+      "log2_N": null,
+      "returned_m": "512",
+      "raw_name": "kyber512_pk_reference_cbd3__matzov_classical__dual",
+      "discrepancies": []
+    },
+    {
+      "profile": "kyber512_pk_reference_cbd3",
+      "model": "matzov_classical",
+      "method": "dual_hybrid",
+      "archived_csv_log2_rop": "139.656041",
+      "raw_text_log2_rop": 139.65604148085845,
+      "fresh_log2_rop": 139.65604148085845,
+      "second_archive_log2_rop": 139.65604148085845,
+      "log2_mem": null,
+      "log2_N": 81.07876654508503,
+      "returned_m": "512",
+      "raw_name": "kyber512_pk_reference_cbd3__matzov_classical__dual_hybrid",
+      "discrepancies": []
+    },
+    {
+      "profile": "kyber512_pk_reference_cbd3",
+      "model": "matzov_classical",
+      "method": "usvp",
+      "archived_csv_log2_rop": "143.771733",
+      "raw_text_log2_rop": 143.77173340505107,
+      "fresh_log2_rop": 143.77173340505107,
+      "second_archive_log2_rop": 143.77173340505107,
+      "log2_mem": null,
+      "log2_N": null,
+      "returned_m": null,
+      "raw_name": "kyber512_pk_reference_cbd3__matzov_classical__usvp",
+      "discrepancies": []
+    },
+    {
+      "profile": "spiral_cbd1",
+      "model": "core_svp_classical",
+      "method": "dual_hybrid",
+      "archived_csv_log2_rop": "97.901991",
+      "raw_text_log2_rop": 97.90199103096104,
+      "fresh_log2_rop": 97.90199104567593,
+      "second_archive_log2_rop": 97.90199104567593,
+      "log2_mem": null,
+      "log2_N": 66.68150377913874,
+      "returned_m": "512",
+      "raw_name": "spiral_cbd1__core_svp_classical__dual_hybrid",
+      "discrepancies": []
+    },
+    {
+      "profile": "spiral_cbd1",
+      "model": "core_svp_classical",
+      "method": "usvp",
+      "archived_csv_log2_rop": "100.740000",
+      "raw_text_log2_rop": 100.74,
+      "fresh_log2_rop": 100.74,
+      "second_archive_log2_rop": 100.74,
+      "log2_mem": null,
+      "log2_N": null,
+      "returned_m": null,
+      "raw_name": "spiral_cbd1__core_svp_classical__usvp",
+      "discrepancies": []
+    },
+    {
+      "profile": "spiral_cbd1",
+      "model": "core_svp_quantum_primal",
+      "method": "usvp",
+      "archived_csv_log2_rop": "91.425000",
+      "raw_text_log2_rop": 91.42500000000001,
+      "fresh_log2_rop": 91.42500000000001,
+      "second_archive_log2_rop": 91.42500000000001,
+      "log2_mem": null,
+      "log2_N": null,
+      "returned_m": null,
+      "raw_name": "spiral_cbd1__core_svp_quantum_primal__usvp",
+      "discrepancies": []
+    },
+    {
+      "profile": "spiral_cbd1",
+      "model": "matzov_classical",
+      "method": "arora_gb",
+      "archived_csv_log2_rop": "Infinity",
+      "raw_text_log2_rop": "Infinity",
+      "fresh_log2_rop": "Infinity",
+      "second_archive_log2_rop": "Infinity",
+      "log2_mem": null,
+      "log2_N": null,
+      "returned_m": null,
+      "raw_name": "spiral_cbd1__matzov_classical__arora_gb",
+      "discrepancies": []
+    },
+    {
+      "profile": "spiral_cbd1",
+      "model": "matzov_classical",
+      "method": "bdd",
+      "archived_csv_log2_rop": "123.537624",
+      "raw_text_log2_rop": 123.53762384132882,
+      "fresh_log2_rop": 123.53762384132882,
+      "second_archive_log2_rop": 123.53762384132882,
+      "log2_mem": null,
+      "log2_N": null,
+      "returned_m": null,
+      "raw_name": "spiral_cbd1__matzov_classical__bdd",
+      "discrepancies": []
+    },
+    {
+      "profile": "spiral_cbd1",
+      "model": "matzov_classical",
+      "method": "bdd_hybrid",
+      "archived_csv_log2_rop": "123.563066",
+      "raw_text_log2_rop": 123.56306550031343,
+      "fresh_log2_rop": 123.56306550031343,
+      "second_archive_log2_rop": 123.56306550031343,
+      "log2_mem": null,
+      "log2_N": null,
+      "returned_m": null,
+      "raw_name": "spiral_cbd1__matzov_classical__bdd_hybrid",
+      "discrepancies": []
+    },
+    {
+      "profile": "spiral_cbd1",
+      "model": "matzov_classical",
+      "method": "bdd_mitm_hybrid",
+      "archived_csv_log2_rop": "174.077792",
+      "raw_text_log2_rop": 174.07779153361054,
+      "fresh_log2_rop": 174.07779153361054,
+      "second_archive_log2_rop": 174.07779153361054,
+      "log2_mem": null,
+      "log2_N": null,
+      "returned_m": null,
+      "raw_name": "spiral_cbd1__matzov_classical__bdd_mitm_hybrid",
+      "discrepancies": []
+    },
+    {
+      "profile": "spiral_cbd1",
+      "model": "matzov_classical",
+      "method": "bkw",
+      "archived_csv_log2_rop": "154.190230",
+      "raw_text_log2_rop": 154.19023003122956,
+      "fresh_log2_rop": 154.19023003122956,
+      "second_archive_log2_rop": 154.19023003122956,
+      "log2_mem": 132.8795297079852,
+      "log2_N": null,
+      "returned_m": "2.731290478177663e+42",
+      "raw_name": "spiral_cbd1__matzov_classical__bkw",
+      "discrepancies": []
+    },
+    {
+      "profile": "spiral_cbd1",
+      "model": "matzov_classical",
+      "method": "dual",
+      "archived_csv_log2_rop": "131.571253",
+      "raw_text_log2_rop": 131.57125340624947,
+      "fresh_log2_rop": 131.57125340624947,
+      "second_archive_log2_rop": 131.57125340624947,
+      "log2_mem": 84.04047667813752,
+      "log2_N": null,
+      "returned_m": "472",
+      "raw_name": "spiral_cbd1__matzov_classical__dual",
+      "discrepancies": []
+    },
+    {
+      "profile": "spiral_cbd1",
+      "model": "matzov_classical",
+      "method": "dual_hybrid",
+      "archived_csv_log2_rop": "120.875640",
+      "raw_text_log2_rop": 120.87563990442771,
+      "fresh_log2_rop": 120.87563990487804,
+      "second_archive_log2_rop": 120.87563990487804,
+      "log2_mem": null,
+      "log2_N": 67.70963589040055,
+      "returned_m": "512",
+      "raw_name": "spiral_cbd1__matzov_classical__dual_hybrid",
+      "discrepancies": []
+    },
+    {
+      "profile": "spiral_cbd1",
+      "model": "matzov_classical",
+      "method": "usvp",
+      "archived_csv_log2_rop": "126.823073",
+      "raw_text_log2_rop": 126.8230732462348,
+      "fresh_log2_rop": 126.8230732462348,
+      "second_archive_log2_rop": 126.8230732462348,
+      "log2_mem": null,
+      "log2_N": null,
+      "returned_m": null,
+      "raw_name": "spiral_cbd1__matzov_classical__usvp",
+      "discrepancies": []
+    }
+  ]
+}
