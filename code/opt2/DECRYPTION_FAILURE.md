@@ -49,6 +49,8 @@ For freshly sampled keys the implementation therefore satisfies `P(message failu
 
 For a fixed key and uniform 32-byte message, the true probability is an integer multiple of 2⁻²⁵⁶. Even averaging over independent uniform 32-byte matrix seeds, secret seeds and messages gives a multiple of 2⁻⁷⁶⁸ for the decoding event, since the fallback seed does not enter it. The ideal-model fractional tails therefore cannot be substituted for a positive fixed-SHAKE rate. Resolving the actual population bound needs a justified upper bound on the fixed sampler's fraction of heavy keys, or a quantified argument relating the full seeded construction to an ideal experiment. Domain labels and distinct seed observations alone supply neither. For multiple exchanges the union bound on events applies given their marginals, while shared keys or repeated messages can correlate outcomes. No independent session assumption or cryptographic security level follows here.
 
+The [fixed-SHAKE key-weight follow-up](KEY_WEIGHT.md) gives the all-seed random-oracle calculation and a separate, predeclared statistical bound from direct uniform seed draws.
+
 ## Historical exchange observations
 
 | Source and event | Recorded mismatches / measured exchanges | Interpretation |

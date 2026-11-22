@@ -19,3 +19,7 @@ python3 -B code/opt2/key_weight.py review results/key_weight/seeds.csv.gz
 ```
 
 For a separately budgeted independent run, use `python3 -B code/opt2/key_weight.py collect NEW.csv.gz` once, then use `review` on that file. Collection requires a new output filename.
+
+## Observed result
+
+The sampling plan and collector were committed at `9312a32` before the first draw. All 2,995 stored weights matched the independent replay. The range was **457–584**, with **0/2,995** at or above 831. Each sampled seed therefore meets the sufficient decoding condition. The one-sided 95% upper confidence limit on the fixed sampler's heavy-seed fraction is **0.000999744421** (about **0.0999744%**) under the uniform independent seed-draw assumption. The same confidence upper limit conservatively covers the honest message-failure rate through the deterministic inequality. The number of actual exchanges in this experiment was zero. Neither the exact fraction across all 2²⁵⁶ seeds nor a cryptographically small bound for fixed SHAKE has been established. [Raw public test seeds and weights](../../results/key_weight/seeds.csv.gz) · [Verified summary and digests](../../results/key_weight/summary.json)
