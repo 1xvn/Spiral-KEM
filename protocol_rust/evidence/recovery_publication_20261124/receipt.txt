@@ -1,0 +1,19 @@
+Local Linux x86-64, effective UID 1000, strace 6.13, rustc 1.99.1
+Runtime source commit: 986aecae4019dfb56541c98bbb3f7867c7a43872
+efebe30faa6983fbdebe12992a42e7f2f5ea7603ecafdc1990cd5473ea9bbbc7  protocol_rust/target/release/spiral-lab
+c87ddd7825a3ec2a34813ffccc082f347adc6a36cb6e9d6a820ffd8dd44ee026  protocol_rust/recovery_publication_drill.py
+ops: 11 passed, 0 failures, 0 errors, 0 skipped
+recovery: 20 passed, 0 failures, 0 errors, 0 skipped
+test result: ok. 102 passed; 0 failed; 5 ignored; 0 measured; 0 filtered out; finished in 3.14s
+
+Publication drill stdout/stderr:
+test_directory_sync_failure_quarantines_partial_generation (__main__.PublicationDrill.test_directory_sync_failure_quarantines_partial_generation) ... ok
+
+----------------------------------------------------------------------
+Ran 1 test in 0.145s
+
+OK
+directory_sync_eio: restore failed; auth present, TLS absent; no-replace retry rejected
+retired_auth: rejected under the approved generation fingerprint
+fresh_generation: both roles restored; echo and authenticated close verified
+revoked_pin: connection rejected before client KEM; no fallback attempted
