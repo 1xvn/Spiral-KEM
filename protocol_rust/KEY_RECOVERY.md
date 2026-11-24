@@ -151,9 +151,10 @@ umask 077
 cargo build --release --locked --manifest-path protocol_rust/Cargo.toml --bin spiral-lab
 python3 -m venv protocol_rust/.venv
 protocol_rust/.venv/bin/python -m pip install -r protocol_v01/requirements.txt
-protocol_rust/.venv/bin/python -B protocol_rust/key_ops_tests.py
-protocol_rust/.venv/bin/python -B protocol_rust/key_recovery_tests.py
-protocol_rust/.venv/bin/python -B protocol_rust/recovery_publication_drill.py
+binary="$PWD/protocol_rust/target/release/spiral-lab"
+protocol_rust/.venv/bin/python -B protocol_rust/key_ops_tests.py --binary "$binary"
+protocol_rust/.venv/bin/python -B protocol_rust/key_recovery_tests.py --binary "$binary"
+protocol_rust/.venv/bin/python -B protocol_rust/recovery_publication_drill.py --binary "$binary"
 ```
 
 3. Require a successful temp-file fsync followed by injected EIO on the

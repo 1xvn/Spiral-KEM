@@ -1,9 +1,13 @@
 """Linux-only cold recovery rehearsal with disposable keys and strace fault injection."""
+import argparse
 import hashlib
 import json
+import os
+from pathlib import Path
 import re
 import shutil
 import subprocess
+import sys
 import unittest
 from unittest.mock import patch
 
@@ -90,5 +94,13 @@ class PublicationDrill(recovery.KeyRecovery):
 
 
 if __name__ == "__main__":
-    unittest.main(defaultTest="PublicationDrill.test_directory_sync_failure_quarantines_partial_generation",
+    parser = argparse.ArgumentParser(add_help=False, allow_abbrev=False)
+    parser.add_argument("--binary", type=Path,
+                        default=recovery.ROOT / "protocol_rust/target/release/spiral-lab")
+    args, test_args = parser.parse_known_args()
+    binary = args.binary.expanduser().resolve()
+    if not binary.is_file() or not os.access(binary, os.X_OK):
+        parser.error(f"expected an executable spiral-lab at {binary}; build it or supply --binary")
+    recovery.BINARY = recovery.keyops.BINARY = binary
+    unittest.main(argv=[sys.argv[0], *test_args], defaultTest="PublicationDrill.test_directory_sync_failure_quarantines_partial_generation",
                   verbosity=2)
