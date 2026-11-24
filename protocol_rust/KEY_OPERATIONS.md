@@ -135,3 +135,6 @@ Completion here covers pinned-source key-management functional checks, not all o
 Actual service-account/OS-permission/vault/encrypted-backup application, approved pin distribution, operational audit/monitoring,
 long-term load, disaster recovery, and platform revalidation remain outstanding. This file policy does not establish completion of all item 5 or
 approval of cryptographic design, constant time, or overall memory. Existing warnings/gates remain.
+
+For a post-rename directory fsync failure, see the
+[recovery rehearsal and operating boundaries](KEY_RECOVERY.md#rehearse-a-published-file-with-uncertain-durability).
