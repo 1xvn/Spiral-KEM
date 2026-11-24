@@ -1,3 +1,5 @@
+Original run (debug executable; the release hash below identified a build artifact only).
+Tested debug SHA-256: c2603b8ce4279083000f8ae79670a0a3f6d4bc32e820721196b6e7aa2ad3a0de
 Local Linux x86-64, effective UID 1000, strace 6.13, rustc 1.99.1
 Runtime source commit: 986aecae4019dfb56541c98bbb3f7867c7a43872
 efebe30faa6983fbdebe12992a42e7f2f5ea7603ecafdc1990cd5473ea9bbbc7  protocol_rust/target/release/spiral-lab
@@ -11,6 +13,22 @@ test_directory_sync_failure_quarantines_partial_generation (__main__.Publication
 
 ----------------------------------------------------------------------
 Ran 1 test in 0.145s
+
+OK
+directory_sync_eio: restore failed; auth present, TLS absent; no-replace retry rejected
+retired_auth: rejected under the approved generation fingerprint
+fresh_generation: both roles restored; echo and authenticated close verified
+revoked_pin: connection rejected before client KEM; no fallback attempted
+
+Release-only checkout recheck (Linux x86-64; no target/debug directory)
+efebe30faa6983fbdebe12992a42e7f2f5ea7603ecafdc1990cd5473ea9bbbc7  protocol_rust/target/release/spiral-lab
+ae1a9c122fe603d05794d28336b6c17ca6859f7a3d17bc2ac3e9b326c32fe091  protocol_rust/recovery_publication_drill.py
+Publication default and explicit --binary: both passed.
+Key operations: 11 passed. Key recovery: 20 passed. Both JSON receipts recorded the release binary hash.
+test_directory_sync_failure_quarantines_partial_generation (__main__.PublicationDrill.test_directory_sync_failure_quarantines_partial_generation) ... ok
+
+----------------------------------------------------------------------
+Ran 1 test in 0.119s
 
 OK
 directory_sync_eio: restore failed; auth present, TLS absent; no-replace retry rejected
