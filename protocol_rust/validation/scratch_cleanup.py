@@ -17,7 +17,7 @@ import sys
 
 ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(ROOT / 'ci'))
-from evidence import libtest_groups, sha
+from evidence import contract, libtest_groups, sha
 
 VENDOR = ROOT / 'third_party/rustcrypto'
 TEMPLATES = Path(__file__).with_suffix('')
@@ -235,7 +235,7 @@ def main():
             require(record['exit'] == 0, label + ' exited unsuccessfully; raw streams retained')
             require(re.search(rb'(?m)^(?:error(?:\[[^\]]+\])?:|test result: FAILED|failures:)', stderr)
                     is None, label + ' emitted a failure')
-            record['test_groups'] = libtest_groups(stdout, expected)
+            record['test_groups'] = libtest_groups(stdout, expected, contract("test_inventory")["scratch/" + label])
             record['passed'] = True
         require(len(report['checks']) == len(MATRIX), 'matrix incomplete')
         require(source_hashes() == report['source_sha256'], 'source or templates changed during validation')

@@ -1,0 +1,125 @@
+{
+  "dual-purpose-certificate": {
+    "events": [
+      "tls_peer_rejected"
+    ],
+    "jobs": 0
+  },
+  "duplicate-record": {
+    "events": [
+      "registry_admitted",
+      "status_read"
+    ],
+    "jobs": 2
+  },
+  "expired": {
+    "events": [
+      "tls_peer_rejected"
+    ],
+    "jobs": 0
+  },
+  "forbidden-resource": {
+    "events": [
+      "registry_admitted",
+      "operation_denied"
+    ],
+    "jobs": 2
+  },
+  "forbidden-write": {
+    "events": [
+      "registry_admitted",
+      "operation_denied"
+    ],
+    "jobs": 2
+  },
+  "grant-for-other-server": {
+    "events": [
+      "registry_denied"
+    ],
+    "jobs": 0
+  },
+  "grant-for-other-service": {
+    "events": [
+      "registry_denied"
+    ],
+    "jobs": 0
+  },
+  "legacy-to-required": {
+    "events": [
+      "tls_peer_rejected"
+    ],
+    "jobs": 0
+  },
+  "missing-certificate": {
+    "events": [
+      "tls_peer_rejected"
+    ],
+    "jobs": 0
+  },
+  "missing-spiral-server-pin": {
+    "events": [
+      "registry_admitted"
+    ],
+    "jobs": 1
+  },
+  "other-session-record": {
+    "events": [
+      "registry_admitted"
+    ],
+    "jobs": 2
+  },
+  "read-status": {
+    "events": [
+      "registry_admitted",
+      "status_read"
+    ],
+    "jobs": 2
+  },
+  "required-to-legacy": {
+    "events": [],
+    "jobs": 0
+  },
+  "revoked-on-restart": {
+    "events": [
+      "registry_denied"
+    ],
+    "jobs": 0
+  },
+  "self-declared-role": {
+    "events": [
+      "registry_admitted",
+      "operation_denied"
+    ],
+    "jobs": 2
+  },
+  "server-only-certificate": {
+    "events": [
+      "tls_peer_rejected"
+    ],
+    "jobs": 0
+  },
+  "unregistered": {
+    "events": [
+      "registry_denied"
+    ],
+    "jobs": 0
+  },
+  "untrusted-issuer": {
+    "events": [
+      "tls_peer_rejected"
+    ],
+    "jobs": 0
+  },
+  "wrong-handshake-service": {
+    "events": [
+      "registry_admitted"
+    ],
+    "jobs": 0
+  },
+  "wrong-sni": {
+    "events": [
+      "tls_peer_rejected"
+    ],
+    "jobs": 0
+  }
+}

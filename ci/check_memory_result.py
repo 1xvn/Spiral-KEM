@@ -8,6 +8,7 @@ import sys
 from evidence import atomic_json, libtest_result, lines, require, sha, strict_json
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / 'protocol_rust/diagnostics'))
+import libtest_memory
 from libtest_memory import parse_memcheck
 
 EXPECTED = {'empty-main', 'thread-current', 'thread-join', 'channel-roundtrip',
@@ -47,8 +48,76 @@ def check(data):
     return True, 'All std controls were clean in this environment; production remains unapproved'
 
 
-def review(path):
-    raw = path.read_bytes()
+def streams(folder, label, record):
+    for stream in ('stdout', 'stderr'):
+        name = f'{label}.{stream}'
+        require(record[stream + '_file'] == name, 'unexpected diagnostic stream')
+        raw = (folder / name).read_bytes()
+        require(sha(raw) == record[stream + '_sha256'] and raw.decode() == record[stream],
+                'diagnostic stream mismatch')
+
+
+def provenance(folder, data):
+    require(data['runner_sha256'] == sha(Path(libtest_memory.__file__).read_bytes()),
+            'unrecognized control producer')
+    source = data['source']
+    require(source['file'] == 'std_libtest_control.rs' and
+            source['sha256'] == sha(libtest_memory.RUST_SOURCE.encode()) ==
+            sha((folder / source['file']).read_bytes()), 'control source mismatch')
+    for category, names in [('tools', {'rustc', 'valgrind'}), ('builds', {'main', 'libtest'})]:
+        require(set(data[category]) == names, 'missing build/tool witness')
+        for name, record in data[category].items():
+            require(type(record['exit']) is int and record['exit'] == 0 and
+                    record['timed_out'] is False and not record.get('execution_error'),
+                    'build/tool command failed')
+            label = name + '-version' if category == 'tools' else 'build-' + name
+            streams(folder, label, record)
+    tools = data['tools']
+    for name, flag in [('rustc', '-Vv'), ('valgrind', '--version')]:
+        tool = tools[name]
+        command = tool['command']
+        require(len(command) == 2 and Path(command[0]).name == name and command[1] == flag
+                and re.fullmatch('[a-f0-9]{64}', tool['executable_sha256'])
+                and not tool['stderr'], 'invalid tool identity')
+    require('release: 1.99.1' in tools['rustc']['stdout'].splitlines()
+            and re.fullmatch(r'valgrind-[\d.]+\n', tools['valgrind']['stdout']), 'wrong tool version')
+    binaries = {}
+    for name, filename in [('main', 'std-control'), ('libtest', 'libtest-control')]:
+        build = data['builds'][name]
+        cmd = build['command']
+        binary = Path(cmd[-1])
+        expected = [tools['rustc']['command'][0], '-g', '-C', 'opt-level=2']
+        if name == 'libtest':
+            expected.append('--test')
+        require(cmd == expected + [str(binary.parent / source['file']), '-o', str(binary)]
+                and binary.name == build['binary'] == filename
+                and re.fullmatch('[a-f0-9]{64}', build['binary_sha256']),
+                'unbound control build')
+        binaries[name] = binary
+    loader = data.get('loader')
+    prefix = []
+    if loader:
+        require(re.fullmatch('[0-9a-f]{64}', loader['sha256']), 'invalid loader digest')
+        prefix = [loader['path'], '--library-path', loader['library_path']]
+    for case in data['cases']:
+        name = case['name']
+        lib = name.startswith('libtest-')
+        binary = binaries['libtest' if lib else 'main']
+        native = prefix + [str(binary)] + (['--exact', 'control::empty', '--test-threads=1'] if lib else [name])
+        require(case['native']['command'] == native and
+                case['rust_test_nocapture'] == ('1' if name == 'libtest-nocapture' else None),
+                'native command not bound to control')
+        require(case['memcheck']['command'] == [tools['valgrind']['command'][0],
+                '--command-line-only=yes', '--tool=memcheck', '--leak-check=full',
+                '--show-leak-kinds=all', '--errors-for-leak-kinds=definite,indirect,possible',
+                '--error-exitcode=99', '--track-origins=yes',
+                '--log-file=' + str(binary.parent / (name + '-memcheck.log')), *native],
+                'Memcheck command not bound to control')
+
+
+def review(path, raw=None):
+    if raw is None:
+        raw = path.read_bytes()
     data = strict_json(raw)
     require(type(data) is dict and data.get('schema') == 'spiral-rust-libtest-memory-controls/v1',
             'invalid diagnostic schema')
@@ -57,22 +126,14 @@ def review(path):
             'missing or duplicate controls')
     require(data.get('diagnostic_complete') is True and data.get('errors') == [],
             'diagnostic incomplete')
-    source = data['source']
-    require(source['file'] == 'std_libtest_control.rs' and
-            sha((path.parent / source['file']).read_bytes()) == source['sha256'],
-            'diagnostic source mismatch')
+    provenance(path.parent, data)
     warning = False
     for case in cases:
         name = case['name']
         for mode, record in (('native', case['native']), ('memcheck', case['memcheck'])):
             require(type(record.get('exit')) is int and record['timed_out'] is False
                     and not record.get('execution_error'), 'incomplete child command')
-            for stream in ('stdout', 'stderr'):
-                filename = f'{name}-{mode}.{stream}'
-                require(record[stream+'_file'] == filename, 'unexpected diagnostic stream path')
-                content = (path.parent / filename).read_bytes()
-                require(sha(content) == record[stream+'_sha256'] and
-                        content.decode() == record[stream], 'diagnostic stream mismatch')
+            streams(path.parent, f'{name}-{mode}', record)
             require(not record['stderr'] and record.get('expected_output') is True,
                     'unexpected diagnostic output')
             if name.startswith('libtest-'):
@@ -117,9 +178,11 @@ def main():
         args.verdict.parent.mkdir(parents=True, exist_ok=True)
         atomic_json(args.verdict, receipt)
     try:
-        passed, classification, reason = review(args.result)
+        raw = args.result.read_bytes()
+        receipt['input_sha256'] = sha(raw)
+        passed, classification, reason = review(args.result, raw)
         receipt.update(status='passed' if passed else 'failed', classification=classification,
-                       input_sha256=sha(args.result.read_bytes()), reason=reason)
+                       reason=reason)
     except (OSError, ValueError, TypeError, KeyError, AttributeError) as exc:
         receipt.update(status='failed', reason='Invalid or missing diagnostic: ' + str(exc))
     if args.verdict:

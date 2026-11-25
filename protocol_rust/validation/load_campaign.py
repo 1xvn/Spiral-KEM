@@ -176,6 +176,7 @@ def source_snapshot(root=ROOT):
                      'protocol_rust/examples/load_probe.rs',
                      'protocol_rust/run_load_test.sh',
                      'protocol_rust/validation/load_campaign.py',
+                     'protocol_rust/validation/load_readback.py',
                      'protocol_rust/validation/clock_observation.py',
                      'protocol_rust/validation/cross_host_smoke.py',
                      'protocol_rust/validation/inflight_disconnect.py',
@@ -480,6 +481,14 @@ def main(argv=None):
         result['resource_samples'] = samples.count
         if samples.count:
             result['resources'] = samples.report()
+        if result['status'] == 'passed':
+            from load_readback import readback
+            try:
+                with (output / 'probe.stdout.jsonl').open('rb') as probe, (output / 'resources.jsonl').open('rb') as resources:
+                    readback(result, probe, resources, (output / 'probe.stderr.log').read_bytes())
+            except (OSError, ValueError, KeyError, TypeError, AttributeError) as error:
+                result.update(status='failed', failure='campaign evidence: ' + str(error))
+                result['timing_scope'].update(throughput='timing_insufficient', long_duration='timing_insufficient')
         (output / 'result.json').write_text(json.dumps(result, indent=2) + '\n')
         manifest = {p.name: sha(p) for p in sorted(output.iterdir()) if p.is_file() and p.name != 'SHA256.json'}
         (output / 'SHA256.json').write_text(json.dumps(manifest, indent=2) + '\n')

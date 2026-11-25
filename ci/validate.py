@@ -11,7 +11,7 @@ import shutil
 import subprocess
 import sys
 
-from evidence import (atomic_json, completed, fresh_result, libtest_result, matching_hash,
+from evidence import (atomic_json, completed, contract, scratch_result, fresh_result, libtest_result, matching_hash,
                       require, sha, structured_result, unittest_result)
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -26,7 +26,7 @@ def source_state():
     for name in names:
         path = Path(name)
         if (name and not {'evidence', 'local_ci_20261107'} & set(path.parts)
-                and (path.suffix in {'.py', '.rs', '.toml', '.lock', '.c', '.h', '.txt', '.sh', '.yml'}
+                and (path.suffix in {'.py', '.rs', '.toml', '.lock', '.c', '.h', '.txt', '.sh', '.yml', '.json'}
                      or path.name == 'Makefile')):
             inputs[name] = sha((ROOT / path).read_bytes())
     return {'commit': subprocess.check_output(['git', 'rev-parse', 'HEAD'], cwd=ROOT, text=True).strip(),
@@ -86,15 +86,20 @@ def main():
                 record[label] = {'file': path.name, 'sha256': sha(data)}
             completed(record)
             if minimum is not None:
-                record['test_identities'] = unittest_result(stderr, minimum)
+                record['test_identities'] = unittest_result(stderr, minimum, suite=name)
                 if json_result is None:
                     require(name == 'native-kem' or not stdout.strip(), 'unexpected unittest stdout')
+            if name == 'rust-scratch-cleanup':
+                scratch_result(out / 'scratch-cleanup', stdout, stderr)
             if name == 'native-kem':
                 require(re.search(rb'(?m)^make: Leaving directory .+\n\Z', stdout) is not None,
                         'incomplete native make output')
             if rust_minimum is not None:
+                inventory = contract('test_inventory')[name]
+                if name == 'rust-unit' and expected_ignored == 0:
+                    inventory = {k: v for k, v in inventory.items() if v != 'ignored'}
                 record['test_groups'] = [libtest_result(stdout, rust_minimum, expected_ignored,
-                                                       110 if '--features' in command else 0)]
+                                                       110 if '--features' in command else 0, inventory=inventory)]
             if rust_minimum is not None or command[0] == cargo:
                 require(re.search(rb'(?m)^(?:error(?:\[[^\]]+\])?:|test result: FAILED|failures:)', stderr) is None,
                         'Rust tool reported a failure')
