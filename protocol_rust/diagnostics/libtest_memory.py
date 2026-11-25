@@ -273,18 +273,22 @@ def main():
                     "diagnostic_complete": False, "production_memory_passed": False,
                     "errors": []}
             result["cases"].append(item)
+            native_digest = sha256(binaries[binary_kind])
             native = run(command, output, f"{name}-native", case_env)
+            native.update(binary_before=native_digest, binary_after=sha256(binaries[binary_kind]))
             item["native"] = native
             native["expected_output"] = output_is_expected(native, mode)
             if native["exit"] != 0 or not native["expected_output"]:
                 item["errors"].append("native control failed, timed out, or produced unexpected output")
             log_path = output / f"{name}-memcheck.log"
+            mem_digest = sha256(binaries[binary_kind])
             checked = run([
                 valgrind, "--command-line-only=yes", "--tool=memcheck",
                 "--leak-check=full", "--show-leak-kinds=all",
                 "--errors-for-leak-kinds=definite,indirect,possible", "--error-exitcode=99",
                 "--track-origins=yes", f"--log-file={log_path}", *command,
             ], output, f"{name}-memcheck", case_env)
+            checked.update(binary_before=mem_digest, binary_after=sha256(binaries[binary_kind]))
             item["memcheck"] = checked
             checked["expected_output"] = output_is_expected(checked, mode)
             if checked["exit"] not in (0, 99) or not checked["expected_output"]:

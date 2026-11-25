@@ -22,6 +22,7 @@ def publish(kind, outcome, root, destination):
               'functional/client-auth-lab.json', 'functional/key-operations.json',
               'functional/key-recovery.json', 'functional/scratch-cleanup/result.json']
              if kind == 'functional' else ['memory/result.json', 'memory-review.json'])
+    parsed = {}
     for name in names:
         path = root / name
         if not path.is_file():
@@ -29,8 +30,33 @@ def publish(kind, outcome, root, destination):
             continue
         raw = path.read_bytes()
         receipt['evidence_sha256'][name] = hashlib.sha256(raw).hexdigest()
-        if outcome == 'success' and name in ('functional/result.json', 'memory-review.json'):
-            require(strict_json(raw).get('status') == 'passed', 'verdict disagrees with job')
+        if outcome == 'success' or name == 'memory-review.json':
+            parsed[name] = strict_json(raw)
+    hashes = receipt['evidence_sha256']
+    if kind == 'functional' and outcome == 'success':
+        result = parsed['functional/result.json']
+        require(result['status'] == 'passed' and
+                parsed['functional/source-before.json'] == parsed['functional/source-after.json'] and
+                parsed['functional/source-before.json']['commit'] == commit and
+                result['source_before_sha256'] == hashes['functional/source-before.json'] and
+                result['source_after_sha256'] == hashes['functional/source-after.json'],
+                'source receipt differs from completed check')
+        recorded = {'functional/' + c['structured_file']['file']: c['structured_file']['sha256']
+                    for c in result['checks'] if 'structured_file' in c}
+        require(recorded == {n: hashes[n] for n in names[3:]}, 'validated evidence changed before publication')
+        require(all(c['passed'] is True for c in result['checks']), 'unsuccessful functional check')
+    if kind == 'memory':
+        verdict = parsed.get('memory-review.json', {})
+        classification = verdict.get('classification', 'incomplete_or_tool_error')
+        require(classification in ('diagnostic_clean', 'diagnostic_warning', 'incomplete_or_tool_error'),
+                'unexpected memory classification')
+        if classification != 'incomplete_or_tool_error' or outcome == 'success':
+            require(verdict.get('input_sha256') == hashes.get('memory/result.json') and
+                    bool(verdict.get('input_sha256')), 'memory review input changed')
+        if outcome == 'success':
+            require(classification == 'diagnostic_clean' and verdict['status'] == 'passed',
+                    'memory verdict disagrees with job')
+        receipt['classification'] = classification
     # No child-provided field, arbitrary filename, exception, or command is copied.
     atomic_json(destination / 'receipt.json', receipt)
 

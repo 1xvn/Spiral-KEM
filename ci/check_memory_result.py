@@ -57,8 +57,10 @@ def streams(folder, label, record):
                 'diagnostic stream mismatch')
 
 
-def provenance(folder, data):
-    require(data['runner_sha256'] == sha(Path(libtest_memory.__file__).read_bytes()),
+def provenance(folder, data, historical):
+    expected_runner = ('0dfa8b7c4bed792afd932860d65036c22430a99dbb6bf100ca8dd318e82de654'
+                       if historical else sha(Path(libtest_memory.__file__).read_bytes()))
+    require(data['runner_sha256'] == expected_runner,
             'unrecognized control producer')
     source = data['source']
     require(source['file'] == 'std_libtest_control.rs' and
@@ -103,6 +105,11 @@ def provenance(folder, data):
         name = case['name']
         lib = name.startswith('libtest-')
         binary = binaries['libtest' if lib else 'main']
+        if not historical:
+            digest = data['builds']['libtest' if lib else 'main']['binary_sha256']
+            for child in (case['native'], case['memcheck']):
+                require(child['binary_before'] == digest == child['binary_after'],
+                        'executed binary differs from build')
         native = prefix + [str(binary)] + (['--exact', 'control::empty', '--test-threads=1'] if lib else [name])
         require(case['native']['command'] == native and
                 case['rust_test_nocapture'] == ('1' if name == 'libtest-nocapture' else None),
@@ -126,7 +133,9 @@ def review(path, raw=None):
             'missing or duplicate controls')
     require(data.get('diagnostic_complete') is True and data.get('errors') == [],
             'diagnostic incomplete')
-    provenance(path.parent, data)
+    # The archived v1 warning predates the per-invocation binary digests.
+    historical = sha(raw) == '5184744a62ece330f7c704bdd54fb8341355b89269a8998c7d3f2e1f7652e680'
+    provenance(path.parent, data, historical)
     warning = False
     for case in cases:
         name = case['name']

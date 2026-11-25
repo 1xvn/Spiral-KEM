@@ -186,6 +186,7 @@ def tls_observations(data):
         by_case[row["scenario"]].append(row)
     require(by_case.keys() == specs.keys(), "missing or extra TLS scenario")
     seen_sessions = set()
+    paired = {}
     for name, expected in specs.items():
         rows = by_case[name]
         require(len(rows) == len(expected), "missing TLS endpoint or repetition")
@@ -208,13 +209,24 @@ def tls_observations(data):
                         "TLS server did not release ownership")
             sessions = report["sessions"]
             exact([item["messages"] for item in sessions], spec["messages"], "missing TLS messages")
+            identities = set()
             for item in sessions:
                 sid = item["session_id"]
                 require(item["authenticated_close"] is True and re.fullmatch("[0-9a-f]{32}", sid)
                         and (role, sid) not in seen_sessions, "duplicate or unclosed TLS session")
+                hashes = (item["binding_hash"], item["transcript_hash"])
+                require(all(re.fullmatch("[0-9a-f]{64}", h) for h in hashes), "invalid TLS binding")
+                identities.add((sid, *hashes))
                 seen_sessions.add((role, sid))
                 if role == "client" and "payload" in spec["variant"]:
                     exact(item["payload_bytes"], spec["variant"]["payload"], "wrong TLS payload")
+            if name == "test_rust_to_rust_sizes_and_parallel_senders":
+                size = spec["variant"]["payload"]
+                if role == "client":
+                    paired[size] = identities
+                else:
+                    require(paired.pop(size) == identities, "TLS client/server bindings disagree")
+    require(not paired, "missing paired TLS endpoint")
 
 
 def structured_result(raw, expected, binary_hash, stdout, name):
@@ -246,6 +258,17 @@ def structured_result(raw, expected, binary_hash, stdout, name):
     return result
 
 
+SCRATCH_MATRIX = (
+    ('hmac-on', 'hmac', ['--lib'], [1]),
+    ('hmac-off', 'hmac', ['--lib', '--no-default-features'], [1]),
+    ('hkdf-on', 'hkdf', ['--lib', '--test', 'cleanup_compat', '--features', 'zeroize'], [5, 2]),
+    ('hkdf-off', 'hkdf', ['--test', 'cleanup_compat', '--no-default-features'], [2]),
+    ('signing-on', 'signing', ['--lib', '--features', 'digest'], [6]),
+    ('signing-off', 'signing', ['--test', 'feature_off', '--no-default-features', '--features', 'fast,digest'], [1]),
+    ('scratch-live-owners', 'owners', ['--lib', '--features', 'zeroize'], [5]),
+)
+
+
 def scratch_result(folder, stdout, stderr):
     from_matrix = contract("test_inventory")
     labels = [line.decode() for line in stdout.splitlines()[:-1]]
@@ -254,14 +277,28 @@ def scratch_result(folder, stdout, stderr):
             set(labels) == required, "incomplete scratch matrix stdout")
     summary = strict_json(stdout.splitlines()[-1])
     exact(summary, {"status": "passed", "tests": 23, "output": str(folder)}, "wrong scratch summary")
-    data = strict_json((folder / "result.json").read_bytes())
+    raw_result = (folder / "result.json").read_bytes()
+    data = strict_json(raw_result)
+    require(data["signing_source_identity"] == "signing-source-identity.json", "missing signing identity")
+    identity = strict_json((folder / "signing-source-identity.json").read_bytes())
+    require(identity["source_files"].keys() == identity["prepared_files"].keys() and
+            all(data["source_sha256"]["third_party/rustcrypto/ed25519-dalek/src/" + path] == digest
+                for path, digest in identity["source_files"].items()) and
+            {"lib.rs", "secret_scratch.rs"} <= identity["source_files"].keys(), "wrong signing sources")
+    recorded_root = Path(summary["output"])
+    require(labels == [label for label, *_ in SCRATCH_MATRIX], "wrong scratch matrix order")
+
     require(data["schema"] == "spiral-scratch-cleanup-validation/v1" and
             data["status"] == "passed" and data["source_unchanged"] is True and
             data["tests"] == 23 and [c["name"] for c in data["checks"]] == labels,
             "incomplete scratch child receipt")
     total = 0
-    for row in data["checks"]:
-        name = row["name"]
+    for row, (name, harness, selection, _) in zip(data["checks"], SCRATCH_MATRIX):
+        command = row["command"]
+        require(Path(command[0]).name == "cargo" and command[1:] ==
+                ["test", "--locked", "--manifest-path", str(recorded_root / "harnesses" / harness / "Cargo.toml"),
+                 "--target-dir", str(recorded_root / "target"), "-j", "2", *selection, "--", "--test-threads=1"],
+                "wrong scratch feature configuration")
         require(row["passed"] is True and type(row["exit"]) is int and row["exit"] == 0
                 and not row.get("timed_out"), "scratch child incomplete")
         streams = {}
@@ -279,3 +316,4 @@ def scratch_result(folder, stdout, stderr):
         exact(row["test_groups"], groups, "scratch child summary mismatch")
         total += sum(g["passed"] for g in groups)
     require(total == 23, "incomplete scratch matrix")
+    return sha(raw_result)

@@ -17,21 +17,13 @@ import sys
 
 ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(ROOT / 'ci'))
-from evidence import contract, libtest_groups, sha
+from evidence import SCRATCH_MATRIX as MATRIX, contract, libtest_groups, sha
 
 VENDOR = ROOT / 'third_party/rustcrypto'
 TEMPLATES = Path(__file__).with_suffix('')
 PACKAGES = ('digest', 'hmac', 'hkdf', 'ed25519-dalek', 'curve25519-dalek')
 HARNESS_NAMES = ('hmac', 'hkdf', 'signing', 'owners')
-MATRIX = (
-    ('hmac-on', 'hmac', ['--lib'], [1]),
-    ('hmac-off', 'hmac', ['--lib', '--no-default-features'], [1]),
-    ('hkdf-on', 'hkdf', ['--lib', '--test', 'cleanup_compat', '--features', 'zeroize'], [5, 2]),
-    ('hkdf-off', 'hkdf', ['--test', 'cleanup_compat', '--no-default-features'], [2]),
-    ('signing-on', 'signing', ['--lib', '--features', 'digest'], [6]),
-    ('signing-off', 'signing', ['--test', 'feature_off', '--no-default-features', '--features', 'fast,digest'], [1]),
-    ('scratch-live-owners', 'owners', ['--lib', '--features', 'zeroize'], [5]),
-)
+
 
 
 def digest(path):

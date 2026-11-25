@@ -18,6 +18,8 @@ def elapsed(value):
 def readback(result, probe, resources, stderr):
     from load_campaign import ResourceSummary, resource_violation, strict_json, validate_final
 
+    require(result['status'] == 'passed' and result['source_unchanged'] is True and
+            result['binary_unchanged'] is True, 'collector failed or inputs changed')
     duration = result['requested_duration_seconds']
     lanes = result['requested_connections']
     payload = result['payload_bytes']
@@ -84,6 +86,14 @@ def readback(result, probe, resources, stderr):
                     row['completed_epochs'] == epochs and
                     row['expected_established_connections'] == (lanes if live else 0),
                     'invalid traffic counters')
+            require(count(row['active']) and row['active'] <= lanes and row['pending'] == 0
+                    and row['authenticated_pairs_total'] == 6 + lanes * (epochs + int(live))
+                    and count(row['echoed_bytes']) and count(row['admission_rejected'])
+                    and row['admission_rejected'] == len(limits) and
+                    all(count(row['kem'][k]) for k in ('live_keys', 'rejected_jobs', 'executed_jobs')) and
+                    row['kem']['rejected_jobs'] == 0 and
+                    row['kem']['executed_jobs'] == 3 * row['authenticated_pairs_total'],
+                    'incomplete traffic sample accounting')
             if live:
                 require(at - last_progress <= 16, 'missing traffic progress')
             if n > messages:

@@ -62,6 +62,7 @@ jobs:
           CI_OUTCOME: ${{ job.status }}
         run: python3 ci/public_receipt.py memory "$CI_OUTCOME" ci-results "$RUNNER_TEMP/spiral-public"
       - name: Publish memory evidence even on failure
+        id: uploaded
         if: always() && steps.public_receipt.outcome == 'success'
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
         with:
@@ -69,6 +70,18 @@ jobs:
           path: ${{ runner.temp }}/spiral-public/receipt.json
           if-no-files-found: error
           retention-days: 30
+      - name: Download uploaded receipt for comparison
+        if: always() && steps.uploaded.outcome == 'success'
+        id: downloaded
+        uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4
+        with:
+          name: std-memory-${{ github.run_id }}-${{ github.run_attempt }}
+          path: ${{ runner.temp }}/spiral-downloaded
+      - name: Verify uploaded file set and bytes
+        if: always() && steps.downloaded.outcome == 'success'
+        run: |
+          test "$(find "$RUNNER_TEMP/spiral-downloaded" -mindepth 1 -printf '%P\n')" = receipt.json
+          cmp "$RUNNER_TEMP/spiral-public/receipt.json" "$RUNNER_TEMP/spiral-downloaded/receipt.json"
       - name: State diagnostic scope
         if: always()
         run: |

@@ -20,7 +20,11 @@ class MemoryGateTests(unittest.TestCase):
 
     def clean_fixture(self):
         value = copy.deepcopy(self.real)
+        value['runner_sha256'] = gate.sha(Path(gate.libtest_memory.__file__).read_bytes())
         for case in value['cases']:
+            build = value['builds']['libtest' if case['name'].startswith('libtest-') else 'main']
+            for mode in ('native', 'memcheck'):
+                case[mode].update(binary_before=build['binary_sha256'], binary_after=build['binary_sha256'])
             case['errors'] = []
             case['memory_measurement_passed'] = True
             case['memcheck']['exit'] = 0
