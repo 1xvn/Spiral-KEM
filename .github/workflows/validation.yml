@@ -7,6 +7,7 @@ on:
 
 permissions:
   contents: read
+  actions: read
 
 concurrency:
   group: functional-${{ github.workflow }}-${{ github.ref }}
@@ -58,18 +59,13 @@ jobs:
           path: ${{ runner.temp }}/spiral-public/receipt.json
           if-no-files-found: error
           retention-days: 14
-      - name: Download uploaded receipt for comparison
-        if: always() && steps.uploaded.outcome == 'success'
-        id: downloaded
-        uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4
-        with:
-          name: functional-${{ github.run_id }}-${{ github.run_attempt }}
-          path: ${{ runner.temp }}/spiral-downloaded
       - name: Verify uploaded file set and bytes
-        if: always() && steps.downloaded.outcome == 'success'
+        if: always() && steps.uploaded.outcome == 'success'
+        env:
+          GH_TOKEN: ${{ github.token }}
+          ARTIFACT_ID: ${{ steps.uploaded.outputs.artifact-id }}
         run: |
-          test "$(find "$RUNNER_TEMP/spiral-downloaded" -mindepth 1 -printf '%P\n')" = receipt.json
-          cmp "$RUNNER_TEMP/spiral-public/receipt.json" "$RUNNER_TEMP/spiral-downloaded/receipt.json"
+          python3 ci/verify_uploaded_receipt.py "$ARTIFACT_ID" "$RUNNER_TEMP/spiral-public/receipt.json"
       - name: State validation scope
         if: always()
         run: |
