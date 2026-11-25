@@ -38,24 +38,24 @@ jobs:
           .ci-venv/bin/python -m pip install -r protocol_v01/requirements.txt
           .ci-venv/bin/python -m pip check
       - name: Check CI result classification
-        run: .ci-venv/bin/python -m unittest discover -s ci -p 'test_checks.py' -v
+        run: .ci-venv/bin/python -m unittest discover -s ci -p 'test_*.py' -v
       - name: Run functional acceptance checks
         env:
           RUSTUP_TOOLCHAIN: 1.99.1
         run: .ci-venv/bin/python ci/validate.py --cargo cargo --output ci-results/functional
-      - name: Publish functional evidence
+      - name: Prepare public receipt
+        id: public_receipt
         if: always()
+        env:
+          CI_OUTCOME: ${{ job.status }}
+        run: python3 ci/public_receipt.py functional "$CI_OUTCOME" ci-results "$RUNNER_TEMP/spiral-public"
+      - name: Publish functional evidence
+        if: always() && steps.public_receipt.outcome == 'success'
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
         with:
           name: functional-${{ github.run_id }}-${{ github.run_attempt }}
-          path: |
-            ci-results/functional/*.json
-            ci-results/functional/*.stdout
-            ci-results/functional/*.stderr
-            ci-results/functional/scratch-cleanup/*.json
-            ci-results/functional/scratch-cleanup/*.stdout
-            ci-results/functional/scratch-cleanup/*.stderr
-          if-no-files-found: warn
+          path: ${{ runner.temp }}/spiral-public/receipt.json
+          if-no-files-found: error
           retention-days: 14
       - name: State validation scope
         if: always()
