@@ -175,6 +175,9 @@ class Boundary(unittest.TestCase):
                     proc.kill()
                     proc.wait(timeout=5)
         self.assertEqual(proc.returncode, 0 if success else 1, (stdout, stderr))
+        reason = {"missing-spiral-server-pin": "Transport",
+                  "other-session-record": "Closed", "duplicate-record": "Closed"}.get(label, "Authentication")
+        self.assertEqual(stderr, "" if success else f"Error: {reason}\n")
         lines = [json.loads(line) for line in stdout.splitlines()]
         evidence, report = lines[:-1], lines[-1]
         expected = [{"event": name} for name in events]
@@ -192,7 +195,8 @@ class Boundary(unittest.TestCase):
             self.assertIs(report["admission_released"], True)
             self.assertIs(report["auth_key_closed"], True)
         ROWS.append({"case": label, "decision": "allow" if success else "deny",
-                     "server_stdout_after_listen": lines, "server_exit": proc.returncode})
+                     "server_stdout_after_listen": lines, "server_exit": proc.returncode,
+                     "server_stderr": stderr})
 
     def test_connections(self):
         admitted = ["registry_admitted"]

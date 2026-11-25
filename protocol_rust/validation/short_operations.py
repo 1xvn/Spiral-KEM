@@ -24,6 +24,8 @@ FAILURES = {'interrupt': 'KeyboardInterrupt: ',
             'rss': 'RuntimeError: process RSS ceiling exceeded',
             'fds': 'RuntimeError: sampled descriptor ceiling exceeded',
             'threads': 'RuntimeError: sampled thread ceiling exceeded'}
+REQUIRED_CHECKS = {'archive_and_hashes_valid', 'no_matching_probe_remaining',
+                   'private_fixtures_removed', 'interrupt_sent_after_traffic', 'provenance_matches'}
 LIMIT_FLAGS = {'rss': ['--rss-limit-mib', '1'],
                'fds': ['--fd-limit', '16'], 'threads': ['--thread-limit', '2']}
 
@@ -93,7 +95,8 @@ def verdict(kind, code, result, checks):
     expected = (code == 0 and result.get('status') == 'passed') if kind == 'clock' else (
         code == 1 and result.get('status') == 'failed' and result.get('failure') == FAILURES[kind])
     unchanged = result.get('source_unchanged') is True and result.get('binary_unchanged') is True
-    return expected and unchanged and all(checks.values())
+    return (expected and unchanged and checks.keys() == REQUIRED_CHECKS
+            and all(value is True for value in checks.values()))
 
 
 def run_case(kind, args, root):
@@ -117,8 +120,10 @@ def run_case(kind, args, root):
               'clock_interpretation': 'Collection success does not assert clock agreement or absence of host suspension.',
               'windows_clock_requested': args.windows_clock and kind == 'clock',
               'runner_sha256': campaign.sha(Path(__file__)),
+              'classification': 'incomplete_or_tool_error',
               'scope': 'Experimental guard/collector process checks; forced termination does not demonstrate authenticated protocol closure.'}
     try:
+        before_binary = campaign.sha(args.binary)
         with (folder / 'console.log').open('wb') as console:
             child = subprocess.Popen(command, stdout=console, stderr=subprocess.STDOUT,
                                      env=env, cwd=ROOT, start_new_session=True)
@@ -155,13 +160,19 @@ def run_case(kind, args, root):
         checks = {'archive_and_hashes_valid': evidence_valid(output),
                   'no_matching_probe_remaining': not matching_probes(args.binary, private),
                   'private_fixtures_removed': not any(private.iterdir()),
-                  'interrupt_sent_after_traffic': kind != 'interrupt' or sent}
+                  'interrupt_sent_after_traffic': kind != 'interrupt' or sent,
+                  'provenance_matches': result.get('binary_sha256') == result.get('binary_sha256_after')
+                      == before_binary == campaign.sha(args.binary)
+                      and campaign.strict_json((output/'source-before.json').read_bytes())
+                      == campaign.strict_json((output/'source-after.json').read_bytes())}
         if kind == 'clock':
             campaign.validate_final(result['probe_final'], duration, 64)
         report.update(collector_exit_code=child.returncode, collector_status=result.get('status'),
                       collector_failure=result.get('failure'), checks=checks,
                       clock_assessment=result.get('clock_assessment'), timing_scope=result.get('timing_scope'))
-        report['status'] = 'passed' if verdict(kind, child.returncode, result, checks) else 'failed'
+        if verdict(kind, child.returncode, result, checks):
+            report.update(status='passed',
+                          classification='functional_pass' if kind == 'clock' else 'expected_rejection')
     except KeyboardInterrupt:
         report['error'] = 'KeyboardInterrupt'; report['operator_cancelled'] = True
     except Exception as error:
@@ -187,6 +198,8 @@ def run_case(kind, args, root):
             private.rmdir()
         else:
             report['status'] = 'failed'; report['private_fixture_cleanup_failed'] = True
+        if report['status'] != 'passed':
+            report['classification'] = 'incomplete_or_tool_error'
         (folder / 'operator-result.json').write_text(json.dumps(report, indent=2) + '\n')
     return report
 

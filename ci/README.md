@@ -8,7 +8,7 @@ It verifies exact counts of 7 runs and 23 focused tests and feature ON/OFF statu
 rejecting 0 tests, omissions, failures, and ignored/filtered tests. It does not report this as running the full upstream dev suite,
 and retains existing memory warnings and strict gates.
 
-[Operational key management checks](../protocol_rust/KEY_OPERATIONS.md) check at least 100 default Rust tests and
+[Operational key management checks](../protocol_rust/KEY_OPERATIONS.md) check 102 default Rust tests and
 11 separate CLI/TLS rotation tests. They cover private-key permissions, paths, FIFO watchdog, NOREPLACE creation,
 recovery files, and rejection of old pins; 0 tests, omissions, and skips fail. An environment exposing actual Linux UIDs
 and loopback permission is required; policy is not automatically relaxed for rootless UID mappings.
@@ -18,9 +18,9 @@ CLI/TLS tests. They cover authentication seed/TLS PEM recovery, external fingerp
 rejection, normal previous-generation restart, and recovery of both new-generation keys. 0 tests, failures, and skips
 fail; this is not approval of external vaults, actual service rollback, overall operational readiness, constant-time behavior, or memory safety.
 
-Functional CI also runs the 18 fast [load collector contract tests](../protocol_rust/validation/test_load_campaign.py)
+Functional CI also runs the 30 fast [load collector contract tests](../protocol_rust/validation/test_load_campaign.py)
 as `load-collector-contracts`. They check strict JSON parsing, completed-run validation, resource ceiling boundaries,
-and Linux process sampling. Failures, fewer than 18 tests, and any skips fail the step.
+and Linux process sampling. Failures, a count other than 30 tests, and any skips fail the step.
 These tests do not start a TLS probe. The [30-minute load campaign](../protocol_rust/LOAD_TESTING.md)
 is run explicitly and is not added to push/PR or scheduled CI.
 
@@ -63,6 +63,54 @@ TLS AES-GCM, full Rust taint/memory checks, and long-running fuzzing are outside
 - Workflow permissions are `contents: read`; checkout credential persistence is disabled. `pull_request_target` is not used.
 - Save each run's results in a new folder; do not overwrite existing evidence folders.
 - Upload only dedicated logs/JSON/generated public test sources and public fuzz inputs; do not upload executables, temporary authentication keys, or certificates.
+
+
+## Reading functional and diagnostic evidence
+
+Functional CI records the invocation, exit outcome and separate stdout and
+stderr digests per check. It gates known suite counts on distinct verbose
+test rows and a complete terminal summary. Rust ignored counts and the
+explicit filtered subsets appear separately. A timeout, failed tool, malformed
+or conflicting summary, missing result or changed source or release binary
+fails the run. Changing the test inventory requires updating the corresponding
+expectation in `validate.py`. The source snapshots record Git HEAD and the
+bytes used from the checkout, including the lock and compiler pin.
+
+Client-auth output records the expected server error and cleanup evidence as
+`expected_rejection`. The required-to-legacy case uses the legacy server's
+terminal zero-live-key report for cleanup. The short operator checks require
+their specific guard or interruption reason, verified evidence, binary and
+source consistency, fixture removal and process cleanup.
+
+The memory gate checks the raw child streams and Memcheck log alongside the
+summary. It records `diagnostic_warning` when complete evidence contains
+warnings, and `incomplete_or_tool_error` for invalid or missing evidence.
+Run a fresh review with a separate verdict file to replace any prior verdict
+even when the input is missing or malformed.
+
+```bash
+python ci/check_memory_result.py ci-results/memory/result.json \
+  --verdict ci-results/memory-review.json
+```
+
+The workflow publishes an explicit file allowlist for functional evidence.
+Build trees and fixture directories stay outside the published paths.
+Functional checks use disposable test inputs and the runner withholds streams
+containing recognizable private-key encodings. Hashes help detect byte
+mismatches. They do not authenticate the producer or certify the environment.
+
+### Readback against preserved results
+
+| Evidence | Previous result | Strict readback |
+|---|---|---|
+| November 7 local protocol, Rust unit, doc and real TLS transcripts | Passed | Same recorded counts: 85, 52, 4 and 35. Two Rust ignored cases tracked separately |
+| Original November 7 libtest memory controls | Diagnostics completed, strict clean-memory gate failed | Diagnostic warning, with four affected controls and their original log/exit agreement retained |
+| Submitted OCI and WSL 30-minute loopback archives | Both passed functionally | Both terminal reports accepted. OCI local clock consistency and WSL insufficient clock evidence retain their original verdicts |
+| Duplicate Python row plus trailing failure, or Rust success followed by a failing group | Prior functional parser accepted the synthetic transcript | Strict readers reject both |
+
+The historical functional comparison reads the preserved transcript
+portions and their original counts. Earlier combined streams keep their
+original format and provenance limits.
 
 ## Initial local validation on 2026-11-07
 

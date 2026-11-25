@@ -14,25 +14,34 @@ import short_operations as operations
 
 
 class ExpectedFailureContracts(unittest.TestCase):
+    complete = dict.fromkeys(operations.REQUIRED_CHECKS, True)
+
     def test_each_expected_failure_requires_exact_reason_and_exit(self):
         for kind,reason in operations.FAILURES.items():
             result={'status':'failed','failure':reason,'source_unchanged':True,'binary_unchanged':True}
             with self.subTest(case=kind):
-                self.assertTrue(operations.verdict(kind,1,result,{'archive':True,'cleanup':True}))
-                self.assertFalse(operations.verdict(kind,0,result,{'archive':True}))
-                self.assertFalse(operations.verdict(kind,1,dict(result,failure='unrelated failure'),{'archive':True}))
+                self.assertTrue(operations.verdict(kind,1,result,self.complete))
+                self.assertFalse(operations.verdict(kind,0,result,self.complete))
+                self.assertFalse(operations.verdict(kind,1,dict(result,failure='unrelated failure'),self.complete))
 
     def test_cleanup_or_integrity_failure_never_counts_as_expected_success(self):
         result={'status':'failed','failure':operations.FAILURES['interrupt'],
                 'source_unchanged':True,'binary_unchanged':True}
         self.assertFalse(operations.verdict('interrupt',1,result,{'cleanup':False}))
-        self.assertFalse(operations.verdict('interrupt',1,dict(result,binary_unchanged=False),{'cleanup':True}))
+        self.assertFalse(operations.verdict('interrupt',1,dict(result,binary_unchanged=False),self.complete))
+
+    def test_missing_or_non_boolean_cleanup_is_not_evidence(self):
+        result = dict(status='failed', failure=operations.FAILURES['rss'],
+                      source_unchanged=True, binary_unchanged=True)
+        for checks in ({}, dict(self.complete, private_fixtures_removed=1),
+                       {key: True for key in self.complete if key != 'no_matching_probe_remaining'}):
+            self.assertFalse(operations.verdict('rss', 1, result, checks))
 
     def test_clock_collection_requires_actual_campaign_success(self):
         result={'status':'passed','source_unchanged':True,'binary_unchanged':True}
-        self.assertTrue(operations.verdict('clock',0,result,{'archive':True}))
-        self.assertFalse(operations.verdict('clock',1,result,{'archive':True}))
-        self.assertFalse(operations.verdict('clock',0,dict(result,status='failed'),{'archive':True}))
+        self.assertTrue(operations.verdict('clock',0,result,self.complete))
+        self.assertFalse(operations.verdict('clock',1,result,self.complete))
+        self.assertFalse(operations.verdict('clock',0,dict(result,status='failed'),self.complete))
 
 
 class EvidenceAndScopeContracts(unittest.TestCase):

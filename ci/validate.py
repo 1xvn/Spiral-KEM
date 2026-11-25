@@ -2,16 +2,35 @@
 """Run bounded functional CI with count checks; memory evidence is a separate job."""
 import argparse
 from datetime import datetime, timezone
-import hashlib
 import json
 import os
 from pathlib import Path
 import re
+import platform
 import shutil
 import subprocess
 import sys
 
+from evidence import (atomic_json, completed, fresh_result, libtest_result, matching_hash,
+                      require, sha, structured_result, unittest_result)
+
 ROOT = Path(__file__).resolve().parents[1]
+
+
+def source_state():
+    names = subprocess.check_output([
+        'git', 'ls-files', '-z', '--', '.github/workflows', 'ci', 'protocol_v01',
+        'protocol_rust', 'native_research', 'third_party', 'code/opt2', 'rust-toolchain.toml',
+    ], cwd=ROOT).decode().split('\0')
+    inputs = {}
+    for name in names:
+        path = Path(name)
+        if (name and not {'evidence', 'local_ci_20261107'} & set(path.parts)
+                and (path.suffix in {'.py', '.rs', '.toml', '.lock', '.c', '.h', '.txt', '.sh', '.yml'}
+                     or path.name == 'Makefile')):
+            inputs[name] = sha((ROOT / path).read_bytes())
+    return {'commit': subprocess.check_output(['git', 'rev-parse', 'HEAD'], cwd=ROOT, text=True).strip(),
+            'files': inputs}
 
 
 def main():
@@ -28,14 +47,23 @@ def main():
     report = {'started_utc': datetime.now(timezone.utc).isoformat(),
               'status': 'incomplete', 'scope': 'functional checks only; not memory or constant-time approval',
               'checks': [], 'memory_checked': False, 'constant_time_approved': False,
-              'runner_sha256': hashlib.sha256(Path(__file__).read_bytes()).hexdigest()}
+              'runner_sha256': sha(Path(__file__).read_bytes())}
+    report['environment'] = {'kernel': platform.release(), 'arch': platform.machine(),
+                             'python': platform.python_version()}
+    atomic_json(out / 'result.json', report)
     env = os.environ.copy()
+    built_hash = None
+    before = None
     env['PYTHONDONTWRITEBYTECODE'] = '1'
     env['LC_ALL'] = 'C'
 
     def run(name, command, timeout, minimum=None, rust_minimum=None, expected_ignored=0, json_result=None):
         record = {'name': name, 'command': command, 'timeout_seconds': timeout, 'passed': False}
         report['checks'].append(record)
+        if json_result is not None:
+            fresh_result(json_result)
+            record['binary_sha256_before'] = sha(binary.read_bytes())
+            matching_hash(built_hash, record['binary_sha256_before'], 'release binary')
         try:
             done = subprocess.run(command, cwd=ROOT, env=env, capture_output=True, timeout=timeout)
             stdout, stderr = done.stdout, done.stderr
@@ -46,44 +74,57 @@ def main():
         except OSError as exc:
             stdout, stderr = b'', str(exc).encode()
             record.update(exit=None, execution_error=type(exc).__name__)
-        text = (stdout + b'\n' + stderr).decode(errors='replace')
-        (out / (name + '.log')).write_bytes(stdout + b'\n' + stderr)
-        record['log'] = name + '.log'
-        passed = record['exit'] == 0
-        if minimum is not None:
-            matches = re.findall(r'Ran (\d+) tests? in ', text)
-            record['tests_run'] = int(matches[-1]) if matches else 0
-            passed &= record['tests_run'] >= minimum
-            passed &= re.search(r'(?m)^OK\s*$', text) is not None
-            passed &= not re.search(r'(?m)^OK \(', text)
-        if rust_minimum is not None:
-            groups = re.findall(r'test result: ok\. (\d+) passed; (\d+) failed; (\d+) ignored;', text)
-            record['test_groups'] = [{'passed': int(a), 'failed': int(b), 'ignored': int(c)} for a,b,c in groups]
-            positive = sorted([g['passed'] for g in record['test_groups'] if g['passed']], reverse=True)
-            passed &= bool(positive) and positive[0] >= rust_minimum
-            passed &= all(g['failed'] == 0 for g in record['test_groups'])
-            passed &= sum(g['ignored'] for g in record['test_groups']) == expected_ignored
-        if json_result is not None:
-            try:
-                data = json.loads(json_result.read_text())
-                record['structured_tests'] = {k: data[k] for k in ['tests', 'failures', 'errors']}
-                passed &= data['tests'] >= minimum and data['failures'] == 0 and data['errors'] == 0
-            except (OSError, ValueError, KeyError, TypeError) as exc:
-                passed = False
-                record['json_error'] = str(exc)
-        record['passed'] = bool(passed)
-        print(name, 'PASS' if passed else 'FAIL', flush=True)
-        if not passed:
-            print(text[-6000:], file=sys.stderr)
-            raise RuntimeError(name)
-        return text
+        record['classification'] = 'incomplete_or_tool_error'
+        try:
+            for label, data in (('stdout', stdout), ('stderr', stderr)):
+                # Child evidence is from fixture-only tests. Withhold a stream if
+                # it contains an obvious private-key encoding.
+                require(re.search(rb'-----BEGIN [A-Z0-9 ]*PRIVATE KEY-----|openssh-key-v1', data) is None,
+                        'withheld output containing private-key material')
+                path = out / (name + '.' + label)
+                path.write_bytes(data)
+                record[label] = {'file': path.name, 'sha256': sha(data)}
+            completed(record)
+            if minimum is not None:
+                record['test_identities'] = unittest_result(stderr, minimum)
+                if json_result is None:
+                    require(name == 'native-kem' or not stdout.strip(), 'unexpected unittest stdout')
+            if name == 'native-kem':
+                require(re.search(rb'(?m)^make: Leaving directory .+\n\Z', stdout) is not None,
+                        'incomplete native make output')
+            if rust_minimum is not None:
+                record['test_groups'] = [libtest_result(stdout, rust_minimum, expected_ignored,
+                                                       110 if '--features' in command else 0)]
+            if rust_minimum is not None or command[0] == cargo:
+                require(re.search(rb'(?m)^(?:error(?:\[[^\]]+\])?:|test result: FAILED|failures:)', stderr) is None,
+                        'Rust tool reported a failure')
+            if name in ('rust-release', 'rust-flow-diagnostics-cli'):
+                require(re.search(rb'(?m)^ *Finished `[^\n]+` profile .+\n\Z', stderr) is not None,
+                        'missing completed Cargo build')
+            if json_result is not None:
+                data = json_result.read_bytes()
+                record['structured_tests'] = structured_result(data, minimum, built_hash, stdout, name)
+                record['structured_file'] = {'file': json_result.name, 'sha256': sha(data)}
+                record['binary_sha256_after'] = sha(binary.read_bytes())
+                matching_hash(built_hash, record['binary_sha256_after'], 'release binary')
+        except (ValueError, OSError, KeyError, TypeError, IndexError, AttributeError) as error:
+            if re.search(rb'(?m)^(?:FAILED(?: |$)|test result: FAILED|FAIL: |ERROR: )', stdout + stderr):
+                record['classification'] = 'functional_failure'
+            record['error'] = str(error)
+            raise RuntimeError(name + ': ' + str(error)) from error
+        record.update(passed=True, classification='functional_pass')
+        print(name, 'PASS', flush=True)
+        return (stdout + stderr).decode()
+
 
     try:
+        before = source_state()
+        atomic_json(out / 'source-before.json', before)
         run('python-protocol', [python, '-m', 'unittest', 'discover', '-s', 'protocol_v01/tests', '-v'], 300, minimum=85)
-        run('diagnostic-parser', [python, '-m', 'unittest', 'discover', '-s', 'protocol_rust/diagnostics', '-p', 'test_*.py', '-v'], 60, minimum=24)
-        run('load-collector-contracts', [python, '-m', 'unittest', 'discover', '-s', 'protocol_rust/validation', '-p', 'test_load_campaign.py', '-v'], 60, minimum=29)
-        run('short-operations-contracts', [python, '-m', 'unittest', 'discover', '-s', 'protocol_rust/validation', '-p', 'test_short_operations.py', '-v'], 60, minimum=9)
-        run('clock-observation-contracts', [python, '-m', 'unittest', 'discover', '-s', 'protocol_rust/validation', '-p', 'test_clock_observation.py', '-v'], 60, minimum=12)
+        run('diagnostic-parser', [python, '-m', 'unittest', 'discover', '-s', 'protocol_rust/diagnostics', '-p', 'test_*.py', '-v'], 60, minimum=31)
+        run('load-collector-contracts', [python, '-m', 'unittest', 'discover', '-s', 'protocol_rust/validation', '-p', 'test_load_campaign.py', '-v'], 60, minimum=30)
+        run('short-operations-contracts', [python, '-m', 'unittest', 'discover', '-s', 'protocol_rust/validation', '-p', 'test_short_operations.py', '-v'], 60, minimum=10)
+        run('clock-observation-contracts', [python, '-m', 'unittest', 'discover', '-s', 'protocol_rust/validation', '-p', 'test_clock_observation.py', '-v'], 60, minimum=13)
         run('cross-host-contracts', [python, '-m', 'unittest', 'discover', '-s', 'protocol_rust/validation', '-p', 'test_cross_host_smoke.py', '-v'], 60, minimum=13)
         run('inflight-contracts', [python, '-m', 'unittest', 'discover', '-s', 'protocol_rust/validation', '-p', 'test_inflight_disconnect.py', '-v'], 60, minimum=12)
         run('backpressure-contracts', [python, '-m', 'unittest', 'discover', '-s', 'protocol_rust/validation', '-p', 'test_backpressure_contract.py', '-v'], 60, minimum=19)
@@ -93,6 +134,9 @@ def main():
         run('server-crash-coordinator', [python, '-m', 'unittest', 'discover', '-s', 'protocol_rust/validation', '-p', 'test_server_crash.py', '-v'], 60, minimum=2)
         run('wire-stall-contracts', [python, '-m', 'unittest', 'discover', '-s', 'protocol_rust/validation', '-p', 'test_wire*.py', '-v'], 60, minimum=42)
         run('session-isolation-contracts', [python, '-m', 'unittest', 'discover', '-s', 'protocol_rust/validation', '-p', 'test_isolation.py', '-v'], 60, minimum=9)
+        run('cc-version', ['cc', '--version'], 30)
+        run('openssl-version', ['openssl', 'version'], 30)
+        run('python-dependencies', [python, '-m', 'pip', 'check'], 60)
         run('native-kem', ['make', '-C', 'native_research', 'check', 'PYTHON=' + python], 300, minimum=9)
         if not cargo:
             raise RuntimeError('cargo executable not found')
@@ -107,7 +151,7 @@ def main():
             raise RuntimeError('CI requires Cargo 1.99.1')
         cargo_base = ['--locked', '--manifest-path', str(ROOT / 'protocol_rust/Cargo.toml'), '--target-dir', str(ROOT / 'protocol_rust/target'), '-j', '2']
         ignored = 5 if re.search(r'(?m)^host: (?:x86_64|aarch64)-unknown-linux-', version) else 0
-        run('rust-unit', [cargo, 'test', '--lib', *cargo_base], 1200, rust_minimum=100, expected_ignored=ignored)
+        run('rust-unit', [cargo, 'test', '--lib', *cargo_base], 1200, rust_minimum=102, expected_ignored=ignored)
         run('rust-flow-diagnostics', [cargo, 'test', '--lib', '--features', 'flow-diagnostics', 'diagnostic_', *cargo_base], 1200, rust_minimum=3)
         run('rust-wire-observer', [cargo, 'test', '--lib', '--features', 'flow-diagnostics', 'wire_observer_', *cargo_base], 1200, rust_minimum=3)
         # Check the opt-in executable without replacing the default release binary.
@@ -115,9 +159,11 @@ def main():
         run('rust-admission-boundaries', [cargo, 'test', '--test', 'admission_boundaries', *cargo_base], 60, rust_minimum=2)
         run('rust-scratch-cleanup', [python, str(ROOT / 'protocol_rust/validation/scratch_cleanup.py'),
             '--cargo', cargo, '--output', str(out / 'scratch-cleanup')], 1200)
-        run('rust-doc', [cargo, 'test', '--doc', *cargo_base], 300, rust_minimum=4)
+        run('rust-doc', [cargo, 'test', '--doc', *cargo_base], 300, rust_minimum=6)
         run('rust-release', [cargo, 'build', '--release', *cargo_base], 1200)
         binary = ROOT / 'protocol_rust/target/release/spiral-lab'
+        built_hash = sha(binary.read_bytes())
+        report['binary_sha256_before'] = built_hash
         key_evidence = out / 'key-operations.json'
         run('rust-key-operations', [python, str(ROOT / 'protocol_rust/key_ops_tests.py'),
             '--binary', str(binary), '--json', str(key_evidence)], 300, minimum=11,
@@ -132,14 +178,24 @@ def main():
             json_result=auth_evidence)
         evidence = out / 'interop.json'
         run('rust-tls', [python, str(ROOT / 'protocol_rust/adversarial.py'), '--binary', str(binary), '--json', str(evidence)], 600, minimum=35, json_result=evidence)
-        report['binary_sha256'] = hashlib.sha256(binary.read_bytes()).hexdigest()
-        report['cargo_lock_sha256'] = hashlib.sha256((ROOT / 'protocol_rust/Cargo.lock').read_bytes()).hexdigest()
+        report['binary_sha256'] = built_hash
+        report['cargo_lock_sha256'] = sha((ROOT / 'protocol_rust/Cargo.lock').read_bytes())
         report['status'] = 'passed'
-    except (RuntimeError, KeyError, ValueError, OSError) as exc:
+    except (RuntimeError, KeyError, ValueError, OSError, subprocess.SubprocessError, KeyboardInterrupt) as exc:
         report.update(status='failed', error=str(exc))
     finally:
+        try:
+            if before is not None:
+                after = source_state()
+                atomic_json(out / 'source-after.json', after)
+                require(before == after, 'source, lockfile or toolchain pin changed')
+            if built_hash:
+                report['binary_sha256_after'] = sha(binary.read_bytes())
+                require(report['binary_sha256_after'] == built_hash, 'release binary changed')
+        except (OSError, ValueError, subprocess.SubprocessError) as exc:
+            report.update(status='failed', provenance_error=str(exc))
         report['finished_utc'] = datetime.now(timezone.utc).isoformat()
-        (out / 'result.json').write_text(json.dumps(report, indent=2) + '\n')
+        atomic_json(out / 'result.json', report)
     print(json.dumps({'status': report['status'], 'memory_checked': False, 'output': str(out)}))
     return 0 if report['status'] == 'passed' else 1
 
