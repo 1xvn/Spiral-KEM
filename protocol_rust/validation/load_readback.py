@@ -24,7 +24,10 @@ def readback(result, probe, resources, stderr):
     lanes = result['requested_connections']
     payload = result['payload_bytes']
     wall = result['collector_monotonic_elapsed_seconds']
-    require(stderr == b'' and result['probe_exit_code'] == 0 and elapsed(wall) and wall >= duration,
+    require(count(duration) and 10 <= duration <= 86400 and count(lanes) and 4 <= lanes <= 64 and
+            count(payload) and 1 <= payload <= 16384 and count(result['interval_ms']) and
+            1 <= result['interval_ms'] <= 1000, 'unsupported campaign request')
+    require(stderr == b'' and count(result['probe_exit_code']) and result['probe_exit_code'] == 0 and elapsed(wall) and wall >= duration,
             'missing completion or insufficient collector monotonic time')
     phase = 'start'
     limits = set()
@@ -37,10 +40,15 @@ def readback(result, probe, resources, stderr):
     traffic_start = 0
     traffic_span = 0
     last_progress = 0
+    last_soak = 0
     for line in probe:
         require(line.endswith(b'\n'), 'truncated probe stream')
         row = strict_json(line)
         event = row['event']
+        if 'soak_elapsed_seconds' in row and event != 'final':
+            at = row['soak_elapsed_seconds']
+            require(elapsed(at) and last_soak <= at <= wall + 0.1, 'nonmonotonic probe time')
+            last_soak = at
         if event == 'start' and phase == 'start':
             require([row['connections'], row['duration_seconds'], row['payload_bytes'], row['interval_ms']]
                     == [lanes, duration, payload, result['interval_ms']], 'wrong probe request')
@@ -124,6 +132,8 @@ def readback(result, probe, resources, stderr):
                     row['admission_rejected'] == shutdown['admission_rejected'] == len(limits) and
                     duration <= traffic_span <= wall + 0.1 and
                     row['traffic_epoch_elapsed_seconds'] <= traffic_span + 0.1 and
+                    elapsed(row['actual_elapsed_seconds']) and
+                    row['traffic_epoch_elapsed_seconds'] <= row['soak_elapsed_seconds'] <=
                     row['actual_elapsed_seconds'] <= wall + 0.1, 'inconsistent terminal accounting')
             phase = 'finished'
         else:
@@ -138,7 +148,7 @@ def readback(result, probe, resources, stderr):
         at = row['elapsed_seconds']
         require(elapsed(at) and at <= wall and
                 all(count(row[k]) for k in ('rss_kib', 'peak_rss_kib', 'fd_count', 'threads',
-                                            'minor_faults', 'major_faults')) and elapsed(row['cpu_seconds'])
+                                            'minor_faults', 'major_faults', 'anonymous_rss_kib', 'file_rss_kib')) and elapsed(row['cpu_seconds'])
                 and row['peak_rss_kib'] >= row['rss_kib']
                 and not resource_violation(row, result['resource_limits']), 'invalid resource sample')
         if previous is not None:
