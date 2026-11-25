@@ -176,6 +176,10 @@ class Interop(unittest.TestCase):
             p.kill()
         p.communicate(timeout=5)
 
+    def observe_report(self, process, report, stderr):
+        if report and report["status"] == "passed":
+            self.observations.append(report)
+
     def report(self, p, ok=True):
         out, err = p.communicate(timeout=20)
         if not ok:
@@ -184,6 +188,7 @@ class Interop(unittest.TestCase):
                 self.assertEqual(
                     json.loads(out.strip().splitlines()[-1])["kem"]["live_keys"], 0
                 )
+            self.observe_report(p, json.loads(out.strip().splitlines()[-1]) if out.strip() else None, err)
             return None
         self.assertEqual(p.returncode, 0, (out, err))
         report = json.loads(out.strip().splitlines()[-1])
@@ -191,7 +196,7 @@ class Interop(unittest.TestCase):
         self.assertEqual(report["kem"]["live_keys"], 0)
         if report["role"] == "server":
             self.assertTrue(report["auth_key_closed"])
-        self.observations.append(report)
+        self.observe_report(p, report, err)
         return report
 
     def py_client(self, port, count=1, size=64, tamper=None):

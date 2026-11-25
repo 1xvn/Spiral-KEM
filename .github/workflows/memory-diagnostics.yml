@@ -7,6 +7,7 @@ on:
 
 permissions:
   contents: read
+  actions: read
 
 concurrency:
   group: memory-${{ github.ref }}
@@ -35,7 +36,7 @@ jobs:
         run: rustup toolchain install 1.99.1 --profile minimal
       - name: Check result-classification rules
         run: |
-          python -m unittest discover -s ci -p 'test_checks.py' -v
+          python -m unittest discover -s ci -p 'test_*.py' -v
           python -m unittest discover -s protocol_rust/diagnostics -p 'test_*.py' -v
       - name: Measure controls and preserve child errors
         run: |
@@ -55,21 +56,28 @@ jobs:
         run: >-
           python ci/check_memory_result.py ci-results/memory/result.json
           --verdict ci-results/memory-review.json
-      - name: Publish memory evidence even on failure
+      - name: Prepare public receipt
+        id: public_receipt
         if: always()
+        env:
+          CI_OUTCOME: ${{ job.status }}
+        run: python3 ci/public_receipt.py memory "$CI_OUTCOME" ci-results "$RUNNER_TEMP/spiral-public"
+      - name: Publish memory evidence even on failure
+        id: uploaded
+        if: always() && steps.public_receipt.outcome == 'success'
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
         with:
           name: std-memory-${{ github.run_id }}-${{ github.run_attempt }}
-          path: |
-            ci-results/memory/*.json
-            ci-results/memory/*.log
-            ci-results/memory/*.stdout
-            ci-results/memory/*.stderr
-            ci-results/memory/*.rs
-            ci-results/memory-review.json
-            ci-results/thread-ownership.tar.gz
-          if-no-files-found: warn
+          path: ${{ runner.temp }}/spiral-public/receipt.json
+          if-no-files-found: error
           retention-days: 30
+      - name: Verify uploaded file set and bytes
+        if: always() && steps.uploaded.outcome == 'success'
+        env:
+          GH_TOKEN: ${{ github.token }}
+          ARTIFACT_ID: ${{ steps.uploaded.outputs.artifact-id }}
+        run: |
+          python3 ci/verify_uploaded_receipt.py "$ARTIFACT_ID" "$RUNNER_TEMP/spiral-public/receipt.json"
       - name: State diagnostic scope
         if: always()
         run: |

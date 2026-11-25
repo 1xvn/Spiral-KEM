@@ -48,13 +48,18 @@ class RustAdversarial(Interop):
         self.assertEqual(report["status"], "failed")
         self.assertEqual(report["kem"]["live_keys"], 0)
         self.assertEqual(report["kem"]["executed_jobs"], jobs)
-        self.observations.append(
-            {
-                "scenario": self.id().split(".")[-1],
-                "expected_jobs": jobs,
-                "report": report,
-            }
-        )
+        self.observe_report(process, report, stderr)
+
+    def observe_report(self, process, report, stderr):
+        self.assertIsInstance(report, dict)
+        self.observations.append({
+            "scenario": self._testMethodName,
+            "role": process.args[1],
+            "exit": process.returncode,
+            "reason": stderr,
+            "variant": dict(self._subtest.params) if self._subtest else {},
+            "report": report,
+        })
 
     def test_independent_peer_boundary_data_and_authenticated_close(self):
         peer, server = self.peer(messages=2)
@@ -284,7 +289,7 @@ if __name__ == "__main__":
         unittest.defaultTestLoader.loadTestsFromTestCase(RustAdversarial)
     )
     summary = {
-        "schema": "spiral-rust-adversarial/v0.3",
+        "schema": "spiral-rust-adversarial/v0.4",
         "tests": result.testsRun,
         "failures": len(result.failures),
         "errors": len(result.errors),

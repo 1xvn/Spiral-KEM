@@ -166,7 +166,12 @@ def run_case(kind, args, root):
                       and campaign.strict_json((output/'source-before.json').read_bytes())
                       == campaign.strict_json((output/'source-after.json').read_bytes())}
         if kind == 'clock':
-            campaign.validate_final(result['probe_final'], duration, 64)
+            if (result['requested_duration_seconds'], result['requested_connections'], result['payload_bytes'],
+                    result['interval_ms']) != (duration, 64, 16384, 50):
+                raise ValueError('collector reported another profile')
+            from load_readback import readback
+            with (output / 'probe.stdout.jsonl').open('rb') as probe, (output / 'resources.jsonl').open('rb') as resources:
+                readback(result, probe, resources, (output / 'probe.stderr.log').read_bytes())
         report.update(collector_exit_code=child.returncode, collector_status=result.get('status'),
                       collector_failure=result.get('failure'), checks=checks,
                       clock_assessment=result.get('clock_assessment'), timing_scope=result.get('timing_scope'))

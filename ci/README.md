@@ -73,7 +73,7 @@ test rows and a complete terminal summary. Rust ignored counts and the
 explicit filtered subsets appear separately. A timeout, failed tool, malformed
 or conflicting summary, missing result or changed source or release binary
 fails the run. Changing the test inventory requires updating the corresponding
-expectation in `validate.py`. The source snapshots record Git HEAD and the
+names and statuses in `test_inventory.json` and the applicable count in `validate.py`. The source snapshots record Git HEAD and the
 bytes used from the checkout, including the lock and compiler pin.
 
 Client-auth output records the expected server error and cleanup evidence as
@@ -93,13 +93,19 @@ python ci/check_memory_result.py ci-results/memory/result.json \
   --verdict ci-results/memory-review.json
 ```
 
-The workflow publishes an explicit file allowlist for functional evidence.
-Build trees and fixture directories stay outside the published paths.
-Functional checks use disposable test inputs and the runner withholds streams
-containing recognizable private-key encodings. Hashes help detect byte
-mismatches. They do not authenticate the producer or certify the environment.
+Functional and memory workflows construct a public `receipt.json` from a
+closed set of fields. On functional success the publisher checks the private
+source receipts, nested results and stream digests against the completed
+checks. Failure receipts can contain fewer digests. The workflows upload this
+single file, fetch its artifact ID and verify the ZIP member and its bytes.
+Raw stdout, stderr and test fixtures stay local to that run. Save the private
+evidence directory separately when authorized offline review is required.
+SHA-256 comparisons establish byte consistency. Producer identity requires
+separate authentication.
 
-### Readback against preserved results
+[Item 15 review matrix and platform readback](REVIEW_15.md)
+
+### Earlier PR #21 readback against preserved results
 
 | Evidence | Previous result | Strict readback |
 |---|---|---|

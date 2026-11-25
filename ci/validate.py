@@ -11,7 +11,7 @@ import shutil
 import subprocess
 import sys
 
-from evidence import (atomic_json, completed, fresh_result, libtest_result, matching_hash,
+from evidence import (atomic_json, completed, contract, scratch_result, fresh_result, libtest_result, matching_hash,
                       require, sha, structured_result, unittest_result)
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -27,7 +27,7 @@ def source_state():
         path = Path(name)
         if (name and not {'evidence', 'local_ci_20261107'} & set(path.parts)
                 and (path.suffix in {'.py', '.rs', '.toml', '.lock', '.c', '.h', '.txt', '.sh', '.yml'}
-                     or path.name == 'Makefile')):
+                     or path.name == 'Makefile' or (path.parent == Path('ci') and path.suffix == '.json'))):
             inputs[name] = sha((ROOT / path).read_bytes())
     return {'commit': subprocess.check_output(['git', 'rev-parse', 'HEAD'], cwd=ROOT, text=True).strip(),
             'files': inputs}
@@ -86,15 +86,21 @@ def main():
                 record[label] = {'file': path.name, 'sha256': sha(data)}
             completed(record)
             if minimum is not None:
-                record['test_identities'] = unittest_result(stderr, minimum)
+                record['test_identities'] = unittest_result(stderr, minimum, suite=name)
                 if json_result is None:
                     require(name == 'native-kem' or not stdout.strip(), 'unexpected unittest stdout')
+            if name == 'rust-scratch-cleanup':
+                digest = scratch_result(out / 'scratch-cleanup', stdout, stderr)
+                record['structured_file'] = {'file': 'scratch-cleanup/result.json', 'sha256': digest}
             if name == 'native-kem':
                 require(re.search(rb'(?m)^make: Leaving directory .+\n\Z', stdout) is not None,
                         'incomplete native make output')
             if rust_minimum is not None:
+                inventory = contract('test_inventory')[name]
+                if name == 'rust-unit' and expected_ignored == 0:
+                    inventory = {k: v for k, v in inventory.items() if v != 'ignored'}
                 record['test_groups'] = [libtest_result(stdout, rust_minimum, expected_ignored,
-                                                       110 if '--features' in command else 0)]
+                                                       110 if '--features' in command else 0, inventory=inventory)]
             if rust_minimum is not None or command[0] == cargo:
                 require(re.search(rb'(?m)^(?:error(?:\[[^\]]+\])?:|test result: FAILED|failures:)', stderr) is None,
                         'Rust tool reported a failure')
@@ -120,6 +126,7 @@ def main():
     try:
         before = source_state()
         atomic_json(out / 'source-before.json', before)
+        report['source_before_sha256'] = sha((out / 'source-before.json').read_bytes())
         run('python-protocol', [python, '-m', 'unittest', 'discover', '-s', 'protocol_v01/tests', '-v'], 300, minimum=85)
         run('diagnostic-parser', [python, '-m', 'unittest', 'discover', '-s', 'protocol_rust/diagnostics', '-p', 'test_*.py', '-v'], 60, minimum=31)
         run('load-collector-contracts', [python, '-m', 'unittest', 'discover', '-s', 'protocol_rust/validation', '-p', 'test_load_campaign.py', '-v'], 60, minimum=30)
@@ -188,6 +195,7 @@ def main():
             if before is not None:
                 after = source_state()
                 atomic_json(out / 'source-after.json', after)
+                report['source_after_sha256'] = sha((out / 'source-after.json').read_bytes())
                 require(before == after, 'source, lockfile or toolchain pin changed')
             if built_hash:
                 report['binary_sha256_after'] = sha(binary.read_bytes())
