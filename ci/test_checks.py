@@ -1,16 +1,17 @@
 """The CI gate must not confuse diagnostic completion with clean memory."""
 import copy
-import importlib.util
 import json
 from pathlib import Path
 import subprocess
+import shutil
+import tempfile
 import sys
 import unittest
 
 ROOT = Path(__file__).resolve().parents[1]
-SPEC = importlib.util.spec_from_file_location('memory_gate', ROOT / 'ci/check_memory_result.py')
-gate = importlib.util.module_from_spec(SPEC)
-SPEC.loader.exec_module(gate)
+sys.path.insert(0, str(ROOT / 'ci'))
+import check_memory_result as gate
+from evidence import completed, fresh_result, libtest_result, matching_hash, structured_result, unittest_result
 
 
 class MemoryGateTests(unittest.TestCase):
@@ -66,6 +67,92 @@ class MemoryGateTests(unittest.TestCase):
     def test_missing_json_cli_is_nonzero(self):
         done = subprocess.run([sys.executable, str(ROOT/'ci/check_memory_result.py'), str(ROOT/'ci/does-not-exist.json')], capture_output=True)
         self.assertNotEqual(done.returncode, 0)
+
+
+    def test_original_warning_and_failed_recheck_replace_success(self):
+        source = ROOT / 'protocol_rust/evidence/libtest_memory_20261107'
+        self.assertEqual(gate.review(source/'result.json')[:2], (False, 'diagnostic_warning'))
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            shutil.copytree(source, root, dirs_exist_ok=True)
+            result = root/'result.json'
+            verdict = root/'review.json'
+            # Build a clean synthetic control using the original child streams
+            # and a consistent clean Memcheck transcript for each case.
+            value = self.clean_fixture()
+            for case in value['cases']:
+                log = b'==1== All heap blocks were freed -- no leaks are possible\n==1== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)\n'
+                mem = case['memcheck']
+                (root/mem['log_file']).write_bytes(log)
+                mem['log_sha256'] = gate.sha(log)
+                case.update(gate.parse_memcheck(log.decode()))
+            result.write_text(json.dumps(value))
+            command = [sys.executable, str(ROOT/'ci/check_memory_result.py'),
+                       str(result), '--verdict', str(verdict)]
+            self.assertEqual(subprocess.run(command, capture_output=True).returncode, 0)
+            self.assertEqual(json.loads(verdict.read_text())['classification'], 'diagnostic_clean')
+            first = value['cases'][0]['memcheck']
+            raw_log = root/first['log_file']
+            raw_log.write_bytes(raw_log.read_bytes()+b'failure after final summary\n')
+            first['log_sha256'] = gate.sha(raw_log.read_bytes())
+            result.write_text(json.dumps(value))
+            self.assertEqual(subprocess.run(command, capture_output=True).returncode, 1)
+            self.assertEqual(json.loads(verdict.read_text())['classification'], 'incomplete_or_tool_error')
+            self.assertEqual(json.loads(verdict.read_text())['status'], 'failed')
+
+
+class TranscriptContracts(unittest.TestCase):
+    python_log = (b'test_one (suite.C.test_one) ... ok\n'
+                  b'test_two (suite.C.test_two) ... ok\n\n' + b'-'*70 +
+                  b'\nRan 2 tests in 0.001s\n\nOK\n')
+    rust_log = (b'\nrunning 2 tests\ntest case_a ... ok\ntest case_b ... ignored, probe only\n\n'
+                b'test result: ok. 1 passed; 0 failed; 1 ignored; 0 measured; 0 filtered out; finished in 0.00s\n')
+
+    def test_python_requires_complete_unique_executed_cases(self):
+        self.assertEqual(unittest_result(self.python_log, 2), ['suite.C.test_one', 'suite.C.test_two'])
+        for data in (b'', self.python_log[:-1], self.python_log+b'FAILED (errors=1)\n',
+                     self.python_log.replace(b'test_two (suite.C.test_two) ... ok\n', b''),
+                     self.python_log.replace(b'test_two', b'test_one'),
+                     self.python_log.replace(b'... ok', b'... skipped reason'),
+                     self.python_log.replace(b'Ran 2', b'Ran 0')):
+            with self.subTest(data=data), self.assertRaises(ValueError):
+                unittest_result(data, 2)
+
+    def test_rust_keeps_ignored_separate_and_requires_terminal_summary(self):
+        self.assertEqual(libtest_result(self.rust_log, 1, 1)['passed'], 1)
+        for data in (self.rust_log[:-1], self.rust_log+b'test result: FAILED\n',
+                     self.rust_log.replace(b'test case_b ... ignored, probe only\n', b''),
+                     self.rust_log.replace(b'case_b', b'case_a'),
+                     self.rust_log.replace(b'1 passed', b'0 passed')):
+            with self.subTest(data=data), self.assertRaises(ValueError):
+                libtest_result(data, 1, 1)
+        with self.assertRaises(ValueError):
+            libtest_result(self.rust_log, 2)
+
+    def test_exit_timeout_source_or_binary_mismatch_and_stale_report(self):
+        completed({'exit': 0})
+        for record in ({'exit':None,'timeout':True}, {'exit':0,'timeout':True},
+                       {'exit':0,'execution_error':'OSError'}, {'exit':False}):
+            with self.subTest(record=record), self.assertRaises(ValueError):
+                completed(record)
+        for label in ('source', 'binary'):
+            with self.assertRaisesRegex(ValueError, label + ' hash mismatch'):
+                matching_hash('original', 'changed', label)
+        with tempfile.TemporaryDirectory() as tmp:
+            path = Path(tmp)/'report.json'
+            fresh_result(path)
+            path.write_text('{"status":"passed"}')
+            with self.assertRaisesRegex(ValueError, 'stale'):
+                fresh_result(path)
+
+    def test_structured_summary_matches_current_stdout_and_binary(self):
+        data = {'tests': 2, 'failures': 0, 'errors': 0, 'skipped': 0,
+                'status': 'passed', 'source_and_binary_unchanged': True, 'binary_sha256': 'a'}
+        raw = json.dumps(data).encode()+b'\n'
+        structured_result(raw, 2, 'a', raw, 'rust-key-recovery')
+        for saved, stdout, digest in ((raw, raw+b'error\n', 'a'), (raw, b'', 'a'), (raw, raw, 'b')):
+            with self.assertRaises(ValueError):
+                structured_result(saved, 2, digest, stdout, 'rust-key-recovery')
 
 
 if __name__ == '__main__':

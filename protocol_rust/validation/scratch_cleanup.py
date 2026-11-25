@@ -16,6 +16,9 @@ import subprocess
 import sys
 
 ROOT = Path(__file__).resolve().parents[2]
+sys.path.insert(0, str(ROOT / 'ci'))
+from evidence import libtest_groups, sha
+
 VENDOR = ROOT / 'third_party/rustcrypto'
 TEMPLATES = Path(__file__).with_suffix('')
 PACKAGES = ('digest', 'hmac', 'hkdf', 'ed25519-dalek', 'curve25519-dalek')
@@ -220,20 +223,19 @@ def main():
             print(label, flush=True)
             try:
                 done = subprocess.run(command, cwd=ROOT, env=env, capture_output=True, timeout=600)
-                text = (done.stdout + b'\n' + done.stderr).decode(errors='replace')
+                stdout, stderr = done.stdout, done.stderr
                 record['exit'] = done.returncode
             except subprocess.TimeoutExpired as error:
-                text = ((error.stdout or b'') + b'\n' + (error.stderr or b'')).decode(errors='replace')
+                stdout, stderr = error.stdout or b'', error.stderr or b''
                 record.update(exit=None, timed_out=True)
-            (out / (label + '.log')).write_text(text)
-            record['log'] = label + '.log'
-            groups = [tuple(map(int, group)) for group in re.findall(
-                r'test result: ok\. (\d+) passed; (\d+) failed; (\d+) ignored; (\d+) measured; (\d+) filtered out;', text)]
-            record['test_groups'] = [{'passed': a, 'failed': b, 'ignored': c, 'measured': d, 'filtered_out': e}
-                                     for a, b, c, d, e in groups]
-            require(record['exit'] == 0, label + ' exited unsuccessfully; raw log retained')
-            require(sorted(a for a, *_ in groups) == sorted(expected), label + ' missing/extra/zero test group')
-            require(all(a > 0 and b == c == d == e == 0 for a, b, c, d, e in groups), label + ' failed/skipped/filtered tests')
+            for stream, raw in (('stdout', stdout), ('stderr', stderr)):
+                path = out / (label + '.' + stream)
+                path.write_bytes(raw)
+                record[stream] = {'file': path.name, 'sha256': sha(raw)}
+            require(record['exit'] == 0, label + ' exited unsuccessfully; raw streams retained')
+            require(re.search(rb'(?m)^(?:error(?:\[[^\]]+\])?:|test result: FAILED|failures:)', stderr)
+                    is None, label + ' emitted a failure')
+            record['test_groups'] = libtest_groups(stdout, expected)
             record['passed'] = True
         require(len(report['checks']) == len(MATRIX), 'matrix incomplete')
         require(source_hashes() == report['source_sha256'], 'source or templates changed during validation')

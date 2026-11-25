@@ -52,7 +52,9 @@ jobs:
             --output ci-results/thread-ownership
       - name: Require clean control measurements, not merely completed diagnostics
         if: always()
-        run: python ci/check_memory_result.py ci-results/memory/result.json
+        run: >-
+          python ci/check_memory_result.py ci-results/memory/result.json
+          --verdict ci-results/memory-review.json
       - name: Publish memory evidence even on failure
         if: always()
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
@@ -64,6 +66,7 @@ jobs:
             ci-results/memory/*.stdout
             ci-results/memory/*.stderr
             ci-results/memory/*.rs
+            ci-results/memory-review.json
             ci-results/thread-ownership.tar.gz
           if-no-files-found: warn
           retention-days: 30

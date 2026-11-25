@@ -60,6 +60,8 @@ class ProgressWatch:
         self.last_messages = None
 
     def observe(self, event, now):
+        if self.phase == 'finished':
+            raise ValueError('probe emitted an event after the final report')
         kind = event.get('event')
         self.last_event = now
         if kind == 'rotation_started':
@@ -252,7 +254,7 @@ def validate_final(report, duration, connections):
         raise ValueError('requested authenticated concurrency was not reached')
     if report.get('active') != 0 or report.get('pending') != 0 or report.get('admission_released') is not True:
         raise ValueError('admission leases were not all released')
-    if report.get('kem', {}).get('live_keys') != 0:
+    if type(report.get('kem', {}).get('live_keys')) is not int or report['kem']['live_keys'] != 0:
         raise ValueError('native KEM keys remain live')
     if report.get('authenticated_close_for_all_completed_pairs') is not True or report.get('auth_key_closed') is not True:
         raise ValueError('authenticated closure/identity cleanup incomplete')
@@ -369,6 +371,8 @@ def main(argv=None):
                        '--duration-seconds', str(args.duration_seconds),
                        '--connections', str(args.connections), '--payload', str(args.payload),
                        '--interval-ms', str(args.interval_ms)]
+            result['probe_command'] = [item if item != str(folder) else '<private-fixture-dir>'
+                                       for item in command]
             with (output / 'probe.stdout.jsonl').open('wb') as raw, (output / 'probe.stderr.log').open('wb') as errors, (output / 'resources.jsonl').open('w') as trace:
                 child = subprocess.Popen(command, stdout=subprocess.PIPE, stderr=errors, start_new_session=True)
                 selector = selectors.DefaultSelector(); selector.register(child.stdout, selectors.EVENT_READ)
@@ -411,8 +415,6 @@ def main(argv=None):
                             kind = event.get('event')
                             watch.observe(event, time.monotonic())
                             if kind == 'final':
-                                if final is not None:
-                                    raise ValueError('duplicate final probe result')
                                 final = event
                             # Keep at most small summary events in result; full trace is on disk.
                             if kind != 'sample':
@@ -422,13 +424,15 @@ def main(argv=None):
                                 print(json.dumps(event), flush=True)
                     if child.poll() is not None and not eof:
                         continue
-                if buffer.strip():
+                if buffer:
                     raise ValueError('truncated probe JSON output')
                 selector.close()
                 code = child.wait(timeout=10)
                 result['probe_exit_code'] = code
                 if code != 0:
                     raise RuntimeError('probe process failed')
+                if (output / 'probe.stderr.log').stat().st_size:
+                    raise ValueError('unexpected probe stderr on exit 0')
                 validate_final(final, args.duration_seconds, args.connections)
                 if not samples.count:
                     raise ValueError('no process resource samples collected')
@@ -445,13 +449,14 @@ def main(argv=None):
             result['clock_assessment'] = {'status': 'insufficient', 'issues': [type(error).__name__]}
         try:
             after = source_snapshot()
-            result['source_unchanged'] = before['files'] == after['files']
+            result['source_unchanged'] = before == after
         except Exception as error:
             after = {'snapshot_error': type(error).__name__}
             result['source_unchanged'] = False
         (output / 'source-after.json').write_text(json.dumps(after, indent=2) + '\n')
         try:
-            result['binary_unchanged'] = sha(binary) == result['binary_sha256']
+            result['binary_sha256_after'] = sha(binary)
+            result['binary_unchanged'] = result['binary_sha256_after'] == result['binary_sha256']
         except OSError:
             result['binary_unchanged'] = False
         if not result['source_unchanged'] or not result['binary_unchanged']:

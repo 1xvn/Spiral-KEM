@@ -247,6 +247,13 @@ class HourlyContracts(unittest.TestCase):
         self.assertGreater(collector.watchdog_budget(86400, 1), 86400 * 2)
         self.assertLess(collector.watchdog_budget(86400, 1) + 3600, 7 * 86400)
 
+    def test_events_after_final_report_are_rejected(self):
+        watch = collector.ProgressWatch(0)
+        watch.observe({"event": "final"}, 1)
+        for kind in ("final", "error", "rotation_started"):
+            with self.subTest(kind=kind), self.assertRaisesRegex(ValueError, "after the final"):
+                watch.observe({"event": kind}, 2)
+
     def test_rotation_disarms_echo_timer_but_has_a_fixed_deadline(self):
         watch = collector.ProgressWatch(0)
         watch.observe({'event': 'rotation_started'}, 1)
