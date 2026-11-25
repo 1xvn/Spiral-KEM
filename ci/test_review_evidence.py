@@ -228,7 +228,7 @@ class ReviewContracts(unittest.TestCase):
                       probe_final=final, resource_samples=len(resources), resources=summary.report(),
                       resource_limits=dict(fds=20, threads=20, rss_mib=10))
         readback(result, lines(events), lines(resources), b'')
-        for mutation in ('final_only', 'clock', 'stage', 'progress', 'closes', 'resources', 'gap'):
+        for mutation in ('final_only', 'clock', 'stage', 'progress', 'bytes', 'active', 'closes', 'resources', 'gap'):
             r, e, trace = deepcopy((result, events, resources))
             if mutation == 'final_only':
                 e = e[-1:]
@@ -239,6 +239,9 @@ class ReviewContracts(unittest.TestCase):
             elif mutation == 'progress':
                 for row in e[7:9]:
                     row['total_messages'] = 0
+            elif mutation in ('bytes', 'active'):
+                for row in e[7:9]:
+                    row['echoed_bytes' if mutation == 'bytes' else 'active'] = 0
             elif mutation == 'closes':
                 e[-1]['authenticated_pair_closes'] = 9
             elif mutation == 'resources':

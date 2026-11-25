@@ -37,6 +37,8 @@ def readback(result, probe, resources, stderr):
     epochs = 0
     messages = 0
     epoch_messages = 0
+    echoes = 0
+    active_seen = False
     traffic_start = 0
     traffic_span = 0
     last_progress = 0
@@ -85,6 +87,8 @@ def readback(result, probe, resources, stderr):
                     'wrong traffic epoch')
             traffic_start = last_progress = row['soak_elapsed_seconds']
             epoch_messages = messages
+            epoch_echoes = echoes
+            active_seen = False
             phase = 'traffic'
         elif event == 'sample' and phase in ('traffic', 'closed_epoch'):
             live = phase == 'traffic'
@@ -102,7 +106,15 @@ def readback(result, probe, resources, stderr):
                     row['kem']['rejected_jobs'] == 0 and
                     row['kem']['executed_jobs'] == 3 * row['authenticated_pairs_total'],
                     'incomplete traffic sample accounting')
+            # The probe increments messages then bytes on each lane. A sample
+            # reads the atomics separately, so compare across samples and allow
+            # one in-flight increment per lane rather than requiring equality.
+            observed_echoes, remainder = divmod(row['echoed_bytes'], payload)
+            require(remainder == 0 and echoes <= observed_echoes and echoes <= n + lanes and
+                    n <= observed_echoes + lanes, 'inconsistent echo byte progress')
+            echoes = observed_echoes
             if live:
+                active_seen |= row['active'] > 0
                 require(at - last_progress <= 16, 'missing traffic progress')
             if n > messages:
                 last_progress = at
@@ -116,7 +128,7 @@ def readback(result, probe, resources, stderr):
             span = row['soak_elapsed_seconds'] - traffic_start
             require(elapsed(span) and span <= 242 and row['completed_epochs'] == epochs and
                     row['soak_elapsed_seconds'] - last_progress <= 16 and
-                    (span < 2 or messages > epoch_messages), 'epoch lacks observed traffic')
+                    (span < 2 or (active_seen and messages > epoch_messages and echoes > epoch_echoes)), 'epoch lacks observed traffic')
             traffic_span += span
             epochs += 1
             phase = 'closed_epoch'
