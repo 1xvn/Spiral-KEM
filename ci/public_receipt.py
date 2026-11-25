@@ -5,7 +5,7 @@ from pathlib import Path
 import re
 import subprocess
 
-from evidence import atomic_json, require, strict_json
+from evidence import atomic_json, contract, require, strict_json
 
 
 def publish(kind, outcome, root, destination):
@@ -41,10 +41,27 @@ def publish(kind, outcome, root, destination):
                 result['source_before_sha256'] == hashes['functional/source-before.json'] and
                 result['source_after_sha256'] == hashes['functional/source-after.json'],
                 'source receipt differs from completed check')
+        required = {k for k in contract('test_inventory') if not k.startswith('scratch/')}
+        required.update(('cc-version', 'openssl-version', 'python-dependencies', 'cargo-version',
+                         'rustc-version', 'rust-scratch-cleanup', 'rust-flow-diagnostics-cli', 'rust-release'))
+        checks = result['checks']
+        require(len(checks) == len(required) and {c['name'] for c in checks} == required,
+                'incomplete functional inventory')
+        receipt['checks'] = {}
+        for check in checks:
+            name = check['name']
+            require(check['passed'] is True and check['classification'] == 'functional_pass',
+                    'functional check did not pass')
+            digests = {}
+            for stream in ('stdout', 'stderr'):
+                filename = name + '.' + stream
+                digest = hashlib.sha256((root / 'functional' / filename).read_bytes()).hexdigest()
+                require(check[stream] == {'file': filename, 'sha256': digest}, 'raw stream changed')
+                digests[stream + '_sha256'] = digest
+            receipt['checks'][name] = digests
         recorded = {'functional/' + c['structured_file']['file']: c['structured_file']['sha256']
                     for c in result['checks'] if 'structured_file' in c}
         require(recorded == {n: hashes[n] for n in names[3:]}, 'validated evidence changed before publication')
-        require(all(c['passed'] is True for c in result['checks']), 'unsuccessful functional check')
     if kind == 'memory':
         verdict = parsed.get('memory-review.json', {})
         classification = verdict.get('classification', 'incomplete_or_tool_error')

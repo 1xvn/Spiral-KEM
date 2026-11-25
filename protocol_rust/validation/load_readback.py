@@ -152,3 +152,50 @@ def readback(result, probe, resources, stderr):
     require(summary.count >= 2 and summary.count == result['resource_samples'] and
             wall - previous['elapsed_seconds'] <= 4 and previous['elapsed_seconds'] - first >= duration - 2
             and summary.report() == result['resources'], 'resource trace does not cover campaign')
+
+
+def review_archive(path):
+    """Read regular archive members in place. Historical binaries are not archived."""
+    import hashlib
+    from pathlib import PurePosixPath
+    import tarfile
+    from load_campaign import strict_json
+    required = {'result.json', 'probe.stdout.jsonl', 'probe.stderr.log', 'resources.jsonl',
+                'source-before.json', 'source-after.json', 'SHA256.json'}
+    with tarfile.open(path, 'r:gz') as archive:
+        members = archive.getmembers()
+        entries = {PurePosixPath(m.name).name: m for m in members}
+        require(len(members) == len(entries) and required <= entries.keys() <= required | {'clocks.jsonl'}
+                and len({PurePosixPath(m.name).parent for m in members}) == 1 and
+                all(m.isfile() for m in members), 'invalid archive inventory')
+
+        def read(name):
+            return archive.extractfile(entries[name]).read()
+
+        manifest = strict_json(read('SHA256.json'))
+        require(manifest.keys() == entries.keys() - {'SHA256.json'}, 'incomplete archive manifest')
+        for name, digest in manifest.items():
+            hashed = hashlib.sha256()
+            with archive.extractfile(entries[name]) as source:
+                for chunk in iter(lambda: source.read(1024 * 1024), b''):
+                    hashed.update(chunk)
+            require(hashed.hexdigest() == digest, 'archive member mismatch')
+        require(strict_json(read('source-before.json')) == strict_json(read('source-after.json')),
+                'source snapshot changed')
+        result = strict_json(read('result.json'))
+        if 'binary_sha256_after' in result:
+            require(result['binary_sha256'] == result['binary_sha256_after'], 'binary changed')
+        with archive.extractfile(entries['probe.stdout.jsonl']) as probe, \
+             archive.extractfile(entries['resources.jsonl']) as resources:
+            readback(result, probe, resources, read('probe.stderr.log'))
+        return result
+
+
+if __name__ == '__main__':
+    import argparse
+    import json
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument('archive')
+    result = review_archive(parser.parse_args().archive)
+    print(json.dumps({key: result[key] for key in ('environment_label', 'status', 'resource_samples',
+                                                   'collector_monotonic_elapsed_seconds', 'clock_assessment')}))
