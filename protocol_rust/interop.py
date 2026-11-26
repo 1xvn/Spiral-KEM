@@ -199,7 +199,7 @@ class Interop(unittest.TestCase):
         self.observe_report(p, report, err)
         return report
 
-    def py_client(self, port, count=1, size=64, tamper=None):
+    def py_client(self, port, count=1, size=64, tamper=None, *, on_tls_negotiated=None):
         sock = socket.create_connection(("127.0.0.1", port), timeout=5)
         t = TLSTransport(
             sock,
@@ -209,6 +209,11 @@ class Interop(unittest.TestCase):
         )
         ch = None
         try:
+            if on_tls_negotiated is not None:
+                on_tls_negotiated(
+                    t.connection.get_cipher_name(),
+                    t.connection.get_protocol_version_name(),
+                )
             if tamper:
                 original = t.send
 

@@ -1,0 +1,25 @@
+[
+  {
+    "case": "finished-failure",
+    "binary_sha256": "26619e540382f9ac0133f1491e18666ed2bfac21d0582a998604e166f57e6339",
+    "tls": {
+      "cipher": "TLS_AES_256_GCM_SHA384",
+      "protocol": "TLSv1.3"
+    },
+    "memcheck_log_path": "finished-failure.log",
+    "memcheck_log_sha256": "094b2f8698faec2eba3b8113871887252aa5c0b196bb332e8aa44b1d4313556e",
+    "process_exit": 99,
+    "expected_exit": 1,
+    "memcheck_errors": 1,
+    "passed": false,
+    "report": {
+      "kem": {
+        "executed_jobs": 2,
+        "live_keys": 0,
+        "rejected_jobs": 0
+      },
+      "status": "failed"
+    },
+    "stderr": "Error: Authentication\n"
+  }
+]
