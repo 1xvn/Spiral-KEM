@@ -1,0 +1,206 @@
+{
+  "schema": "spiral-opt2-hrt-combined-experiment/v1",
+  "checkout_branch": "research/opt2-hrt",
+  "checkout_commit": "cbaf58de6d67178b1262156c7356f9cecb946956",
+  "worktree_before_run_porcelain": [
+    " M code/opt2/README.md",
+    "?? code/opt2/HRT_EXPERIMENT.md",
+    "?? code/opt2/evidence/hrt_opt2_1000.json",
+    "?? code/opt2/experiment_hrt.py",
+    "?? code/opt2/test_hrt.py"
+  ],
+  "source_sha256": {
+    "code/opt2/experiment_hrt.py": "81dcb3ba7aec18d8e2b93fde0f9583b72b5dce16c8a3e62b2fb1588385a2f64e",
+    "code/opt2/spiral_kem_toy_v031_opt2.py": "74c1ff02669d5b6eea87ccf650bc6930bc1822ffe8568fa68ce79fb29958a118"
+  },
+  "command": "python3 -B code/opt2/experiment_hrt.py --candidate combined --trials 1000 --output code/opt2/evidence/hrt_opt2_combined_1000.json",
+  "python": "3.12.14",
+  "platform": "Linux-6.18.57-x86_64-with-glibc2.41",
+  "profile": {
+    "n": 256,
+    "k": 2,
+    "q": 3329,
+    "eta": 1,
+    "message_bytes": 32
+  },
+  "fixture_domain_hex": "53706972616c2d4f5054322d4852542d7061697265642d6578706572696d656e742d763100",
+  "fixture_derivation": "SHAKE256(domain || uint64_le(trial), 128 bytes); 3 keygen seeds then one shared message",
+  "trial_indices": [
+    0,
+    999
+  ],
+  "hrt": {
+    "projection_multiplier": 1729,
+    "pair_indices": "j and j+128 for j=0..127",
+    "symbol_bit_order": "ab: a is bit j, b is bit j+128",
+    "class_projection": "800*b mod 3329",
+    "decoder": "a=OPT2(x); b=OPT2((y-800*a) mod 3329)"
+  },
+  "mathematical_check": {
+    "guaranteed_max_absolute_coefficient_error": 831,
+    "coefficient_pair_error_cases_checked": 11062276,
+    "symbols": {
+      "00": {
+        "representative": [
+          0,
+          0
+        ],
+        "projection": 0,
+        "error_cases_checked": 2765569
+      },
+      "01": {
+        "representative": [
+          0,
+          1664
+        ],
+        "projection": 800,
+        "error_cases_checked": 2765569
+      },
+      "10": {
+        "representative": [
+          1664,
+          800
+        ],
+        "projection": 0,
+        "error_cases_checked": 2765569
+      },
+      "11": {
+        "representative": [
+          1664,
+          2464
+        ],
+        "projection": 800,
+        "error_cases_checked": 2765569
+      }
+    },
+    "radius_832_collision": {
+      "00": [
+        0,
+        832
+      ],
+      "01": [
+        0,
+        -832
+      ],
+      "observed_pair": [
+        0,
+        832
+      ],
+      "decoded_symbol": "00"
+    }
+  },
+  "paired_measurements": {
+    "trials": 1000,
+    "completed_comparisons": 1000,
+    "distinct_baseline_candidate_ciphertexts": 1000,
+    "wire_formats_decapsulated_per_encoding": [
+      "skw1",
+      "legacy"
+    ],
+    "baseline": {
+      "full_message_failures": 0,
+      "shared_key_mismatches": 0,
+      "max_absolute_coefficient_error": 75,
+      "serialized_ciphertext_sizes_bytes": {
+        "skw1": {
+          "1160": 1000
+        },
+        "legacy": {
+          "1589": 1000
+        }
+      }
+    },
+    "combined": {
+      "full_message_failures": 0,
+      "shared_key_mismatches": 0,
+      "max_absolute_coefficient_error": 75,
+      "serialized_ciphertext_sizes_bytes": {
+        "skw1": {
+          "1160": 1000
+        },
+        "legacy": {
+          "1589": 1000
+        }
+      },
+      "coefficient_pairs": 128000,
+      "coefficient_pairs_outside_radius_831": 0,
+      "messages_with_pairs_outside_radius_831": 0,
+      "max_pair_error": 75,
+      "pair_error_max_absolute_histogram": {
+        "0": 101,
+        "1": 607,
+        "2": 1236,
+        "3": 1856,
+        "4": 2354,
+        "5": 2958,
+        "6": 3512,
+        "7": 3953,
+        "8": 4406,
+        "9": 4549,
+        "10": 4999,
+        "11": 5060,
+        "12": 5285,
+        "13": 5349,
+        "14": 5368,
+        "15": 5392,
+        "16": 5354,
+        "17": 5099,
+        "18": 4940,
+        "19": 4869,
+        "20": 4568,
+        "21": 4298,
+        "22": 4298,
+        "23": 3877,
+        "24": 3607,
+        "25": 3374,
+        "26": 3025,
+        "27": 2834,
+        "28": 2498,
+        "29": 2295,
+        "30": 2089,
+        "31": 1797,
+        "32": 1692,
+        "33": 1401,
+        "34": 1279,
+        "35": 1141,
+        "36": 987,
+        "37": 861,
+        "38": 695,
+        "39": 710,
+        "40": 536,
+        "41": 480,
+        "42": 379,
+        "43": 357,
+        "44": 312,
+        "45": 232,
+        "46": 199,
+        "47": 182,
+        "48": 140,
+        "49": 116,
+        "50": 107,
+        "51": 93,
+        "52": 55,
+        "53": 48,
+        "54": 36,
+        "55": 31,
+        "56": 25,
+        "57": 18,
+        "58": 22,
+        "59": 13,
+        "60": 10,
+        "61": 4,
+        "62": 9,
+        "63": 4,
+        "64": 3,
+        "65": 3,
+        "66": 4,
+        "67": 3,
+        "68": 2,
+        "69": 1,
+        "70": 1,
+        "71": 1,
+        "75": 1
+      }
+    }
+  }
+}

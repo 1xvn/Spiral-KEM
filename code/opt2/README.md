@@ -48,3 +48,10 @@ Both peers must use the compact API for SKW1. Legacy readers cannot directly par
 Reported medians include byte I/O conversion. Total time is the median of each round's three-operation sum and excludes network time. See [RESULTS.md](RESULTS.md) for the recorded Linux run and [COMPACT_WIRE_SPEC.md](COMPACT_WIRE_SPEC.md) for byte layout and validation rules.
 
 The comparison uses an educational Python ML-KEM implementation with different noise/compression choices. Timings are not security-equivalent parameter comparisons. Python constant-time behavior, rare decryption-failure probability and cryptographic strength have not been established.
+
+## HRT message-encoding experiment
+
+The standalone HRT experiment compares the default OPT2 codec with a paired-coefficient
+candidate under identical keys, messages and derived coins. It uses the existing OPT2
+wire codecs and decapsulation. See [HRT_EXPERIMENT.md](HRT_EXPERIMENT.md) for the
+decoder rule, fixed collision, commands and measured results.
