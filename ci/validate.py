@@ -128,7 +128,7 @@ def main():
         atomic_json(out / 'source-before.json', before)
         report['source_before_sha256'] = sha((out / 'source-before.json').read_bytes())
         run('python-protocol', [python, '-m', 'unittest', 'discover', '-s', 'protocol_v01/tests', '-v'], 300, minimum=85)
-        run('diagnostic-parser', [python, '-m', 'unittest', 'discover', '-s', 'protocol_rust/diagnostics', '-p', 'test_*.py', '-v'], 60, minimum=31)
+        run('diagnostic-parser', [python, '-m', 'unittest', 'discover', '-s', 'protocol_rust/diagnostics', '-p', 'test_*.py', '-v'], 60, minimum=32)
         run('load-collector-contracts', [python, '-m', 'unittest', 'discover', '-s', 'protocol_rust/validation', '-p', 'test_load_campaign.py', '-v'], 60, minimum=30)
         run('short-operations-contracts', [python, '-m', 'unittest', 'discover', '-s', 'protocol_rust/validation', '-p', 'test_short_operations.py', '-v'], 60, minimum=10)
         run('clock-observation-contracts', [python, '-m', 'unittest', 'discover', '-s', 'protocol_rust/validation', '-p', 'test_clock_observation.py', '-v'], 60, minimum=13)
