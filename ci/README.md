@@ -85,6 +85,12 @@ source consistency, fixture removal and process cleanup.
 The memory gate checks the raw child streams and Memcheck log alongside the
 summary. It records `diagnostic_warning` when complete evidence contains
 warnings, and `incomplete_or_tool_error` for invalid or missing evidence.
+The v1 control runner marked warnings outside its 48-byte attribution scope
+as incomplete. The reader accepts that specific finding only after checking
+the six required controls, tool and build evidence, child streams, raw log
+hashes, terminal `ERROR SUMMARY`, and process exits. Warnings outside the
+48-byte scope keep their attribution undetermined. A warning verdict has
+status `failed` and exits 1. The workflow still selects Rust 1.99.1.
 Run a fresh review with a separate verdict file to replace any prior verdict
 even when the input is missing or malformed.
 
@@ -92,6 +98,24 @@ even when the input is missing or malformed.
 python ci/check_memory_result.py ci-results/memory/result.json \
   --verdict ci-results/memory-review.json
 ```
+
+The readback used the preserved Rust 1.99.1 and 1.100.0 controls from the
+follow-up comparison, with copies for the negative cases. Entries show the
+classification and reader exit code. [Runtime memory diagnostics #6](https://github.com/1xvn/Spiral-KEM/actions/runs/45623074577)
+
+| Evidence | Before | After |
+|---|---|---|
+| Synthetic clean controls | `diagnostic_clean`, 0 | `diagnostic_clean`, 0 |
+| Rust 1.99.1 original, four 48-byte warnings | `diagnostic_warning`, 1 | `diagnostic_warning`, 1 |
+| Rust 1.100.0 original, four 64-byte warnings | `incomplete_or_tool_error`, 1 | `diagnostic_warning`, 1 |
+| Missing log, truncated log, or log hash mismatch | `incomplete_or_tool_error`, 1 | `incomplete_or_tool_error`, 1 |
+| Timeout, conflicting Memcheck exit, or missing control | `incomplete_or_tool_error`, 1 | `incomplete_or_tool_error`, 1 |
+
+To reread the archived controls, pass each version's `raw/result.json` in the
+extracted comparison bundle to the reader and write verdicts to a separate
+directory. The [CI regression tests](test_checks.py) also cover duplicate
+controls and summaries, an absent final summary, and an additional tool error
+alongside an unattributed warning.
 
 Functional and memory workflows construct a public `receipt.json` from a
 closed set of fields. On functional success the publisher checks the private

@@ -2,6 +2,7 @@
 import copy
 import json
 from pathlib import Path
+import re
 import subprocess
 import shutil
 import tempfile
@@ -9,6 +10,7 @@ import sys
 import unittest
 
 ROOT = Path(__file__).resolve().parents[1]
+MEMORY_EVIDENCE = ROOT / 'protocol_rust/evidence/libtest_memory_20261107'
 sys.path.insert(0, str(ROOT / 'ci'))
 import check_memory_result as gate
 from evidence import completed, fresh_result, libtest_result, matching_hash, structured_result, unittest_result
@@ -16,7 +18,7 @@ from evidence import completed, fresh_result, libtest_result, matching_hash, str
 
 class MemoryGateTests(unittest.TestCase):
     def setUp(self):
-        self.real = json.loads((ROOT / 'protocol_rust/evidence/libtest_memory_20261107/result.json').read_text())
+        self.real = json.loads((MEMORY_EVIDENCE / 'result.json').read_text())
 
     def clean_fixture(self):
         value = copy.deepcopy(self.real)
@@ -32,6 +34,42 @@ class MemoryGateTests(unittest.TestCase):
             for kind in ['definitely lost','indirectly lost','possibly lost','suppressed']:
                 case['leaks'][kind]['bytes'] = 0
         return value
+
+    def write_clean_evidence(self, root):
+        shutil.copytree(MEMORY_EVIDENCE, root, dirs_exist_ok=True)
+        value = self.clean_fixture()
+        for case in value['cases']:
+            log = (b'==1== All heap blocks were freed -- no leaks are possible\n'
+                   b'==1== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)\n')
+            mem = case['memcheck']
+            (root / mem['log_file']).write_bytes(log)
+            mem['log_sha256'] = gate.sha(log)
+            case.update(gate.parse_memcheck(log.decode()))
+        return value
+
+    def write_unattributed_warning(self, root):
+        value = self.write_clean_evidence(root)
+        case = next(row for row in value['cases'] if row['name'] == 'thread-current')
+        mem = case['memcheck']
+        original = (MEMORY_EVIDENCE / mem['log_file']).read_bytes()
+        log = re.sub(rb'\b48 bytes\b', b'64 bytes', original).replace(b'596 bytes', b'612 bytes')
+        (root / mem['log_file']).write_bytes(log)
+        mem.update(exit=99, log_sha256=gate.sha(log))
+        case.update(gate.parse_memcheck(log.decode()))
+        legacy_error = 'unexpected Memcheck errors beyond the scoped runtime 48-byte signature'
+        case.update(diagnostic_complete=False, errors=[legacy_error],
+                    only_scoped_runtime_48_errors=False, memory_measurement_passed=False)
+        value.update(diagnostic_complete=False, errors=[f'thread-current: {legacy_error}'])
+        return value, case
+
+    def review_evidence(self, root, value):
+        result = root / 'result.json'
+        verdict = root / 'review.json'
+        result.write_text(json.dumps(value))
+        command = [sys.executable, '-B', str(ROOT / 'ci/check_memory_result.py'),
+                   str(result), '--verdict', str(verdict)]
+        exit_code = subprocess.run(command, capture_output=True).returncode
+        return exit_code, json.loads(verdict.read_text())
 
     def test_synthetic_clean_controls_do_not_approve_production(self):
         value = self.clean_fixture()
@@ -74,35 +112,71 @@ class MemoryGateTests(unittest.TestCase):
 
 
     def test_original_warning_and_failed_recheck_replace_success(self):
-        source = ROOT / 'protocol_rust/evidence/libtest_memory_20261107'
-        self.assertEqual(gate.review(source/'result.json')[:2], (False, 'diagnostic_warning'))
+        self.assertEqual(gate.review(MEMORY_EVIDENCE / 'result.json')[:2], (False, 'diagnostic_warning'))
         with tempfile.TemporaryDirectory() as tmp:
             root = Path(tmp)
-            shutil.copytree(source, root, dirs_exist_ok=True)
-            result = root/'result.json'
-            verdict = root/'review.json'
-            # Build a clean synthetic control using the original child streams
-            # and a consistent clean Memcheck transcript for each case.
-            value = self.clean_fixture()
-            for case in value['cases']:
-                log = b'==1== All heap blocks were freed -- no leaks are possible\n==1== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)\n'
-                mem = case['memcheck']
-                (root/mem['log_file']).write_bytes(log)
-                mem['log_sha256'] = gate.sha(log)
-                case.update(gate.parse_memcheck(log.decode()))
-            result.write_text(json.dumps(value))
-            command = [sys.executable, str(ROOT/'ci/check_memory_result.py'),
-                       str(result), '--verdict', str(verdict)]
-            self.assertEqual(subprocess.run(command, capture_output=True).returncode, 0)
-            self.assertEqual(json.loads(verdict.read_text())['classification'], 'diagnostic_clean')
+            value = self.write_clean_evidence(root)
+            status, verdict = self.review_evidence(root, value)
+            self.assertEqual(status, 0)
+            self.assertEqual(verdict['classification'], 'diagnostic_clean')
             first = value['cases'][0]['memcheck']
             raw_log = root/first['log_file']
             raw_log.write_bytes(raw_log.read_bytes()+b'failure after final summary\n')
             first['log_sha256'] = gate.sha(raw_log.read_bytes())
-            result.write_text(json.dumps(value))
-            self.assertEqual(subprocess.run(command, capture_output=True).returncode, 1)
-            self.assertEqual(json.loads(verdict.read_text())['classification'], 'incomplete_or_tool_error')
-            self.assertEqual(json.loads(verdict.read_text())['status'], 'failed')
+            status, verdict = self.review_evidence(root, value)
+            self.assertEqual(status, 1)
+            self.assertEqual(verdict['classification'], 'incomplete_or_tool_error')
+            self.assertEqual(verdict['status'], 'failed')
+
+    def test_complete_64_byte_warning_fails_without_attribution(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            value, case = self.write_unattributed_warning(root)
+            self.assertEqual(case['leaks']['possibly lost'], {'bytes': 64, 'blocks': 1})
+            status, verdict = self.review_evidence(root, value)
+            self.assertEqual(status, 1)
+            self.assertEqual(verdict['status'], 'failed')
+            self.assertEqual(verdict['classification'], 'diagnostic_warning')
+            self.assertIn('attribution remains undetermined for thread-current', verdict['reason'])
+
+    def test_warning_with_incomplete_evidence_is_not_a_diagnostic_warning(self):
+        for failure in ('missing log', 'truncated log', 'missing summary', 'duplicate summary',
+                        'hash mismatch', 'timeout', 'exit mismatch', 'missing case',
+                        'duplicate case', 'additional producer error'):
+            with self.subTest(failure=failure), tempfile.TemporaryDirectory() as tmp:
+                root = Path(tmp)
+                value, case = self.write_unattributed_warning(root)
+                mem = case['memcheck']
+                log = root / mem['log_file']
+                if failure == 'missing log':
+                    log.unlink()
+                elif failure == 'truncated log':
+                    log.write_bytes(log.read_bytes()[:-1])
+                    mem['log_sha256'] = gate.sha(log.read_bytes())
+                elif failure == 'missing summary':
+                    log.write_bytes(b''.join(log.read_bytes().splitlines(keepends=True)[:-1]))
+                    mem['log_sha256'] = gate.sha(log.read_bytes())
+                elif failure == 'duplicate summary':
+                    raw = log.read_bytes()
+                    log.write_bytes(raw + raw.splitlines(keepends=True)[-1])
+                    mem['log_sha256'] = gate.sha(log.read_bytes())
+                elif failure == 'hash mismatch':
+                    mem['log_sha256'] = '0' * 64
+                elif failure == 'timeout':
+                    mem.update(exit=None, timed_out=True)
+                elif failure == 'exit mismatch':
+                    mem['exit'] = 0
+                elif failure == 'missing case':
+                    value['cases'].remove(case)
+                elif failure == 'duplicate case':
+                    value['cases'][-1] = copy.deepcopy(case)
+                else:
+                    case['errors'].append('additional tool failure')
+                    value['errors'].append('thread-current: additional tool failure')
+                status, verdict = self.review_evidence(root, value)
+                self.assertEqual(status, 1)
+                self.assertEqual(verdict['status'], 'failed')
+                self.assertEqual(verdict['classification'], 'incomplete_or_tool_error')
 
 
 class TranscriptContracts(unittest.TestCase):

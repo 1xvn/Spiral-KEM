@@ -5,7 +5,7 @@ import re
 from pathlib import Path
 import sys
 
-from evidence import atomic_json, libtest_result, lines, require, sha, strict_json
+from evidence import atomic_json, exact, libtest_result, lines, require, sha, strict_json
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / 'protocol_rust/diagnostics'))
 import libtest_memory
@@ -13,6 +13,8 @@ from libtest_memory import parse_memcheck
 
 EXPECTED = {'empty-main', 'thread-current', 'thread-join', 'channel-roundtrip',
             'libtest-default', 'libtest-nocapture'}
+REVIEWED_RUST_RELEASES = {'release: 1.99.1', 'release: 1.100.0'}
+LEGACY_SCOPE_ERROR = 'unexpected Memcheck errors beyond the scoped runtime 48-byte signature'
 
 
 def check(data):
@@ -81,7 +83,8 @@ def provenance(folder, data, historical):
         require(len(command) == 2 and Path(command[0]).name == name and command[1] == flag
                 and re.fullmatch('[a-f0-9]{64}', tool['executable_sha256'])
                 and not tool['stderr'], 'invalid tool identity')
-    require('release: 1.99.1' in tools['rustc']['stdout'].splitlines()
+    releases = [line for line in tools['rustc']['stdout'].splitlines() if line.startswith('release: ')]
+    require(len(releases) == 1 and releases[0] in REVIEWED_RUST_RELEASES
             and re.fullmatch(r'valgrind-[\d.]+\n', tools['valgrind']['stdout']), 'wrong tool version')
     binaries = {}
     for name, filename in [('main', 'std-control'), ('libtest', 'libtest-control')]:
@@ -122,21 +125,32 @@ def provenance(folder, data, historical):
                 'Memcheck command not bound to control')
 
 
+def scoped_48_warning(parsed):
+    summary = parsed['summary']
+    known = sum(record['classification'] != 'other' for record in parsed['possibly_lost_48_records'])
+    leaks = parsed['leaks']
+    return (summary['errors'] == summary['contexts'] == known > 0
+            and leaks['possibly lost'] == {'bytes': 48 * known, 'blocks': known}
+            and not any(leaks[kind]['bytes'] for kind in ('definitely lost', 'indirectly lost')))
+
+
 def review(path, raw=None):
     if raw is None:
         raw = path.read_bytes()
     data = strict_json(raw)
     require(type(data) is dict and data.get('schema') == 'spiral-rust-libtest-memory-controls/v1',
             'invalid diagnostic schema')
+    require(data.get('production_memory_passed') is False and data.get('original_finding_resolved') is False,
+            'a diagnostic cannot approve production or close the original finding')
     cases = data.get('cases', [])
     require(len(cases) == len(EXPECTED) and {c.get('name') for c in cases} == EXPECTED,
             'missing or duplicate controls')
-    require(data.get('diagnostic_complete') is True and data.get('errors') == [],
-            'diagnostic incomplete')
     # The archived v1 warning predates the per-invocation binary digests.
     historical = sha(raw) == '5184744a62ece330f7c704bdd54fb8341355b89269a8998c7d3f2e1f7652e680'
     provenance(path.parent, data, historical)
-    warning = False
+    warnings = []
+    unattributed = []
+    producer_errors = []
     for case in cases:
         name = case['name']
         for mode, record in (('native', case['native']), ('memcheck', case['memcheck'])):
@@ -151,8 +165,7 @@ def review(path, raw=None):
                         'unexpected libtest diagnostic identity')
             else:
                 require(record['stdout'] == f'CONTROL_COMPLETED {name}\n', 'missing native completion')
-        require(case['native']['exit'] == 0 and case.get('diagnostic_complete') is True
-                and case.get('errors') == [], 'incomplete native control')
+        require(case['native']['exit'] == 0, 'incomplete native control')
         mem = case['memcheck']
         filename = f'{name}-memcheck.log'
         require(mem['log_file'] == filename, 'unexpected Memcheck log path')
@@ -163,16 +176,35 @@ def review(path, raw=None):
                 r'contexts \(suppressed: [\d,]+ from [\d,]+\)', rows[-1]) is not None,
                 'missing terminal Memcheck summary')
         parsed = parse_memcheck(log.decode())
-        require(all(case[key] == value for key, value in parsed.items()), 'Memcheck summary/log mismatch')
+        exact({key: case[key] for key in parsed}, parsed, 'Memcheck summary/log mismatch')
         count = parsed['summary']['errors']
         require(mem['exit'] == (99 if count else 0), 'Memcheck exit disagrees with raw log')
-        warning |= bool(count or parsed['summary']['suppressed_errors']
-                        or any(parsed['leaks'][key]['bytes'] for key in
-                               ('definitely lost', 'indirectly lost', 'possibly lost', 'suppressed')))
+        warning = bool(count or parsed['summary']['suppressed_errors']
+                       or any(parsed['leaks'][key]['bytes'] for key in
+                              ('definitely lost', 'indirectly lost', 'possibly lost', 'suppressed')))
+        require(case.get('memory_measurement_passed') is (not warning), 'Memcheck outcome disagrees with raw log')
+        scoped = scoped_48_warning(parsed)
+        errors = case.get('errors')
+        # The v1 producer uses its 48-byte attribution scope as a completion check.
+        # Only accept that exact finding once the independent evidence checks passed.
+        scope_only = count > 0 and not scoped and errors == [LEGACY_SCOPE_ERROR]
+        require((case.get('diagnostic_complete') is True and errors == [])
+                or (case.get('diagnostic_complete') is False and scope_only),
+                'incomplete control or unexpected producer error')
+        producer_errors.extend(f'{name}: {error}' for error in errors)
+        if warning:
+            warnings.append(name)
+            if not scoped:
+                unattributed.append(name)
+    require(data.get('errors') == producer_errors and data.get('diagnostic_complete') is (not producer_errors),
+            'diagnostic completion disagrees with controls')
+    if warnings:
+        reason = 'Memcheck controls remain failed: ' + ', '.join(warnings)
+        if unattributed:
+            reason += '. Warning attribution remains undetermined for ' + ', '.join(unattributed)
+        return False, 'diagnostic_warning', reason
     passed, reason = check(data)
-    classification = 'diagnostic_warning' if warning else (
-        'diagnostic_clean' if passed else 'incomplete_or_tool_error')
-    return passed and not warning, classification, reason
+    return passed, 'diagnostic_clean' if passed else 'incomplete_or_tool_error', reason
 
 
 def main():
@@ -192,7 +224,7 @@ def main():
         passed, classification, reason = review(args.result, raw)
         receipt.update(status='passed' if passed else 'failed', classification=classification,
                        reason=reason)
-    except (OSError, ValueError, TypeError, KeyError, AttributeError) as exc:
+    except (OSError, ValueError, TypeError, KeyError, IndexError, AttributeError) as exc:
         receipt.update(status='failed', reason='Invalid or missing diagnostic: ' + str(exc))
     if args.verdict:
         atomic_json(args.verdict, receipt)
