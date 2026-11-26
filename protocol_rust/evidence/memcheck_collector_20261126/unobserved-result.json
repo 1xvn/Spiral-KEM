@@ -1,0 +1,19 @@
+[
+  {
+    "case": "finished-failure",
+    "binary_sha256": "b381cc8c55ec524b9fa92897f0882e855357468b4a763519cec47e05994d61ff",
+    "tls": {
+      "cipher": null,
+      "protocol": null
+    },
+    "memcheck_log_path": null,
+    "memcheck_log_sha256": null,
+    "process_exit": 0,
+    "expected_exit": 1,
+    "memcheck_errors": null,
+    "passed": false,
+    "report": null,
+    "stderr": "",
+    "error": "RuntimeError: instrumented server exited before reporting its listen port"
+  }
+]
