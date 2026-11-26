@@ -62,9 +62,9 @@ class MemoryGateTests(unittest.TestCase):
         value.update(diagnostic_complete=False, errors=[f'thread-current: {legacy_error}'])
         return value, case
 
-    def review_evidence(self, root, value):
+    def review_evidence(self, root, value, verdict=None):
         result = root / 'result.json'
-        verdict = root / 'review.json'
+        verdict = verdict or root / 'review.json'
         result.write_text(json.dumps(value))
         command = [sys.executable, '-B', str(ROOT / 'ci/check_memory_result.py'),
                    str(result), '--verdict', str(verdict)]
@@ -138,6 +138,39 @@ class MemoryGateTests(unittest.TestCase):
             self.assertEqual(verdict['status'], 'failed')
             self.assertEqual(verdict['classification'], 'diagnostic_warning')
             self.assertIn('attribution remains undetermined for thread-current', verdict['reason'])
+
+    def test_contradictory_summary_fails_and_publishes_failure(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            memory = root / 'memory'
+            value = self.write_clean_evidence(memory)
+            case = value['cases'][0]
+            memcheck = case['memcheck']
+            log = memory / memcheck['log_file']
+            inconsistent = log.read_bytes().replace(b'0 errors from 0 contexts', b'0 errors from 1 contexts')
+            log.write_bytes(inconsistent)
+            memcheck['log_sha256'] = gate.sha(inconsistent)
+            case['summary']['contexts'] = 1
+
+            verdict_path = root / 'memory-review.json'
+            status, verdict = self.review_evidence(memory, value, verdict_path)
+            self.assertEqual(status, 1)
+            self.assertEqual(verdict['status'], 'failed')
+            self.assertEqual(verdict['classification'], 'incomplete_or_tool_error')
+            self.assertIn('more contexts than errors', verdict['reason'])
+
+            outcome = 'failure' if status else 'success'
+            public = root / 'public'
+            subprocess.run([sys.executable, '-B', str(ROOT / 'ci/public_receipt.py'),
+                            'memory', outcome, str(root), str(public)],
+                           cwd=ROOT, check=True, capture_output=True)
+            receipt = json.loads((public / 'receipt.json').read_bytes())
+            self.assertEqual(receipt['outcome'], 'failure')
+            self.assertEqual(receipt['classification'], 'incomplete_or_tool_error')
+            self.assertEqual(receipt['evidence_sha256'], {
+                'memory/result.json': gate.sha((memory / 'result.json').read_bytes()),
+                'memory-review.json': gate.sha(verdict_path.read_bytes()),
+            })
 
     def test_warning_with_incomplete_evidence_is_not_a_diagnostic_warning(self):
         for failure in ('missing log', 'truncated log', 'missing summary', 'duplicate summary',

@@ -62,6 +62,7 @@
     "test_cross_host_smoke.PublicBundleContracts.test_rejects_symlink_members"
   ],
   "diagnostic-parser": [
+    "test_libtest_memory.DiagnosticTests.test_error_contexts_cannot_exceed_errors",
     "test_libtest_memory.DiagnosticTests.test_exactly_one_completed_test_is_required",
     "test_libtest_memory.DiagnosticTests.test_known_native_output_is_exact",
     "test_libtest_memory.DiagnosticTests.test_missing_and_duplicate_summaries_rejected",

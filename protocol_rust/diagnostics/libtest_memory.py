@@ -118,6 +118,8 @@ def parse_memcheck(log):
         ("errors", "contexts", "suppressed_errors", "suppressed_contexts"),
         (int(value.replace(",", "")) for value in counts[0]),
     ))
+    if summary["contexts"] > summary["errors"]:
+        raise ValueError("Memcheck ERROR SUMMARY has more contexts than errors")
     leaks = {}
     all_freed = "All heap blocks were freed -- no leaks are possible" in log
     for kind in LEAK_KINDS:

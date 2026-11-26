@@ -15,6 +15,9 @@ EXPECTED = {'empty-main', 'thread-current', 'thread-join', 'channel-roundtrip',
             'libtest-default', 'libtest-nocapture'}
 REVIEWED_RUST_RELEASES = {'release: 1.99.1', 'release: 1.100.0'}
 LEGACY_SCOPE_ERROR = 'unexpected Memcheck errors beyond the scoped runtime 48-byte signature'
+# This v1 producer recorded the 1.99.1 and 1.100.0 comparison before the
+# common summary parser changed. Its output still undergoes all raw checks.
+PREVIOUS_V1_RUNNER_SHA256 = '5637e98b3d826b555222363027fbdb45fe5453e74f5e7ca5792522b05cd1d19d'
 
 
 def check(data):
@@ -60,9 +63,10 @@ def streams(folder, label, record):
 
 
 def provenance(folder, data, historical):
-    expected_runner = ('0dfa8b7c4bed792afd932860d65036c22430a99dbb6bf100ca8dd318e82de654'
-                       if historical else sha(Path(libtest_memory.__file__).read_bytes()))
-    require(data['runner_sha256'] == expected_runner,
+    expected_runners = ({'0dfa8b7c4bed792afd932860d65036c22430a99dbb6bf100ca8dd318e82de654'}
+                        if historical else
+                        {sha(Path(libtest_memory.__file__).read_bytes()), PREVIOUS_V1_RUNNER_SHA256})
+    require(data['runner_sha256'] in expected_runners,
             'unrecognized control producer')
     source = data['source']
     require(source['file'] == 'std_libtest_control.rs' and
