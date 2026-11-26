@@ -32,6 +32,12 @@ class DiagnosticTests(unittest.TestCase):
             with self.subTest(length=len(value)), self.assertRaises(ValueError):
                 runner.parse_memcheck(value)
 
+    def test_error_contexts_cannot_exceed_errors(self):
+        log = self.log("empty-main-memcheck.log")
+        for counts in ("0 errors from 1 contexts", "1 errors from 2 contexts"):
+            with self.subTest(counts=counts), self.assertRaisesRegex(ValueError, "more contexts than errors"):
+                runner.parse_memcheck(log.replace("0 errors from 0 contexts", counts))
+
     def test_zero_tests_does_not_count_as_valid_control(self):
         self.assertFalse(runner.output_is_expected({"stdout": "running 0 tests\ntest result: ok. 0 passed\n", "stderr": ""}, None))
 
