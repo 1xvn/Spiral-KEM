@@ -1,5 +1,7 @@
 # Spiral KEM
 
+[![Checked by Trust](https://trust-backend-knnd76vaqq-du.a.run.app/api/badge/3641db1d-b6c7-45cf-9c7d-279b8e49d3d3/image)](https://trust-scan.me/?utm_source=badge&utm_content=1xvn/Spiral-KEM)
+
 Spiral KEM is an experimental key encapsulation mechanism and a research platform for studying lattice-style arithmetic, lossless wire encodings, authenticated channels, and secret-state ownership.
 
 The current Python implementation is **v0.3.1 OPT2**. The repository also includes a C implementation, a Python TLS protocol, and a Rust/Tokio/rustls channel backed by the C KEM.
