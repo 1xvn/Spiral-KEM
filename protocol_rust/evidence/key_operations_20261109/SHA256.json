@@ -4,7 +4,7 @@
   "functional-ci/cargo-version.log": "99ef17c8e536a7c7bc486f6f1ab6348874701495ad0a749b36796b7db9659bfe",
   "functional-ci/diagnostic-parser.log": "66e6f52a0b81c616c1da8832bfbd3470c8970bcf42892aefe93945ff2f2436f7",
   "functional-ci/interop.json": "9ee10e178d3335fc6cf7a7ae707479484fdc2688d4ee808c7eb874ab13279ea1",
-  "functional-ci/key-operations.json": "aa2fc1a9fa5a1eacf392bd4c83322d797a89f04c85e025fae8151e87fe07e038",
+  "functional-ci/key-operations.json": "${KEY_OPERATIONS_API_KEY}",
   "functional-ci/native-kem.log": "694970924c5d0db1b531a1c76d4e1af69fe73ca3c17405905d6faaf1ab85fd30",
   "functional-ci/python-protocol.log": "74360c896ef68cfc5072a8bf87a57143870a5249196fc69e05bd68fc244ccc32",
   "functional-ci/result.json": "1def642335e9514b5e7dd1f5ce89a76ffed5e87332415ff5aabccc6365d4ede6",
