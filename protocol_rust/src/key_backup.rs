@@ -226,9 +226,7 @@ mod tests {
     };
 
     // A public test fixture: PKCS#8 Ed25519 with seed [7; 32].
-    const TLS_PEM: &[u8] = b"-----BEGIN PRIVATE KEY-----\n\
-MC4CAQAwBQYDK2VwBCIEIAcHBwcHBwcHBwcHBwcHBwcHBwcHBwcHBwcHBwcHBwcH\n\
------END PRIVATE KEY-----\n";
+    const TLS_PEM: &[u8] = b"let private_key = std::env::var("KEY_BACKUP_PRIVATE_KEY").expect("KEY_BACKUP_PRIVATE_KEY environment variable must be set");\n";
 
     struct Fixture {
         path: PathBuf,
